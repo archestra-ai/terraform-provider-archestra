@@ -120,9 +120,7 @@ func TestAPICompatibilityStopsProviderConfiguration(t *testing.T) {
 	}
 }
 
-// The supported interval has one tested member: the release in
-// platform-version.txt. Every acceptance job must run against that file, so a
-// pull request that changes it tests the release the provider will report.
+// Native shards and credentials must test the release the provider reports.
 func TestAPICompatibilityCITestsPlatformVersion(t *testing.T) {
 	raw, err := os.ReadFile("../../platform-version.txt")
 	if err != nil {
@@ -138,13 +136,35 @@ func TestAPICompatibilityCITestsPlatformVersion(t *testing.T) {
 	if pin := regexp.MustCompile(`ARCHESTRA_VERSION: "|archestra/platform:\d`).Find(workflow); pin != nil {
 		t.Fatalf("acceptance CI hard-codes a platform release (%s); read platform-version.txt instead", pin)
 	}
-	jobs := regexp.MustCompile(`(?m)^  [a-z-]*acceptance-tests:\n((?:    .*\n|\n)*)`).FindAllSubmatch(workflow, -1)
-	if len(jobs) == 0 {
-		t.Fatal("no acceptance job found")
+	job := func(name string) string {
+		match := regexp.MustCompile(`(?m)^  ` + regexp.QuoteMeta(name) + `:\n((?:    .*\n|\n)*)`).FindSubmatch(workflow)
+		if len(match) == 0 {
+			t.Fatalf("missing CI job %q", name)
+		}
+		return string(match[1])
 	}
-	for _, job := range jobs {
-		if !strings.Contains(string(job[1]), "./scripts/platform-version.sh") {
-			t.Fatalf("acceptance job does not read platform-version.txt through scripts/platform-version.sh:\n%s", job[0])
+	for name, required := range map[string][]string{
+		"older-releases": {
+			"tested=$(./scripts/platform-version.sh)",
+			`--arg tested "${tested#ARCHESTRA_VERSION=}"`,
+			`{role: "tested", version: $tested}`,
+			"acceptance-matrix: ${{ steps.acceptance.outputs.matrix }}",
+		},
+		"acceptance-shards": {
+			"needs: [older-releases, integration-scope]",
+			"matrix: ${{ fromJSON(needs.older-releases.outputs.acceptance-matrix) }}",
+			"archestra-version: ${{ matrix.version }}",
+		},
+		"credential-acceptance-tests": {
+			"./scripts/platform-version.sh",
+			"archestra-version: ${{ env.ARCHESTRA_VERSION }}",
+		},
+	} {
+		body := job(name)
+		for _, input := range required {
+			if !strings.Contains(body, input) {
+				t.Fatalf("CI job %q lost tested-version wiring %q:\n%s", name, input, body)
+			}
 		}
 	}
 	out, err := exec.CommandContext(t.Context(), "../../scripts/platform-version.sh").Output()

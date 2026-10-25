@@ -41,6 +41,53 @@ make install    # build and install into $GOPATH/bin for dev_overrides
 
 ## Testing
 
+Pull requests always run lint, unit tests, generation, both-architecture builds
+and Terraform/Crossplane coverage checks. Documentation and Marketplace asset
+changes skip integration stacks; provider, dependency and harness changes run
+the native acceptance matrix and Crossplane lifecycle suites. Release Please
+PRs always run the full matrix. `scripts/ci_integration_scope.py` owns that
+routing, with regression tests for runtime changes, renames and release PRs.
+Each API version's native suite runs on five isolated stacks. Go enumerates the
+tests, and `scripts/ci_acceptance_tests.py` assigns each top-level test and all
+its subtests to exactly one shard. The existing acceptance checks require every
+shard to succeed, including all supported API versions.
+
+Native jobs cache the root and tools Go modules together. Crossplane jobs use
+a separate root/Crossplane dependency key, keeping cache contents and
+invalidation aligned with the modules each job builds. Fresh lifecycle stacks
+pull the platform directly into Kind instead of pulling and transferring a
+second copy from Docker. Lifecycle controllers poll at one second in CI to
+exercise the same drift assertions with less idle waiting.
+Both native and lifecycle jobs use the shared bootstrap, which seeds Vault
+before the backend's first start. Existing local stacks still restart the
+backend when repairing Vault.
+
+`scripts/ci_crossplane_tests.py` runs up to four independent lifecycle probes
+on each stack, with UUID-labelled fixtures and separate evidence files. Common
+model adoption, organization settings and fixed GitHub installation identities
+run serially before the pool. New case groups default to serial execution.
+Both Git Skill scopes stay in one worker because their immutable repository
+fixture is deduplicated by the backend. Long probes start before short checks.
+The thirteen lifecycle stacks isolate the longest owner, project, organization and
+sharing groups. Owner, project and sharing checks use one stack per scope; sharing also
+divides resource kinds across its workers. Merged evidence must prove every assigned case and scope,
+matching API, controller and Terraform hashes and successful cleanup. A
+regression test verifies that the full workflow assigns every case exactly
+once in each scope. Any worker failure fails the required check.
+The CI controller allows 50 reconciles per second so the parallel fixtures do
+not saturate its default rate of ten. Shared model and GitHub registration
+scopes may overlap only their audited independent case groups; organization
+settings and unknown combinations remain serial.
+
+Compilation jobs publish binaries and generated CRDs to a cache keyed by the
+exact merge commit and runner platform. Each consumer verifies the source,
+platform, checksums and complete file set before use. A cache miss performs the
+normal source build. Native suites still execute with `TF_ACC=1`, live coverage
+and the original timeout; only compilation is reused. Shards that do not
+exercise MCP installations skip the MCP fixture and its image downloads.
+If tests are added outside `internal/provider`, native jobs automatically use
+the full source runner until the compiled cache supports those packages too.
+
 ### Unit tests
 
 ```bash

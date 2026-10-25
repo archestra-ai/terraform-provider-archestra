@@ -9,6 +9,14 @@ inputs:
     description: Fail when the generated API client differs from this release's spec. Only the tested release must match.
     required: false
     default: "true"
+  shard:
+    description: One-based shard number; each shard uses an isolated CI runner and stack.
+    required: false
+    default: "1"
+  shard-count:
+    description: Number of disjoint shares of the complete Go test suite.
+    required: false
+    default: "1"
 
 runs:
   using: composite
@@ -23,32 +31,45 @@ runs:
           exit 1
         fi
 
-    - name: Setup go
-      uses: $/.github/actions/setup-go
-
     - name: Setup Terraform
       uses: $/.github/actions/setup-terraform
 
-    # Deploy Archestra Platform locally using Kind
-    # This uses the pre-built archestra/platform image from Docker Hub and the published Helm chart from GAR
     - name: Setup Archestra Platform
-      uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@ab0c93762d005ccb9475d883c4a47970f480bf5b # platform-v1.0.8
+      shell: bash
+      env:
+        ARCHESTRA_VERSION: ${{ inputs.archestra-version }}
+      run: scripts/bootstrap-local-stack.sh
+
+    - name: Restore the exact acceptance test runtime
+      id: native-tests
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
-        kind-config-path: ./.github/kind.yaml
-        kind-cluster-name: archestra-ci-cluster
-        helm-values-path: ./.github/values-ci.yaml
-        helm-chart-ref: oci://europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/helm-charts/archestra-platform:${{ inputs.archestra-version }}
-        deploy-e2e-dependencies: "false"
-        build-platform-image: "false"
-        platform-image-tag: archestra/platform:${{ inputs.archestra-version }}
+        path: ${{ runner.temp }}/native-runtime
+        key: native-runtime-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+
+    - name: Verify cached acceptance runtime
+      if: steps.native-tests.outputs.cache-hit == 'true'
+      shell: bash
+      run: |
+        python3 scripts/ci_runtime_manifest.py check "$RUNNER_TEMP/native-runtime/manifest.json" \
+          "$RUNNER_TEMP/native-runtime/native-acceptance.test"
+
+    - name: Setup go for generation or a cache miss
+      if: steps.native-tests.outputs.cache-hit != 'true' || inputs.check-generated-client == 'true'
+      uses: $/.github/actions/setup-go
 
     - name: Record platform image
       shell: bash
       env:
         ARCHESTRA_VERSION: ${{ inputs.archestra-version }}
       run: |
-        digest="$(docker image inspect --format '{{join .RepoDigests ", "}}' "archestra/platform:${ARCHESTRA_VERSION}")"
-        echo "Archestra ${ARCHESTRA_VERSION}: ${digest}" | tee -a "$GITHUB_STEP_SUMMARY"
+        nodes=$(kind get nodes --name archestra-ci-cluster)
+        test -n "$nodes"
+        for node in $nodes; do
+          digest=$(docker exec "$node" crictl inspecti "docker.io/archestra/platform:${ARCHESTRA_VERSION}" |
+            jq -er '.status | (.repoDigests // []) + [.id] | map(select(. != null and . != "")) | unique | select(length > 0) | join(", ")')
+          echo "Archestra ${ARCHESTRA_VERSION} on ${node}: ${digest}" | tee -a "$GITHUB_STEP_SUMMARY"
+        done
 
     # The kubelet pulls one image at a time, and at startup the platform queues
     # its agent images. A local MCP server must become ready within two minutes,
@@ -62,47 +83,6 @@ runs:
         for node in $(kind get nodes --name archestra-ci-cluster); do
           docker exec "$node" crictl pull "$image"
         done
-
-    # Stub /v1/models so backend's testProviderApiKey passes without a real
-    # Ollama. Manifest + apply logic shared with local development via
-    # scripts/bootstrap-ollama-mock.sh and scripts/k8s/ollama-mock.yaml.
-    - name: Deploy Ollama mock
-      shell: bash
-      run: ./scripts/bootstrap-ollama-mock.sh
-
-    # Dev-mode Vault + secret seed for BYOS tests. Ephemeral; do not mirror
-    # outside CI. Shared with local via scripts/bootstrap-vault.sh and
-    # scripts/k8s/vault-dev.yaml.
-    - name: Install test Agent Runtime operator
-      shell: bash
-      run: |
-        curl --fail --silent --show-error --location \
-          https://github.com/kubernetes-sigs/agent-sandbox/releases/download/v1.0.1/sandbox-with-extensions.yaml \
-          --output /tmp/agent-sandbox.yaml
-        echo "460c1e0272c793c98de82482aed57db1bddb0afcb979c19325dc6cc52289c44c  /tmp/agent-sandbox.yaml" | sha256sum --check
-        kubectl apply --server-side -f /tmp/agent-sandbox.yaml
-        kubectl rollout status deployment/agent-sandbox-controller -n agent-sandbox-system --timeout=120s
-
-    - name: Deploy Vault (dev mode)
-      shell: bash
-      env:
-        ARCHESTRA_NAMESPACE: default
-      run: ./scripts/bootstrap-vault.sh
-
-    # The Vault step restarts the backend. Wait until the old pods are gone and
-    # the public /health answers, so later requests do not reach a stopping pod.
-    - name: Wait for the restarted platform
-      shell: bash
-      run: |
-        for _attempt in $(seq 1 90); do
-          if ! kubectl get pods --namespace default --selector=app.kubernetes.io/name=archestra-platform --no-headers | grep -q Terminating \
-            && curl -fsS -o /dev/null http://localhost:9000/health; then
-            exit 0
-          fi
-          sleep 2
-        done
-        kubectl get pods --namespace default -o wide
-        exit 1
 
     - name: Check for codegen'd API client changes
       if: ${{ inputs.check-generated-client == 'true' }}
@@ -152,8 +132,17 @@ runs:
 
     - name: Run Acceptance Tests
       shell: bash
-      run: make testacc
+      run: |
+        if [ "$CACHED_RUNTIME" = true ]; then
+          python3 scripts/ci_acceptance_tests.py --shard "$SHARD" --total "$SHARD_COUNT" \
+            --binary "$RUNNER_TEMP/native-runtime/native-acceptance.test"
+        else
+          python3 scripts/ci_acceptance_tests.py --shard "$SHARD" --total "$SHARD_COUNT"
+        fi
       env:
+        CACHED_RUNTIME: ${{ steps.native-tests.outputs.cache-hit }}
+        SHARD: ${{ inputs.shard }}
+        SHARD_COUNT: ${{ inputs.shard-count }}
         ARCHESTRA_BASE_URL: "http://localhost:9000"
         ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
         ARCHESTRA_TEST_IDP_ID: ${{ steps.test-idp.outputs.idp-id }}
@@ -166,9 +155,17 @@ runs:
       if: failure()
       shell: bash
       run: |
+        kubeconfig=$(mktemp)
+        trap 'rm -f "$kubeconfig"' EXIT
+        kind get kubeconfig --name archestra-ci-cluster > "$kubeconfig"
+        export KUBECONFIG="$kubeconfig"
         kubectl get pods --all-namespaces -o wide || true
         kubectl describe nodes | sed -n '/Allocated resources/,/Events/p' || true
         kubectl get events --all-namespaces --field-selector type=Warning --sort-by=.lastTimestamp || true
         # Events and platform log lines for MCP servers that the tests created.
         kubectl get events --namespace default --sort-by=.lastTimestamp | grep -E 'mcp-tf-' | tail -n 150 || true
         kubectl logs --namespace default deployment/archestra-platform --tail=5000 | grep -E 'mcp-tf-' | tail -n 150 || true
+        # Report only warning/error summaries, never request payloads or headers.
+        # Git fixture failures can otherwise be hidden behind the MCP-only filter.
+        kubectl logs --namespace default deployment/archestra-platform --tail=5000 | \
+          jq -Rc 'fromjson? | select(.level >= 40) | {timeIso, msg, error: .err.message}' | tail -n 80 || true

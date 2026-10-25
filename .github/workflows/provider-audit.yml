@@ -6,6 +6,8 @@ on:
       - 'scripts/provider-api-audit.py'
       - 'scripts/provider-sync-plan.py'
       - 'scripts/bootstrap-local-stack.sh'
+      - 'scripts/bootstrap-vault.sh'
+      - 'scripts/ci_*.py'
       - 'scripts/bootstrap-api-key.sh'
       - 'scripts/bootstrap-test-llm-key.py'
       - 'scripts/bootstrap-crossplane.sh'

@@ -131,20 +131,23 @@ fi
 
 kind get kubeconfig --name "$KIND_CLUSTER" > "$KUBECONFIG"
 
-# 2. Pull platform image into the local Docker daemon and load into kind.
+# 2. Reuse a local image when available; fresh CI nodes pull once into containerd.
 PLATFORM_IMAGE="archestra/platform:${ARCHESTRA_VERSION}"
-if ! docker image inspect "$PLATFORM_IMAGE" >/dev/null 2>&1; then
-  log "Pulling ${PLATFORM_IMAGE}..."
-  docker pull "$PLATFORM_IMAGE" >/dev/null
-fi
-log "Loading ${PLATFORM_IMAGE} into kind..."
-if ! kind load docker-image "$PLATFORM_IMAGE" --name "$KIND_CLUSTER" >/dev/null; then
-  # Docker's containerd image store can export an incomplete multi-platform
-  # index. Pull inside each disposable node instead of importing that archive.
-  log "Image archive import failed; pulling directly inside the test nodes..."
+if docker image inspect "$PLATFORM_IMAGE" >/dev/null 2>&1 && \
+  kind load docker-image "$PLATFORM_IMAGE" --name "$KIND_CLUSTER" >/dev/null; then
+  log "Loaded the cached ${PLATFORM_IMAGE} into kind."
+else
+  log "Pulling ${PLATFORM_IMAGE} directly inside the test nodes..."
   for node in $(kind get nodes --name "$KIND_CLUSTER"); do
     docker exec "$node" ctr --namespace=k8s.io images pull "docker.io/${PLATFORM_IMAGE}" >/dev/null
   done
+fi
+
+# Seed dependencies before the backend starts so its first Vault connection succeeds.
+"${SCRIPT_DIR}/bootstrap-ollama-mock.sh"
+existing_backend=$(kubectl get deployment --namespace "$ARCHESTRA_NAMESPACE" --selector=app.kubernetes.io/name=archestra-platform --ignore-not-found -o name)
+if [ -z "$existing_backend" ]; then
+  ARCHESTRA_SKIP_BACKEND_RESTART=true "${SCRIPT_DIR}/bootstrap-vault.sh"
 fi
 
 # 3. Helm install/upgrade the platform chart with the same values CI uses.
@@ -161,10 +164,9 @@ helm upgrade --install "$HELM_RELEASE" "$HELM_CHART_OCI" \
 #    that the platform's healthcheck doesn't gate on.
 log "Waiting for platform pods..."
 kubectl wait --namespace "$ARCHESTRA_NAMESPACE" --for=condition=Ready pods -l app.kubernetes.io/name=archestra-platform --timeout=120s >/dev/null
-
-# 5. Ollama mock + dev Vault — same manifests CI applies post-platform.
-"${SCRIPT_DIR}/bootstrap-ollama-mock.sh"
-"${SCRIPT_DIR}/bootstrap-vault.sh"
+if [ -n "$existing_backend" ]; then
+  "${SCRIPT_DIR}/bootstrap-vault.sh"
+fi
 
 # 6. Backend health gate on the selected host port.
 log "Waiting for backend at ${ARCHESTRA_BASE_URL}..."

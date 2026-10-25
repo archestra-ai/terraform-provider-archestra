@@ -23,7 +23,7 @@ permissions:
 jobs:
   scope:
     name: Select Crossplane lifecycle scope
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       run: ${{ steps.scope.outputs.run }}
     steps:
@@ -39,26 +39,19 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          set -euo pipefail
-          if [ "$EVENT" != pull_request ] || [[ "$HEAD_REF" == release-please--* ]]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          # Everything that can change what the controller or the harness does.
-          pattern='^(internal/|crossplane/|cmd/|scripts/integration/|scripts/k8s/|scripts/bootstrap-[^/]*$|main\.go$|go\.(mod|sum)$|platform-version\.txt$|\.github/(kind\.yaml|values-ci\.yaml)$|\.github/workflows/crossplane-lifecycle\.yml$)'
-          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
-          if printf '%s\n' "$changed" | grep -Eq "$pattern"; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          fi
+          python3 scripts/ci_integration_scope.py --suite crossplane \
+            --event "$EVENT" --head-ref "$HEAD_REF" --base "$BASE_SHA" --head "$HEAD_SHA" >> "$GITHUB_OUTPUT"
 
   lifecycle:
     name: Crossplane Lifecycle (${{ matrix.shard }})
     needs: scope
     if: needs.scope.outputs.run == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 75
+    env:
+      CROSSPLANE_POLL_INTERVAL: 1s
+      CROSSPLANE_MAX_RECONCILE_RATE: 50
+      CROSSPLANE_SKIP_MCP_FIXTURE: ${{ matrix.mcp && '0' || '1' }}
     strategy:
       fail-fast: false
       # Shards are balanced by recorded run time. Groups that change global
@@ -66,31 +59,55 @@ jobs:
       matrix:
         include:
           - shard: core
+            mcp: false
             cases: core observe
           - shard: extensions
-            cases: extensions service-account-team team-bindings inline-owners
+            mcp: true
+            cases: extensions service-account-team team-bindings
+          - shard: owners-cluster
+            mcp: true
+            cases: inline-owners
+            scopes: cluster
+          - shard: owners-namespaced
+            mcp: true
+            cases: inline-owners
+            scopes: namespaced
           - shard: catalog
+            mcp: true
             cases: catalog tools limit llm credential sharing-defaults
           - shard: organization
-            cases: organization organization-defaults identity schedule api-key api-compatibility
+            mcp: false
+            cases: organization organization-defaults
+          - shard: identity
+            mcp: false
+            cases: identity schedule api-key api-compatibility
           - shard: skills
+            mcp: false
             cases: skill git-skills repository-plugins manual-plugins marketplace-share-links
-          - shard: projects
+          - shard: projects-cluster
+            mcp: true
             cases: apps project-files project-file-init project-instructions knowledge-files
+            scopes: cluster
+          - shard: projects-namespaced
+            mcp: true
+            cases: apps project-files project-file-init project-instructions knowledge-files
+            scopes: namespaced
           - shard: routing
+            mcp: false
             cases: routing-credentials remote-agents github-registrations
-          - shard: sharing
+          - shard: sharing-cluster
+            mcp: false
             cases: parent-sharing
+            scopes: cluster
+          - shard: sharing-namespaced
+            mcp: false
+            cases: parent-sharing
+            scopes: namespaced
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: true # crossplane/build makelib
           persist-credentials: false
-
-      - name: Setup Go
-        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-        with:
-          go-version-file: go.mod
 
       - name: Read platform version
         run: ./scripts/platform-version.sh >> "$GITHUB_ENV"
@@ -98,16 +115,57 @@ jobs:
       - name: Start the local stack
         run: scripts/bootstrap-local-stack.sh
 
+      - name: Restore the exact lifecycle runtime
+        id: runtime
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            terraform-provider-archestra
+            crossplane/_output/bin/linux_amd64/provider
+            crossplane/package/crds
+            ${{ runner.temp }}/crossplane-runtime.json
+          key: crossplane-runtime-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+
+      - name: Verify cached lifecycle runtime
+        if: steps.runtime.outputs.cache-hit == 'true'
+        run: |
+          python3 scripts/ci_runtime_manifest.py check "$RUNNER_TEMP/crossplane-runtime.json" \
+            terraform-provider-archestra crossplane/_output/bin/linux_amd64/provider crossplane/package/crds
+          echo 'CROSSPLANE_SKIP_BUILD=1' >> "$GITHUB_ENV"
+          echo 'CROSSPLANE_RUNTIME_PLATFORM=linux_amd64' >> "$GITHUB_ENV"
+
+      - name: Setup Go on a cache miss
+        if: steps.runtime.outputs.cache-hit != 'true'
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: |
+            go.sum
+            crossplane/go.sum
+
       # Agent cases install MCP servers; pulling the base image first keeps
       # them inside the platform's readiness window, as acceptance CI does.
       - name: Pull the MCP server base image
+        if: matrix.mcp
         run: |
+          kubeconfig=$(mktemp)
+          trap 'rm -f "$kubeconfig"' EXIT
+          kind get kubeconfig --name archestra-ci-cluster > "$kubeconfig"
           image="europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/mcp-server-base:${ARCHESTRA_VERSION}"
+          fixture_images=$(kubectl --kubeconfig="$kubeconfig" create --dry-run=client -f scripts/k8s/provider-mcp-mock.yaml -o jsonpath='{..image}')
+          read -ra images <<< "$image $fixture_images"
           for node in $(kind get nodes --name archestra-ci-cluster); do
-            docker exec "$node" crictl pull "$image"
+            for image in "${images[@]}"; do
+              for attempt in 1 2 3; do
+                if docker exec "$node" crictl pull "$image"; then break; fi
+                if [ "$attempt" = 3 ]; then exit 1; fi
+                sleep 3
+              done
+            done
           done
 
       - name: Install goimports
+        if: steps.runtime.outputs.cache-hit != 'true'
         run: go -C crossplane install golang.org/x/tools/cmd/goimports
 
       - name: Start Crossplane and the controller
@@ -117,19 +175,21 @@ jobs:
         env:
           CASES: ${{ matrix.cases }}
           SHARD: ${{ matrix.shard }}
+          SCOPES: ${{ matrix.scopes || 'cluster namespaced' }}
         run: |
           set -euo pipefail
           eval "$(scripts/bootstrap-local-stack.sh --print-env)"
           work="$HOME/.cache/archestra-provider-crossplane/archestra-ci-cluster"
           read -ra groups <<< "$CASES"
-          python3 scripts/integration/crossplane-lifecycle.py --cases "${groups[@]}" \
+          read -ra scopes <<< "$SCOPES"
+          python3 scripts/ci_crossplane_tests.py --cases "${groups[@]}" --scopes "${scopes[@]}" --jobs 4 \
+            --evidence "$RUNNER_TEMP/crossplane-lifecycle-$SHARD.json" -- \
             --api-url "$ARCHESTRA_BASE_URL" --key-file "$work/api-key" --readonly-vault \
             --llm-base-url "$ARCHESTRA_TEST_LLM_BASE_URL" \
             --mcp-url http://provider-mcp-mock.default.svc.cluster.local:19006/mcp \
             --kubeconfig "$work/kubeconfig" --provider-config default \
             --terraform-binary terraform-provider-archestra \
-            --controller-binary crossplane/_output/bin/linux_amd64/provider \
-            --evidence "$RUNNER_TEMP/crossplane-lifecycle-$SHARD.json"
+            --controller-binary crossplane/_output/bin/linux_amd64/provider
 
       - name: Summarize the evidence
         if: always()
@@ -145,7 +205,7 @@ jobs:
     name: Crossplane Lifecycle
     needs: [scope, lifecycle]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Report the lifecycle result
         env:
