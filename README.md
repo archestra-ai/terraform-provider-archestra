@@ -1,7 +1,7 @@
 # Archestra Provider
 
 
-Provider 3.0.0 has **31 Terraform resources and four Terraform data sources**. Every resource is generated as a Crossplane managed resource in both the cluster and namespaced scopes. Relationships, team bindings, sharing and organization defaults are configured on their parent resource. Retired resource names have no aliases; the [migration guide](MIGRATION-v3.md) maps each one to its replacement.
+Provider 3.0.0 has **32 Terraform resources and four Terraform data sources**. Every resource is generated as a Crossplane managed resource in both the cluster and namespaced scopes. Relationships, team bindings, sharing and organization defaults are configured on their parent resource. Retired resource names have no aliases; the [migration guide](MIGRATION-v3.md) maps each one to its replacement.
 
 [![Crossplane mappings](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
 
@@ -40,6 +40,7 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_mcp_gateway` | `gateway` / `Gateway` |
 | `archestra_mcp_registry_entry` | `mcp` / `RegistryEntry` |
 | `archestra_mcp_server` | `mcp` / `Server` |
+| `archestra_model_pool` | `llm` / `ModelPool` |
 | `archestra_model` | `llm` / `Model` |
 | `archestra_model_provider` | `llm` / `ModelProvider` |
 | `archestra_oauth_client` | `credential` / `OAuthClient` |

@@ -22,6 +22,14 @@ Two features need 1.5.0-rc.1 or later:
   created, on import or refresh. Older releases return 403, so `value` stays
   null. Users can recover keys they created on every supported release.
 
+`archestra_model_pool` additionally requires the model-pools CRUD API introduced
+in [Archestra PR #9681](https://github.com/archestra-ai/archestra/pull/9681), with
+`ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` or `ARCHESTRA_BETA=true`. The global
+version floor does not establish this capability. Pool lifecycle and Terraform
+planning are covered by controlled HTTP fixtures; deployed-API acceptance and
+Crossplane reconciliation have not been run for this resource. The older
+31-family reconciliation evidence below does not cover ModelPool.
+
 `platform-version.txt` at the provider release tag names the tested release.
 Acceptance CI runs the native suite against that release and records the image
 digest it used in the job summary. The provider embeds the same file for the

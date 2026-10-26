@@ -1,0 +1,31 @@
+apiVersion: llm.archestra.m.crossplane.io/v1alpha1
+kind: ModelPool
+metadata:
+  name: balanced-model
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: gpt-4.1
+    members:
+      - providerApiKeyIdRef:
+          name: primary-provider
+        modelId: gpt-4.1-primary
+        priority: 1
+        weight: 3
+        enabled: true
+      - providerApiKeyIdRef:
+          name: secondary-provider
+        modelId: gpt-4.1-secondary
+        priority: 1
+        weight: 1
+        enabled: true
+      - providerApiKeyIdRef:
+          name: fallback-provider
+        modelId: gpt-4.1
+        priority: 2
+        weight: 1
+        enabled: true
+    virtualApiKeyIds: []
+  providerConfigRef:
+    kind: ProviderConfig
+    name: default
