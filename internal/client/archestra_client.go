@@ -2926,15 +2926,20 @@ type AssignToolToAgentJSONBodyCredentialResolutionMode string
 
 // UpdateAgentJSONBody defines parameters for UpdateAgent.
 type UpdateAgentJSONBody struct {
-	AccessAllSubagents         *bool                                         `json:"accessAllSubagents,omitempty"`
-	AccessAllTools             *bool                                         `json:"accessAllTools,omitempty"`
-	AgentType                  *UpdateAgentJSONBodyAgentType                 `json:"agentType,omitempty"`
-	BuiltInAgentConfig         *UpdateAgentJSONBody_BuiltInAgentConfig       `json:"builtInAgentConfig"`
-	ConnectorIds               *[]string                                     `json:"connectorIds,omitempty"`
-	DeletedAt                  interface{}                                   `json:"deletedAt"`
-	Description                *string                                       `json:"description"`
-	EnvironmentId              *openapi_types.UUID                           `json:"environmentId"`
-	FastModelId                *openapi_types.UUID                           `json:"fastModelId"`
+	AccessAllSubagents  *bool                                   `json:"accessAllSubagents,omitempty"`
+	AccessAllTools      *bool                                   `json:"accessAllTools,omitempty"`
+	AgentType           *UpdateAgentJSONBodyAgentType           `json:"agentType,omitempty"`
+	BuiltInAgentConfig  *UpdateAgentJSONBody_BuiltInAgentConfig `json:"builtInAgentConfig"`
+	ConnectorIds        *[]string                               `json:"connectorIds,omitempty"`
+	DeletedAt           interface{}                             `json:"deletedAt"`
+	Description         *string                                 `json:"description"`
+	EnvironmentId       *openapi_types.UUID                     `json:"environmentId"`
+	FastModelId         *openapi_types.UUID                     `json:"fastModelId"`
+	GithubActionsAccess *struct {
+		GithubAppCredentialKey string   `json:"githubAppCredentialKey"`
+		Repositories           []string `json:"repositories"`
+		Workflows              []string `json:"workflows"`
+	} `json:"githubActionsAccess"`
 	Icon                       *string                                       `json:"icon"`
 	IdentityProviderId         *string                                       `json:"identityProviderId"`
 	IncomingEmailAllowedDomain *string                                       `json:"incomingEmailAllowedDomain"`
@@ -4481,6 +4486,7 @@ type CreateLimitJSONBody struct {
 	LimitValue    int                          `json:"limitValue"`
 	McpServerName *string                      `json:"mcpServerName"`
 	Model         *[]string                    `json:"model"`
+	Reason        *string                      `json:"reason"`
 	ToolName      *string                      `json:"toolName"`
 }
 
@@ -4507,6 +4513,7 @@ type UpdateLimitJSONBody struct {
 	LimitValue    *int                          `json:"limitValue,omitempty"`
 	McpServerName *string                       `json:"mcpServerName"`
 	Model         *[]string                     `json:"model"`
+	Reason        *string                       `json:"reason"`
 	ToolName      *string                       `json:"toolName"`
 }
 
@@ -5206,6 +5213,10 @@ type UpdateIntegrationSettingsJSONBody struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
 		} `json:"hermes,omitempty"`
+		Kimi *struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"kimi,omitempty"`
 		Openclaw *struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -5244,6 +5255,7 @@ type UpdateSecuritySettingsJSONBody struct {
 	AllowUnauthenticatedLlmProxyRequests *bool `json:"allowUnauthenticatedLlmProxyRequests,omitempty"`
 	NewAppsDisabledByDefault             *bool `json:"newAppsDisabledByDefault,omitempty"`
 	NewAppsLockedByDefault               *bool `json:"newAppsLockedByDefault,omitempty"`
+	PlaywrightMcpEnabled                 *bool `json:"playwrightMcpEnabled,omitempty"`
 }
 
 // UpdateSkillsSettingsJSONBody defines parameters for UpdateSkillsSettings.
@@ -21224,11 +21236,16 @@ type GetAgentsResponse struct {
 				Name  *string                        `json:"name"`
 				Type  *GetAgents200DataCreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId  *openapi_types.UUID                       `json:"createdByServiceAccountId"`
-			DeletedAt                  *time.Time                                `json:"deletedAt"`
-			Description                *string                                   `json:"description"`
-			EnvironmentId              *openapi_types.UUID                       `json:"environmentId"`
-			FastModelId                *openapi_types.UUID                       `json:"fastModelId"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			FastModelId               *openapi_types.UUID `json:"fastModelId"`
+			GithubActionsAccess       *struct {
+				GithubAppCredentialKey string   `json:"githubAppCredentialKey"`
+				Repositories           []string `json:"repositories"`
+				Workflows              []string `json:"workflows"`
+			} `json:"githubActionsAccess"`
 			Icon                       *string                                   `json:"icon"`
 			Id                         openapi_types.UUID                        `json:"id"`
 			IdentityProviderId         *string                                   `json:"identityProviderId"`
@@ -21464,11 +21481,16 @@ type CreateAgentResponse struct {
 			Name  *string                      `json:"name"`
 			Type  *CreateAgent200CreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
-		CreatedByServiceAccountId  *openapi_types.UUID                     `json:"createdByServiceAccountId"`
-		DeletedAt                  *time.Time                              `json:"deletedAt"`
-		Description                *string                                 `json:"description"`
-		EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
-		FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		FastModelId               *openapi_types.UUID `json:"fastModelId"`
+		GithubActionsAccess       *struct {
+			GithubAppCredentialKey string   `json:"githubAppCredentialKey"`
+			Repositories           []string `json:"repositories"`
+			Workflows              []string `json:"workflows"`
+		} `json:"githubActionsAccess"`
 		Icon                       *string                                 `json:"icon"`
 		Id                         openapi_types.UUID                      `json:"id"`
 		IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -22440,11 +22462,16 @@ type GetAgentResponse struct {
 			Name  *string                   `json:"name"`
 			Type  *GetAgent200CreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
-		CreatedByServiceAccountId  *openapi_types.UUID                  `json:"createdByServiceAccountId"`
-		DeletedAt                  *time.Time                           `json:"deletedAt"`
-		Description                *string                              `json:"description"`
-		EnvironmentId              *openapi_types.UUID                  `json:"environmentId"`
-		FastModelId                *openapi_types.UUID                  `json:"fastModelId"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		FastModelId               *openapi_types.UUID `json:"fastModelId"`
+		GithubActionsAccess       *struct {
+			GithubAppCredentialKey string   `json:"githubAppCredentialKey"`
+			Repositories           []string `json:"repositories"`
+			Workflows              []string `json:"workflows"`
+		} `json:"githubActionsAccess"`
 		Icon                       *string                              `json:"icon"`
 		Id                         openapi_types.UUID                   `json:"id"`
 		IdentityProviderId         *string                              `json:"identityProviderId"`
@@ -22664,11 +22691,16 @@ type UpdateAgentResponse struct {
 			Name  *string                      `json:"name"`
 			Type  *UpdateAgent200CreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
-		CreatedByServiceAccountId  *openapi_types.UUID                     `json:"createdByServiceAccountId"`
-		DeletedAt                  *time.Time                              `json:"deletedAt"`
-		Description                *string                                 `json:"description"`
-		EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
-		FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		FastModelId               *openapi_types.UUID `json:"fastModelId"`
+		GithubActionsAccess       *struct {
+			GithubAppCredentialKey string   `json:"githubAppCredentialKey"`
+			Repositories           []string `json:"repositories"`
+			Workflows              []string `json:"workflows"`
+		} `json:"githubActionsAccess"`
 		Icon                       *string                                 `json:"icon"`
 		Id                         openapi_types.UUID                      `json:"id"`
 		IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -30577,6 +30609,7 @@ type CreateLimitResponse struct {
 		LimitValue      int                            `json:"limitValue"`
 		McpServerName   *string                        `json:"mcpServerName"`
 		Model           *[]string                      `json:"model"`
+		Reason          *string                        `json:"reason"`
 		ToolName        *string                        `json:"toolName"`
 		UpdatedAt       time.Time                      `json:"updatedAt"`
 	}
@@ -30749,6 +30782,7 @@ type GetLimitResponse struct {
 			TokensIn  float32 `json:"tokensIn"`
 			TokensOut float32 `json:"tokensOut"`
 		} `json:"modelUsage,omitempty"`
+		Reason          *string `json:"reason"`
 		ThroughputUsage *struct {
 			// CurrentUsage Recorded usage. Token limits count only provider-reported tokens; requests already in flight can exceed the cap.
 			CurrentUsage float32 `json:"currentUsage"`
@@ -30843,6 +30877,7 @@ type UpdateLimitResponse struct {
 		LimitValue      int                            `json:"limitValue"`
 		McpServerName   *string                        `json:"mcpServerName"`
 		Model           *[]string                      `json:"model"`
+		Reason          *string                        `json:"reason"`
 		ToolName        *string                        `json:"toolName"`
 		UpdatedAt       time.Time                      `json:"updatedAt"`
 	}
@@ -33502,6 +33537,7 @@ type GetOrganizationResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -33696,6 +33732,7 @@ type UpdateAgentSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -33890,6 +33927,7 @@ type UpdateAppearanceSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -34084,6 +34122,7 @@ type UpdateAuthSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -34278,6 +34317,7 @@ type CompleteOnboardingResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -34472,6 +34512,7 @@ type UpdateConnectionSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -34666,6 +34707,7 @@ type UpdateDefaultEnvironmentResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -34860,6 +34902,7 @@ type UpdateIntegrationSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -35054,6 +35097,7 @@ type UpdateKnowledgeSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -35248,6 +35292,7 @@ type UpdateMcpSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -35442,6 +35487,7 @@ type UpdateSecuritySettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -35636,6 +35682,7 @@ type UpdateSkillsSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -44798,11 +44845,16 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 					Name  *string                        `json:"name"`
 					Type  *GetAgents200DataCreatedByType `json:"type,omitempty"`
 				} `json:"createdBy"`
-				CreatedByServiceAccountId  *openapi_types.UUID                       `json:"createdByServiceAccountId"`
-				DeletedAt                  *time.Time                                `json:"deletedAt"`
-				Description                *string                                   `json:"description"`
-				EnvironmentId              *openapi_types.UUID                       `json:"environmentId"`
-				FastModelId                *openapi_types.UUID                       `json:"fastModelId"`
+				CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+				DeletedAt                 *time.Time          `json:"deletedAt"`
+				Description               *string             `json:"description"`
+				EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+				FastModelId               *openapi_types.UUID `json:"fastModelId"`
+				GithubActionsAccess       *struct {
+					GithubAppCredentialKey string   `json:"githubAppCredentialKey"`
+					Repositories           []string `json:"repositories"`
+					Workflows              []string `json:"workflows"`
+				} `json:"githubActionsAccess"`
 				Icon                       *string                                   `json:"icon"`
 				Id                         openapi_types.UUID                        `json:"id"`
 				IdentityProviderId         *string                                   `json:"identityProviderId"`
@@ -45040,11 +45092,16 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 				Name  *string                      `json:"name"`
 				Type  *CreateAgent200CreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId  *openapi_types.UUID                     `json:"createdByServiceAccountId"`
-			DeletedAt                  *time.Time                              `json:"deletedAt"`
-			Description                *string                                 `json:"description"`
-			EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
-			FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			FastModelId               *openapi_types.UUID `json:"fastModelId"`
+			GithubActionsAccess       *struct {
+				GithubAppCredentialKey string   `json:"githubAppCredentialKey"`
+				Repositories           []string `json:"repositories"`
+				Workflows              []string `json:"workflows"`
+			} `json:"githubActionsAccess"`
 			Icon                       *string                                 `json:"icon"`
 			Id                         openapi_types.UUID                      `json:"id"`
 			IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -46358,11 +46415,16 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 				Name  *string                   `json:"name"`
 				Type  *GetAgent200CreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId  *openapi_types.UUID                  `json:"createdByServiceAccountId"`
-			DeletedAt                  *time.Time                           `json:"deletedAt"`
-			Description                *string                              `json:"description"`
-			EnvironmentId              *openapi_types.UUID                  `json:"environmentId"`
-			FastModelId                *openapi_types.UUID                  `json:"fastModelId"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			FastModelId               *openapi_types.UUID `json:"fastModelId"`
+			GithubActionsAccess       *struct {
+				GithubAppCredentialKey string   `json:"githubAppCredentialKey"`
+				Repositories           []string `json:"repositories"`
+				Workflows              []string `json:"workflows"`
+			} `json:"githubActionsAccess"`
 			Icon                       *string                              `json:"icon"`
 			Id                         openapi_types.UUID                   `json:"id"`
 			IdentityProviderId         *string                              `json:"identityProviderId"`
@@ -46584,11 +46646,16 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 				Name  *string                      `json:"name"`
 				Type  *UpdateAgent200CreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId  *openapi_types.UUID                     `json:"createdByServiceAccountId"`
-			DeletedAt                  *time.Time                              `json:"deletedAt"`
-			Description                *string                                 `json:"description"`
-			EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
-			FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			FastModelId               *openapi_types.UUID `json:"fastModelId"`
+			GithubActionsAccess       *struct {
+				GithubAppCredentialKey string   `json:"githubAppCredentialKey"`
+				Repositories           []string `json:"repositories"`
+				Workflows              []string `json:"workflows"`
+			} `json:"githubActionsAccess"`
 			Icon                       *string                                 `json:"icon"`
 			Id                         openapi_types.UUID                      `json:"id"`
 			IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -56610,6 +56677,7 @@ func ParseCreateLimitResponse(rsp *http.Response) (*CreateLimitResponse, error) 
 			LimitValue      int                            `json:"limitValue"`
 			McpServerName   *string                        `json:"mcpServerName"`
 			Model           *[]string                      `json:"model"`
+			Reason          *string                        `json:"reason"`
 			ToolName        *string                        `json:"toolName"`
 			UpdatedAt       time.Time                      `json:"updatedAt"`
 		}
@@ -56847,6 +56915,7 @@ func ParseGetLimitResponse(rsp *http.Response) (*GetLimitResponse, error) {
 				TokensIn  float32 `json:"tokensIn"`
 				TokensOut float32 `json:"tokensOut"`
 			} `json:"modelUsage,omitempty"`
+			Reason          *string `json:"reason"`
 			ThroughputUsage *struct {
 				// CurrentUsage Recorded usage. Token limits count only provider-reported tokens; requests already in flight can exceed the cap.
 				CurrentUsage float32 `json:"currentUsage"`
@@ -56972,6 +57041,7 @@ func ParseUpdateLimitResponse(rsp *http.Response) (*UpdateLimitResponse, error) 
 			LimitValue      int                            `json:"limitValue"`
 			McpServerName   *string                        `json:"mcpServerName"`
 			Model           *[]string                      `json:"model"`
+			Reason          *string                        `json:"reason"`
 			ToolName        *string                        `json:"toolName"`
 			UpdatedAt       time.Time                      `json:"updatedAt"`
 		}
@@ -60354,6 +60424,7 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -60575,6 +60646,7 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -60796,6 +60868,7 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -61017,6 +61090,7 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -61238,6 +61312,7 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -61459,6 +61534,7 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -61680,6 +61756,7 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -61901,6 +61978,7 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -62122,6 +62200,7 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -62343,6 +62422,7 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -62564,6 +62644,7 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -62785,6 +62866,7 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
