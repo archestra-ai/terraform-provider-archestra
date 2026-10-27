@@ -64,7 +64,7 @@ func TestPackageReadme(t *testing.T) {
 	if err := yaml.Unmarshal(raw, &pkg); err != nil {
 		t.Fatal(err)
 	}
-	want := strings.TrimSpace(strings.SplitN(string(readme), "\n## Development\n", 2)[0])
+	want := strings.TrimSpace(string(readme))
 	if strings.TrimSpace(pkg.Metadata.Annotations["meta.crossplane.io/readme"]) != want {
 		t.Fatal("package README is stale; run make generate")
 	}

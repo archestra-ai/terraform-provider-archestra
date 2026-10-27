@@ -4,7 +4,7 @@
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
-readme = (root / "README.md").read_text().split("\n## Development\n", 1)[0].rstrip()
+readme = (root / "README.md").read_text().rstrip()
 package = root / "package/crossplane.yaml"
 header, rest = package.read_text().split("    meta.crossplane.io/readme: |\n", 1)
 _, spec = rest.split("\nspec:", 1)
