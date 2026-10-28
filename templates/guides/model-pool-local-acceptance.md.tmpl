@@ -109,3 +109,41 @@ locally without installing it. Live reconciliation needs a cluster with
 Crossplane plus the generated CRDs and a local controller using the same local
 Terraform build. Confirm that installation exists before proposing a probe;
 creating a new cluster or installing Crossplane is a separate setup operation.
+
+## Recorded local proof
+
+The [acceptance record](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/model-pool-local-native-rc11.json)
+identifies the tested provider bytes and local API revision. On 2026-10-28,
+Terraform completed all thirteen recorded steps against a development API
+reporting `1.5.0-rc.11`: create, three unchanged plans (including after import),
+in-place update, import, drift detection/repair, and destroy. The same pool UUID
+survived update and import. Fresh API reads verified weight changed from 3 to 7,
+priorities stayed 1/2, and both members remained disabled. The drift plan
+contained exactly one in-place resource update.
+
+The operator captured the actual UI after create and update: the generated pool
+name, two members, and “Every member off” were visible. The edit dialog showed
+both dummy models in their priority order with both switches off. After destroy,
+searching for that generated name showed no matching pools. These screenshots
+and raw Terraform logs are private local evidence; the JSON record does not
+claim they have been uploaded.
+
+Only the two pre-existing pools remained, and their normalized names, member
+settings and virtual-key grants matched the pre-run fingerprints. A separately
+authorized temporary management key was revoked after the probe; account lookup
+returned 404 and authenticating with the revoked key returned 401. Transient key
+and cookie files were deleted. The task-started frontend was stopped while the
+existing backend remained healthy.
+
+For a fresh run, preserve the generated workspace until destroy and an independent
+API list confirm cleanup. Capture create/update UI checkpoints, then refresh the
+same search after destroy. Compare pre-existing pool settings before/after.
+If a temporary management key is separately authorized, revoke that exact key
+through the supported account API/UI and verify it is absent and no longer
+authenticates, even if Terraform fails. Remove its private input file afterward.
+Stop only services started for this probe. Never put a key value in HCL, command
+arguments, screenshots, or the acceptance record.
+
+The existing local cluster did not have Crossplane installed, so live ModelPool
+reconciliation in either scope remains untested. Generated schemas and builds
+are separate checks and do not settle that gap.

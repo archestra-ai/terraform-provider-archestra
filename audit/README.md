@@ -1,5 +1,23 @@
 # Provider audit
 
+## Model-pool local native proof
+
+The [recorded local run](model-pool-local-native-rc11.json) exercises the
+unpublished provider against an existing development API reporting `1.5.0-rc.11`.
+One synthetic pool passes create, no-change refresh, in-place update, UUID import,
+import no-change plan, out-of-band drift detection/repair, final no-change plan,
+and destroy. Fresh API reads confirm persisted member settings. Actual UI
+screenshots verify the created/updated pool has both members off and the pool
+is absent after destroy; the screenshots and Terraform logs remain in the
+private evidence workspace rather than being uploaded by this change.
+
+Both pre-existing pools retain their settings. The temporary management key is
+revoked, its use returns 401, and its transient secret files are removed. The
+only task-started frontend is stopped. This proves native resource persistence
+for the recorded bytes, not inference routing, a release compatibility matrix,
+or live Crossplane reconciliation. Follow the
+[local procedure](../docs/guides/model-pool-local-acceptance.md) to reproduce it.
+
 ## 3.0.0 release evidence (API 1.5.0-rc.3)
 
 Provider 3.0.0 has 31 resources and four data sources. All release evidence below

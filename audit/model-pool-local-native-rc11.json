@@ -1,0 +1,157 @@
+{
+  "scope": "One synthetic disabled model pool; local unpublished native Terraform provider against an existing development API",
+  "date": "2026-10-28",
+  "provider_source_commit": "cbaf6236f2c9c346978a0b92fc37647cefea6a3c",
+  "provider_base_commit": "7df36ca1b88c93508eb83fa1c4eb1c8cc914b918",
+  "api_source_commit": "493ea3c118f3982fe1a9333e8ebccd71b863a740",
+  "api_version": "1.5.0-rc.11",
+  "api_build": "Existing local development checkout; this is not a published-image compatibility sweep",
+  "execution": {
+    "outcome": "passed",
+    "cleanup": "passed",
+    "name": "tf-pool-proof-d0bc559e3688",
+    "provider_sha256": "c050a21eded120ddbd2807dd20abcbd9525b87a7cf552e07f65dbd493de2201c",
+    "preflight": {
+      "api_version": "1.5.0-rc.11",
+      "pool_write_fields": [
+        "members",
+        "name"
+      ],
+      "credential_grants_writable_on_pool": false,
+      "feature_flag_and_authorization": "not established by public schema"
+    },
+    "steps": [
+      "validate",
+      "create",
+      "id",
+      "read-noop",
+      "update",
+      "forget-local-binding",
+      "import",
+      "import-noop",
+      "drift-plan",
+      "drift-plan-json",
+      "repair-drift",
+      "final-noop",
+      "destroy"
+    ],
+    "pool_id": "290367f1-e73c-4b76-a9b8-155f7b837d62",
+    "api_snapshots": [
+      {
+        "stage": "create",
+        "pool_id": "290367f1-e73c-4b76-a9b8-155f7b837d62",
+        "name": "tf-pool-proof-d0bc559e3688",
+        "members": [
+          {
+            "priority": 1,
+            "weight": 3,
+            "enabled": false,
+            "model_id": "tf-acc-primary",
+            "provider_reference_matches": true
+          },
+          {
+            "priority": 2,
+            "weight": 1,
+            "enabled": false,
+            "model_id": "tf-acc-fallback",
+            "provider_reference_matches": true
+          }
+        ]
+      },
+      {
+        "stage": "update",
+        "pool_id": "290367f1-e73c-4b76-a9b8-155f7b837d62",
+        "name": "tf-pool-proof-d0bc559e3688-updated",
+        "members": [
+          {
+            "priority": 1,
+            "weight": 7,
+            "enabled": false,
+            "model_id": "tf-acc-primary",
+            "provider_reference_matches": true
+          },
+          {
+            "priority": 2,
+            "weight": 1,
+            "enabled": false,
+            "model_id": "tf-acc-fallback",
+            "provider_reference_matches": true
+          }
+        ]
+      },
+      {
+        "stage": "drift-repaired",
+        "pool_id": "290367f1-e73c-4b76-a9b8-155f7b837d62",
+        "name": "tf-pool-proof-d0bc559e3688-updated",
+        "members": [
+          {
+            "priority": 1,
+            "weight": 7,
+            "enabled": false,
+            "model_id": "tf-acc-primary",
+            "provider_reference_matches": true
+          },
+          {
+            "priority": 2,
+            "weight": 1,
+            "enabled": false,
+            "model_id": "tf-acc-fallback",
+            "provider_reference_matches": true
+          }
+        ]
+      }
+    ],
+    "cleanup_candidate_ids": [
+      "290367f1-e73c-4b76-a9b8-155f7b837d62"
+    ]
+  },
+  "ui_verification": {
+    "create": {
+      "list": "synthetic pool visible with 2 members; Every member off",
+      "dialog": "tf-acc-primary in Order 1 and tf-acc-fallback in Order 2; both switches off; Save changes disabled",
+      "screenshots": [
+        "model-pool-proof-ui-create.jpg",
+        "model-pool-proof-ui-create-members.jpg"
+      ]
+    },
+    "update": {
+      "name": "tf-pool-proof-d0bc559e3688-updated",
+      "visible_members": 2,
+      "status": "Every member off",
+      "screenshot": "model-pool-proof-ui-update.jpg",
+      "weight_verification": "API snapshot confirms weight 7; UI hides weight for single-member priority groups"
+    },
+    "destroy": {
+      "filtered_pool_absent": true,
+      "visible_text": "No model pools match your filters",
+      "screenshot": "model-pool-proof-ui-cleanup.jpg"
+    }
+  },
+  "unrelated_pools": {
+    "preexisting_pool_count": 2,
+    "remaining_pool_count": 2,
+    "all_preexisting_settings_unchanged": true,
+    "only_preexisting_pools_remain": true
+  },
+  "temporary_management_key_cleanup": {
+    "status": "revoked",
+    "get_after_revoke_http_status": 404,
+    "absent_from_account_key_list": true,
+    "revoked_key_http_status": 401,
+    "transient_secret_and_cookie_files_removed": true,
+    "note": "Temporary local management key separately authorized; shortest supported expiry was one day; revoked immediately after proof"
+  },
+  "service_cleanup": {
+    "task_frontend_stopped": true,
+    "existing_backend_healthy": true,
+    "unrelated_services_preserved": true
+  },
+  "limits": [
+    "No inference requests, load distribution measurement or live failover test",
+    "No new provider keys or credential grants; existing shared loopback fixture provider key reused",
+    "Live Crossplane reconciliation not run; no installed Crossplane in the existing cluster",
+    "Not the full native acceptance suite or release compatibility matrix"
+  ],
+  "reproduce": "docs/guides/model-pool-local-acceptance.md",
+  "evidence_storage": "Private local workspace retains Terraform logs/state and actual create/update/destroy UI screenshots; screenshots are not uploaded by this change"
+}

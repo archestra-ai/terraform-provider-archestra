@@ -30,9 +30,14 @@ OpenAPI must accept `name` and `members` without writable `virtualApiKeyIds`.
 Create/update refuse the older grant-replacing contract before mutation. Pool writes manage name and members. Virtual-key grants are read-only on
 the pool and belong to credential configuration in the current API. The global
 version floor does not establish this capability. Pool lifecycle and Terraform
-planning are covered by controlled HTTP fixtures; deployed-API acceptance and
-Crossplane reconciliation have not been run for this resource. The older
-31-family reconciliation evidence below does not cover ModelPool.
+planning are covered by controlled HTTP fixtures. A real native lifecycle against
+an existing local development API reporting `1.5.0-rc.11` passed create, read,
+update, import, drift repair and destroy, with actual UI checks and verified cleanup
+([record](audit/model-pool-local-native-rc11.json),
+[procedure](docs/guides/model-pool-local-acceptance.md)). This is one recorded
+local build, not a release compatibility sweep. Live Crossplane reconciliation
+has not been run for ModelPool. The older 31-family reconciliation evidence
+below does not cover it.
 
 `platform-version.txt` at the provider release tag names the tested release.
 Acceptance CI runs the native suite against that release and records the image
