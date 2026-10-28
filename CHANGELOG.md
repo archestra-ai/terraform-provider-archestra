@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.0.4...v3.1.0) (2026-10-28)
+
+
+### Features
+
+* manage model pools with Terraform and Crossplane ([#212](https://github.com/archestra-ai/terraform-provider-archestra/issues/212)) ([7541220](https://github.com/archestra-ai/terraform-provider-archestra/commit/75412204125b5f212f51d82a788431d22b337f71))
+
 ## [3.0.4](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.0.3...v3.0.4) (2026-10-28)
 
 
