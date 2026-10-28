@@ -100,7 +100,7 @@ def prepare(args):
     preflight = public_preflight(base)
     workspace = args.workspace.resolve()
     workspace.mkdir(mode=0o700, parents=False, exist_ok=False)
-    name = 'tf-acc-t2089-' + uuid.uuid4().hex[:12]
+    name = 'tf-pool-proof-' + uuid.uuid4().hex[:12]
     manifest = {'api_url': base, 'provider_directory': str(binary.parent),
                 'provider_sha256': digest(binary), 'terraform': str(args.terraform.resolve()),
                 'name': name, 'preflight': preflight}
@@ -188,6 +188,26 @@ def execute(args):
         write_json(evidence, record)
         return result.stdout
 
+    def snapshot(stage, pool, expected_name, expected_weight):
+        if pool['name'] != expected_name:
+            raise RuntimeError(stage + ' did not persist the expected pool name')
+        rows = []
+        for index, model in enumerate(MODELS):
+            member = next(m for m in pool['members'] if m['modelId'] == model)
+            expected = {'priority': index + 1, 'weight': expected_weight if index == 0 else 1, 'enabled': False}
+            if any(member.get(field) != value for field, value in expected.items()):
+                raise RuntimeError(stage + ' did not persist the expected member settings')
+            rows.append(dict(expected, model_id=model, provider_reference_matches=member['providerApiKeyId'] == provider_id))
+        record.setdefault('api_snapshots', []).append({'stage': stage, 'pool_id': pool['id'], 'name': pool['name'], 'members': rows})
+        write_json(evidence, record)
+        if getattr(args, 'ui_checkpoints', False) and stage in ('create', 'update'):
+            record['ui_checkpoint'] = {'stage': stage, 'pool_id': pool['id'], 'name': pool['name']}
+            write_json(evidence, record)
+            print(json.dumps({'ui_checkpoint': record['ui_checkpoint'], 'workspace': str(workspace)}), flush=True)
+            input('Capture the actual local UI state, then send Enter to continue: ')
+            record.pop('ui_checkpoint', None)
+            write_json(evidence, record)
+
     def remote():
         matches = [p for p in pools() if p.get('id') == identifier]
         if len(matches) != 1 or not owned(matches[0]):
@@ -204,14 +224,14 @@ def execute(args):
         run('create', 'apply', '-auto-approve', '-input=false', '-no-color')
         identifier = str(uuid.UUID(run('id', 'output', '-raw', 'pool_id').strip()))
         record['pool_id'] = identifier
-        remote()
+        created_pool = remote()
         creation_uncertain = False
+        snapshot('create', created_pool, manifest['name'], 3)
         run('read-noop', 'plan', '-detailed-exitcode', '-input=false', '-no-color')
         updated_name = manifest['name'] + '-updated'
         write_json(workspace / 'main.tf.json', configuration(updated_name, 7))
         run('update', 'apply', '-auto-approve', '-input=false', '-no-color')
-        if remote()['name'] != updated_name:
-            raise RuntimeError('Update did not persist the requested name')
+        snapshot('update', remote(), updated_name, 7)
         run('forget-local-binding', 'state', 'rm', ADDRESS)
         run('import', 'import', '-input=false', '-no-color', ADDRESS, identifier)
         run('import-noop', 'plan', '-detailed-exitcode', '-input=false', '-no-color')
@@ -228,6 +248,7 @@ def execute(args):
         if len(changes) != 1 or changes[0]['address'] != ADDRESS or changes[0]['change']['actions'] != ['update']:
             raise RuntimeError('Drift plan would mutate something other than the one owned pool in place')
         run('repair-drift', 'apply', '-input=false', '-no-color', 'drift.tfplan')
+        snapshot('drift-repaired', remote(), updated_name, 7)
         run('final-noop', 'plan', '-detailed-exitcode', '-input=false', '-no-color')
         record['outcome'] = 'passed'
     except Exception as error:
@@ -276,6 +297,7 @@ def main():
     run.add_argument('--workspace', type=Path, required=True)
     run.add_argument('--key-file', type=Path, required=True)
     run.add_argument('--provider-key-id', required=True)
+    run.add_argument('--ui-checkpoints', action='store_true', help='Pause after create/update for actual local UI evidence before cleanup')
     args = parser.parse_args()
     os.umask(0o077)
     if args.mode == 'prepare':

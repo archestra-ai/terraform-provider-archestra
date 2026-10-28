@@ -12,6 +12,17 @@ this checkout and use Terraform's `dev_overrides` through a private CLI config.
 The harness uses a new local state directory and one uniquely named pool. All
 members remain disabled and use dummy model names; it sends no inference requests.
 
+Terraform manages the same pool records as the application UI. The provider
+calls the existing pool CRUD API; request routing and failover stay in Archestra.
+
+```mermaid
+flowchart LR
+    Config[Terraform configuration] --> Provider[Local provider binary]
+    Provider --> API[Existing Archestra API]
+    API --> DB[Persisted pool records]
+    UI[Application UI] --> API
+```
+
 ## Prepare without credentials
 
 Use an existing owner-confirmed local API that exposes pool CRUD and has model
@@ -24,9 +35,9 @@ GOMAXPROCS=1 GOFLAGS=-p=1 go build -o terraform-provider-archestra .
 python3 scripts/integration/model-pool-lifecycle.py prepare \
   --api-url http://127.0.0.1:9000 \
   --provider-directory "$PWD" \
-  --workspace /tmp/t2089-pool-proof
-TF_CLI_CONFIG_FILE=/tmp/t2089-pool-proof/terraform.rc \
-  terraform -chdir=/tmp/t2089-pool-proof validate
+  --workspace /tmp/model-pool-proof
+TF_CLI_CONFIG_FILE=/tmp/model-pool-proof/terraform.rc \
+  terraform -chdir=/tmp/model-pool-proof validate
 ```
 
 Review `main.tf.json`, `terraform.rc`, `manifest.json`, and `evidence.json`.
@@ -47,18 +58,23 @@ redirects in its direct API probes, reused state, and extra Terraform files.
 
 ```shell
 python3 scripts/integration/model-pool-lifecycle.py run \
-  --workspace /tmp/t2089-pool-proof \
+  --workspace /tmp/model-pool-proof \
   --key-file /path/to/existing-test-api-key \
   --provider-key-id 22222222-2222-4222-8222-222222222222
 ```
 
 Replace the path and UUID with the approved existing test inputs. The key file is
 read only at execution; its value is passed through `ARCHESTRA_API_KEY` and is
-not included in HCL or evidence. This command performs the following operations:
+not included in HCL or evidence. Add `--ui-checkpoints` when an operator is ready to capture the actual local UI.
+The harness pauses after create/update and records the pool UUID and name before
+continuing. The harness waits until the operator presses Enter; it does not
+verify UI availability or capture screenshots itself.
+This command performs the following operations:
 
 1. Confirm the generated pool name is unused through an authenticated list.
 2. Create one pool with two disabled members referencing the same fixture key.
 3. Verify a no-change refresh, update its name/weight, and retain its UUID.
+   Record fresh API snapshots of the name, priorities, weights and disabled flags.
 4. Remove only the local state binding, import that UUID, and verify a no-change plan.
 5. Change only that pool through its API, require a single in-place Terraform
    update in the drift plan, apply the saved plan, and verify convergence.

@@ -63,9 +63,9 @@ class LifecycleTests(unittest.TestCase):
         self.key_file = self.root / 'api-key'
         self.key_file.write_text('arch_synthetic_test_credential')
 
-    def execute(self):
+    def execute(self, ui=False):
         with contextlib.redirect_stdout(io.StringIO()), patch.object(probe, 'terraform_process', side_effect=self.terraform):
-            return probe.execute(argparse.Namespace(workspace=self.workspace, key_file=self.key_file, provider_key_id=KEY_ID))
+            return probe.execute(argparse.Namespace(workspace=self.workspace, key_file=self.key_file, provider_key_id=KEY_ID, ui_checkpoints=ui))
 
     def terraform(self, command, **kwargs):
         self.commands.append(command[1:])
@@ -122,6 +122,16 @@ class LifecycleTests(unittest.TestCase):
         self.assertIn('repair-drift', evidence['steps'])
         self.assertTrue(any(c[:2] == ['state', 'rm'] for c in self.commands))
         self.assertNotIn('arch_synthetic_test_credential', (self.workspace / 'evidence.json').read_text())
+
+    def test_ui_checkpoints_preserve_the_observable_pool_until_resume(self):
+        self.prepare()
+        with patch('builtins.input',return_value='') as pause:
+            self.assertEqual(self.execute(ui=True),0)
+        self.assertEqual(pause.call_count,2)
+        record=json.loads((self.workspace/'evidence.json').read_text())
+        self.assertNotIn('ui_checkpoint',record)
+        self.assertEqual([s['stage'] for s in record['api_snapshots']],['create','update','drift-repaired'])
+        self.assertEqual(record['api_snapshots'][1]['members'][0]['weight'],7)
 
     def test_failed_create_recovers_exact_owned_pool_without_state(self):
         self.prepare()
