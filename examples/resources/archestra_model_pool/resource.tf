@@ -1,6 +1,6 @@
 # Requires Archestra 1.5.0-rc.12's credential-owned grant API and
 # ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true (or ARCHESTRA_BETA=true).
-# Use a provider release containing this resource; pin it in required_providers
+# Use a provider release containing this resource; pin its version in your Terraform configuration
 # and commit .terraform.lock.hcl. See the model-pools guide for setup and import.
 # These are existing shared provider-key UUIDs, also available as
 # archestra_model_provider.<name>.id. Personal keys cannot be pooled.
