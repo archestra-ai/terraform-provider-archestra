@@ -3,12 +3,12 @@
 page_title: "archestra_limit Resource - archestra"
 subcategory: ""
 description: |-
-  Usage limit on tokens or call counts, scoped per organization, team, or agent. See limit_type below for the three modes.
+  Usage limit on costs, requests, tokens or MCP call counts.
 ---
 
 # archestra_limit (Resource)
 
-Usage limit on tokens or call counts, scoped per organization, team, or agent. See `limit_type` below for the three modes.
+Usage limit on costs, requests, tokens or MCP call counts.
 
 ## Example Usage
 
@@ -69,22 +69,24 @@ resource "archestra_limit" "claude_family_budget" {
 ### Required
 
 - `entity_id` (String) The entity ID this limit applies to
-- `entity_type` (String) Entity type: organization, team, or agent
-- `limit_type` (String) Limit type: 'token_cost' (requires model), 'tool_calls' (requires mcp_server_name and tool_name), or 'mcp_server_calls' (requires mcp_server_name)
-- `limit_value` (Number) Limit threshold value. Must be at least 1.
+- `entity_type` (String) Entity type: organization, team, agent, user, virtual_key, environment or llm_oauth_client
+- `limit_type` (String) Limit type: token_cost, requests, tokens, requests_per_minute, tokens_per_minute, tool_calls or mcp_server_calls.
+- `limit_value` (Number) Limit threshold value; zero is allowed for non-minute cost budgets.
 
 ### Optional
 
 - `cleanup_interval` (String) Interval used to reset limit usage.
 - `labels` (Attributes Set) Resource labels. (see [below for nested schema](#nestedatt--labels))
 - `mcp_server_name` (String) Required when limit_type is 'mcp_server_calls' or 'tool_calls'. Name of the MCP server.
-- `model` (List of String) Required when limit_type is 'token_cost'. List of model names this limit applies to.
+- `model` (List of String) Model names to restrict; omitted applies to all models for cost and throughput limits.
+- `reason` (String) Administrator explanation for this limit (up to 500 characters).
 - `tool_name` (String) Required when limit_type is 'tool_calls'. Name of the tool this limit applies to.
 
 ### Read-Only
 
 - `id` (String) Limit identifier
 - `model_usage` (Attributes List) Current per-model usage counters. (see [below for nested schema](#nestedatt--model_usage))
+- `throughput_usage` (Attributes) Recorded throughput usage and allowance recovery time. (see [below for nested schema](#nestedatt--throughput_usage))
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`
@@ -104,6 +106,15 @@ Read-Only:
 - `model` (String)
 - `tokens_in` (Number)
 - `tokens_out` (Number)
+
+
+<a id="nestedatt--throughput_usage"></a>
+### Nested Schema for `throughput_usage`
+
+Read-Only:
+
+- `current_usage` (Number)
+- `resets_at` (String)
 
 ## Import
 

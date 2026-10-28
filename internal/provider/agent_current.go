@@ -205,6 +205,7 @@ func flattenCurrentAgentFields(data *AgentResourceModel, body []byte, diags *dia
 }
 func currentGatewayAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
+		"github_actions_access":         githubActionsAccessSchema(),
 		"author_email":                  schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported author email."},
 		"created_by":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
 		"created_by_service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported created by service account id."},
@@ -217,6 +218,7 @@ func currentGatewayAttributes() map[string]schema.Attribute {
 	}
 }
 func flattenCurrentGatewayFields(data *McpGatewayResourceModel, body []byte, diags *diag.Diagnostics) {
+	data.GithubActionsAccess = githubActionsAccessFromResponse(body, diags)
 	var values map[string]json.RawMessage
 	if err := json.Unmarshal(body, &values); err != nil {
 		diags.AddError("Invalid Agent Response", "Unable to decode agent metadata.")

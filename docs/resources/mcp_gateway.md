@@ -74,6 +74,7 @@ resource "archestra_mcp_gateway" "engineering" {
 - `excluded_connector_ids` (Set of String) Knowledge connectors excluded from automatic knowledge access; omit to preserve or set an empty set to clear.
 - `excluded_subagent_ids` (Set of String) Local agents excluded from automatic subagent access; omit to preserve or set an empty set to clear.
 - `excluded_tool_ids` (Set of String) Tools excluded from automatic tool access; omit to preserve or set an empty set to clear.
+- `github_actions_access` (Attributes) GitHub Actions token exchange access for this gateway. (see [below for nested schema](#nestedatt--github_actions_access))
 - `icon` (String) Emoji or base64 image data URL
 - `identity_provider_id` (String) Identity provider used to validate inbound JWTs. Reference an `archestra_identity_provider`. Omit to disable JWT auth.
 - `is_default` (Boolean) Whether this is the default MCP gateway
@@ -97,6 +98,16 @@ resource "archestra_mcp_gateway" "engineering" {
 - `id` (String) MCP gateway identifier
 - `last_used_at` (String) Server-reported last used at.
 - `latest_version` (Number) Server-reported latest version.
+
+<a id="nestedatt--github_actions_access"></a>
+### Nested Schema for `github_actions_access`
+
+Required:
+
+- `github_app_credential_key` (String) Credential key of an accessible GitHub App.
+- `repositories` (List of String) Allowed owner/repository names.
+- `workflows` (List of String) Trusted workflow references as owner/repo/.github/workflows/file.yml@refs/heads/branch, refs/tags/tag or a full commit SHA.
+
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

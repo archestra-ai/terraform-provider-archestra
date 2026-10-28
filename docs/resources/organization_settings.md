@@ -182,6 +182,7 @@ resource "archestra_organization_settings" "main" {
 - `onboarding_wizard` (String) JSON configuration for onboarding wizard.
 - `online_mcp_catalog_enabled` (Boolean) Whether the online MCP catalog is available.
 - `online_skill_catalog_enabled` (Boolean) Whether the online skill catalog is available.
+- `playwright_mcp_enabled` (Boolean) Whether the built-in Playwright MCP browser is enabled (administrator only).
 - `popular_agent_overrides` (String) JSON configuration for popular agent overrides.
 - `require_two_factor` (Boolean) Whether organization members must use two-factor authentication.
 - `reranker_chat_api_key_id` (String) API key ID for the reranker model

@@ -34,6 +34,7 @@ type McpGatewayResource struct {
 // gateway exposes a unified MCP endpoint backed by tool installations and
 // optional knowledge sources.
 type McpGatewayResourceModel struct {
+	GithubActionsAccess  types.Object `tfsdk:"github_actions_access"`
 	SubagentIDs          types.Set    `tfsdk:"subagent_ids"`
 	RemoteAgentIDs       types.Set    `tfsdk:"remote_agent_ids"`
 	ExcludedSubagentIDs  types.Set    `tfsdk:"excluded_subagent_ids"`
@@ -166,6 +167,9 @@ func (r *McpGatewayResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 	patch["agentType"] = r.apiAgentType()
+	// The platform accepts GitHub Actions access only on an existing gateway.
+	githubAccess, hasGithubAccess := patch["githubActionsAccess"]
+	delete(patch, "githubActionsAccess")
 	LogPatch(ctx, "archestra_"+r.resourceSuffix()+" Create", patch, mcpGatewayAttrSpec)
 
 	body, err := json.Marshal(patch)
@@ -199,6 +203,12 @@ func (r *McpGatewayResource) Create(ctx context.Context, req resource.CreateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &partial)...)
 	if resp.Diagnostics.HasError() {
 		return
+	}
+	if hasGithubAccess {
+		r.writeGithubActionsAccess(ctx, &data, githubAccess, &resp.Diagnostics)
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 	r.writeRelationships(ctx, &data, &McpGatewayResourceModel{}, req.Config, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
@@ -437,6 +447,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 // columns (knowledge_base_ids, connector_ids, passthrough_headers) which are
 // atomic on the wire (Kind: List).
 var mcpGatewayAttrSpec = append(gatewayRelationshipAttrSpecs(), []AttrSpec{
+	githubActionsAccessAttrSpec,
 	initialGrantsAttrSpec,
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},
