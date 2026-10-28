@@ -1,15 +1,5 @@
-# HashiCorp Vault in dev mode for BYOS acceptance tests.
-#
-# Required by tests behind ARCHESTRA_READONLY_VAULT_ENABLED=true (the
-# `archestra_model_provider` BYOS suite and the
-# `TestAccMcpRegistryCatalogItemResourceWithVaultRefs` catalog test).
-#
-# WARNING: Dev mode disables auth and persists nothing — DO NOT use this
-# manifest outside ephemeral test clusters.
-#
-# Applied by scripts/bootstrap-vault.sh, which also seeds
-# `secret/data/test/ollama` and restarts the Archestra backend so it picks up
-# the now-reachable Vault on startup.
+# HashiCorp Vault in dev mode for managed read/write storage in ephemeral tests.
+# Do not apply this manifest outside disposable test clusters.
 apiVersion: apps/v1
 kind: Deployment
 metadata:

@@ -74,7 +74,7 @@ jobs:
             scopes: namespaced
           - shard: catalog
             mcp: true
-            cases: catalog tools limit llm credential sharing-defaults
+            cases: catalog tools limit llm credential sharing-defaults model-pools
           - shard: organization
             mcp: false
             cases: organization organization-defaults
@@ -151,7 +151,7 @@ jobs:
           kubeconfig=$(mktemp)
           trap 'rm -f "$kubeconfig"' EXIT
           kind get kubeconfig --name archestra-ci-cluster > "$kubeconfig"
-          image="europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/mcp-server-base:${ARCHESTRA_VERSION}"
+          image=$(python3 scripts/mcp-server-base-image.py "$ARCHESTRA_VERSION")
           fixture_images=$(kubectl --kubeconfig="$kubeconfig" create --dry-run=client -f scripts/k8s/provider-mcp-mock.yaml -o jsonpath='{..image}')
           read -ra images <<< "$image $fixture_images"
           for node in $(kind get nodes --name archestra-ci-cluster); do
@@ -184,7 +184,7 @@ jobs:
           read -ra scopes <<< "$SCOPES"
           python3 scripts/ci_crossplane_tests.py --cases "${groups[@]}" --scopes "${scopes[@]}" --jobs 4 \
             --evidence "$RUNNER_TEMP/crossplane-lifecycle-$SHARD.json" -- \
-            --api-url "$ARCHESTRA_BASE_URL" --key-file "$work/api-key" --readonly-vault \
+            --api-url "$ARCHESTRA_BASE_URL" --key-file "$work/api-key" \
             --llm-base-url "$ARCHESTRA_TEST_LLM_BASE_URL" \
             --mcp-url http://provider-mcp-mock.default.svc.cluster.local:19006/mcp \
             --kubeconfig "$work/kubeconfig" --provider-config default \

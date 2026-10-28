@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"strings"
 	"testing"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
@@ -28,10 +27,8 @@ name=%q
 data "archestra_team" "lookup" {id=archestra_team.test.id}
 `
 	}
-	initial := config(`external_group_ids=["engineering","support"]
-vault_folder="secret/data/test/engineering"`)
-	updated := config(`external_group_ids=["operations"]
-vault_folder="secret/data/test/operations"`)
+	initial := config(`external_group_ids=["engineering","support"]`)
+	updated := config(`external_group_ids=["operations"]`)
 	api := func() *client.ClientWithResponses {
 		c, err := client.NewClientWithResponses(os.Getenv("ARCHESTRA_BASE_URL"), client.WithRequestEditorFn(func(_ context.Context, r *http.Request) error {
 			r.Header.Set("Authorization", os.Getenv("ARCHESTRA_API_KEY"))
@@ -48,14 +45,14 @@ vault_folder="secret/data/test/operations"`)
 		}
 		return nil
 	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: initial, Check: resource.ComposeTestCheckFunc(resource.TestCheckResourceAttr("archestra_team.test", "external_group_ids.#", "2"), resource.TestCheckResourceAttrPair("data.archestra_team.lookup", "external_group_ids.#", "archestra_team.test", "external_group_ids.#"), resource.TestCheckResourceAttrPair("data.archestra_team.lookup", "vault_folder", "archestra_team.test", "vault_folder"), resource.TestCheckResourceAttr("archestra_team.test", "vault_folder", "secret/data/test/engineering"), func(s *terraform.State) error {
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+		{Config: initial, Check: resource.ComposeTestCheckFunc(resource.TestCheckResourceAttr("archestra_team.test", "external_group_ids.#", "2"), resource.TestCheckResourceAttrPair("data.archestra_team.lookup", "external_group_ids.#", "archestra_team.test", "external_group_ids.#"), func(s *terraform.State) error {
 			id = s.RootModule().Resources["archestra_team.test"].Primary.ID
 			return nil
 		})},
 		{ResourceName: "archestra_team.test", ImportState: true, ImportStateVerify: true},
 		{Config: initial, PlanOnly: true},
-		{Config: updated, Check: resource.ComposeTestCheckFunc(same, resource.TestCheckResourceAttr("archestra_team.test", "external_group_ids.#", "1"), resource.TestCheckResourceAttr("archestra_team.test", "vault_folder", "secret/data/test/operations"))},
+		{Config: updated, Check: resource.ComposeTestCheckFunc(same, resource.TestCheckResourceAttr("archestra_team.test", "external_group_ids.#", "1"))},
 		{Config: updated, PlanOnly: true},
 		{PreConfig: func() {
 			c := api()
@@ -67,29 +64,19 @@ vault_folder="secret/data/test/operations"`)
 			if err != nil || removed.StatusCode() != 200 {
 				t.Fatal("modify owned SSO mapping", err)
 			}
-			folder, err := c.SetTeamVaultFolderWithResponse(t.Context(), id, client.SetTeamVaultFolderJSONRequestBody{VaultPath: "secret/data/test/drift"})
-			if err != nil || folder.JSON200 == nil {
-				t.Fatal("modify owned Vault mapping", err)
-			}
 		}, Config: updated, PlanOnly: true, ExpectNonEmptyPlan: true},
 		{Config: updated, Check: same},
-		{Config: config(""), Check: resource.ComposeTestCheckFunc(same, resource.TestCheckResourceAttr("archestra_team.test", "external_group_ids.#", "1"), resource.TestCheckResourceAttr("archestra_team.test", "vault_folder", "secret/data/test/operations"))},
-		{Config: config(`external_group_ids=[]
-vault_folder=""`), Check: resource.ComposeTestCheckFunc(same, resource.TestCheckResourceAttr("archestra_team.test", "external_group_ids.#", "0"), resource.TestCheckResourceAttr("archestra_team.test", "vault_folder", ""))},
-		{Config: config(`external_group_ids=[]
-vault_folder=""`), PlanOnly: true},
+		{Config: config(""), Check: resource.ComposeTestCheckFunc(same, resource.TestCheckResourceAttr("archestra_team.test", "external_group_ids.#", "1"))},
+		{Config: config(`external_group_ids=[]`), Check: resource.ComposeTestCheckFunc(same, resource.TestCheckResourceAttr("archestra_team.test", "external_group_ids.#", "0"))},
+		{Config: config(`external_group_ids=[]`), PlanOnly: true},
 	}})
 }
 
 func TestTeamBindingsRespectLicensedReadAccess(t *testing.T) {
-	for _, managed := range []string{"", "groups", "vault"} {
+	for _, managed := range []string{"", "groups"} {
 		t.Run(managed, func(t *testing.T) {
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				w.Header().Set("Content-Type", "application/json")
-				if managed == "vault" && strings.HasSuffix(r.URL.Path, "/external-groups") {
-					fmt.Fprint(w, `[]`)
-					return
-				}
 				w.WriteHeader(http.StatusForbidden)
 				fmt.Fprint(w, `{"error":{"message":"Not available","type":"forbidden"}}`)
 			}))
@@ -98,15 +85,12 @@ func TestTeamBindingsRespectLicensedReadAccess(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			data := TeamResourceModel{ID: types.StringValue("team-a"), ExternalGroupIDs: types.SetNull(types.StringType), VaultFolder: types.StringNull()}
+			data := TeamResourceModel{ID: types.StringValue("team-a"), ExternalGroupIDs: types.SetNull(types.StringType)}
 			var d diag.Diagnostics
 			if managed == "groups" {
 				data.ExternalGroupIDs = agentSet(t.Context(), []string{"existing"}, &d)
 			}
-			if managed == "vault" {
-				data.VaultFolder = types.StringValue("secret/data/existing")
-			}
-			previousGroups, previousFolder := data.ExternalGroupIDs, data.VaultFolder
+			previousGroups := data.ExternalGroupIDs
 			(&TeamResource{client: c}).readBindings(t.Context(), &data, &d)
 			if d.HasError() != (managed != "") {
 				t.Fatalf("managed=%s diagnostics=%v", managed, d)
@@ -114,10 +98,7 @@ func TestTeamBindingsRespectLicensedReadAccess(t *testing.T) {
 			if managed == "groups" && !data.ExternalGroupIDs.Equal(previousGroups) {
 				t.Fatal("forbidden read replaced managed groups")
 			}
-			if managed == "vault" && !data.VaultFolder.Equal(previousFolder) {
-				t.Fatal("forbidden read replaced managed Vault path")
-			}
-			if managed == "" && (!data.ExternalGroupIDs.IsNull() || !data.VaultFolder.IsNull()) {
+			if managed == "" && !data.ExternalGroupIDs.IsNull() {
 				t.Fatal("unavailable unmanaged settings were reported as empty")
 			}
 		})
@@ -166,7 +147,7 @@ func TestTeamBindingReadErrorsRetainInputs(t *testing.T) {
 			}
 			var d diag.Diagnostics
 			before := agentSet(t.Context(), []string{"existing"}, &d)
-			data := TeamResourceModel{ID: types.StringValue("team-a"), ExternalGroupIDs: before, VaultFolder: types.StringValue("secret/data/team")}
+			data := TeamResourceModel{ID: types.StringValue("team-a"), ExternalGroupIDs: before}
 			(&TeamResource{client: c}).readBindings(t.Context(), &data, &d)
 			if !d.HasError() || !data.ExternalGroupIDs.Equal(before) || data.ID.ValueString() != "team-a" {
 				t.Fatal("failed child read changed the parent or its mappings", d)

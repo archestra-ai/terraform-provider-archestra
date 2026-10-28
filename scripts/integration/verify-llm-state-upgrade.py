@@ -17,7 +17,7 @@ tf = str(options.terraform.resolve())
 key = options.api_key_file.read_text().strip()
 identifier = None
 try:
-    request = urllib.request.Request(options.base_url + '/api/llm-provider-api-keys', data=json.dumps({'name': 'v2-v3-state-probe', 'provider': 'ollama', 'vaultSecretPath': 'secret/data/test/ollama', 'vaultSecretKey': 'api_key', 'isPrimary': False}).encode(), headers={'Authorization': key, 'Content-Type': 'application/json'})
+    request = urllib.request.Request(options.base_url + '/api/llm-provider-api-keys', data=json.dumps({'name': 'v2-v3-state-probe', 'provider': 'ollama', 'apiKey': 'synthetic-local-only', 'isPrimary': False}).encode(), headers={'Authorization': key, 'Content-Type': 'application/json'})
     if (probe / 'fixture-id').exists():
         identifier = (probe / 'fixture-id').read_text()
     else:
@@ -52,7 +52,7 @@ try:
     run('v3', 'apply', '-auto-approve', 'upgrade.tfplan')
     new = json.loads((probe / 'terraform.tfstate').read_text())
     attrs = new['resources'][0]['instances'][0]['attributes']
-    assert new['resources'][0]['instances'][0]['schema_version'] == 1
+    assert new['resources'][0]['instances'][0]['schema_version'] == 2
     assert attrs['id'] == identifier and attrs['is_primary'] is False and ('is_organization_default' not in attrs)
     assert run('v3', 'plan', '-detailed-exitcode') == 0
     run('v3', 'destroy', '-auto-approve')
@@ -62,7 +62,7 @@ try:
         raise AssertionError('Fixture not deleted')
     except urllib.error.HTTPError as e:
         assert e.code == 404
-    options.evidence.write_text(json.dumps({'old_schema': 0, 'new_schema': 1, 'id_preserved': True, 'renamed_flag_preserved': True, 'upgrade_plan_exit_code': 0, 'second_plan_exit_code': 0, 'destroy_read_status': 404}, indent=2) + '\n')
+    options.evidence.write_text(json.dumps({'old_schema': 0, 'new_schema': 2, 'id_preserved': True, 'renamed_flag_preserved': True, 'upgrade_plan_exit_code': 0, 'second_plan_exit_code': 0, 'destroy_read_status': 404}, indent=2) + '\n')
 finally:
     if identifier:
         cleanup = urllib.request.Request(options.base_url + '/api/llm-provider-api-keys/' + identifier, headers={'Authorization': key}, method='DELETE')

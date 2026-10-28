@@ -1,5 +1,5 @@
 {
-  "crossplane_configured_count": 30,
+  "crossplane_configured_count": 31,
   "evidence_level": "static inventory; no runtime coverage implied",
   "format_version": 1,
   "resources": [
@@ -38,6 +38,7 @@
             "connectorIds": "connector_ids",
             "description": "description",
             "environmentId": "environment_id",
+            "fastModelId": "fast_model_id",
             "icon": "icon",
             "incomingEmailAllowedDomain": "incoming_email_allowed_domain",
             "incomingEmailEnabled": "incoming_email_enabled",
@@ -50,8 +51,10 @@
             "llmModel": "llm_model",
             "missingCredentialBehavior": "missing_credential_behavior",
             "modelId": "model_id",
+            "modelPoolId": "model_pool_id",
             "name": "name",
             "runtime": "runtime",
+            "smartModelId": "smart_model_id",
             "suggestedPrompts": "suggested_prompts",
             "systemPrompt": "system_prompt",
             "toolExposureMode": "tool_exposure_mode"
@@ -70,6 +73,7 @@
             "deletedAt",
             "description",
             "environmentId",
+            "fastModelId",
             "icon",
             "identityProviderId",
             "incomingEmailAllowedDomain",
@@ -84,11 +88,13 @@
             "llmModel",
             "missingCredentialBehavior",
             "modelId",
+            "modelPoolId",
             "name",
             "organizationId",
             "passthroughHeaders",
             "runtime",
             "scope",
+            "smartModelId",
             "suggestedPrompts",
             "systemPrompt",
             "teams",
@@ -263,6 +269,7 @@
           "query_parameters": [
             "agentId",
             "excludeArchestraTools",
+            "includeToolDetails",
             "limit",
             "mcpServerOwnerId",
             "offset",
@@ -381,6 +388,7 @@
             "connectorIds": "connector_ids",
             "description": "description",
             "environmentId": "environment_id",
+            "fastModelId": "fast_model_id",
             "icon": "icon",
             "incomingEmailAllowedDomain": "incoming_email_allowed_domain",
             "incomingEmailEnabled": "incoming_email_enabled",
@@ -392,8 +400,10 @@
             "llmModel": "llm_model",
             "missingCredentialBehavior": "missing_credential_behavior",
             "modelId": "model_id",
+            "modelPoolId": "model_pool_id",
             "name": "name",
             "runtime": "runtime",
+            "smartModelId": "smart_model_id",
             "suggestedPrompts": "suggested_prompts",
             "systemPrompt": "system_prompt",
             "toolExposureMode": "tool_exposure_mode"
@@ -411,6 +421,8 @@
             "deletedAt",
             "description",
             "environmentId",
+            "fastModelId",
+            "githubActionsAccess",
             "icon",
             "identityProviderId",
             "incomingEmailAllowedDomain",
@@ -424,11 +436,13 @@
             "llmModel",
             "missingCredentialBehavior",
             "modelId",
+            "modelPoolId",
             "name",
             "organizationId",
             "passthroughHeaders",
             "runtime",
             "scope",
+            "smartModelId",
             "suggestedPrompts",
             "systemPrompt",
             "teams",
@@ -439,6 +453,7 @@
             "agentType",
             "builtInAgentConfig",
             "deletedAt",
+            "githubActionsAccess",
             "identityProviderId",
             "isPersonalProxy",
             "organizationId",
@@ -604,14 +619,6 @@
         },
         {
           "computed": true,
-          "optional": true,
-          "path": "consider_context_untrusted",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
           "optional": false,
           "path": "created_by",
           "required": false,
@@ -670,6 +677,14 @@
           "computed": true,
           "optional": true,
           "path": "excluded_tool_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "fast_model_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -819,7 +834,7 @@
           "write_only": false
         },
         {
-          "computed": false,
+          "computed": true,
           "optional": true,
           "path": "llm_api_key_id",
           "required": false,
@@ -851,9 +866,17 @@
           "write_only": false
         },
         {
-          "computed": false,
+          "computed": true,
           "optional": true,
           "path": "model_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "model_pool_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -1307,6 +1330,14 @@
           "write_only": false
         },
         {
+          "computed": false,
+          "optional": true,
+          "path": "smart_model_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
           "computed": true,
           "optional": true,
           "path": "subagent_ids",
@@ -1537,6 +1568,495 @@
       "schema_version": 0,
       "source": "internal/provider/resource_api_key.go",
       "terraform_resource": "archestra_api_key"
+    },
+    {
+      "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 0,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "AssignToolToApp",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/apps/{}/tools/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "credentialResolutionMode",
+            "mcpServerId"
+          ],
+          "request_fields_without_declared_mapping": [
+            "credentialResolutionMode",
+            "mcpServerId"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "CreateApp",
+          "declared_request_field_mappings": {
+            "description": "description",
+            "environmentId": "environment_id",
+            "icon": "icon",
+            "initialGrants": "permissions",
+            "labels": "labels",
+            "name": "name",
+            "slug": "slug"
+          },
+          "method": "POST",
+          "path": "/api/apps",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "description",
+            "environmentId",
+            "html",
+            "icon",
+            "initialGrants",
+            "labels",
+            "name",
+            "openInChat",
+            "slug",
+            "uiPermissions"
+          ],
+          "request_fields_without_declared_mapping": [
+            "html",
+            "openInChat",
+            "uiPermissions"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "DeleteApp",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/apps/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "DisableApp",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/apps/{}/disable",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "EnableApp",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/apps/{}/enable",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetApp",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/apps/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAppTools",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/apps/{}/tools",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAppVersion",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/apps/{}/versions/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetResourcePermissions",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/resource-permissions/{}/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "LockApp",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/apps/{}/lock",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UnassignToolFromApp",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/apps/{}/tools/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UnlockApp",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/apps/{}/unlock",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateApp",
+          "declared_request_field_mappings": {
+            "description": "description",
+            "environmentId": "environment_id",
+            "icon": "icon",
+            "labels": "labels",
+            "name": "name",
+            "openInFullscreen": "open_in_fullscreen",
+            "slug": "slug"
+          },
+          "method": "PATCH",
+          "path": "/api/apps/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "baseVersion",
+            "description",
+            "environmentId",
+            "html",
+            "icon",
+            "labels",
+            "name",
+            "openInFullscreen",
+            "slug",
+            "uiPermissions"
+          ],
+          "request_fields_without_declared_mapping": [
+            "baseVersion",
+            "html",
+            "uiPermissions"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateResourcePermissions",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/resource-permissions/{}/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "grants",
+            "revision"
+          ],
+          "request_fields_without_declared_mapping": [
+            "grants",
+            "revision"
+          ],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "backing_server_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "browser_permissions",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "content_version",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "description",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "environment_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "html",
+          "required": false,
+          "sensitive": true,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "icon",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "labels",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.value",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "locked",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "name",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "open_in_fullscreen",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "organization_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "permissions",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "permissions.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "permissions.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "permissions.subject_type",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "slug",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "tools",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "tools.credential_resolution_mode",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "tools.mcp_server_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "tools.tool_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "updated_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "viewer_role",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_app.go",
+      "terraform_resource": "archestra_app"
     },
     {
       "acceptance_execution": "unverified",
@@ -3916,6 +4436,7 @@
             "limitValue": "limit_value",
             "mcpServerName": "mcp_server_name",
             "model": "model",
+            "reason": "reason",
             "toolName": "tool_name"
           },
           "method": "POST",
@@ -3932,6 +4453,7 @@
             "limitValue",
             "mcpServerName",
             "model",
+            "reason",
             "toolName"
           ],
           "request_fields_without_declared_mapping": [
@@ -3973,6 +4495,7 @@
             "limitValue": "limit_value",
             "mcpServerName": "mcp_server_name",
             "model": "model",
+            "reason": "reason",
             "toolName": "tool_name"
           },
           "method": "PATCH",
@@ -3987,6 +4510,7 @@
             "limitValue",
             "mcpServerName",
             "model",
+            "reason",
             "toolName"
           ],
           "request_fields_without_declared_mapping": [
@@ -4127,6 +4651,38 @@
         {
           "computed": false,
           "optional": true,
+          "path": "reason",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "throughput_usage",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "throughput_usage.current_usage",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "throughput_usage.resets_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
           "path": "tool_name",
           "required": false,
           "sensitive": false,
@@ -4199,6 +4755,7 @@
             "deletedAt",
             "description",
             "environmentId",
+            "fastModelId",
             "icon",
             "identityProviderId",
             "incomingEmailAllowedDomain",
@@ -4213,11 +4770,13 @@
             "llmModel",
             "missingCredentialBehavior",
             "modelId",
+            "modelPoolId",
             "name",
             "organizationId",
             "passthroughHeaders",
             "runtime",
             "scope",
+            "smartModelId",
             "suggestedPrompts",
             "systemPrompt",
             "teams",
@@ -4229,6 +4788,7 @@
             "agentType",
             "builtInAgentConfig",
             "deletedAt",
+            "fastModelId",
             "incomingEmailAllowedDomain",
             "incomingEmailEnabled",
             "incomingEmailSecurityMode",
@@ -4236,8 +4796,10 @@
             "llmApiKeyId",
             "llmModel",
             "modelId",
+            "modelPoolId",
             "organizationId",
             "runtime",
+            "smartModelId",
             "suggestedPrompts",
             "systemPrompt"
           ],
@@ -4373,6 +4935,7 @@
           "query_parameters": [
             "agentId",
             "excludeArchestraTools",
+            "includeToolDetails",
             "limit",
             "mcpServerOwnerId",
             "offset",
@@ -4455,6 +5018,7 @@
             "connectorIds": "connector_ids",
             "description": "description",
             "environmentId": "environment_id",
+            "githubActionsAccess": "github_actions_access",
             "icon": "icon",
             "identityProviderId": "identity_provider_id",
             "isDefault": "is_default",
@@ -4478,6 +5042,8 @@
             "deletedAt",
             "description",
             "environmentId",
+            "fastModelId",
+            "githubActionsAccess",
             "icon",
             "identityProviderId",
             "incomingEmailAllowedDomain",
@@ -4491,11 +5057,13 @@
             "llmModel",
             "missingCredentialBehavior",
             "modelId",
+            "modelPoolId",
             "name",
             "organizationId",
             "passthroughHeaders",
             "runtime",
             "scope",
+            "smartModelId",
             "suggestedPrompts",
             "systemPrompt",
             "teams",
@@ -4506,6 +5074,7 @@
             "agentType",
             "builtInAgentConfig",
             "deletedAt",
+            "fastModelId",
             "incomingEmailAllowedDomain",
             "incomingEmailEnabled",
             "incomingEmailSecurityMode",
@@ -4513,8 +5082,10 @@
             "llmApiKeyId",
             "llmModel",
             "modelId",
+            "modelPoolId",
             "organizationId",
             "runtime",
+            "smartModelId",
             "suggestedPrompts",
             "systemPrompt"
           ],
@@ -4656,14 +5227,6 @@
         },
         {
           "computed": true,
-          "optional": true,
-          "path": "consider_context_untrusted",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
           "optional": false,
           "path": "created_by",
           "required": false,
@@ -4723,6 +5286,54 @@
           "optional": true,
           "path": "excluded_tool_ids",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "github_actions_access",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "github_actions_access.act_as",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "github_actions_access.github_app_credential_key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "github_actions_access.repositories",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "github_actions_access.resolve_review_threads",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "github_actions_access.workflows",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },
@@ -4810,6 +5421,14 @@
           "computed": true,
           "optional": true,
           "path": "missing_credential_behavior",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "model_pool_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -4959,7 +5578,7 @@
     },
     {
       "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 18,
+      "acceptance_tests_declared": 17,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
       "endpoints": [
@@ -4987,12 +5606,8 @@
             "labels": "labels",
             "localConfig": "local_config",
             "localConfigSecretId": "local_config_secret_id",
-            "localConfigVaultKey": "local_config_vault_key",
-            "localConfigVaultPath": "local_config_vault_path",
             "multitenant": "multitenant",
             "name": "name",
-            "oauthClientSecretVaultKey": "oauth_client_secret_vault_key",
-            "oauthClientSecretVaultPath": "oauth_client_secret_vault_path",
             "repository": "repository",
             "requiresAuth": "requires_auth",
             "userConfig": "user_config",
@@ -5022,12 +5637,8 @@
             "labels",
             "localConfig",
             "localConfigSecretId",
-            "localConfigVaultKey",
-            "localConfigVaultPath",
             "multitenant",
             "name",
-            "oauthClientSecretVaultKey",
-            "oauthClientSecretVaultPath",
             "oauthConfig",
             "repository",
             "requiresAuth",
@@ -5066,7 +5677,9 @@
           "method": "GET",
           "path": "/api/internal_mcp_catalog/{}",
           "present_in_upstream": true,
-          "query_parameters": [],
+          "query_parameters": [
+            "listedOnly"
+          ],
           "request_fields": [],
           "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
@@ -5105,12 +5718,8 @@
             "labels": "labels",
             "localConfig": "local_config",
             "localConfigSecretId": "local_config_secret_id",
-            "localConfigVaultKey": "local_config_vault_key",
-            "localConfigVaultPath": "local_config_vault_path",
             "multitenant": "multitenant",
             "name": "name",
-            "oauthClientSecretVaultKey": "oauth_client_secret_vault_key",
-            "oauthClientSecretVaultPath": "oauth_client_secret_vault_path",
             "repository": "repository",
             "requiresAuth": "requires_auth",
             "userConfig": "user_config",
@@ -5138,12 +5747,8 @@
             "labels",
             "localConfig",
             "localConfigSecretId",
-            "localConfigVaultKey",
-            "localConfigVaultPath",
             "multitenant",
             "name",
-            "oauthClientSecretVaultKey",
-            "oauthClientSecretVaultPath",
             "oauthConfig",
             "repository",
             "requiresAuth",
@@ -5800,22 +6405,6 @@
           "write_only": false
         },
         {
-          "computed": false,
-          "optional": true,
-          "path": "local_config_vault_key",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config_vault_path",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
           "computed": true,
           "optional": true,
           "path": "multitenant",
@@ -5828,22 +6417,6 @@
           "optional": false,
           "path": "name",
           "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oauth_client_secret_vault_key",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oauth_client_secret_vault_path",
-          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -6186,7 +6759,7 @@
       ],
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 1,
+      "schema_version": 2,
       "source": "internal/provider/resource_mcp_registry_entry.go",
       "terraform_resource": "archestra_mcp_registry_entry"
     },
@@ -6258,7 +6831,6 @@
             "catalogId",
             "createdByServiceAccountId",
             "environmentValues",
-            "isByosVault",
             "localInstallationError",
             "localInstallationStatus",
             "name",
@@ -6276,7 +6848,6 @@
             "catalogId",
             "createdByServiceAccountId",
             "environmentValues",
-            "isByosVault",
             "localInstallationError",
             "localInstallationStatus",
             "name",
@@ -6301,13 +6872,11 @@
           "request_fields": [
             "environmentValues",
             "hibernationMode",
-            "isByosVault",
             "userConfigValues"
           ],
           "request_fields_without_declared_mapping": [
             "environmentValues",
             "hibernationMode",
-            "isByosVault",
             "userConfigValues"
           ],
           "retired_request_fields": []
@@ -6366,14 +6935,6 @@
           "computed": true,
           "optional": false,
           "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "is_byos_vault",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -6517,7 +7078,7 @@
       ],
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": 1,
       "source": "internal/provider/resource_mcp_server.go",
       "terraform_resource": "archestra_mcp_server"
     },
@@ -6536,6 +7097,9 @@
           "present_in_upstream": true,
           "query_parameters": [
             "access",
+            "apiKeyIds",
+            "embedding",
+            "includeAssignments",
             "sharedWith"
           ],
           "request_fields": [],
@@ -6996,9 +7560,7 @@
             "labels": "labels",
             "name": "name",
             "provider": "llm_provider",
-            "shared": "shared",
-            "vaultSecretKey": "vault_secret_key",
-            "vaultSecretPath": "vault_secret_path"
+            "shared": "shared"
           },
           "method": "POST",
           "path": "/api/llm-provider-api-keys",
@@ -7017,9 +7579,7 @@
             "labels",
             "name",
             "provider",
-            "shared",
-            "vaultSecretKey",
-            "vaultSecretPath"
+            "shared"
           ],
           "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
@@ -7073,9 +7633,7 @@
             "inferenceBaseUrl": "inference_base_url",
             "isPrimary": "is_primary",
             "labels": "labels",
-            "name": "name",
-            "vaultSecretKey": "vault_secret_key",
-            "vaultSecretPath": "vault_secret_path"
+            "name": "name"
           },
           "method": "PATCH",
           "path": "/api/llm-provider-api-keys/{}",
@@ -7091,9 +7649,7 @@
             "inferenceBaseUrl",
             "isPrimary",
             "labels",
-            "name",
-            "vaultSecretKey",
-            "vaultSecretPath"
+            "name"
           ],
           "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
@@ -7325,27 +7881,11 @@
           "required": false,
           "sensitive": false,
           "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "vault_secret_key",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "vault_secret_path",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
         }
       ],
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 1,
+      "schema_version": 2,
       "source": "internal/provider/resource_model_provider.go",
       "terraform_resource": "archestra_model_provider"
     },
@@ -7365,6 +7905,7 @@
             "includeFutureProviders": "include_future_providers",
             "initialGrants": "permissions",
             "labels": "labels",
+            "modelPoolIds": "model_pool_ids",
             "name": "name",
             "providerApiKeys": "provider_api_keys",
             "redirectUris": "redirect_uris",
@@ -7383,6 +7924,7 @@
             "includeFutureProviders",
             "initialGrants",
             "labels",
+            "modelPoolIds",
             "name",
             "providerApiKeys",
             "redirectUris",
@@ -7414,6 +7956,7 @@
           "present_in_upstream": true,
           "query_parameters": [
             "access",
+            "applicableTo",
             "capability",
             "grantType",
             "labels",
@@ -7461,6 +8004,7 @@
             "grantType": "grant_type",
             "includeFutureProviders": "include_future_providers",
             "labels": "labels",
+            "modelPoolIds": "model_pool_ids",
             "name": "name",
             "providerApiKeys": "provider_api_keys",
             "redirectUris": "redirect_uris",
@@ -7478,6 +8022,7 @@
             "grantType",
             "includeFutureProviders",
             "labels",
+            "modelPoolIds",
             "name",
             "providerApiKeys",
             "redirectUris",
@@ -7637,6 +8182,14 @@
           "write_only": false
         },
         {
+          "computed": true,
+          "optional": true,
+          "path": "model_pool_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
           "computed": false,
           "optional": false,
           "path": "name",
@@ -7710,14 +8263,6 @@
         },
         {
           "computed": true,
-          "optional": false,
-          "path": "provider_api_keys.provider_api_key_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
           "optional": true,
           "path": "redirect_uris",
           "required": false,
@@ -7765,22 +8310,6 @@
           "write_only": false
         },
         {
-          "computed": true,
-          "optional": false,
-          "path": "spend_cap.current_usage",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "spend_cap.limit_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
           "computed": false,
           "optional": false,
           "path": "spend_cap.limit_value",
@@ -7805,7 +8334,7 @@
     },
     {
       "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 9,
+      "acceptance_tests_declared": 10,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
       "endpoints": [
@@ -7914,8 +8443,10 @@
           "builder": "UpdateAgentSettings",
           "declared_request_field_mappings": {
             "defaultAgentId": "default_agent_id",
+            "defaultFastModelId": "default_fast_model_id",
             "defaultLlmApiKeyId": "default_llm_api_key_id",
-            "defaultModelId": "default_model_id"
+            "defaultModelId": "default_model_id",
+            "defaultSmartModelId": "default_smart_model_id"
           },
           "method": "PATCH",
           "path": "/api/organization/agent-settings",
@@ -7923,8 +8454,10 @@
           "query_parameters": [],
           "request_fields": [
             "defaultAgentId",
+            "defaultFastModelId",
             "defaultLlmApiKeyId",
-            "defaultModelId"
+            "defaultModelId",
+            "defaultSmartModelId"
           ],
           "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
@@ -8169,6 +8702,7 @@
           "api_forbidden_request_fields": [],
           "builder": "UpdateMcpSettings",
           "declared_request_field_mappings": {
+            "defaultPersonalAgentAccessAllTools": "default_personal_agent_access_all_tools",
             "mcpIdleHibernationEnabled": "mcp_idle_hibernation_enabled",
             "onlineMcpCatalogEnabled": "online_mcp_catalog_enabled"
           },
@@ -8177,6 +8711,7 @@
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [
+            "defaultPersonalAgentAccessAllTools",
             "mcpIdleHibernationEnabled",
             "onlineMcpCatalogEnabled"
           ],
@@ -8207,9 +8742,10 @@
           "declared_request_field_mappings": {
             "allowChatFileUploads": "allow_chat_file_uploads",
             "allowToolAutoAssignment": "allow_tool_auto_assignment",
-            "appsHackathonRecorderEnabled": "apps_hackathon_recorder_enabled",
+            "allowUnauthenticatedLlmProxyRequests": "allow_unauthenticated_llm_proxy_requests",
             "newAppsDisabledByDefault": "new_apps_disabled_by_default",
-            "newAppsLockedByDefault": "new_apps_locked_by_default"
+            "newAppsLockedByDefault": "new_apps_locked_by_default",
+            "playwrightMcpEnabled": "playwright_mcp_enabled"
           },
           "method": "PATCH",
           "path": "/api/organization/security-settings",
@@ -8218,9 +8754,10 @@
           "request_fields": [
             "allowChatFileUploads",
             "allowToolAutoAssignment",
-            "appsHackathonRecorderEnabled",
+            "allowUnauthenticatedLlmProxyRequests",
             "newAppsDisabledByDefault",
-            "newAppsLockedByDefault"
+            "newAppsLockedByDefault",
+            "playwrightMcpEnabled"
           ],
           "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
@@ -8257,6 +8794,14 @@
           "computed": true,
           "optional": true,
           "path": "allow_tool_auto_assignment",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "allow_unauthenticated_llm_proxy_requests",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -8513,6 +9058,14 @@
           "computed": true,
           "optional": true,
           "path": "default_environment_validation_regex",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "default_fast_model_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -9200,6 +9753,22 @@
         {
           "computed": true,
           "optional": true,
+          "path": "default_personal_agent_access_all_tools",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "default_smart_model_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
           "path": "default_user_limits",
           "required": false,
           "sensitive": false,
@@ -9513,6 +10082,14 @@
           "computed": true,
           "optional": true,
           "path": "online_skill_catalog_enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "playwright_mcp_enabled",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -10278,6 +10855,18 @@
         },
         {
           "api_forbidden_request_fields": [],
+          "builder": "GetProjectApps",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/projects/{}/apps",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
           "builder": "GetProjectInstructions",
           "declared_request_field_mappings": {},
           "method": "GET",
@@ -10302,6 +10891,18 @@
         },
         {
           "api_forbidden_request_fields": [],
+          "builder": "LinkProjectApp",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/projects/{}/apps/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
           "builder": "SetProjectInstructions",
           "declared_request_field_mappings": {},
           "method": "PUT",
@@ -10314,6 +10915,18 @@
           "request_fields_without_declared_mapping": [
             "content"
           ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UnlinkProjectApp",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/projects/{}/apps/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -10360,6 +10973,14 @@
         }
       ],
       "fields": [
+        {
+          "computed": true,
+          "optional": true,
+          "path": "app_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
         {
           "computed": true,
           "optional": false,
@@ -12742,24 +13363,14 @@
         },
         {
           "api_forbidden_request_fields": [],
-          "builder": "DeleteTeamVaultFolder",
-          "declared_request_field_mappings": {},
-          "method": "DELETE",
-          "path": "/api/teams/{}/vault-folder",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
           "builder": "GetTeam",
           "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/teams/{}",
           "present_in_upstream": true,
-          "query_parameters": [],
+          "query_parameters": [
+            "includeMembers"
+          ],
           "request_fields": [],
           "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
@@ -12790,18 +13401,6 @@
         },
         {
           "api_forbidden_request_fields": [],
-          "builder": "GetTeamVaultFolder",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/teams/{}/vault-folder",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
           "builder": "RemoveTeamExternalGroup",
           "declared_request_field_mappings": {},
           "method": "DELETE",
@@ -12822,22 +13421,6 @@
           "query_parameters": [],
           "request_fields": [],
           "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "SetTeamVaultFolder",
-          "declared_request_field_mappings": {},
-          "method": "POST",
-          "path": "/api/teams/{}/vault-folder",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "vaultPath"
-          ],
-          "request_fields_without_declared_mapping": [
-            "vaultPath"
-          ],
           "retired_request_fields": []
         },
         {
@@ -13033,19 +13616,11 @@
           "required": false,
           "sensitive": false,
           "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "vault_folder",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
         }
       ],
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 1,
+      "schema_version": 2,
       "source": "internal/provider/resource_team.go",
       "terraform_resource": "archestra_team"
     },
@@ -13081,12 +13656,15 @@
             "initialGrants",
             "keyType",
             "labels",
+            "modelPoolIds",
             "name",
             "ownerId",
             "providerApiKeys",
             "spendCap"
           ],
-          "request_fields_without_declared_mapping": [],
+          "request_fields_without_declared_mapping": [
+            "modelPoolIds"
+          ],
           "retired_request_fields": []
         },
         {
@@ -13119,6 +13697,18 @@
           "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/llm-virtual-keys/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetVirtualApiKeyValue",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/llm-virtual-keys/{}/value",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
@@ -13166,67 +13756,22 @@
             "includeFutureProviders",
             "keyType",
             "labels",
+            "modelPoolIds",
             "name",
             "providerApiKeys",
             "spendCap"
           ],
-          "request_fields_without_declared_mapping": [],
+          "request_fields_without_declared_mapping": [
+            "modelPoolIds"
+          ],
           "retired_request_fields": []
         }
       ],
       "fields": [
         {
-          "computed": true,
-          "optional": false,
-          "path": "author_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "author_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
           "computed": false,
           "optional": true,
           "path": "billing_team_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "billing_team_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by_service_account_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -13288,26 +13833,10 @@
           "write_only": false
         },
         {
-          "computed": true,
-          "optional": false,
-          "path": "last_used_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
           "computed": false,
           "optional": false,
           "path": "name",
           "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "organization_id",
-          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -13376,33 +13905,9 @@
           "write_only": false
         },
         {
-          "computed": true,
-          "optional": false,
-          "path": "provider_api_keys.provider_api_key_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
           "computed": false,
           "optional": true,
           "path": "rotation_nonce",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "scope",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "secret_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -13424,42 +13929,10 @@
           "write_only": false
         },
         {
-          "computed": true,
-          "optional": false,
-          "path": "spend_cap.current_usage",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "spend_cap.limit_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
           "computed": false,
           "optional": false,
           "path": "spend_cap.limit_value",
           "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "teams",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "token_start",
-          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -13479,7 +13952,7 @@
       "terraform_resource": "archestra_virtual_key"
     }
   ],
-  "terraform_count": 30,
+  "terraform_count": 31,
   "unreferenced_mutating_operations": [
     {
       "method": "DELETE",
@@ -13528,11 +14001,6 @@
     },
     {
       "method": "DELETE",
-      "operation_id": "cancelAppRecordingRender",
-      "path": "/api/app-recordings/render/{}"
-    },
-    {
-      "method": "DELETE",
       "operation_id": "bulkDeleteApps",
       "path": "/api/apps/bulk"
     },
@@ -13543,18 +14011,8 @@
     },
     {
       "method": "DELETE",
-      "operation_id": "deleteApp",
-      "path": "/api/apps/{}"
-    },
-    {
-      "method": "DELETE",
       "operation_id": "unpinApp",
       "path": "/api/apps/{}/pin"
-    },
-    {
-      "method": "DELETE",
-      "operation_id": "unassignToolFromApp",
-      "path": "/api/apps/{}/tools/{}"
     },
     {
       "method": "DELETE",
@@ -13595,6 +14053,11 @@
       "method": "DELETE",
       "operation_id": "deleteSlackAgentBot",
       "path": "/api/chatops/config/slack/agents/{}"
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteJiraChatOpsBot",
+      "path": "/api/chatops/jira/bots/{}"
     },
     {
       "method": "DELETE",
@@ -13733,6 +14196,11 @@
     },
     {
       "method": "DELETE",
+      "operation_id": "deleteModelPool",
+      "path": "/api/model-pools/{}"
+    },
+    {
+      "method": "DELETE",
       "operation_id": "bulkDeleteOauthClients",
       "path": "/api/oauth-clients/bulk"
     },
@@ -13765,11 +14233,6 @@
       "method": "DELETE",
       "operation_id": "bulkDeleteProjects",
       "path": "/api/projects/bulk"
-    },
-    {
-      "method": "DELETE",
-      "operation_id": "unlinkProjectApp",
-      "path": "/api/projects/{}/apps/{}"
     },
     {
       "method": "DELETE",
@@ -13812,6 +14275,16 @@
       "path": "/api/teams/bulk"
     },
     {
+      "method": "DELETE",
+      "operation_id": "azureDeleteFile",
+      "path": "/v1/azure/files/{}"
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "azureDeleteFileWithAgent",
+      "path": "/v1/azure/{}/files/{}"
+    },
+    {
       "method": "PATCH",
       "operation_id": "updateAgentRun",
       "path": "/api/agent-runs/{}"
@@ -13820,11 +14293,6 @@
       "method": "PATCH",
       "operation_id": "updateAgentTool",
       "path": "/api/agent-tools/{}"
-    },
-    {
-      "method": "PATCH",
-      "operation_id": "updateApp",
-      "path": "/api/apps/{}"
     },
     {
       "method": "PATCH",
@@ -13850,6 +14318,11 @@
       "method": "PATCH",
       "operation_id": "updateChatOpsBinding",
       "path": "/api/chatops/bindings/{}"
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateJiraChatOpsBot",
+      "path": "/api/chatops/jira/bots/{}"
     },
     {
       "method": "PATCH",
@@ -13918,11 +14391,6 @@
     },
     {
       "method": "POST",
-      "operation_id": "decideAgentRunOpenappaReview",
-      "path": "/api/agent-runs/{}/openappa-review"
-    },
-    {
-      "method": "POST",
       "operation_id": "startAgentWorkspaceTransfer",
       "path": "/api/agent-runs/{}/workspace/transfers"
     },
@@ -13983,31 +14451,6 @@
     },
     {
       "method": "POST",
-      "operation_id": "appGalleryDeviceAuthPoll",
-      "path": "/api/app-gallery/device/poll"
-    },
-    {
-      "method": "POST",
-      "operation_id": "appGalleryDeviceAuthStart",
-      "path": "/api/app-gallery/device/start"
-    },
-    {
-      "method": "POST",
-      "operation_id": "enhanceAppRecording",
-      "path": "/api/app-recordings/enhance"
-    },
-    {
-      "method": "POST",
-      "operation_id": "renderAppRecordingVideo",
-      "path": "/api/app-recordings/render"
-    },
-    {
-      "method": "POST",
-      "operation_id": "createApp",
-      "path": "/api/apps"
-    },
-    {
-      "method": "POST",
       "operation_id": "openExternalAppInChat",
       "path": "/api/apps/external/{}/open-in-chat"
     },
@@ -14015,21 +14458,6 @@
       "method": "POST",
       "operation_id": "postAppRenderDiagnostics",
       "path": "/api/apps/{}/diagnostics"
-    },
-    {
-      "method": "POST",
-      "operation_id": "disableApp",
-      "path": "/api/apps/{}/disable"
-    },
-    {
-      "method": "POST",
-      "operation_id": "enableApp",
-      "path": "/api/apps/{}/enable"
-    },
-    {
-      "method": "POST",
-      "operation_id": "lockApp",
-      "path": "/api/apps/{}/lock"
     },
     {
       "method": "POST",
@@ -14043,18 +14471,8 @@
     },
     {
       "method": "POST",
-      "operation_id": "assignToolToApp",
-      "path": "/api/apps/{}/tools/{}"
-    },
-    {
-      "method": "POST",
       "operation_id": "transferAppOwnership",
       "path": "/api/apps/{}/transfer-ownership"
-    },
-    {
-      "method": "POST",
-      "operation_id": "unlockApp",
-      "path": "/api/apps/{}/unlock"
     },
     {
       "method": "POST",
@@ -14198,6 +14616,16 @@
     },
     {
       "method": "POST",
+      "operation_id": "createJiraChatOpsBot",
+      "path": "/api/chatops/jira/bots"
+    },
+    {
+      "method": "POST",
+      "operation_id": "createJiraChatOpsBinding",
+      "path": "/api/chatops/jira/bots/{}/bindings"
+    },
+    {
+      "method": "POST",
       "operation_id": "linkTelegramChatOpsAccount",
       "path": "/api/chatops/telegram/link"
     },
@@ -14230,6 +14658,11 @@
       "method": "POST",
       "operation_id": "createConnectionPassthroughKey",
       "path": "/api/connection-setups/passthrough-key"
+    },
+    {
+      "method": "POST",
+      "operation_id": "renderStartupGuard",
+      "path": "/api/connection-setups/startup-guard"
     },
     {
       "method": "POST",
@@ -14293,8 +14726,33 @@
     },
     {
       "method": "POST",
+      "operation_id": "resetUserLimitUsage",
+      "path": "/api/default-user-limits/users/{}/reset"
+    },
+    {
+      "method": "POST",
+      "operation_id": "createDevFeedbackComment",
+      "path": "/api/dev-feedback/comments"
+    },
+    {
+      "method": "POST",
+      "operation_id": "createDevFeedbackReply",
+      "path": "/api/dev-feedback/comments/{}/replies"
+    },
+    {
+      "method": "POST",
+      "operation_id": "resolveDevFeedbackComment",
+      "path": "/api/dev-feedback/comments/{}/resolve"
+    },
+    {
+      "method": "POST",
       "operation_id": "createGitlabToken",
       "path": "/api/git-credentials/gitlab"
+    },
+    {
+      "method": "POST",
+      "operation_id": "exchangeGitHubActionsToken",
+      "path": "/api/github-actions/token"
     },
     {
       "method": "POST",
@@ -14325,6 +14783,16 @@
       "method": "POST",
       "operation_id": "setupIncomingEmailWebhook",
       "path": "/api/incoming-email/setup"
+    },
+    {
+      "method": "POST",
+      "operation_id": "searchMcpRegistry",
+      "path": "/api/internal_mcp_catalog/registry/search"
+    },
+    {
+      "method": "POST",
+      "operation_id": "searchMcpRegistryIds",
+      "path": "/api/internal_mcp_catalog/registry/search/ids"
     },
     {
       "method": "POST",
@@ -14380,6 +14848,16 @@
       "method": "POST",
       "operation_id": "syncLlmModels",
       "path": "/api/llm-models/sync"
+    },
+    {
+      "method": "POST",
+      "operation_id": "startModelCostBackfill",
+      "path": "/api/llm-models/{}/cost-backfill"
+    },
+    {
+      "method": "POST",
+      "operation_id": "previewModelCostBackfill",
+      "path": "/api/llm-models/{}/cost-backfill/preview"
     },
     {
       "method": "POST",
@@ -14450,6 +14928,11 @@
       "method": "POST",
       "operation_id": "microsoft365CopilotDeviceAuthStart",
       "path": "/api/microsoft-365-copilot-auth/device/start"
+    },
+    {
+      "method": "POST",
+      "operation_id": "createModelPool",
+      "path": "/api/model-pools"
     },
     {
       "method": "POST",
@@ -14678,23 +15161,13 @@
     },
     {
       "method": "POST",
-      "operation_id": "checkTeamVaultFolderConnectivity",
-      "path": "/api/teams/{}/vault-folder/check-connectivity"
-    },
-    {
-      "method": "POST",
-      "operation_id": "getTeamVaultSecretKeys",
-      "path": "/api/teams/{}/vault-folder/secrets/keys"
-    },
-    {
-      "method": "POST",
-      "operation_id": "rotateToken",
-      "path": "/api/tokens/{}/rotate"
-    },
-    {
-      "method": "POST",
       "operation_id": "rotateUserToken",
       "path": "/api/user-tokens/me/rotate"
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path": "/api/webhooks/chatops/jira/{}"
     },
     {
       "method": "POST",
@@ -14768,6 +15241,21 @@
     },
     {
       "method": "POST",
+      "operation_id": "azureAudioSpeechWithDefaultAgent",
+      "path": "/v1/azure/audio/speech"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureAudioTranscriptionsWithDefaultAgent",
+      "path": "/v1/azure/audio/transcriptions"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureAudioTranslationsWithDefaultAgent",
+      "path": "/v1/azure/audio/translations"
+    },
+    {
+      "method": "POST",
       "operation_id": "azureChatCompletionsWithDefaultAgent",
       "path": "/v1/azure/chat/completions"
     },
@@ -14778,8 +15266,43 @@
     },
     {
       "method": "POST",
+      "operation_id": "azureCreateFile",
+      "path": "/v1/azure/files"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureImageEditsWithDefaultAgent",
+      "path": "/v1/azure/images/edits"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureImagesWithDefaultAgent",
+      "path": "/v1/azure/images/generations"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureRealtimeTurnWithDefaultAgent",
+      "path": "/v1/azure/realtime/turns"
+    },
+    {
+      "method": "POST",
       "operation_id": "azureResponsesWithDefaultAgent",
       "path": "/v1/azure/responses"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureAudioSpeechWithAgent",
+      "path": "/v1/azure/{}/audio/speech"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureAudioTranscriptionsWithAgent",
+      "path": "/v1/azure/{}/audio/transcriptions"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureAudioTranslationsWithAgent",
+      "path": "/v1/azure/{}/audio/translations"
     },
     {
       "method": "POST",
@@ -14790,6 +15313,26 @@
       "method": "POST",
       "operation_id": "azureEmbeddingsWithAgent",
       "path": "/v1/azure/{}/embeddings"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureCreateFileWithAgent",
+      "path": "/v1/azure/{}/files"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureImageEditsWithAgent",
+      "path": "/v1/azure/{}/images/edits"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureImagesWithAgent",
+      "path": "/v1/azure/{}/images/generations"
+    },
+    {
+      "method": "POST",
+      "operation_id": "azureRealtimeTurnWithAgent",
+      "path": "/v1/azure/{}/realtime/turns"
     },
     {
       "method": "POST",
@@ -14958,6 +15501,16 @@
     },
     {
       "method": "POST",
+      "operation_id": "kimiCodeChatCompletionsWithDefaultAgent",
+      "path": "/v1/kimi-code/chat/completions"
+    },
+    {
+      "method": "POST",
+      "operation_id": "kimiCodeChatCompletionsWithAgent",
+      "path": "/v1/kimi-code/{}/chat/completions"
+    },
+    {
+      "method": "POST",
       "operation_id": "kimiChatCompletionsWithDefaultAgent",
       "path": "/v1/kimi/chat/completions"
     },
@@ -15083,6 +15636,21 @@
     },
     {
       "method": "POST",
+      "operation_id": "openAiAudioSpeechWithDefaultAgent",
+      "path": "/v1/openai/audio/speech"
+    },
+    {
+      "method": "POST",
+      "operation_id": "openAiAudioTranscriptionsWithDefaultAgent",
+      "path": "/v1/openai/audio/transcriptions"
+    },
+    {
+      "method": "POST",
+      "operation_id": "openAiAudioTranslationsWithDefaultAgent",
+      "path": "/v1/openai/audio/translations"
+    },
+    {
+      "method": "POST",
       "operation_id": "openAiChatCompletionsWithDefaultAgent",
       "path": "/v1/openai/chat/completions"
     },
@@ -15100,6 +15668,21 @@
       "method": "POST",
       "operation_id": "openAiResponsesCompactWithDefaultAgent",
       "path": "/v1/openai/responses/compact"
+    },
+    {
+      "method": "POST",
+      "operation_id": "openAiAudioSpeechWithAgent",
+      "path": "/v1/openai/{}/audio/speech"
+    },
+    {
+      "method": "POST",
+      "operation_id": "openAiAudioTranscriptionsWithAgent",
+      "path": "/v1/openai/{}/audio/transcriptions"
+    },
+    {
+      "method": "POST",
+      "operation_id": "openAiAudioTranslationsWithAgent",
+      "path": "/v1/openai/{}/audio/translations"
     },
     {
       "method": "POST",
@@ -15178,8 +15761,18 @@
     },
     {
       "method": "POST",
+      "operation_id": "xaiResponsesWithDefaultAgent",
+      "path": "/v1/xai/responses"
+    },
+    {
+      "method": "POST",
       "operation_id": "xaiChatCompletionsWithAgent",
       "path": "/v1/xai/{}/chat/completions"
+    },
+    {
+      "method": "POST",
+      "operation_id": "xaiResponsesWithAgent",
+      "path": "/v1/xai/{}/responses"
     },
     {
       "method": "POST",
@@ -15273,6 +15866,11 @@
     },
     {
       "method": "PUT",
+      "operation_id": "updateJiraChatOpsConfig",
+      "path": "/api/chatops/jira/config"
+    },
+    {
+      "method": "PUT",
       "operation_id": "updateConnector",
       "path": "/api/connectors/{}"
     },
@@ -15285,6 +15883,11 @@
       "method": "PUT",
       "operation_id": "setPersonalRuntimeCredentialConnection",
       "path": "/api/credentials/{}/personal"
+    },
+    {
+      "method": "PUT",
+      "operation_id": "saveDevFeedbackSetup",
+      "path": "/api/dev-feedback/setup"
     },
     {
       "method": "PUT",
@@ -15328,8 +15931,8 @@
     },
     {
       "method": "PUT",
-      "operation_id": "updateMemberDefaultModel",
-      "path": "/api/members/default-model"
+      "operation_id": "updateModelPool",
+      "path": "/api/model-pools/{}"
     },
     {
       "method": "PUT",
@@ -15350,11 +15953,6 @@
       "method": "PUT",
       "operation_id": "updateOpenAppaPolicyTests",
       "path": "/api/openappa/policy-tests"
-    },
-    {
-      "method": "PUT",
-      "operation_id": "linkProjectApp",
-      "path": "/api/projects/{}/apps/{}"
     },
     {
       "method": "PUT",

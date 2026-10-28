@@ -54,8 +54,6 @@ type LLMProviderApiKeyResourceModel struct {
 	BaseUrl                   types.String      `tfsdk:"base_url"`
 	Scope                     types.String      `tfsdk:"scope"`
 	TeamID                    types.String      `tfsdk:"team_id"`
-	VaultSecretPath           types.String      `tfsdk:"vault_secret_path"`
-	VaultSecretKey            types.String      `tfsdk:"vault_secret_key"`
 }
 
 func (r *LLMProviderApiKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +62,7 @@ func (r *LLMProviderApiKeyResource) Metadata(ctx context.Context, req resource.M
 
 func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Version:             1,
+		Version:             2,
 		MarkdownDescription: "API key for an LLM provider (OpenAI, Anthropic, etc.). Models are auto-discovered after creation.",
 
 		Attributes: map[string]schema.Attribute{
@@ -93,15 +91,9 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 				Required:            true,
 			},
 			"api_key": schema.StringAttribute{
-				MarkdownDescription: "The API key value. Mutually exclusive with `vault_secret_path`/`vault_secret_key`. In BYOS (READONLY_VAULT) mode the backend requires the vault pair and rejects inline `api_key`.",
+				MarkdownDescription: "The API key value.",
 				Optional:            true,
 				Sensitive:           true,
-				Validators: []validator.String{
-					stringvalidator.ConflictsWith(
-						path.MatchRoot("vault_secret_path"),
-						path.MatchRoot("vault_secret_key"),
-					),
-				},
 			},
 			"llm_provider": schema.StringAttribute{
 				MarkdownDescription: "LLM provider for this API key",
@@ -110,7 +102,7 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 					stringplanmodifier.RequiresReplace(),
 				},
 				Validators: []validator.String{
-					stringvalidator.OneOf("anthropic", "archestra", "azure", "bedrock", "cerebras", "cohere", "deepseek", "gemini", "github-copilot", "groq", "jev", "kimi", "microsoft-365-copilot", "minimax", "mistral", "ollama", "ollama-native", "openai", "openrouter", "perplexity", "vllm", "voyage", "xai", "zhipuai"),
+					stringvalidator.OneOf("anthropic", "archestra", "azure", "bedrock", "cerebras", "cohere", "deepseek", "gemini", "github-copilot", "groq", "jev", "kimi", "kimi-code", "microsoft-365-copilot", "minimax", "mistral", "ollama", "ollama-native", "openai", "openrouter", "perplexity", "vllm", "voyage", "xai", "zhipuai"),
 				},
 			},
 			"is_primary": schema.BoolAttribute{
@@ -130,22 +122,6 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 			"team_id": schema.StringAttribute{
 				MarkdownDescription: "Backend team association, when present.",
 				Computed:            true,
-			},
-			"vault_secret_path": schema.StringAttribute{
-				MarkdownDescription: "Path to the secret in the vault. Must be set together with `vault_secret_key` and cannot be combined with `api_key`.",
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.AlsoRequires(path.MatchRoot("vault_secret_key")),
-					stringvalidator.ConflictsWith(path.MatchRoot("api_key")),
-				},
-			},
-			"vault_secret_key": schema.StringAttribute{
-				MarkdownDescription: "Key within the vault secret. Must be set together with `vault_secret_path` and cannot be combined with `api_key`.",
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.AlsoRequires(path.MatchRoot("vault_secret_path")),
-					stringvalidator.ConflictsWith(path.MatchRoot("api_key")),
-				},
 			},
 		},
 	}

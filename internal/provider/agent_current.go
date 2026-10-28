@@ -5,6 +5,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -12,6 +13,7 @@ import (
 
 func currentAgentAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
+		"model_pool_id":                             schema.StringAttribute{Optional: true, MarkdownDescription: "Model pool used for the agent; the API resolves its model and provider key.", Validators: []validator.String{stringvalidator.ConflictsWith(path.MatchRoot("model_id"), path.MatchRoot("llm_api_key_id"), path.MatchRoot("llm_model"))}},
 		"author_email":                              schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported author email."},
 		"created_by":                                schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
 		"created_by_service_account_id":             schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported created by service account id."},
@@ -205,6 +207,7 @@ func flattenCurrentAgentFields(data *AgentResourceModel, body []byte, diags *dia
 }
 func currentGatewayAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
+		"model_pool_id":                 schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported model pool identifier on the shared agent record."},
 		"github_actions_access":         githubActionsAccessSchema(),
 		"author_email":                  schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported author email."},
 		"created_by":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
@@ -218,6 +221,14 @@ func currentGatewayAttributes() map[string]schema.Attribute {
 	}
 }
 func flattenCurrentGatewayFields(data *McpGatewayResourceModel, body []byte, diags *diag.Diagnostics) {
+	var pool struct {
+		ID *string `json:"modelPoolId"`
+	}
+	if err := json.Unmarshal(body, &pool); err != nil {
+		diags.AddError("Invalid Gateway Response", err.Error())
+		return
+	}
+	data.ModelPoolID = types.StringPointerValue(pool.ID)
 	data.GithubActionsAccess = githubActionsAccessFromResponse(body, diags)
 	var values map[string]json.RawMessage
 	if err := json.Unmarshal(body, &values); err != nil {

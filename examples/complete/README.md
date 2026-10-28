@@ -15,13 +15,7 @@ without writing your own module first.
 - A running Archestra backend you can reach.
 - An API key minted from that backend (UI → Settings → API Keys, or
   `scripts/bootstrap-api-key.sh` against a local stack).
-- For the LLM provider key resource: the backend must be in BYOS mode
-  (`ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT`) with a Vault entry at
-  `secret/data/test/ollama` containing key `api_key`. See the
-  [BYOS Vault guide](../../docs/guides/byos-vault.md)
-  for setup. To run against a DB-mode
-  backend instead, swap the `vault_secret_*` fields on
-  `archestra_model_provider.ollama_vault` for an inline `api_key`.
+- A reachable Ollama endpoint for model discovery.
 
 ## Running it
 
@@ -53,7 +47,7 @@ Keycloak / Okta / Auth0 / etc.
 | 1 | `archestra_organization_settings.main` | App branding + global tool policy |
 | 2 | `archestra_identity_provider.oidc` | OIDC SSO via the configured IdP |
 | 3 | `archestra_team.engineering`, `archestra_team.support` | Two teams |
-| 4 | `archestra_model_provider.ollama_vault` | Ollama credentials read from Vault |
+| 4 | `archestra_model_provider.ollama` | Ollama model provider |
 | 5 | `archestra_mcp_registry_entry.filesystem` | Filesystem MCP server in the private catalog |
 | 6 | `archestra_mcp_server.filesystem` | Installed instance — backend discovers ~14 tools |
 | 7 | `archestra_agent.support` | Customer-support agent backed by Ollama |
@@ -76,13 +70,9 @@ backend with whatever values were last applied.
 - **Already have an OIDC provider?** Replace the values in
   `terraform.tfvars` with your own issuer, discovery endpoint, and
   client_id. Pass `client_secret` via `TF_VAR_oidc_client_secret`.
-- **DB-mode backend (no Vault)?** Replace
-  `archestra_model_provider.ollama_vault`'s `vault_secret_*`
-  fields with an inline `api_key`.
 - **Want a different LLM provider?** Swap `llm_provider` on the model
   provider, the `model_id` of `archestra_model.llama3`, and keep the agents'
-  `model_id` references. The `vault_secret_*` path must point at a secret
-  you've seeded.
+  `model_id` references. Supply the provider credential through a sensitive variable.
 - **Want SAML instead of OIDC?** Replace the `oidc_config` block on
   `archestra_identity_provider.oidc` with a `saml_config` block — see
   [examples/resources/archestra_identity_provider/](../resources/archestra_identity_provider/)

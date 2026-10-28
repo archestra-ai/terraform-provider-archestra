@@ -24,7 +24,6 @@ class VaultStartupTests(unittest.TestCase):
                 self.assertEqual(result.returncode, 0, result.stderr)
                 commands = capture.read_text()
                 self.assertIn("apply -f", commands)
-                self.assertIn("run vault-seed", commands)
                 self.assertEqual("rollout restart deployment" in commands, value != "true")
             capture.write_text("")
             result = subprocess.run(["bash", str(Path(__file__).with_name("bootstrap-vault.sh"))],

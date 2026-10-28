@@ -63,10 +63,6 @@ var catalogItemAttrSpec = []AttrSpec{
 
 	{TFName: "client_secret_id", JSONName: "clientSecretId", Kind: Scalar},
 	{TFName: "local_config_secret_id", JSONName: "localConfigSecretId", Kind: Scalar},
-	{TFName: "local_config_vault_key", JSONName: "localConfigVaultKey", Kind: Scalar},
-	{TFName: "local_config_vault_path", JSONName: "localConfigVaultPath", Kind: Scalar},
-	{TFName: "oauth_client_secret_vault_key", JSONName: "oauthClientSecretVaultKey", Kind: Scalar},
-	{TFName: "oauth_client_secret_vault_path", JSONName: "oauthClientSecretVaultPath", Kind: Scalar},
 
 	{TFName: "enterprise_managed_config", JSONName: "enterpriseManagedConfig", Kind: AtomicObject, Children: []AttrSpec{
 		{TFName: "identity_provider_id", JSONName: "identityProviderId", Kind: Scalar},

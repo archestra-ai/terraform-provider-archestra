@@ -28,6 +28,7 @@ archestra:
     ARCHESTRA_AUTH_SECRET: "acceptance-test-auth-secret-32chars"
 
     ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
+    ARCHESTRA_LLM_MODEL_POOLS_ENABLED: "true"
     # Leave CPU headroom for Kind system pods and the Helm probe hooks.
     ARCHESTRA_DAGGER_RUNTIME_ENGINE_CPU_REQUEST: "250m"
     # Each Dagger engine reserves 6Gi by default. Two of them and the MCP server
@@ -39,10 +40,8 @@ archestra:
     # Keep CI instances out of product telemetry.
     ARCHESTRA_ANALYTICS: "disabled"
 
-    # BYOS vault (READONLY_VAULT) so tests that exercise vault-backed catalog
-    # fields can run. The Vault server is deployed as a sidecar in the CI
-    # workflow (dev mode, root token).
-    ARCHESTRA_SECRETS_MANAGER: "READONLY_VAULT"
+    # Exercise managed read/write Vault storage.
+    ARCHESTRA_SECRETS_MANAGER: "VAULT"
     ARCHESTRA_HASHICORP_VAULT_ADDR: "http://vault.default.svc.cluster.local:8200"
     ARCHESTRA_HASHICORP_VAULT_TOKEN: "root"
 

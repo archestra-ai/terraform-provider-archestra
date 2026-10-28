@@ -18,7 +18,7 @@ see [../complete/](../complete/) instead.
 | Resource | Purpose |
 | --- | --- |
 | `archestra_team.main` | One team for scoping |
-| `archestra_model_provider.ollama` | Vault-backed Ollama credentials (BYOS-mode) |
+| `archestra_model_provider.ollama` | Ollama model provider |
 | `archestra_mcp_registry_entry.memory` | Registers the in-memory MCP server in the private catalog |
 | `archestra_mcp_server.memory` | Installs the catalog item — backend discovers ~9 tools |
 | `archestra_agent.main` | Hello-world chat agent backed by Ollama |
@@ -29,12 +29,7 @@ see [../complete/](../complete/) instead.
 - A running Archestra backend you can reach.
 - An API key minted from that backend (UI → Settings → API Keys, or
   `scripts/bootstrap-api-key.sh` against a local stack).
-- BYOS-Vault mode enabled with a secret seeded at
-  `secret/data/test/ollama` containing key `api_key`. See the
-  [BYOS Vault guide](../../docs/guides/byos-vault.md).
-- If your backend isn't in BYOS mode, swap `vault_secret_path` /
-  `vault_secret_key` on `archestra_model_provider.ollama` for an
-  inline `api_key`.
+- A reachable Ollama endpoint for model discovery.
 
 ## Running it
 

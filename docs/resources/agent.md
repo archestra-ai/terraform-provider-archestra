@@ -78,7 +78,7 @@ resource "archestra_agent" "engineering_qa" {
   name          = "eng-qa"
   description   = "Engineering QA assistant"
   system_prompt = "You triage bug reports against the eng playbook."
-  # Wire a specific provider key (e.g. an Anthropic key from BYOS Vault) instead
+  # Wire a specific provider key (e.g. an Anthropic key) instead
   # of relying on the org-wide default. The platform pairs the key with a model
   # row, so reference the `archestra_model` for "claude-sonnet-4-5".
   model_id       = archestra_model.claude_sonnet.id
@@ -171,6 +171,7 @@ resource "archestra_agent" "worker" {
 - `llm_model` (String) Model ID used for LLM calls
 - `missing_credential_behavior` (String) What happens when a caller lacks a connection the agent's tools need: `allow` (fail only at invocation, default), `warn` (surface missing connections up front), or `block` (agent unusable until connected)
 - `model_id` (String) Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`
+- `model_pool_id` (String) Model pool used for the agent; the API resolves its model and provider key.
 - `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `runtime` (Attributes) Dedicated runtime used for interactive, delegated, and long-running work. Requires an Agent Runtime backend on the platform (e.g. the Kubernetes orchestrator). (see [below for nested schema](#nestedatt--runtime))

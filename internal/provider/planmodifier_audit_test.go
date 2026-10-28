@@ -50,8 +50,8 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 	"archestra_mcp_registry_entry": { //nolint:gosec // G101 false-positive — nested keys are schema attribute names.
 		"multitenant":            "Immutable creation selector; omission preserves the observed mode so metadata updates do not replace an existing catalog item.",
 		"permissions":            "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership.",
-		"client_secret_id":       "computed when the backend auto-creates a BYOS vault reference for an inline `oauth_config.client_secret`; sticky once issued so removing the inline secret doesn't accidentally drop the stored reference.",
-		"local_config_secret_id": "computed when the backend auto-creates a BYOS vault reference for inline `local_config` env values; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
+		"client_secret_id":       "computed when the backend stores inline credentials for an inline `oauth_config.client_secret`; sticky once issued so removing the inline secret doesn't accidentally drop the stored reference.",
+		"local_config_secret_id": "computed when the backend stores inline credentials for inline `local_config` env values; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
 	},
 	"archestra_mcp_server": { //nolint:gosec // G101 false-positive — schema attribute name.
 		"secret_id":        "computed when the backend auto-creates a secret to hold inline `user_config_values` / `environment_values`; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
@@ -72,7 +72,7 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 		"oidc_config.token_endpoint_authentication",
 		"oidc_config.skip_discovery",
 	),
-	"archestra_team": {"external_group_ids": "Omission leaves the SSO mapping set unmanaged; an explicit empty set clears it.", "vault_folder": "Omission leaves the licensed Vault binding unmanaged; an explicit empty string clears it.", "roles": "Role assignments are unmanaged when omitted; an explicit empty set revokes all direct team role assignments."},
+	"archestra_team": {"external_group_ids": "Omission leaves the SSO mapping set unmanaged; an explicit empty set clears it.", "roles": "Role assignments are unmanaged when omitted; an explicit empty set revokes all direct team role assignments."},
 	"archestra_organization_settings": stickyOrgSettings(
 		"kb_bm25_b", "kb_bm25_k1",
 		"online_mcp_catalog_enabled",

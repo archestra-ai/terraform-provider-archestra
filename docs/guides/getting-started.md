@@ -69,6 +69,5 @@ terraform apply
   configuration reference.
 
 > **Secrets in state.** Inline `api_key = var.openai_api_key` lands in
-> Terraform state in plaintext. For production, prefer the BYOS Vault
-> flow ([guide](./byos-vault)) or a remote state backend with
+> Terraform state in plaintext. For production, use a remote state backend with
 > encryption at rest.

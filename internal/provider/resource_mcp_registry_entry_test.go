@@ -789,50 +789,6 @@ resource "archestra_mcp_registry_entry" "ipsc" {
 `, name)
 }
 
-func TestAccMcpRegistryCatalogItemResourceWithVaultRefs(t *testing.T) {
-	resource.Test(t, resource.TestCase{
-		PreCheck: func() {
-			testAccPreCheck(t)
-			testAccRequireByosEnabled(t)
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccMcpRegistryCatalogItemResourceConfigWithVaultRefs("vault-refs-item"),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue(
-						"archestra_mcp_registry_entry.vault_refs",
-						tfjsonpath.New("local_config_vault_path"),
-						knownvalue.StringExact("secret/data/mcp/local"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_mcp_registry_entry.vault_refs",
-						tfjsonpath.New("local_config_vault_key"),
-						knownvalue.StringExact("env"),
-					),
-				},
-			},
-		},
-	})
-}
-
-func testAccMcpRegistryCatalogItemResourceConfigWithVaultRefs(name string) string {
-	return fmt.Sprintf(`
-resource "archestra_mcp_registry_entry" "vault_refs" {
-  name        = %[1]q
-  description = "Catalog item referencing BYOS vault paths"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-
-  local_config_vault_path = "secret/data/mcp/local"
-  local_config_vault_key  = "env"
-}
-`, name)
-}
-
 func TestAccMcpRegistryCatalogItemResourceWithUserConfig(t *testing.T) {
 	name := "user-config-" + acctest.RandString(6)
 	resource.Test(t, resource.TestCase{

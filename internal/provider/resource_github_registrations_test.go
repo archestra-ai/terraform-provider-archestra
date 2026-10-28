@@ -77,7 +77,7 @@ func TestAccGithubPatResource(t *testing.T) {
 		}
 		return nil
 	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config("tf-stored-github-pat", "secret/data/test/ollama#api_key"), Check: func(s *terraform.State) error {
 			id = s.RootModule().Resources["archestra_github_pat.test"].Primary.ID
 			return nil
@@ -114,7 +114,7 @@ func TestAccGithubAppConfigResource(t *testing.T) {
 		}
 		return nil
 	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config("tf-stored-github-app", "secret/data/test/ollama#api_key", "200"), Check: func(s *terraform.State) error {
 			id = s.RootModule().Resources["archestra_github_app.test"].Primary.ID
 			return nil

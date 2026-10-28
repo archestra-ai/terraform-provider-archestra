@@ -17,7 +17,7 @@ func sigV4Attribute(description string, required ...string) schema.StringAttribu
 	return schema.StringAttribute{Optional: true, Sensitive: true, MarkdownDescription: description, Validators: []validator.String{
 		stringvalidator.LengthAtLeast(1),
 		stringvalidator.AlsoRequires(paths...),
-		stringvalidator.ConflictsWith(path.MatchRoot("api_key"), path.MatchRoot("vault_secret_path"), path.MatchRoot("vault_secret_key")),
+		stringvalidator.ConflictsWith(path.MatchRoot("api_key")),
 	}}
 }
 

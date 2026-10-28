@@ -81,7 +81,6 @@ print_env() {
 export ARCHESTRA_BASE_URL=${ARCHESTRA_BASE_URL}
 export ARCHESTRA_FRONTEND_URL=${ARCHESTRA_FRONTEND_URL}
 export ARCHESTRA_API_KEY=\$(${SCRIPT_DIR}/bootstrap-api-key.sh)
-export ARCHESTRA_READONLY_VAULT_ENABLED=true
 export ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true
 export ARCHESTRA_AGENT_RUNTIME_ENABLED=true
 export ARCHESTRA_TEST_IDP_ID=\$(ARCHESTRA_API_KEY=\$ARCHESTRA_API_KEY ${SCRIPT_DIR}/bootstrap-test-idp.sh)
@@ -184,7 +183,7 @@ done
 
 # 7. Seed an Ollama provider key so the LLM model tests find at least one model.
 api_key=$("${SCRIPT_DIR}/bootstrap-api-key.sh")
-ARCHESTRA_API_KEY="$api_key" ARCHESTRA_READONLY_VAULT_ENABLED=true \
+ARCHESTRA_API_KEY="$api_key" \
   ARCHESTRA_TEST_LLM_BASE_URL="$LLM_BASE_URL" python3 "${SCRIPT_DIR}/bootstrap-test-llm-key.py" >/dev/null
 
 # 8. Provision the EMC test IdP.

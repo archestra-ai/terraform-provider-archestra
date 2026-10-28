@@ -33,7 +33,7 @@ resource "archestra_github_pat" "example" {
 
 ### Optional
 
-- `token` (String, Sensitive) Existing write-only credential or read-only Vault reference; changing it rotates the stored value.
+- `token` (String, Sensitive) Write-only credential; changing it rotates the stored value.
 
 ### Read-Only
 

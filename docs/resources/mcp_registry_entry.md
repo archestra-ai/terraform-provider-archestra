@@ -245,7 +245,7 @@ resource "archestra_mcp_registry_entry" "private_registry" {
 
 - `auth_description` (String) Description of the authentication requirements
 - `auth_fields` (Attributes List) Custom authentication fields required by the MCP server (see [below for nested schema](#nestedatt--auth_fields))
-- `client_secret_id` (String) UUID of a stored secret holding the OAuth client secret. Mutually exclusive with inline `oauth_config.client_secret`. Computed when the backend auto-creates a BYOS vault reference.
+- `client_secret_id` (String) UUID of a stored secret holding the OAuth client secret. Mutually exclusive with inline `oauth_config.client_secret`. Computed when the backend stores inline credentials.
 - `cloned_from` (String) Source catalog item copied when this item is created.
 - `deployment_spec_yaml` (String) Custom Kubernetes deployment YAML for the MCP server
 - `description` (String) Description of the MCP server
@@ -258,12 +258,8 @@ resource "archestra_mcp_registry_entry" "private_registry" {
 - `instructions` (String) Installation instructions text for the MCP server
 - `labels` (Attributes List) Labels for the MCP server catalog item (see [below for nested schema](#nestedatt--labels))
 - `local_config` (Attributes) Configuration for MCP servers run in the Archestra orchestrator MCP runtime (see [below for nested schema](#nestedatt--local_config))
-- `local_config_secret_id` (String) UUID of a stored secret holding local_config environment values. Computed when the backend auto-creates a BYOS vault reference.
-- `local_config_vault_key` (String) BYOS vault key for local_config secrets.
-- `local_config_vault_path` (String) BYOS vault path for local_config secrets.
+- `local_config_secret_id` (String) UUID of a stored secret holding local_config environment values. Computed when the backend stores inline credentials.
 - `multitenant` (Boolean) Whether installations share one runtime; immutable after creation.
-- `oauth_client_secret_vault_key` (String) BYOS vault key for the OAuth client secret.
-- `oauth_client_secret_vault_path` (String) BYOS vault path for the OAuth client secret.
 - `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `remote_config` (Attributes) Configuration for remote/hosted MCP servers accessed via HTTP (see [below for nested schema](#nestedatt--remote_config))
 - `repository` (String) Repository URL for the MCP server

@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -107,7 +106,6 @@ type MCPServerResourceModel struct {
 	UserConfigValues  types.Map    `tfsdk:"user_config_values"`
 	SecretID          types.String `tfsdk:"secret_id"`
 	AccessToken       types.String `tfsdk:"access_token"`
-	IsByosVault       types.Bool   `tfsdk:"is_byos_vault"`
 	AgentIDs          types.List   `tfsdk:"agent_ids"`
 	// Tools is a Computed list — the slice form ([]struct) can't represent
 	// the plan-time "unknown" marker the framework needs before Create
@@ -150,6 +148,7 @@ func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataR
 
 func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version:             1,
 		MarkdownDescription: "Running instance of an MCP server, pulled from an `archestra_mcp_registry_entry` template via `catalog_id`.",
 
 		Attributes: map[string]schema.Attribute{
@@ -242,13 +241,6 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				Sensitive:           true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
-				},
-			},
-			"is_byos_vault": schema.BoolAttribute{
-				MarkdownDescription: "When true, environment_values and user_config_values are treated as vault references",
-				Optional:            true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.RequiresReplace(),
 				},
 			},
 			"agent_ids": schema.ListAttribute{
@@ -435,11 +427,6 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		requestBody.AccessToken = &token
 	}
 
-	if !data.IsByosVault.IsNull() && !data.IsByosVault.IsUnknown() {
-		isByosVault := data.IsByosVault.ValueBool()
-		requestBody.IsByosVault = &isByosVault
-	}
-
 	if !data.AgentIDs.IsNull() && !data.AgentIDs.IsUnknown() {
 		var agentIDStrs []string
 		resp.Diagnostics.Append(data.AgentIDs.ElementsAs(ctx, &agentIDStrs, false)...)
@@ -501,7 +488,7 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 
 	// Mirror Read's secret_id handling — Computed fields must settle to a
 	// known value after Create. Without this, installs with no
-	// user_config_values / is_byos_vault leave the planned Unknown in state
+	// user_config_values leave the planned Unknown in state
 	// and Plugin Framework rejects with "provider still indicated an
 	// unknown value". UseStateForUnknown only fires on Update.
 	if apiResp.JSON200.SecretId != nil {

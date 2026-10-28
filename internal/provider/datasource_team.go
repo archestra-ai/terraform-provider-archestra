@@ -22,7 +22,6 @@ type TeamDataSource struct {
 
 type TeamDataSourceModel struct {
 	ExternalGroupIDs types.Set         `tfsdk:"external_group_ids"`
-	VaultFolder      types.String      `tfsdk:"vault_folder"`
 	ID               types.String      `tfsdk:"id"`
 	Name             types.String      `tfsdk:"name"`
 	Description      types.String      `tfsdk:"description"`
@@ -41,7 +40,6 @@ func (d *TeamDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 
 		Attributes: map[string]schema.Attribute{
 			"external_group_ids": schema.SetAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "SSO groups mapped to this team, when visible and Team Sync is available."},
-			"vault_folder":       schema.StringAttribute{Computed: true, MarkdownDescription: "Vault folder path, when visible and Readonly Vault is available."},
 			"id": schema.StringAttribute{
 				MarkdownDescription: "Team identifier",
 				Required:            true,
@@ -154,12 +152,11 @@ func (d *TeamDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		}
 	}
 
-	view := TeamResourceModel{ID: data.ID, ExternalGroupIDs: types.SetNull(types.StringType), VaultFolder: types.StringNull()}
+	view := TeamResourceModel{ID: data.ID, ExternalGroupIDs: types.SetNull(types.StringType)}
 	(&TeamResource{client: d.client}).readBindings(ctx, &view, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 	data.ExternalGroupIDs = view.ExternalGroupIDs
-	data.VaultFolder = view.VaultFolder
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

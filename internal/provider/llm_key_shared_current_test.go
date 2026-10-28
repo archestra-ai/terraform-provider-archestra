@@ -28,7 +28,7 @@ resource "archestra_model_provider" "test" {
 		}
 	}, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config("shared=true"), Check: resource.TestCheckResourceAttr("archestra_model_provider.test", "scope", "org")},
-		{ResourceName: "archestra_model_provider.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"api_key", "vault_secret_path", "vault_secret_key"}},
+		{ResourceName: "archestra_model_provider.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"api_key"}},
 		{Config: config(""), PlanOnly: true},
 		{Config: config("shared=false"), Check: resource.TestCheckResourceAttr("archestra_model_provider.test", "scope", "personal"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_model_provider.test", plancheck.ResourceActionDestroyBeforeCreate)}}},
 	}})

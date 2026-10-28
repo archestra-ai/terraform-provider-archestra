@@ -11,7 +11,7 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         raise RuntimeError('Local API redirects are refused')
 
 
-def ensure_fixture(base_url, token, model_url, byos):
+def ensure_fixture(base_url, token, model_url):
     parsed = urllib.parse.urlparse(base_url)
     if parsed.scheme != 'http' or parsed.hostname not in ('localhost', '127.0.0.1', '::1'):
         raise ValueError('Acceptance fixture creation requires a loopback HTTP backend')
@@ -37,10 +37,7 @@ def ensure_fixture(base_url, token, model_url, byos):
                 pass
         return fixture_id
     payload = {'name': name, 'provider': 'ollama', 'baseUrl': model_url, 'isPrimary': False}
-    if byos:
-        payload.update(vaultSecretPath='secret/data/test/ollama', vaultSecretKey='api_key')
-    else:
-        payload['apiKey'] = 'synthetic-acceptance-model-key'
+    payload['apiKey'] = 'synthetic-acceptance-model-key'
     request = urllib.request.Request(endpoint, data=json.dumps(payload).encode(), headers=headers)
     with opener.open(request, timeout=45) as response:
         return json.load(response)['id']
@@ -49,8 +46,7 @@ def ensure_fixture(base_url, token, model_url, byos):
 def main():
     print(ensure_fixture(os.getenv('ARCHESTRA_BASE_URL', 'http://localhost:9000'),
           os.getenv('ARCHESTRA_API_KEY', ''),
-          os.getenv('ARCHESTRA_TEST_LLM_BASE_URL', 'http://ollama-mock.default.svc.cluster.local:11434/v1'),
-          os.getenv('ARCHESTRA_READONLY_VAULT_ENABLED') == 'true'))
+          os.getenv('ARCHESTRA_TEST_LLM_BASE_URL', 'http://ollama-mock.default.svc.cluster.local:11434/v1')))
 
 
 if __name__ == '__main__':

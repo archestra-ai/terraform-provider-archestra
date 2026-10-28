@@ -51,7 +51,6 @@ esac
             file.chmod(0o755)
             (scripts / 'bootstrap-test-llm-key.py').write_text(
                 'import os\nfrom pathlib import Path\n'
-                'assert os.environ.get("ARCHESTRA_READONLY_VAULT_ENABLED") == "true", "Readonly Vault stack must seed a Vault-backed model fixture"\n'
                 'with (Path(os.environ["CAPTURE"])/"seed-url").open("w") as f: f.write(os.environ["ARCHESTRA_TEST_LLM_BASE_URL"])\n'
                 'with (Path(os.environ["CAPTURE"])/"commands").open("a") as f: '
                 'f.write("child " + os.environ["KUBECONFIG"] + " " + os.environ["ARCHESTRA_BASE_URL"] + "\\n")\n'

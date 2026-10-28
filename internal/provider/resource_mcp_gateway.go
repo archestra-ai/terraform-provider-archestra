@@ -34,6 +34,7 @@ type McpGatewayResource struct {
 // gateway exposes a unified MCP endpoint backed by tool installations and
 // optional knowledge sources.
 type McpGatewayResourceModel struct {
+	ModelPoolID          types.String `tfsdk:"model_pool_id"`
 	GithubActionsAccess  types.Object `tfsdk:"github_actions_access"`
 	SubagentIDs          types.Set    `tfsdk:"subagent_ids"`
 	RemoteAgentIDs       types.Set    `tfsdk:"remote_agent_ids"`

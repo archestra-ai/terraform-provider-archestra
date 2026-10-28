@@ -14,6 +14,7 @@ import (
 // per response type, so this internal mirror lets shared flatten helpers
 // operate on the raw body bytes regardless of which endpoint produced them.
 type agentAPIResponse struct {
+	ModelPoolID                *openapi_types.UUID `json:"modelPoolId"`
 	Id                         openapi_types.UUID  `json:"id"`
 	Name                       string              `json:"name"`
 	AgentType                  string              `json:"agentType"`

@@ -6,7 +6,7 @@ resource "archestra_agent" "support" {
   description    = "Tier-1 customer support agent"
   system_prompt  = "You are a friendly customer-support agent. Be concise."
   model_id       = archestra_model.llama3.id
-  llm_api_key_id = archestra_model_provider.ollama_vault.id
+  llm_api_key_id = archestra_model_provider.ollama.id
 }
 
 resource "archestra_agent" "support_batch" {
@@ -15,7 +15,7 @@ resource "archestra_agent" "support_batch" {
   description    = "Agent with every tool from a selected MCP server"
   system_prompt  = "Answer support questions using the filesystem tools."
   model_id       = archestra_model.llama3.id
-  llm_api_key_id = archestra_model_provider.ollama_vault.id
+  llm_api_key_id = archestra_model_provider.ollama.id
 }
 
 resource "archestra_agent" "intake" {
@@ -23,7 +23,7 @@ resource "archestra_agent" "intake" {
   description    = "Email-triggered intake agent — routes incoming customer emails into chats"
   system_prompt  = "Triage incoming customer emails into the right team."
   model_id       = archestra_model.llama3.id
-  llm_api_key_id = archestra_model_provider.ollama_vault.id
+  llm_api_key_id = archestra_model_provider.ollama.id
 
   incoming_email_enabled        = true
   incoming_email_security_mode  = "internal"

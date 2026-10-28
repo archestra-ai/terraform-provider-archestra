@@ -2,7 +2,6 @@ package provider
 
 import (
 	"fmt"
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
@@ -87,13 +86,6 @@ resource "archestra_credential" "test" {
 }
 
 func testAccRuntimeCredentialOrgConfig(key, value string) string {
-	if os.Getenv("ARCHESTRA_READONLY_VAULT_ENABLED") == "true" {
-		if value == "secret-two" {
-			value = "secret/data/test/ollama#api_key_rotated"
-		} else {
-			value = "secret/data/test/ollama#api_key"
-		}
-	}
 	return fmt.Sprintf(`
 resource "archestra_credential" "org" {
   key                = %q

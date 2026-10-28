@@ -87,7 +87,7 @@ func TestAccGitPluginResource(t *testing.T) {
 		}
 		return nil
 	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: gitPluginFixtureConfig("tf-pinned-plugin", "Initial", false, `labels=[{key="purpose",value="source"}]`, true), Check: resource.ComposeTestCheckFunc(capture, resource.TestCheckResourceAttr("archestra_plugin.test", "enabled", "false"), resource.TestCheckResourceAttr("archestra_plugin.test", "source_kind", "github"), resource.TestCheckResourceAttr("archestra_plugin.test", "files.%", "2"), resource.TestCheckResourceAttr("archestra_plugin.test", "git_source.commit_sha", gitPluginFixtureSHA))},
 		{ResourceName: "archestra_plugin.test", ImportState: true, ImportStateVerify: true},
 		{PreConfig: func() { phase.Store(true); sourcePhase.Store(true) }, Config: gitPluginFixtureConfig("tf-renamed-source-plugin", "Metadata only", true, `labels=[{key="purpose",value="source"}]`, true), Check: preserved},
@@ -146,7 +146,7 @@ func TestAccGitPluginRecoversFollowupFailure(t *testing.T) {
 		t.Setenv("ARCHESTRA_BASE_URL", server.URL)
 	}
 	config := gitPluginFixtureConfig("tf-retry-source-plugin", "", false, `tracking_ref="`+gitPluginFixtureSHA+`"`, true)
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config, ExpectError: regexp.MustCompile("Update Failed")},
 		{Config: config, Check: func(s *terraform.State) error {
 			v := s.RootModule().Resources["archestra_plugin.test"].Primary
@@ -211,7 +211,7 @@ func TestAccPluginSourceKindReplacement(t *testing.T) {
 		id = next
 		return nil
 	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: pluginFixtureConfig("tf-source-mode", "", true, false), Check: capture},
 		{Config: gitPluginFixtureConfig("tf-source-mode", "", true, "", true), Check: changed, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_plugin.test", plancheck.ResourceActionDestroyBeforeCreate)}}},
 		{Config: pluginFixtureConfig("tf-source-mode", "", true, false), Check: changed, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_plugin.test", plancheck.ResourceActionDestroyBeforeCreate)}}},

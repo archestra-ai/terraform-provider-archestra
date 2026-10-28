@@ -98,6 +98,7 @@ resource "archestra_mcp_gateway" "engineering" {
 - `id` (String) MCP gateway identifier
 - `last_used_at` (String) Server-reported last used at.
 - `latest_version` (Number) Server-reported latest version.
+- `model_pool_id` (String) Server-reported model pool identifier on the shared agent record.
 
 <a id="nestedatt--github_actions_access"></a>
 ### Nested Schema for `github_actions_access`
@@ -105,8 +106,13 @@ resource "archestra_mcp_gateway" "engineering" {
 Required:
 
 - `github_app_credential_key` (String) Credential key of an accessible GitHub App.
-- `repositories` (List of String) Allowed owner/repository names.
+- `repositories` (List of String) Allowed owner/repository names or owner/* patterns.
 - `workflows` (List of String) Trusted workflow references as owner/repo/.github/workflows/file.yml@refs/heads/branch, refs/tags/tag or a full commit SHA.
+
+Optional:
+
+- `act_as` (String) Account used by a run: author (default) or the actor who started it.
+- `resolve_review_threads` (Boolean) Whether repository tokens can resolve review threads.
 
 
 <a id="nestedatt--labels"></a>

@@ -35,6 +35,7 @@ type AgentResource struct {
 // AgentResourceModel is the schema for an internal Archestra agent (chat agent
 // with prompts, knowledge sources, optional email triggers, etc.).
 type AgentResourceModel struct {
+	ModelPoolID                    types.String `tfsdk:"model_pool_id"`
 	Tools                          types.Set    `tfsdk:"tools"`
 	ExcludedToolIDs                types.Set    `tfsdk:"excluded_tool_ids"`
 	Hooks                          types.Set    `tfsdk:"hooks"`
@@ -126,7 +127,7 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				MarkdownDescription: "Model ID used for LLM calls",
 			},
 			"llm_api_key_id": schema.StringAttribute{
-				Optional:            true,
+				Optional: true, Computed: true,
 				MarkdownDescription: "ID of the LLM provider API key the agent should use",
 			},
 			"knowledge_base_ids": schema.ListAttribute{
@@ -195,7 +196,7 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				},
 			},
 			"model_id": schema.StringAttribute{
-				Optional:            true,
+				Optional: true, Computed: true,
 				MarkdownDescription: "Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`",
 			},
 			"fast_model_id": schema.StringAttribute{
@@ -567,6 +568,7 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 	} else if !data.MissingCredentialBehavior.IsNull() {
 		data.MissingCredentialBehavior = types.StringNull()
 	}
+	optionalUUIDFromAPI(&data.ModelPoolID, resp.ModelPoolID)
 	optionalUUIDFromAPI(&data.ModelId, resp.ModelId)
 	optionalUUIDFromAPI(&data.FastModelId, resp.FastModelId)
 	optionalUUIDFromAPI(&data.SmartModelId, resp.SmartModelId)
@@ -623,6 +625,7 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 //     equal, emit when changed" lines up with that exactly.
 var agentAttrSpec = append(append(agentRelationshipAttrSpecs(), AttrSpec{TFName: "hooks", Kind: Synthetic}, AttrSpec{TFName: "tools", Kind: Synthetic}, AttrSpec{TFName: "excluded_tool_ids", Kind: Synthetic}), []AttrSpec{
 	initialGrantsAttrSpec,
+	{TFName: "model_pool_id", JSONName: "modelPoolId", Kind: Scalar},
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar, OmitOnNull: true},
 

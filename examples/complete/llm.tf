@@ -1,8 +1,7 @@
-resource "archestra_model_provider" "ollama_vault" {
-  name              = "Local Ollama"
-  llm_provider      = "ollama"
-  vault_secret_path = "secret/data/test/ollama"
-  vault_secret_key  = "api_key"
+resource "archestra_model_provider" "ollama" {
+  name         = "Local Ollama"
+  llm_provider = "ollama"
+  api_key      = "unused"
 }
 
 resource "archestra_model" "llama3" {

@@ -18,10 +18,9 @@ resource "archestra_team" "main" {
 }
 
 resource "archestra_model_provider" "ollama" {
-  name              = "Basic-Demo Ollama"
-  llm_provider      = "ollama"
-  vault_secret_path = "secret/data/test/ollama"
-  vault_secret_key  = "api_key"
+  name         = "Basic-Demo Ollama"
+  llm_provider = "ollama"
+  api_key      = "unused"
 }
 
 resource "archestra_mcp_registry_entry" "memory" {

@@ -43,7 +43,6 @@ type TeamDescendantModel struct {
 
 type TeamResourceModel struct {
 	ExternalGroupIDs          types.Set         `tfsdk:"external_group_ids"`
-	VaultFolder               types.String      `tfsdk:"vault_folder"`
 	ParentID                  types.String      `tfsdk:"parent_id"`
 	Labels                    []AgentLabelModel `tfsdk:"labels"`
 	CreatedByServiceAccountID types.String      `tfsdk:"created_by_service_account_id"`
@@ -64,7 +63,7 @@ func (r *TeamResource) Metadata(ctx context.Context, req resource.MetadataReques
 
 func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Version:             1,
+		Version:             2,
 		MarkdownDescription: "Archestra team with member assignments.",
 
 		Attributes: map[string]schema.Attribute{

@@ -1,6 +1,5 @@
 # Vend an Archestra virtual key through Terraform and store it in a team's
-# Vault path. Archestra only reads from Vault; the HashiCorp Vault provider
-# performs the write with the Vault token configured for Terraform.
+# Vault path through the HashiCorp Vault provider.
 
 terraform {
   required_providers {
@@ -23,17 +22,20 @@ variable "team_name" {
   default = "engineering"
 }
 
+variable "openai_api_key" {
+  type      = string
+  sensitive = true
+}
+
 resource "archestra_team" "this" {
   name = var.team_name
 }
 
-# The upstream provider credential stays in Vault. Archestra reads it from
-# secret/data/llm/openai at request time and never writes to that path.
+# Supply the upstream provider credential through a sensitive variable.
 resource "archestra_model_provider" "openai" {
-  name              = "OpenAI (Vault)"
-  llm_provider      = "openai"
-  vault_secret_path = "secret/data/llm/openai"
-  vault_secret_key  = "api_key"
+  name         = "OpenAI"
+  llm_provider = "openai"
+  api_key      = var.openai_api_key
 
   # Organization-owned. A service account cannot own a personal provider key,
   # so this is required when Terraform authenticates as one.
