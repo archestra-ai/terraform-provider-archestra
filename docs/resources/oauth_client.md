@@ -41,6 +41,7 @@ resource "archestra_oauth_client" "example" {
 - `grant_type` (String) Immutable OAuth grant type.
 - `include_future_providers` (Boolean) Use current and future shared primary provider keys with explicit mappings as overrides.
 - `labels` (Attributes Set) Credential labels; an empty set clears them. (see [below for nested schema](#nestedatt--labels))
+- `model_pool_ids` (Set of String) Model pools allowed for a client-credentials client; an empty set clears grants.
 - `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `provider_api_keys` (Attributes Set) Explicit provider-to-key mappings; an empty set clears explicit mappings. (see [below for nested schema](#nestedatt--provider_api_keys))
 - `redirect_uris` (Set of String) Authorization-code redirect URIs; an empty set clears them when the selected mode permits it.

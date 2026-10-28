@@ -6,10 +6,8 @@
 
 // Generated output is cleaned by the Makefile before go generate enumerates packages.
 
-// NOTE: docs scraper disabled — Archestra TF docs aren't pulled into .work yet.
-// Re-enable once we wire pull-docs to copy/symlink ../docs/resources into
-// .work/archestra-ai/archestra/docs/resources, or run the scraper directly
-// against ../docs/resources.
+// Reuse resource descriptions and HCL examples; field docs come from the schema.
+//go:generate go run github.com/crossplane/upjet/v2/cmd/scraper --name archestra-ai/archestra --resource-prefix archestra --field-xpath //ul/li/code[false()] --repo ../../docs/resources --out ../config/provider-metadata.yaml
 
 // Run Upjet generator
 //go:generate go run ../cmd/generator/main.go ..
@@ -22,6 +20,9 @@
 
 // Preserve unmanaged reference collections after angryjet emits resolvers.
 //go:generate go run ../cmd/generator/main.go --references ..
+
+// Keep the package README in sync with the quick start.
+//go:generate python3 ../hack/generate-readme.py
 
 package apis
 

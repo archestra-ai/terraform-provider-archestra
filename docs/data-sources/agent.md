@@ -72,6 +72,7 @@ output "support_tools" {
 - `llm_provider_requires_per_user_credential` (Boolean) Server-reported llm provider requires per user credential.
 - `missing_credential_behavior` (String) What happens when a caller lacks a connection the agent's tools need: `allow` (fail only at invocation, default), `warn` (surface missing connections up front), or `block` (agent unusable until connected)
 - `model_id` (String) Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`
+- `model_pool_id` (String) Model pool used for the agent; the API resolves its model and provider key.
 - `permissions` (Attributes Set) Current additional direct sharing grants; owner and inherited access are excluded. (see [below for nested schema](#nestedatt--permissions))
 - `remote_agent_ids` (Set of String) UUIDs of assigned remote-agent registrations.
 - `resolved_llm_model_name` (String) Server-reported resolved llm model name.

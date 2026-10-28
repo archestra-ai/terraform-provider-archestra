@@ -102,7 +102,7 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 					stringplanmodifier.RequiresReplace(),
 				},
 				Validators: []validator.String{
-					stringvalidator.OneOf("anthropic", "archestra", "azure", "bedrock", "cerebras", "cohere", "deepseek", "gemini", "github-copilot", "groq", "jev", "kimi", "microsoft-365-copilot", "minimax", "mistral", "ollama", "ollama-native", "openai", "openrouter", "perplexity", "vllm", "voyage", "xai", "zhipuai"),
+					stringvalidator.OneOf("anthropic", "archestra", "azure", "bedrock", "cerebras", "cohere", "deepseek", "gemini", "github-copilot", "groq", "jev", "kimi", "kimi-code", "microsoft-365-copilot", "minimax", "mistral", "ollama", "ollama-native", "openai", "openrouter", "perplexity", "vllm", "voyage", "xai", "zhipuai"),
 				},
 			},
 			"is_primary": schema.BoolAttribute{

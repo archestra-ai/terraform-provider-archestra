@@ -40,6 +40,7 @@ func preserveManagedNoopPlan(req resource.ModifyPlanRequest, resp *resource.Modi
 	resp.Plan.Raw = req.State.Raw
 }
 
-func (r *AgentResource) ModifyPlan(_ context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+func (r *AgentResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
 	preserveManagedNoopPlan(req, resp)
+	planAgentModelPool(ctx, req, resp)
 }

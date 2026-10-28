@@ -79,7 +79,7 @@ runs:
       env:
         ARCHESTRA_VERSION: ${{ inputs.archestra-version }}
       run: |
-        image="europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/mcp-server-base:${ARCHESTRA_VERSION}"
+        image=$(python3 scripts/mcp-server-base-image.py "$ARCHESTRA_VERSION")
         for node in $(kind get nodes --name archestra-ci-cluster); do
           docker exec "$node" crictl pull "$image"
         done

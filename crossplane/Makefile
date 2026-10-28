@@ -10,8 +10,7 @@ export TERRAFORM_VERSION ?= 1.5.7
 # licensed under BSL, which is not permitted.
 TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAFORM_VERSION)\n1.6" | sort -V | head -n1`" ] && echo 1 || echo 0)
 
-# The Archestra TF provider isn't on the Terraform registry. Codegen dumps the
-# schema from a locally-built binary (hack/generate-schema.sh); the provider
+# Codegen dumps the schema from a locally-built binary (hack/generate-schema.sh); the provider
 # image bundles the native provider from the published GitHub release.
 export TERRAFORM_PROVIDER_SOURCE ?= archestra-ai/archestra
 export TERRAFORM_PROVIDER_VERSION ?= 1.0.0
@@ -79,6 +78,8 @@ XPKG_REG_ORGS ?= ghcr.io/crossplane-contrib
 # inferred.
 XPKG_REG_ORGS_NO_PROMOTE ?= ghcr.io/crossplane-contrib
 XPKGS = $(PROJECT_NAME)
+# Upjet converts local Terraform documentation examples for both API scopes.
+XPKG_EXAMPLES_DIR = $(ROOT_DIR)/examples-generated
 -include build/makelib/xpkg.mk
 
 # ====================================================================================
@@ -132,8 +133,7 @@ $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM) $(TF_PROVIDER_BIN)
 	@TERRAFORM="$(abspath $(TERRAFORM))" ./hack/generate-schema.sh "$(TF_PROVIDER_BIN)" > $(TERRAFORM_PROVIDER_SCHEMA)
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 
-# `pull-docs` would clone the public TF provider repo for example HCL.
-# We have docs locally; no-op this for now.
+# The scraper reads ../docs/resources directly; no clone is needed.
 pull-docs:
 	@true
 

@@ -76,7 +76,7 @@ class LifecyclePlannerTests(unittest.TestCase):
                     self.assertEqual({kind + "Sharing" for kind in kinds}, ci.lifecycle.CASE_RESOURCES[case])
                 else:
                     self.assertEqual(len(selected), 1, (case, scope))
-        self.assertEqual(set(serial[0]["cases"]), {"organization", "organization-defaults", "llm", "github-registrations"})
+        self.assertEqual(set(serial[0]["cases"]), {"organization", "organization-defaults", "llm", "github-registrations", "model-pools"})
         tasks = serial + parallel
         merged = ci.merge_evidence(cases, tasks, {task["name"]: (0, proof(task)) for task in tasks})
         self.assertEqual(merged["outcome"], "passed")

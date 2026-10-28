@@ -30,6 +30,7 @@ CASE_RESOURCES = {
     'repository-plugins': {'PluginGitSource'}, 'manual-plugins': {'PluginFiles'},
     'github-registrations': {'GitHubPAT', 'GitHubApp'},
     'api-compatibility': {'APICompatibilityConstraint'},
+    'model-pools': {'AgentModelPool', 'OAuthClientModelPools'},
     'routing-credentials': {'VirtualKey', 'OAuthClient'}, 'remote-agents': {'RemoteAgent'},
     'extensions': {'Directory', 'ServiceAccount', 'ServiceAccountAPIKey', 'GatewaySubagentControl', 'InstallationControls'},
     'core': {'Agent', 'Environment', 'Team', 'Gateway', 'Project', 'KnowledgeBase', 'Role'},
@@ -279,7 +280,7 @@ def main():
             raise RuntimeError('Unable to read the isolated test organization')
         for scope in args.scopes:
             scope_cases = set(args.cases) - completed_cases(results, scope)
-            if scope_cases & {'llm', 'routing-credentials'}:
+            if scope_cases & {'llm', 'routing-credentials', 'model-pools'}:
                 secret, model_fixture = model_provider_fixture(args.namespace, scope, run)
                 kube('apply', '-f', '-', payload=secret)
                 leases.append((['-n', args.namespace], 'secrets', secret['metadata']['name']))
@@ -1409,6 +1410,71 @@ def main():
                     raise RuntimeError('Installation survived deletion')
                 delete(catalog)
                 record('InstallationControls', scope, create='passed', personal_user='passed', update='passed', drift_repair='passed', identity_preserved=True, delete='passed')
+
+            if 'model-pools' in scope_cases:
+                keys, pools = [], []
+                for index in range(2):
+                    key, key_id, _ = create(scope, 'llm', 'ModelProvider', 'providerkeys',
+                        {'name': 'cp-pool-key-' + str(index) + '-' + run + '-' + scope,
+                         'llmProvider': 'ollama', 'shared': True, 'baseUrl': args.llm_base_url,
+                         'permissions': [{'subjectType': 'role', 'subjectId': 'admin', 'actions': ['read', 'use']}],
+                         **model_fixture}, '-pool-' + str(index))
+                    keys.append((key, key_id))
+                    status, pool = api('/api/model-pools',
+                        {'name': 'cp-pool-' + str(index) + '-' + run + '-' + scope,
+                         'members': [{'providerApiKeyId': key_id, 'modelId': 'llama3'}]}, 'POST')
+                    if status != 200 or not pool.get('id'):
+                        raise RuntimeError('Unable to create owned model pool: HTTP ' + str(status))
+                    fixture = ([], 'api-fixture', '/api/model-pools/' + pool['id'])
+                    leases.append(fixture)
+                    pools.append((fixture, pool['id']))
+                agent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
+                    {'name': 'cp-pool-agent-' + run + '-' + scope, 'modelPoolId': pools[0][1]}, '-pool')
+                oauth, oauth_id, _ = create(scope, 'credential', 'OAuthClient', 'oauthclients',
+                    {'name': 'cp-pool-client-' + run + '-' + scope, 'scopes': ['llm:proxy'],
+                     'modelPoolIds': [pools[0][1]],
+                     'providerApiKeys': [{'provider': 'ollama', 'providerApiKeyId': keys[0][1]}]}, '-pool')
+                agent_path = '/api/agents/' + agent_id
+                def pool_oauth_value():
+                    code, page = api('/api/oauth-clients?limit=100')
+                    if code != 200:
+                        raise RuntimeError('Unable to read managed pool OAuth client metadata')
+                    return next((item for item in page['data'] if item['id'] == oauth_id), None)
+                def pooled_agent_matches(pool_id, key_id):
+                    code, value = api(agent_path)
+                    return code == 200 and value['modelPoolId'] == pool_id and value['llmApiKeyId'] == key_id
+                wait('Agent model-pool anchors', lambda: pooled_agent_matches(pools[0][1], keys[0][1]))
+                patch(agent, {'modelPoolId': pools[1][1]})
+                patch(oauth, {'modelPoolIds': [pools[1][1]]})
+                wait('Agent model-pool switch', lambda: condition(agent, 'True') and pooled_agent_matches(pools[1][1], keys[1][1]))
+                wait('OAuth model-pool grant switch', lambda: condition(oauth, 'True') and pool_oauth_value()['modelPoolIds'] == [pools[1][1]])
+                desired = observation(agent)['spec']['forProvider']
+                if desired.get('modelId') or desired.get('llmApiKeyId'):
+                    raise RuntimeError('Pool-derived anchors were late-initialized into conflicting desired configuration')
+                patch(agent, {'name': 'cp-pool-renamed-' + run + '-' + scope})
+                wait('Pool metadata preserves anchors', lambda: condition(agent, 'True') and pooled_agent_matches(pools[1][1], keys[1][1])
+                     and api(agent_path)[1]['name'] == 'cp-pool-renamed-' + run + '-' + scope)
+                patch(agent, {'modelPoolId': None})
+                patch(oauth, {'modelPoolIds': []})
+                wait('Agent model-pool clear', lambda: condition(agent, 'True') and pooled_agent_matches(None, None)
+                     and api(agent_path)[1]['modelId'] is None)
+                wait('OAuth model-pool grant clear', lambda: condition(oauth, 'True') and pool_oauth_value()['modelPoolIds'] == [])
+                for lease, identifier in ((agent, agent_id), (oauth, oauth_id)):
+                    if observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != identifier:
+                        raise RuntimeError('Model-pool update replaced a managed identity')
+                    delete(lease)
+                if api(agent_path)[0] != 404 or pool_oauth_value() is not None:
+                    raise RuntimeError('Model-pool managed resources survived deletion')
+                for fixture, _ in pools:
+                    delete(fixture)
+                for lease, key_id in keys:
+                    delete(lease)
+                    if api('/api/llm-provider-api-keys/' + key_id)[0] != 404:
+                        raise RuntimeError('Owned model-pool provider key survived deletion')
+                record('AgentModelPool', scope, create='passed', source_switch='passed', metadata_preserves_anchors='passed',
+                       derived_anchors_not_initialized=True, clear='passed', identity_preserved=True, delete='passed')
+                record('OAuthClientModelPools', scope, create='passed', grants_update='passed', grants_clear='passed',
+                       identity_preserved=True, delete='passed')
 
             if 'llm' in scope_cases:
                 secret_name = 'cp-proof-headers-' + scope + '-' + run

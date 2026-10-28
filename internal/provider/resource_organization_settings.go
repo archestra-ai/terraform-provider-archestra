@@ -40,6 +40,7 @@ type OrganizationSettingsResource struct {
 }
 
 type OrganizationSettingsResourceModel struct {
+	PlaywrightMcpEnabled                     types.Bool           `tfsdk:"playwright_mcp_enabled"`
 	EnvironmentDefaults                      types.Object         `tfsdk:"environment_defaults"`
 	DefaultUserLimits                        types.Map            `tfsdk:"default_user_limits"`
 	DefaultPermissions                       types.Object         `tfsdk:"default_permissions"`

@@ -74,7 +74,7 @@ jobs:
             scopes: namespaced
           - shard: catalog
             mcp: true
-            cases: catalog tools limit llm credential sharing-defaults
+            cases: catalog tools limit llm credential sharing-defaults model-pools
           - shard: organization
             mcp: false
             cases: organization organization-defaults
@@ -151,7 +151,7 @@ jobs:
           kubeconfig=$(mktemp)
           trap 'rm -f "$kubeconfig"' EXIT
           kind get kubeconfig --name archestra-ci-cluster > "$kubeconfig"
-          image="europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/mcp-server-base:${ARCHESTRA_VERSION}"
+          image=$(python3 scripts/mcp-server-base-image.py "$ARCHESTRA_VERSION")
           fixture_images=$(kubectl --kubeconfig="$kubeconfig" create --dry-run=client -f scripts/k8s/provider-mcp-mock.yaml -o jsonpath='{..image}')
           read -ra images <<< "$image $fixture_images"
           for node in $(kind get nodes --name archestra-ci-cluster); do

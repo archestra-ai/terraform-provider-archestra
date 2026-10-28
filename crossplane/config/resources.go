@@ -62,7 +62,7 @@ func ConfigureResources(p *ujconfig.Provider) {
 	p.AddResourceConfigurator("archestra_oauth_client", func(r *ujconfig.Resource) {
 		r.ShortGroup = credentialGroup
 		r.Kind = "OAuthClient"
-		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "service_account_id", "billing_team_id", "spend_cap", "provider_api_keys", "labels", "allowed_gateway_ids", "redirect_uris")
+		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "service_account_id", "billing_team_id", "spend_cap", "provider_api_keys", "labels", "allowed_gateway_ids", "redirect_uris", "model_pool_ids")
 		r.References["service_account_id"] = ujconfig.Reference{TerraformName: "archestra_service_account"}
 		r.References["billing_team_id"] = ujconfig.Reference{TerraformName: "archestra_team"}
 		r.References["provider_api_keys.provider_api_key_id"] = ujconfig.Reference{TerraformName: "archestra_model_provider"}
@@ -116,7 +116,7 @@ func ConfigureResources(p *ujconfig.Provider) {
 	})
 	p.AddResourceConfigurator("archestra_environment", func(r *ujconfig.Resource) { r.ShortGroup = "environment"; r.Kind = "Environment" })
 	p.AddResourceConfigurator("archestra_agent", func(r *ujconfig.Resource) {
-		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "subagent_ids", "remote_agent_ids", "excluded_subagent_ids", "excluded_connector_ids", "skills", "hooks", "tools", "excluded_tool_ids")
+		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "subagent_ids", "remote_agent_ids", "excluded_subagent_ids", "excluded_connector_ids", "skills", "hooks", "tools", "excluded_tool_ids", "model_pool_id", "model_id", "llm_api_key_id")
 		r.References["tools.mcp_server_id"] = ujconfig.Reference{TerraformName: "archestra_mcp_server"}
 		r.References["subagent_ids"] = ujconfig.Reference{TerraformName: "archestra_agent"}
 		r.References["excluded_subagent_ids"] = ujconfig.Reference{TerraformName: "archestra_agent"}

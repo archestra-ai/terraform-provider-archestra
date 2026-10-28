@@ -445,6 +445,12 @@ const (
 	UpdateAgentJSONBodyBuiltInAgentConfig3NameAppRuntimeLlmAgent UpdateAgentJSONBodyBuiltInAgentConfig3Name = "app-runtime-llm-agent"
 )
 
+// Defines values for UpdateAgentJSONBodyGithubActionsAccessActAs.
+const (
+	Actor  UpdateAgentJSONBodyGithubActionsAccessActAs = "actor"
+	Author UpdateAgentJSONBodyGithubActionsAccessActAs = "author"
+)
+
 // Defines values for UpdateAgentJSONBodyIncomingEmailSecurityMode.
 const (
 	UpdateAgentJSONBodyIncomingEmailSecurityModeInternal UpdateAgentJSONBodyIncomingEmailSecurityMode = "internal"
@@ -1237,6 +1243,7 @@ const (
 	CreateLlmProviderApiKeyJSONBodyProviderGroq                CreateLlmProviderApiKeyJSONBodyProvider = "groq"
 	CreateLlmProviderApiKeyJSONBodyProviderJev                 CreateLlmProviderApiKeyJSONBodyProvider = "jev"
 	CreateLlmProviderApiKeyJSONBodyProviderKimi                CreateLlmProviderApiKeyJSONBodyProvider = "kimi"
+	CreateLlmProviderApiKeyJSONBodyProviderKimiCode            CreateLlmProviderApiKeyJSONBodyProvider = "kimi-code"
 	CreateLlmProviderApiKeyJSONBodyProviderMicrosoft365Copilot CreateLlmProviderApiKeyJSONBodyProvider = "microsoft-365-copilot"
 	CreateLlmProviderApiKeyJSONBodyProviderMinimax             CreateLlmProviderApiKeyJSONBodyProvider = "minimax"
 	CreateLlmProviderApiKeyJSONBodyProviderMistral             CreateLlmProviderApiKeyJSONBodyProvider = "mistral"
@@ -1311,6 +1318,7 @@ const (
 	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderGroq                CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "groq"
 	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderJev                 CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "jev"
 	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderKimi                CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "kimi"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderKimiCode            CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "kimi-code"
 	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderMicrosoft365Copilot CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "microsoft-365-copilot"
 	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderMinimax             CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "minimax"
 	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderMistral             CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "mistral"
@@ -1358,6 +1366,7 @@ const (
 	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderGroq                UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "groq"
 	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderJev                 UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "jev"
 	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderKimi                UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "kimi"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderKimiCode            UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "kimi-code"
 	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderMicrosoft365Copilot UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "microsoft-365-copilot"
 	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderMinimax             UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "minimax"
 	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderMistral             UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "mistral"
@@ -1489,6 +1498,7 @@ const (
 	CreateOauthClientJSONBodyProviderApiKeysProviderGroq                CreateOauthClientJSONBodyProviderApiKeysProvider = "groq"
 	CreateOauthClientJSONBodyProviderApiKeysProviderJev                 CreateOauthClientJSONBodyProviderApiKeysProvider = "jev"
 	CreateOauthClientJSONBodyProviderApiKeysProviderKimi                CreateOauthClientJSONBodyProviderApiKeysProvider = "kimi"
+	CreateOauthClientJSONBodyProviderApiKeysProviderKimiCode            CreateOauthClientJSONBodyProviderApiKeysProvider = "kimi-code"
 	CreateOauthClientJSONBodyProviderApiKeysProviderMicrosoft365Copilot CreateOauthClientJSONBodyProviderApiKeysProvider = "microsoft-365-copilot"
 	CreateOauthClientJSONBodyProviderApiKeysProviderMinimax             CreateOauthClientJSONBodyProviderApiKeysProvider = "minimax"
 	CreateOauthClientJSONBodyProviderApiKeysProviderMistral             CreateOauthClientJSONBodyProviderApiKeysProvider = "mistral"
@@ -1543,6 +1553,7 @@ const (
 	UpdateOauthClientJSONBodyProviderApiKeysProviderGroq                UpdateOauthClientJSONBodyProviderApiKeysProvider = "groq"
 	UpdateOauthClientJSONBodyProviderApiKeysProviderJev                 UpdateOauthClientJSONBodyProviderApiKeysProvider = "jev"
 	UpdateOauthClientJSONBodyProviderApiKeysProviderKimi                UpdateOauthClientJSONBodyProviderApiKeysProvider = "kimi"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderKimiCode            UpdateOauthClientJSONBodyProviderApiKeysProvider = "kimi-code"
 	UpdateOauthClientJSONBodyProviderApiKeysProviderMicrosoft365Copilot UpdateOauthClientJSONBodyProviderApiKeysProvider = "microsoft-365-copilot"
 	UpdateOauthClientJSONBodyProviderApiKeysProviderMinimax             UpdateOauthClientJSONBodyProviderApiKeysProvider = "minimax"
 	UpdateOauthClientJSONBodyProviderApiKeysProviderMistral             UpdateOauthClientJSONBodyProviderApiKeysProvider = "mistral"
@@ -1634,6 +1645,7 @@ const (
 	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderGroq                UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "groq"
 	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderJev                 UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "jev"
 	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderKimi                UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "kimi"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderKimiCode            UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "kimi-code"
 	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderMicrosoft365Copilot UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "microsoft-365-copilot"
 	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderMinimax             UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "minimax"
 	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderMistral             UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "mistral"
@@ -2623,6 +2635,7 @@ type CreateAgentJSONBody struct {
 	LlmModel                  *string                                       `json:"llmModel"`
 	MissingCredentialBehavior *CreateAgentJSONBodyMissingCredentialBehavior `json:"missingCredentialBehavior,omitempty"`
 	ModelId                   *openapi_types.UUID                           `json:"modelId"`
+	ModelPoolId               *openapi_types.UUID                           `json:"modelPoolId"`
 	Name                      string                                        `json:"name"`
 	OrganizationId            *string                                       `json:"organizationId,omitempty"`
 	PassthroughHeaders        *[]string                                     `json:"passthroughHeaders"`
@@ -2926,15 +2939,22 @@ type AssignToolToAgentJSONBodyCredentialResolutionMode string
 
 // UpdateAgentJSONBody defines parameters for UpdateAgent.
 type UpdateAgentJSONBody struct {
-	AccessAllSubagents         *bool                                         `json:"accessAllSubagents,omitempty"`
-	AccessAllTools             *bool                                         `json:"accessAllTools,omitempty"`
-	AgentType                  *UpdateAgentJSONBodyAgentType                 `json:"agentType,omitempty"`
-	BuiltInAgentConfig         *UpdateAgentJSONBody_BuiltInAgentConfig       `json:"builtInAgentConfig"`
-	ConnectorIds               *[]string                                     `json:"connectorIds,omitempty"`
-	DeletedAt                  interface{}                                   `json:"deletedAt"`
-	Description                *string                                       `json:"description"`
-	EnvironmentId              *openapi_types.UUID                           `json:"environmentId"`
-	FastModelId                *openapi_types.UUID                           `json:"fastModelId"`
+	AccessAllSubagents  *bool                                   `json:"accessAllSubagents,omitempty"`
+	AccessAllTools      *bool                                   `json:"accessAllTools,omitempty"`
+	AgentType           *UpdateAgentJSONBodyAgentType           `json:"agentType,omitempty"`
+	BuiltInAgentConfig  *UpdateAgentJSONBody_BuiltInAgentConfig `json:"builtInAgentConfig"`
+	ConnectorIds        *[]string                               `json:"connectorIds,omitempty"`
+	DeletedAt           interface{}                             `json:"deletedAt"`
+	Description         *string                                 `json:"description"`
+	EnvironmentId       *openapi_types.UUID                     `json:"environmentId"`
+	FastModelId         *openapi_types.UUID                     `json:"fastModelId"`
+	GithubActionsAccess *struct {
+		ActAs                  *UpdateAgentJSONBodyGithubActionsAccessActAs `json:"actAs,omitempty"`
+		GithubAppCredentialKey string                                       `json:"githubAppCredentialKey"`
+		Repositories           []string                                     `json:"repositories"`
+		ResolveReviewThreads   *bool                                        `json:"resolveReviewThreads,omitempty"`
+		Workflows              []string                                     `json:"workflows"`
+	} `json:"githubActionsAccess"`
 	Icon                       *string                                       `json:"icon"`
 	IdentityProviderId         *string                                       `json:"identityProviderId"`
 	IncomingEmailAllowedDomain *string                                       `json:"incomingEmailAllowedDomain"`
@@ -2953,6 +2973,7 @@ type UpdateAgentJSONBody struct {
 	LlmModel                  *string                                       `json:"llmModel"`
 	MissingCredentialBehavior *UpdateAgentJSONBodyMissingCredentialBehavior `json:"missingCredentialBehavior,omitempty"`
 	ModelId                   *openapi_types.UUID                           `json:"modelId"`
+	ModelPoolId               *openapi_types.UUID                           `json:"modelPoolId"`
 	Name                      *string                                       `json:"name,omitempty"`
 	OrganizationId            *string                                       `json:"organizationId,omitempty"`
 	PassthroughHeaders        *[]string                                     `json:"passthroughHeaders"`
@@ -3042,6 +3063,9 @@ type UpdateAgentJSONBodyBuiltInAgentConfig3Name string
 type UpdateAgentJSONBody_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
+
+// UpdateAgentJSONBodyGithubActionsAccessActAs defines parameters for UpdateAgent.
+type UpdateAgentJSONBodyGithubActionsAccessActAs string
 
 // UpdateAgentJSONBodyIncomingEmailSecurityMode defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyIncomingEmailSecurityMode string
@@ -4473,6 +4497,7 @@ type CreateLimitJSONBody struct {
 	LimitValue    int                          `json:"limitValue"`
 	McpServerName *string                      `json:"mcpServerName"`
 	Model         *[]string                    `json:"model"`
+	Reason        *string                      `json:"reason"`
 	ToolName      *string                      `json:"toolName"`
 }
 
@@ -4499,6 +4524,7 @@ type UpdateLimitJSONBody struct {
 	LimitValue    *int                          `json:"limitValue,omitempty"`
 	McpServerName *string                       `json:"mcpServerName"`
 	Model         *[]string                     `json:"model"`
+	Reason        *string                       `json:"reason"`
 	ToolName      *string                       `json:"toolName"`
 }
 
@@ -4695,8 +4721,9 @@ type CreateVirtualApiKeyJSONBody struct {
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 	} `json:"labels,omitempty"`
-	Name            string  `json:"name"`
-	OwnerId         *string `json:"ownerId,omitempty"`
+	ModelPoolIds    *[]openapi_types.UUID `json:"modelPoolIds,omitempty"`
+	Name            string                `json:"name"`
+	OwnerId         *string               `json:"ownerId,omitempty"`
 	ProviderApiKeys *[]struct {
 		Provider         CreateVirtualApiKeyJSONBodyProviderApiKeysProvider `json:"provider"`
 		ProviderApiKeyId openapi_types.UUID                                 `json:"providerApiKeyId"`
@@ -4784,7 +4811,8 @@ type UpdateVirtualApiKeyJSONBody struct {
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 	} `json:"labels,omitempty"`
-	Name            string `json:"name"`
+	ModelPoolIds    *[]openapi_types.UUID `json:"modelPoolIds,omitempty"`
+	Name            string                `json:"name"`
 	ProviderApiKeys *[]struct {
 		Provider         UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider `json:"provider"`
 		ProviderApiKeyId openapi_types.UUID                                 `json:"providerApiKeyId"`
@@ -4922,7 +4950,10 @@ type CreateOauthClientJSONBody struct {
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 	} `json:"labels,omitempty"`
-	Name            string `json:"name"`
+
+	// ModelPoolIds Model pools the client may call by name without mapping one of their members. Omit on update to keep them. Only applies to client_credentials clients.
+	ModelPoolIds    *[]openapi_types.UUID `json:"modelPoolIds,omitempty"`
+	Name            string                `json:"name"`
 	ProviderApiKeys *[]struct {
 		Provider         CreateOauthClientJSONBodyProviderApiKeysProvider `json:"provider"`
 		ProviderApiKeyId openapi_types.UUID                               `json:"providerApiKeyId"`
@@ -5024,7 +5055,10 @@ type UpdateOauthClientJSONBody struct {
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 	} `json:"labels,omitempty"`
-	Name            string `json:"name"`
+
+	// ModelPoolIds Model pools the client may call by name without mapping one of their members. Omit on update to keep them. Only applies to client_credentials clients.
+	ModelPoolIds    *[]openapi_types.UUID `json:"modelPoolIds,omitempty"`
+	Name            string                `json:"name"`
 	ProviderApiKeys *[]struct {
 		Provider         UpdateOauthClientJSONBodyProviderApiKeysProvider `json:"provider"`
 		ProviderApiKeyId openapi_types.UUID                               `json:"providerApiKeyId"`
@@ -5192,6 +5226,10 @@ type UpdateIntegrationSettingsJSONBody struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
 		} `json:"hermes,omitempty"`
+		Kimi *struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"kimi,omitempty"`
 		Openclaw *struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -5230,6 +5268,7 @@ type UpdateSecuritySettingsJSONBody struct {
 	AllowUnauthenticatedLlmProxyRequests *bool `json:"allowUnauthenticatedLlmProxyRequests,omitempty"`
 	NewAppsDisabledByDefault             *bool `json:"newAppsDisabledByDefault,omitempty"`
 	NewAppsLockedByDefault               *bool `json:"newAppsLockedByDefault,omitempty"`
+	PlaywrightMcpEnabled                 *bool `json:"playwrightMcpEnabled,omitempty"`
 }
 
 // UpdateSkillsSettingsJSONBody defines parameters for UpdateSkillsSettings.
@@ -21017,11 +21056,18 @@ type GetAgentsResponse struct {
 				Name  *string                        `json:"name"`
 				Type  *GetAgents200DataCreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId  *openapi_types.UUID                       `json:"createdByServiceAccountId"`
-			DeletedAt                  *time.Time                                `json:"deletedAt"`
-			Description                *string                                   `json:"description"`
-			EnvironmentId              *openapi_types.UUID                       `json:"environmentId"`
-			FastModelId                *openapi_types.UUID                       `json:"fastModelId"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			FastModelId               *openapi_types.UUID `json:"fastModelId"`
+			GithubActionsAccess       *struct {
+				ActAs                  *GetAgents200DataGithubActionsAccessActAs `json:"actAs,omitempty"`
+				GithubAppCredentialKey string                                    `json:"githubAppCredentialKey"`
+				Repositories           []string                                  `json:"repositories"`
+				ResolveReviewThreads   *bool                                     `json:"resolveReviewThreads,omitempty"`
+				Workflows              []string                                  `json:"workflows"`
+			} `json:"githubActionsAccess"`
 			Icon                       *string                                   `json:"icon"`
 			Id                         openapi_types.UUID                        `json:"id"`
 			IdentityProviderId         *string                                   `json:"identityProviderId"`
@@ -21045,6 +21091,7 @@ type GetAgentsResponse struct {
 			LlmProviderRequiresPerUserCredential *bool                                     `json:"llmProviderRequiresPerUserCredential,omitempty"`
 			MissingCredentialBehavior            GetAgents200DataMissingCredentialBehavior `json:"missingCredentialBehavior"`
 			ModelId                              *openapi_types.UUID                       `json:"modelId"`
+			ModelPoolId                          *openapi_types.UUID                       `json:"modelPoolId"`
 			Name                                 string                                    `json:"name"`
 			OrganizationId                       string                                    `json:"organizationId"`
 			PassthroughHeaders                   *[]string                                 `json:"passthroughHeaders"`
@@ -21200,6 +21247,7 @@ type GetAgents_200_Data_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
 type GetAgents200DataCreatedByType string
+type GetAgents200DataGithubActionsAccessActAs string
 type GetAgents200DataIncomingEmailSecurityMode string
 type GetAgents200DataMissingCredentialBehavior string
 type GetAgents200DataResolvedLlmProvider string
@@ -21257,11 +21305,18 @@ type CreateAgentResponse struct {
 			Name  *string                      `json:"name"`
 			Type  *CreateAgent200CreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
-		CreatedByServiceAccountId  *openapi_types.UUID                     `json:"createdByServiceAccountId"`
-		DeletedAt                  *time.Time                              `json:"deletedAt"`
-		Description                *string                                 `json:"description"`
-		EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
-		FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		FastModelId               *openapi_types.UUID `json:"fastModelId"`
+		GithubActionsAccess       *struct {
+			ActAs                  *CreateAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
+			GithubAppCredentialKey string                                  `json:"githubAppCredentialKey"`
+			Repositories           []string                                `json:"repositories"`
+			ResolveReviewThreads   *bool                                   `json:"resolveReviewThreads,omitempty"`
+			Workflows              []string                                `json:"workflows"`
+		} `json:"githubActionsAccess"`
 		Icon                       *string                                 `json:"icon"`
 		Id                         openapi_types.UUID                      `json:"id"`
 		IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -21285,6 +21340,7 @@ type CreateAgentResponse struct {
 		LlmProviderRequiresPerUserCredential *bool                                   `json:"llmProviderRequiresPerUserCredential,omitempty"`
 		MissingCredentialBehavior            CreateAgent200MissingCredentialBehavior `json:"missingCredentialBehavior"`
 		ModelId                              *openapi_types.UUID                     `json:"modelId"`
+		ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 		Name                                 string                                  `json:"name"`
 		OrganizationId                       string                                  `json:"organizationId"`
 		PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
@@ -21424,6 +21480,7 @@ type CreateAgent_200_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
 type CreateAgent200CreatedByType string
+type CreateAgent200GithubActionsAccessActAs string
 type CreateAgent200IncomingEmailSecurityMode string
 type CreateAgent200MissingCredentialBehavior string
 type CreateAgent200ResolvedLlmProvider string
@@ -22233,11 +22290,18 @@ type GetAgentResponse struct {
 			Name  *string                   `json:"name"`
 			Type  *GetAgent200CreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
-		CreatedByServiceAccountId  *openapi_types.UUID                  `json:"createdByServiceAccountId"`
-		DeletedAt                  *time.Time                           `json:"deletedAt"`
-		Description                *string                              `json:"description"`
-		EnvironmentId              *openapi_types.UUID                  `json:"environmentId"`
-		FastModelId                *openapi_types.UUID                  `json:"fastModelId"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		FastModelId               *openapi_types.UUID `json:"fastModelId"`
+		GithubActionsAccess       *struct {
+			ActAs                  *GetAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
+			GithubAppCredentialKey string                               `json:"githubAppCredentialKey"`
+			Repositories           []string                             `json:"repositories"`
+			ResolveReviewThreads   *bool                                `json:"resolveReviewThreads,omitempty"`
+			Workflows              []string                             `json:"workflows"`
+		} `json:"githubActionsAccess"`
 		Icon                       *string                              `json:"icon"`
 		Id                         openapi_types.UUID                   `json:"id"`
 		IdentityProviderId         *string                              `json:"identityProviderId"`
@@ -22261,6 +22325,7 @@ type GetAgentResponse struct {
 		LlmProviderRequiresPerUserCredential *bool                                `json:"llmProviderRequiresPerUserCredential,omitempty"`
 		MissingCredentialBehavior            GetAgent200MissingCredentialBehavior `json:"missingCredentialBehavior"`
 		ModelId                              *openapi_types.UUID                  `json:"modelId"`
+		ModelPoolId                          *openapi_types.UUID                  `json:"modelPoolId"`
 		Name                                 string                               `json:"name"`
 		OrganizationId                       string                               `json:"organizationId"`
 		PassthroughHeaders                   *[]string                            `json:"passthroughHeaders"`
@@ -22400,6 +22465,7 @@ type GetAgent_200_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
 type GetAgent200CreatedByType string
+type GetAgent200GithubActionsAccessActAs string
 type GetAgent200IncomingEmailSecurityMode string
 type GetAgent200MissingCredentialBehavior string
 type GetAgent200ResolvedLlmProvider string
@@ -22457,11 +22523,18 @@ type UpdateAgentResponse struct {
 			Name  *string                      `json:"name"`
 			Type  *UpdateAgent200CreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
-		CreatedByServiceAccountId  *openapi_types.UUID                     `json:"createdByServiceAccountId"`
-		DeletedAt                  *time.Time                              `json:"deletedAt"`
-		Description                *string                                 `json:"description"`
-		EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
-		FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		FastModelId               *openapi_types.UUID `json:"fastModelId"`
+		GithubActionsAccess       *struct {
+			ActAs                  *UpdateAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
+			GithubAppCredentialKey string                                  `json:"githubAppCredentialKey"`
+			Repositories           []string                                `json:"repositories"`
+			ResolveReviewThreads   *bool                                   `json:"resolveReviewThreads,omitempty"`
+			Workflows              []string                                `json:"workflows"`
+		} `json:"githubActionsAccess"`
 		Icon                       *string                                 `json:"icon"`
 		Id                         openapi_types.UUID                      `json:"id"`
 		IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -22485,6 +22558,7 @@ type UpdateAgentResponse struct {
 		LlmProviderRequiresPerUserCredential *bool                                   `json:"llmProviderRequiresPerUserCredential,omitempty"`
 		MissingCredentialBehavior            UpdateAgent200MissingCredentialBehavior `json:"missingCredentialBehavior"`
 		ModelId                              *openapi_types.UUID                     `json:"modelId"`
+		ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 		Name                                 string                                  `json:"name"`
 		OrganizationId                       string                                  `json:"organizationId"`
 		PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
@@ -22624,6 +22698,7 @@ type UpdateAgent_200_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
 type UpdateAgent200CreatedByType string
+type UpdateAgent200GithubActionsAccessActAs string
 type UpdateAgent200IncomingEmailSecurityMode string
 type UpdateAgent200MissingCredentialBehavior string
 type UpdateAgent200ResolvedLlmProvider string
@@ -30370,6 +30445,7 @@ type CreateLimitResponse struct {
 		LimitValue      int                            `json:"limitValue"`
 		McpServerName   *string                        `json:"mcpServerName"`
 		Model           *[]string                      `json:"model"`
+		Reason          *string                        `json:"reason"`
 		ToolName        *string                        `json:"toolName"`
 		UpdatedAt       time.Time                      `json:"updatedAt"`
 	}
@@ -30542,6 +30618,7 @@ type GetLimitResponse struct {
 			TokensIn  float32 `json:"tokensIn"`
 			TokensOut float32 `json:"tokensOut"`
 		} `json:"modelUsage,omitempty"`
+		Reason          *string `json:"reason"`
 		ThroughputUsage *struct {
 			// CurrentUsage Recorded usage. Token limits count only provider-reported tokens; requests already in flight can exceed the cap.
 			CurrentUsage float32 `json:"currentUsage"`
@@ -30636,6 +30713,7 @@ type UpdateLimitResponse struct {
 		LimitValue      int                            `json:"limitValue"`
 		McpServerName   *string                        `json:"mcpServerName"`
 		Model           *[]string                      `json:"model"`
+		Reason          *string                        `json:"reason"`
 		ToolName        *string                        `json:"toolName"`
 		UpdatedAt       time.Time                      `json:"updatedAt"`
 	}
@@ -32652,8 +32730,9 @@ type GetOauthClientsResponse struct {
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name            string `json:"name"`
-			OrganizationId  string `json:"organizationId"`
+			ModelPoolIds    []openapi_types.UUID `json:"modelPoolIds"`
+			Name            string               `json:"name"`
+			OrganizationId  string               `json:"organizationId"`
 			ProviderApiKeys []struct {
 				Provider           GetOauthClients200DataProviderApiKeysProvider `json:"provider"`
 				ProviderApiKeyId   openapi_types.UUID                            `json:"providerApiKeyId"`
@@ -32781,8 +32860,9 @@ type CreateOauthClientResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name            string `json:"name"`
-		OrganizationId  string `json:"organizationId"`
+		ModelPoolIds    []openapi_types.UUID `json:"modelPoolIds"`
+		Name            string               `json:"name"`
+		OrganizationId  string               `json:"organizationId"`
 		ProviderApiKeys []struct {
 			Provider           CreateOauthClient200ProviderApiKeysProvider `json:"provider"`
 			ProviderApiKeyId   openapi_types.UUID                          `json:"providerApiKeyId"`
@@ -32973,8 +33053,9 @@ type UpdateOauthClientResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name            string `json:"name"`
-		OrganizationId  string `json:"organizationId"`
+		ModelPoolIds    []openapi_types.UUID `json:"modelPoolIds"`
+		Name            string               `json:"name"`
+		OrganizationId  string               `json:"organizationId"`
 		ProviderApiKeys []struct {
 			Provider           UpdateOauthClient200ProviderApiKeysProvider `json:"provider"`
 			ProviderApiKeyId   openapi_types.UUID                          `json:"providerApiKeyId"`
@@ -33093,8 +33174,9 @@ type RotateOauthClientSecretResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name            string `json:"name"`
-		OrganizationId  string `json:"organizationId"`
+		ModelPoolIds    []openapi_types.UUID `json:"modelPoolIds"`
+		Name            string               `json:"name"`
+		OrganizationId  string               `json:"organizationId"`
 		ProviderApiKeys []struct {
 			Provider           RotateOauthClientSecret200ProviderApiKeysProvider `json:"provider"`
 			ProviderApiKeyId   openapi_types.UUID                                `json:"providerApiKeyId"`
@@ -33289,6 +33371,7 @@ type GetOrganizationResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -33483,6 +33566,7 @@ type UpdateAgentSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -33677,6 +33761,7 @@ type UpdateAppearanceSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -33871,6 +33956,7 @@ type UpdateAuthSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -34065,6 +34151,7 @@ type CompleteOnboardingResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -34259,6 +34346,7 @@ type UpdateConnectionSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -34453,6 +34541,7 @@ type UpdateDefaultEnvironmentResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -34647,6 +34736,7 @@ type UpdateIntegrationSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -34841,6 +34931,7 @@ type UpdateKnowledgeSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -35035,6 +35126,7 @@ type UpdateMcpSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -35229,6 +35321,7 @@ type UpdateSecuritySettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -35423,6 +35516,7 @@ type UpdateSkillsSettingsResponse struct {
 		} `json:"onboardingWizard"`
 		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 		PopularAgentOverrides     *map[string]struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -44323,11 +44417,18 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 					Name  *string                        `json:"name"`
 					Type  *GetAgents200DataCreatedByType `json:"type,omitempty"`
 				} `json:"createdBy"`
-				CreatedByServiceAccountId  *openapi_types.UUID                       `json:"createdByServiceAccountId"`
-				DeletedAt                  *time.Time                                `json:"deletedAt"`
-				Description                *string                                   `json:"description"`
-				EnvironmentId              *openapi_types.UUID                       `json:"environmentId"`
-				FastModelId                *openapi_types.UUID                       `json:"fastModelId"`
+				CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+				DeletedAt                 *time.Time          `json:"deletedAt"`
+				Description               *string             `json:"description"`
+				EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+				FastModelId               *openapi_types.UUID `json:"fastModelId"`
+				GithubActionsAccess       *struct {
+					ActAs                  *GetAgents200DataGithubActionsAccessActAs `json:"actAs,omitempty"`
+					GithubAppCredentialKey string                                    `json:"githubAppCredentialKey"`
+					Repositories           []string                                  `json:"repositories"`
+					ResolveReviewThreads   *bool                                     `json:"resolveReviewThreads,omitempty"`
+					Workflows              []string                                  `json:"workflows"`
+				} `json:"githubActionsAccess"`
 				Icon                       *string                                   `json:"icon"`
 				Id                         openapi_types.UUID                        `json:"id"`
 				IdentityProviderId         *string                                   `json:"identityProviderId"`
@@ -44351,6 +44452,7 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 				LlmProviderRequiresPerUserCredential *bool                                     `json:"llmProviderRequiresPerUserCredential,omitempty"`
 				MissingCredentialBehavior            GetAgents200DataMissingCredentialBehavior `json:"missingCredentialBehavior"`
 				ModelId                              *openapi_types.UUID                       `json:"modelId"`
+				ModelPoolId                          *openapi_types.UUID                       `json:"modelPoolId"`
 				Name                                 string                                    `json:"name"`
 				OrganizationId                       string                                    `json:"organizationId"`
 				PassthroughHeaders                   *[]string                                 `json:"passthroughHeaders"`
@@ -44565,11 +44667,18 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 				Name  *string                      `json:"name"`
 				Type  *CreateAgent200CreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId  *openapi_types.UUID                     `json:"createdByServiceAccountId"`
-			DeletedAt                  *time.Time                              `json:"deletedAt"`
-			Description                *string                                 `json:"description"`
-			EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
-			FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			FastModelId               *openapi_types.UUID `json:"fastModelId"`
+			GithubActionsAccess       *struct {
+				ActAs                  *CreateAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
+				GithubAppCredentialKey string                                  `json:"githubAppCredentialKey"`
+				Repositories           []string                                `json:"repositories"`
+				ResolveReviewThreads   *bool                                   `json:"resolveReviewThreads,omitempty"`
+				Workflows              []string                                `json:"workflows"`
+			} `json:"githubActionsAccess"`
 			Icon                       *string                                 `json:"icon"`
 			Id                         openapi_types.UUID                      `json:"id"`
 			IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -44593,6 +44702,7 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 			LlmProviderRequiresPerUserCredential *bool                                   `json:"llmProviderRequiresPerUserCredential,omitempty"`
 			MissingCredentialBehavior            CreateAgent200MissingCredentialBehavior `json:"missingCredentialBehavior"`
 			ModelId                              *openapi_types.UUID                     `json:"modelId"`
+			ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 			Name                                 string                                  `json:"name"`
 			OrganizationId                       string                                  `json:"organizationId"`
 			PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
@@ -45883,11 +45993,18 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 				Name  *string                   `json:"name"`
 				Type  *GetAgent200CreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId  *openapi_types.UUID                  `json:"createdByServiceAccountId"`
-			DeletedAt                  *time.Time                           `json:"deletedAt"`
-			Description                *string                              `json:"description"`
-			EnvironmentId              *openapi_types.UUID                  `json:"environmentId"`
-			FastModelId                *openapi_types.UUID                  `json:"fastModelId"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			FastModelId               *openapi_types.UUID `json:"fastModelId"`
+			GithubActionsAccess       *struct {
+				ActAs                  *GetAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
+				GithubAppCredentialKey string                               `json:"githubAppCredentialKey"`
+				Repositories           []string                             `json:"repositories"`
+				ResolveReviewThreads   *bool                                `json:"resolveReviewThreads,omitempty"`
+				Workflows              []string                             `json:"workflows"`
+			} `json:"githubActionsAccess"`
 			Icon                       *string                              `json:"icon"`
 			Id                         openapi_types.UUID                   `json:"id"`
 			IdentityProviderId         *string                              `json:"identityProviderId"`
@@ -45911,6 +46028,7 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 			LlmProviderRequiresPerUserCredential *bool                                `json:"llmProviderRequiresPerUserCredential,omitempty"`
 			MissingCredentialBehavior            GetAgent200MissingCredentialBehavior `json:"missingCredentialBehavior"`
 			ModelId                              *openapi_types.UUID                  `json:"modelId"`
+			ModelPoolId                          *openapi_types.UUID                  `json:"modelPoolId"`
 			Name                                 string                               `json:"name"`
 			OrganizationId                       string                               `json:"organizationId"`
 			PassthroughHeaders                   *[]string                            `json:"passthroughHeaders"`
@@ -46109,11 +46227,18 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 				Name  *string                      `json:"name"`
 				Type  *UpdateAgent200CreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId  *openapi_types.UUID                     `json:"createdByServiceAccountId"`
-			DeletedAt                  *time.Time                              `json:"deletedAt"`
-			Description                *string                                 `json:"description"`
-			EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
-			FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			FastModelId               *openapi_types.UUID `json:"fastModelId"`
+			GithubActionsAccess       *struct {
+				ActAs                  *UpdateAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
+				GithubAppCredentialKey string                                  `json:"githubAppCredentialKey"`
+				Repositories           []string                                `json:"repositories"`
+				ResolveReviewThreads   *bool                                   `json:"resolveReviewThreads,omitempty"`
+				Workflows              []string                                `json:"workflows"`
+			} `json:"githubActionsAccess"`
 			Icon                       *string                                 `json:"icon"`
 			Id                         openapi_types.UUID                      `json:"id"`
 			IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -46137,6 +46262,7 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 			LlmProviderRequiresPerUserCredential *bool                                   `json:"llmProviderRequiresPerUserCredential,omitempty"`
 			MissingCredentialBehavior            UpdateAgent200MissingCredentialBehavior `json:"missingCredentialBehavior"`
 			ModelId                              *openapi_types.UUID                     `json:"modelId"`
+			ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 			Name                                 string                                  `json:"name"`
 			OrganizationId                       string                                  `json:"organizationId"`
 			PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
@@ -56135,6 +56261,7 @@ func ParseCreateLimitResponse(rsp *http.Response) (*CreateLimitResponse, error) 
 			LimitValue      int                            `json:"limitValue"`
 			McpServerName   *string                        `json:"mcpServerName"`
 			Model           *[]string                      `json:"model"`
+			Reason          *string                        `json:"reason"`
 			ToolName        *string                        `json:"toolName"`
 			UpdatedAt       time.Time                      `json:"updatedAt"`
 		}
@@ -56372,6 +56499,7 @@ func ParseGetLimitResponse(rsp *http.Response) (*GetLimitResponse, error) {
 				TokensIn  float32 `json:"tokensIn"`
 				TokensOut float32 `json:"tokensOut"`
 			} `json:"modelUsage,omitempty"`
+			Reason          *string `json:"reason"`
 			ThroughputUsage *struct {
 				// CurrentUsage Recorded usage. Token limits count only provider-reported tokens; requests already in flight can exceed the cap.
 				CurrentUsage float32 `json:"currentUsage"`
@@ -56497,6 +56625,7 @@ func ParseUpdateLimitResponse(rsp *http.Response) (*UpdateLimitResponse, error) 
 			LimitValue      int                            `json:"limitValue"`
 			McpServerName   *string                        `json:"mcpServerName"`
 			Model           *[]string                      `json:"model"`
+			Reason          *string                        `json:"reason"`
 			ToolName        *string                        `json:"toolName"`
 			UpdatedAt       time.Time                      `json:"updatedAt"`
 		}
@@ -59086,8 +59215,9 @@ func ParseGetOauthClientsResponse(rsp *http.Response) (*GetOauthClientsResponse,
 					Value   string              `json:"value"`
 					ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 				} `json:"labels"`
-				Name            string `json:"name"`
-				OrganizationId  string `json:"organizationId"`
+				ModelPoolIds    []openapi_types.UUID `json:"modelPoolIds"`
+				Name            string               `json:"name"`
+				OrganizationId  string               `json:"organizationId"`
 				ProviderApiKeys []struct {
 					Provider           GetOauthClients200DataProviderApiKeysProvider `json:"provider"`
 					ProviderApiKeyId   openapi_types.UUID                            `json:"providerApiKeyId"`
@@ -59244,8 +59374,9 @@ func ParseCreateOauthClientResponse(rsp *http.Response) (*CreateOauthClientRespo
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name            string `json:"name"`
-			OrganizationId  string `json:"organizationId"`
+			ModelPoolIds    []openapi_types.UUID `json:"modelPoolIds"`
+			Name            string               `json:"name"`
+			OrganizationId  string               `json:"organizationId"`
 			ProviderApiKeys []struct {
 				Provider           CreateOauthClient200ProviderApiKeysProvider `json:"provider"`
 				ProviderApiKeyId   openapi_types.UUID                          `json:"providerApiKeyId"`
@@ -59499,8 +59630,9 @@ func ParseUpdateOauthClientResponse(rsp *http.Response) (*UpdateOauthClientRespo
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name            string `json:"name"`
-			OrganizationId  string `json:"organizationId"`
+			ModelPoolIds    []openapi_types.UUID `json:"modelPoolIds"`
+			Name            string               `json:"name"`
+			OrganizationId  string               `json:"organizationId"`
 			ProviderApiKeys []struct {
 				Provider           UpdateOauthClient200ProviderApiKeysProvider `json:"provider"`
 				ProviderApiKeyId   openapi_types.UUID                          `json:"providerApiKeyId"`
@@ -59648,8 +59780,9 @@ func ParseRotateOauthClientSecretResponse(rsp *http.Response) (*RotateOauthClien
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name            string `json:"name"`
-			OrganizationId  string `json:"organizationId"`
+			ModelPoolIds    []openapi_types.UUID `json:"modelPoolIds"`
+			Name            string               `json:"name"`
+			OrganizationId  string               `json:"organizationId"`
 			ProviderApiKeys []struct {
 				Provider           RotateOauthClientSecret200ProviderApiKeysProvider `json:"provider"`
 				ProviderApiKeyId   openapi_types.UUID                                `json:"providerApiKeyId"`
@@ -59873,6 +60006,7 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -60094,6 +60228,7 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -60315,6 +60450,7 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -60536,6 +60672,7 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -60757,6 +60894,7 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -60978,6 +61116,7 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -61199,6 +61338,7 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -61420,6 +61560,7 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -61641,6 +61782,7 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -61862,6 +62004,7 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -62083,6 +62226,7 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`
@@ -62304,6 +62448,7 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 			} `json:"onboardingWizard"`
 			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
 			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PlaywrightMcpEnabled      bool `json:"playwrightMcpEnabled"`
 			PopularAgentOverrides     *map[string]struct {
 				Hidden   *bool `json:"hidden,omitempty"`
 				Position *int  `json:"position,omitempty"`

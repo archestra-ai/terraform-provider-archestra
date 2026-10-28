@@ -51,6 +51,7 @@
             "llmModel": "llm_model",
             "missingCredentialBehavior": "missing_credential_behavior",
             "modelId": "model_id",
+            "modelPoolId": "model_pool_id",
             "name": "name",
             "runtime": "runtime",
             "smartModelId": "smart_model_id",
@@ -87,6 +88,7 @@
             "llmModel",
             "missingCredentialBehavior",
             "modelId",
+            "modelPoolId",
             "name",
             "organizationId",
             "passthroughHeaders",
@@ -398,6 +400,7 @@
             "llmModel": "llm_model",
             "missingCredentialBehavior": "missing_credential_behavior",
             "modelId": "model_id",
+            "modelPoolId": "model_pool_id",
             "name": "name",
             "runtime": "runtime",
             "smartModelId": "smart_model_id",
@@ -419,6 +422,7 @@
             "description",
             "environmentId",
             "fastModelId",
+            "githubActionsAccess",
             "icon",
             "identityProviderId",
             "incomingEmailAllowedDomain",
@@ -432,6 +436,7 @@
             "llmModel",
             "missingCredentialBehavior",
             "modelId",
+            "modelPoolId",
             "name",
             "organizationId",
             "passthroughHeaders",
@@ -448,6 +453,7 @@
             "agentType",
             "builtInAgentConfig",
             "deletedAt",
+            "githubActionsAccess",
             "identityProviderId",
             "isPersonalProxy",
             "organizationId",
@@ -828,7 +834,7 @@
           "write_only": false
         },
         {
-          "computed": false,
+          "computed": true,
           "optional": true,
           "path": "llm_api_key_id",
           "required": false,
@@ -860,9 +866,17 @@
           "write_only": false
         },
         {
-          "computed": false,
+          "computed": true,
           "optional": true,
           "path": "model_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "model_pool_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -4422,6 +4436,7 @@
             "limitValue": "limit_value",
             "mcpServerName": "mcp_server_name",
             "model": "model",
+            "reason": "reason",
             "toolName": "tool_name"
           },
           "method": "POST",
@@ -4438,6 +4453,7 @@
             "limitValue",
             "mcpServerName",
             "model",
+            "reason",
             "toolName"
           ],
           "request_fields_without_declared_mapping": [
@@ -4479,6 +4495,7 @@
             "limitValue": "limit_value",
             "mcpServerName": "mcp_server_name",
             "model": "model",
+            "reason": "reason",
             "toolName": "tool_name"
           },
           "method": "PATCH",
@@ -4493,6 +4510,7 @@
             "limitValue",
             "mcpServerName",
             "model",
+            "reason",
             "toolName"
           ],
           "request_fields_without_declared_mapping": [
@@ -4633,6 +4651,38 @@
         {
           "computed": false,
           "optional": true,
+          "path": "reason",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "throughput_usage",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "throughput_usage.current_usage",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "throughput_usage.resets_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
           "path": "tool_name",
           "required": false,
           "sensitive": false,
@@ -4720,6 +4770,7 @@
             "llmModel",
             "missingCredentialBehavior",
             "modelId",
+            "modelPoolId",
             "name",
             "organizationId",
             "passthroughHeaders",
@@ -4745,6 +4796,7 @@
             "llmApiKeyId",
             "llmModel",
             "modelId",
+            "modelPoolId",
             "organizationId",
             "runtime",
             "smartModelId",
@@ -4966,6 +5018,7 @@
             "connectorIds": "connector_ids",
             "description": "description",
             "environmentId": "environment_id",
+            "githubActionsAccess": "github_actions_access",
             "icon": "icon",
             "identityProviderId": "identity_provider_id",
             "isDefault": "is_default",
@@ -4990,6 +5043,7 @@
             "description",
             "environmentId",
             "fastModelId",
+            "githubActionsAccess",
             "icon",
             "identityProviderId",
             "incomingEmailAllowedDomain",
@@ -5003,6 +5057,7 @@
             "llmModel",
             "missingCredentialBehavior",
             "modelId",
+            "modelPoolId",
             "name",
             "organizationId",
             "passthroughHeaders",
@@ -5027,6 +5082,7 @@
             "llmApiKeyId",
             "llmModel",
             "modelId",
+            "modelPoolId",
             "organizationId",
             "runtime",
             "smartModelId",
@@ -5236,6 +5292,54 @@
         {
           "computed": false,
           "optional": true,
+          "path": "github_actions_access",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "github_actions_access.act_as",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "github_actions_access.github_app_credential_key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "github_actions_access.repositories",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "github_actions_access.resolve_review_threads",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "github_actions_access.workflows",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
           "path": "icon",
           "required": false,
           "sensitive": false,
@@ -5317,6 +5421,14 @@
           "computed": true,
           "optional": true,
           "path": "missing_credential_behavior",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "model_pool_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -7793,6 +7905,7 @@
             "includeFutureProviders": "include_future_providers",
             "initialGrants": "permissions",
             "labels": "labels",
+            "modelPoolIds": "model_pool_ids",
             "name": "name",
             "providerApiKeys": "provider_api_keys",
             "redirectUris": "redirect_uris",
@@ -7811,6 +7924,7 @@
             "includeFutureProviders",
             "initialGrants",
             "labels",
+            "modelPoolIds",
             "name",
             "providerApiKeys",
             "redirectUris",
@@ -7890,6 +8004,7 @@
             "grantType": "grant_type",
             "includeFutureProviders": "include_future_providers",
             "labels": "labels",
+            "modelPoolIds": "model_pool_ids",
             "name": "name",
             "providerApiKeys": "provider_api_keys",
             "redirectUris": "redirect_uris",
@@ -7907,6 +8022,7 @@
             "grantType",
             "includeFutureProviders",
             "labels",
+            "modelPoolIds",
             "name",
             "providerApiKeys",
             "redirectUris",
@@ -8062,6 +8178,14 @@
           "optional": false,
           "path": "labels.value",
           "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "model_pool_ids",
+          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -8620,7 +8744,8 @@
             "allowToolAutoAssignment": "allow_tool_auto_assignment",
             "allowUnauthenticatedLlmProxyRequests": "allow_unauthenticated_llm_proxy_requests",
             "newAppsDisabledByDefault": "new_apps_disabled_by_default",
-            "newAppsLockedByDefault": "new_apps_locked_by_default"
+            "newAppsLockedByDefault": "new_apps_locked_by_default",
+            "playwrightMcpEnabled": "playwright_mcp_enabled"
           },
           "method": "PATCH",
           "path": "/api/organization/security-settings",
@@ -8631,7 +8756,8 @@
             "allowToolAutoAssignment",
             "allowUnauthenticatedLlmProxyRequests",
             "newAppsDisabledByDefault",
-            "newAppsLockedByDefault"
+            "newAppsLockedByDefault",
+            "playwrightMcpEnabled"
           ],
           "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
@@ -9956,6 +10082,14 @@
           "computed": true,
           "optional": true,
           "path": "online_skill_catalog_enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "playwright_mcp_enabled",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -13522,12 +13656,15 @@
             "initialGrants",
             "keyType",
             "labels",
+            "modelPoolIds",
             "name",
             "ownerId",
             "providerApiKeys",
             "spendCap"
           ],
-          "request_fields_without_declared_mapping": [],
+          "request_fields_without_declared_mapping": [
+            "modelPoolIds"
+          ],
           "retired_request_fields": []
         },
         {
@@ -13619,11 +13756,14 @@
             "includeFutureProviders",
             "keyType",
             "labels",
+            "modelPoolIds",
             "name",
             "providerApiKeys",
             "spendCap"
           ],
-          "request_fields_without_declared_mapping": [],
+          "request_fields_without_declared_mapping": [
+            "modelPoolIds"
+          ],
           "retired_request_fields": []
         }
       ],
@@ -13916,6 +14056,11 @@
     },
     {
       "method": "DELETE",
+      "operation_id": "deleteJiraChatOpsBot",
+      "path": "/api/chatops/jira/bots/{}"
+    },
+    {
+      "method": "DELETE",
       "operation_id": "unlinkTelegramChatOpsAccount",
       "path": "/api/chatops/telegram/link"
     },
@@ -14051,6 +14196,11 @@
     },
     {
       "method": "DELETE",
+      "operation_id": "deleteModelPool",
+      "path": "/api/model-pools/{}"
+    },
+    {
+      "method": "DELETE",
       "operation_id": "bulkDeleteOauthClients",
       "path": "/api/oauth-clients/bulk"
     },
@@ -14168,6 +14318,11 @@
       "method": "PATCH",
       "operation_id": "updateChatOpsBinding",
       "path": "/api/chatops/bindings/{}"
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateJiraChatOpsBot",
+      "path": "/api/chatops/jira/bots/{}"
     },
     {
       "method": "PATCH",
@@ -14461,6 +14616,16 @@
     },
     {
       "method": "POST",
+      "operation_id": "createJiraChatOpsBot",
+      "path": "/api/chatops/jira/bots"
+    },
+    {
+      "method": "POST",
+      "operation_id": "createJiraChatOpsBinding",
+      "path": "/api/chatops/jira/bots/{}/bindings"
+    },
+    {
+      "method": "POST",
       "operation_id": "linkTelegramChatOpsAccount",
       "path": "/api/chatops/telegram/link"
     },
@@ -14561,6 +14726,11 @@
     },
     {
       "method": "POST",
+      "operation_id": "resetUserLimitUsage",
+      "path": "/api/default-user-limits/users/{}/reset"
+    },
+    {
+      "method": "POST",
       "operation_id": "createDevFeedbackComment",
       "path": "/api/dev-feedback/comments"
     },
@@ -14578,6 +14748,11 @@
       "method": "POST",
       "operation_id": "createGitlabToken",
       "path": "/api/git-credentials/gitlab"
+    },
+    {
+      "method": "POST",
+      "operation_id": "exchangeGitHubActionsToken",
+      "path": "/api/github-actions/token"
     },
     {
       "method": "POST",
@@ -14676,6 +14851,16 @@
     },
     {
       "method": "POST",
+      "operation_id": "startModelCostBackfill",
+      "path": "/api/llm-models/{}/cost-backfill"
+    },
+    {
+      "method": "POST",
+      "operation_id": "previewModelCostBackfill",
+      "path": "/api/llm-models/{}/cost-backfill/preview"
+    },
+    {
+      "method": "POST",
       "operation_id": "createLlmOauthClient",
       "path": "/api/llm-oauth-clients"
     },
@@ -14743,6 +14928,11 @@
       "method": "POST",
       "operation_id": "microsoft365CopilotDeviceAuthStart",
       "path": "/api/microsoft-365-copilot-auth/device/start"
+    },
+    {
+      "method": "POST",
+      "operation_id": "createModelPool",
+      "path": "/api/model-pools"
     },
     {
       "method": "POST",
@@ -14973,6 +15163,11 @@
       "method": "POST",
       "operation_id": "rotateUserToken",
       "path": "/api/user-tokens/me/rotate"
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path": "/api/webhooks/chatops/jira/{}"
     },
     {
       "method": "POST",
@@ -15303,6 +15498,16 @@
       "method": "POST",
       "operation_id": "jevDecisionsWithAgent",
       "path": "/v1/jev/{}/decisions"
+    },
+    {
+      "method": "POST",
+      "operation_id": "kimiCodeChatCompletionsWithDefaultAgent",
+      "path": "/v1/kimi-code/chat/completions"
+    },
+    {
+      "method": "POST",
+      "operation_id": "kimiCodeChatCompletionsWithAgent",
+      "path": "/v1/kimi-code/{}/chat/completions"
     },
     {
       "method": "POST",
@@ -15661,6 +15866,11 @@
     },
     {
       "method": "PUT",
+      "operation_id": "updateJiraChatOpsConfig",
+      "path": "/api/chatops/jira/config"
+    },
+    {
+      "method": "PUT",
       "operation_id": "updateConnector",
       "path": "/api/connectors/{}"
     },
@@ -15718,6 +15928,11 @@
       "method": "PUT",
       "operation_id": "updateMemberDefaultAgent",
       "path": "/api/members/default-agent"
+    },
+    {
+      "method": "PUT",
+      "operation_id": "updateModelPool",
+      "path": "/api/model-pools/{}"
     },
     {
       "method": "PUT",

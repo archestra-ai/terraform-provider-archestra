@@ -18,6 +18,7 @@ import (
 // Current organization settings are split by their actual API write domain.
 func currentOrganizationAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
+		"playwright_mcp_enabled":                       schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether the built-in Playwright MCP browser is enabled (administrator only)."},
 		"online_mcp_catalog_enabled":                   schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the online MCP catalog is available."},
 		"online_skill_catalog_enabled":                 schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the online skill catalog is available."},
 		"skill_marketplace_anonymous_access":           schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether anonymous users can access the skill marketplace."},
@@ -81,6 +82,7 @@ func currentOrganizationSpecs(domain string) []AttrSpec {
 		}
 	case "security-settings":
 		return []AttrSpec{
+			{TFName: "playwright_mcp_enabled", JSONName: "playwrightMcpEnabled", Kind: Scalar, OmitOnNull: true},
 			{TFName: "allow_tool_auto_assignment", JSONName: "allowToolAutoAssignment", Kind: Scalar},
 			{TFName: "apps_hackathon_recorder_enabled", JSONName: "appsHackathonRecorderEnabled", Kind: Scalar},
 			{TFName: "new_apps_disabled_by_default", JSONName: "newAppsDisabledByDefault", Kind: Scalar},
@@ -165,6 +167,16 @@ func flattenCurrentOrganizationSettings(data *OrganizationSettingsResourceModel,
 	if err := json.Unmarshal(body, &values); err != nil {
 		diags.AddError("Invalid Organization Response", "Unable to decode organization settings.")
 		return
+	}
+	{
+		var value *bool
+		if raw := values["playwrightMcpEnabled"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Organization Response", "Unexpected type for playwrightMcpEnabled.")
+				return
+			}
+		}
+		data.PlaywrightMcpEnabled = types.BoolPointerValue(value)
 	}
 	{
 		var value *bool
