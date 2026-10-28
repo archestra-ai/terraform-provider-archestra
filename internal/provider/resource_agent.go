@@ -598,6 +598,8 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 	// Legacy visibility/skill projections and secret-storage pointers are not managed.
 	// Activation policy is represented by its current mode/revision metadata.
 	return []string{
+		// GitHub Actions token exchange is accepted only on MCP gateways.
+		"githubActionsAccess",
 		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId",
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "suggestedPrompts", "passthroughHeaders",

@@ -5,6 +5,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"regexp"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
@@ -44,6 +46,8 @@ type LimitModelUsageModel struct {
 }
 
 type LimitResourceModel struct {
+	Reason          types.String      `tfsdk:"reason"`
+	ThroughputUsage types.Object      `tfsdk:"throughput_usage"`
 	CleanupInterval types.String      `tfsdk:"cleanup_interval"`
 	Labels          []AgentLabelModel `tfsdk:"labels"`
 	ModelUsage      types.List        `tfsdk:"model_usage"`
@@ -63,10 +67,12 @@ func (r *LimitResource) Metadata(ctx context.Context, req resource.MetadataReque
 
 func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Usage limit on tokens or call counts, scoped per organization, team, or agent. See `limit_type` below for the three modes.",
+		MarkdownDescription: "Usage limit on costs, requests, tokens or MCP call counts.",
 
 		Attributes: map[string]schema.Attribute{
-			"cleanup_interval": schema.StringAttribute{Optional: true, Computed: true, Validators: []validator.String{stringvalidator.OneOf("1h", "12h", "24h", "1w", "1m", "calendar_day", "calendar_week_monday", "calendar_week_sunday", "calendar_month")}, MarkdownDescription: "Interval used to reset limit usage."},
+			"reason":           schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.LengthAtMost(500), stringvalidator.RegexMatches(regexp.MustCompile(`^(?:\S(?:[\s\S]*\S)?)?$`), "Must not start or end with whitespace.")}, MarkdownDescription: "Administrator explanation for this limit (up to 500 characters)."},
+			"throughput_usage": schema.SingleNestedAttribute{Computed: true, MarkdownDescription: "Recorded throughput usage and allowance recovery time.", Attributes: map[string]schema.Attribute{"current_usage": schema.Float64Attribute{Computed: true}, "resets_at": schema.StringAttribute{Computed: true}}},
+			"cleanup_interval": schema.StringAttribute{Optional: true, Computed: true, Validators: []validator.String{stringvalidator.OneOf("1h", "12h", "24h", "minute", "1w", "1m", "calendar_day", "calendar_week_monday", "calendar_week_sunday", "calendar_month")}, MarkdownDescription: "Interval used to reset limit usage."},
 			"labels":           schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Resource labels.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
 			"model_usage":      schema.ListNestedAttribute{Computed: true, MarkdownDescription: "Current per-model usage counters.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"model": schema.StringAttribute{Computed: true}, "cost": schema.Float64Attribute{Computed: true}, "tokens_in": schema.Float64Attribute{Computed: true}, "tokens_out": schema.Float64Attribute{Computed: true}}}},
 			"id": schema.StringAttribute{
@@ -82,29 +88,30 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				Required:            true,
 			},
 			"entity_type": schema.StringAttribute{
-				MarkdownDescription: "Entity type: organization, team, or agent",
+				MarkdownDescription: "Entity type: organization, team, agent, user, virtual_key, environment or llm_oauth_client",
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.RequiresReplace()},
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("organization", "team", "agent"),
+					stringvalidator.OneOf("organization", "team", "agent", "user", "virtual_key", "environment", "llm_oauth_client"),
 				},
 			},
 			"limit_type": schema.StringAttribute{
-				MarkdownDescription: "Limit type: 'token_cost' (requires model), 'tool_calls' (requires mcp_server_name and tool_name), or 'mcp_server_calls' (requires mcp_server_name)",
+				MarkdownDescription: "Limit type: token_cost, requests, tokens, requests_per_minute, tokens_per_minute, tool_calls or mcp_server_calls.",
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.RequiresReplaceIf(limitDimensionRequiresReplace, "Changing the limit dimension requires replacement; legacy rate aliases can normalize in place.", "Changing the limit dimension requires replacement; legacy rate aliases can normalize in place.")},
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("token_cost", "tool_calls", "mcp_server_calls"),
+					stringvalidator.OneOf("token_cost", "requests", "tokens", "requests_per_minute", "tokens_per_minute", "tool_calls", "mcp_server_calls"),
 				},
 			},
 			"limit_value": schema.Int64Attribute{
-				MarkdownDescription: "Limit threshold value. Must be at least 1.",
+				MarkdownDescription: "Limit threshold value; zero is allowed for non-minute cost budgets.",
 				Required:            true,
 				Validators: []validator.Int64{
-					int64validator.AtLeast(1),
+					int64validator.Between(0, 2147483647),
 				},
 			},
 			"model": schema.ListAttribute{
-				MarkdownDescription: "Required when limit_type is 'token_cost'. List of model names this limit applies to.",
+				MarkdownDescription: "Model names to restrict; omitted applies to all models for cost and throughput limits.",
 				Optional:            true,
 				ElementType:         types.StringType,
 			},
@@ -134,6 +141,29 @@ func (r *LimitResource) ValidateConfig(ctx context.Context, req resource.Validat
 	}
 
 	limitType := data.LimitType.ValueString()
+	throughput := limitType == "requests" || limitType == "tokens" || limitType == "requests_per_minute" || limitType == "tokens_per_minute"
+	minute := data.CleanupInterval.ValueString() == "minute"
+	if throughput || minute {
+		if !data.EntityType.IsUnknown() {
+			switch data.EntityType.ValueString() {
+			case "organization", "team", "virtual_key":
+			default:
+				resp.Diagnostics.AddAttributeError(path.Root("entity_type"), "Invalid Throughput Scope", "Throughput and minute limits require organization, team or virtual_key scope.")
+			}
+		}
+		if !data.LimitValue.IsUnknown() && data.LimitValue.ValueInt64() < 1 {
+			resp.Diagnostics.AddAttributeError(path.Root("limit_value"), "Invalid Limit Value", "Throughput and minute limits must be positive.")
+		}
+		if minute && !throughput && limitType != "token_cost" {
+			resp.Diagnostics.AddAttributeError(path.Root("cleanup_interval"), "Invalid Minute Limit", "The minute interval requires a cost or throughput limit.")
+		}
+	}
+	if (limitType == "requests_per_minute" || limitType == "tokens_per_minute") && !data.CleanupInterval.IsUnknown() && !data.CleanupInterval.IsNull() && !minute {
+		resp.Diagnostics.AddAttributeError(path.Root("cleanup_interval"), "Invalid Legacy Rate Interval", "Legacy per-minute limit types require the minute interval; use requests or tokens for other intervals.")
+	}
+	if limitType != "token_cost" && !data.LimitValue.IsUnknown() && data.LimitValue.ValueInt64() < 1 {
+		resp.Diagnostics.AddAttributeError(path.Root("limit_value"), "Invalid Limit Value", "This limit type must be positive.")
+	}
 
 	// Required-when checks below skip Unknown values: when a field is
 	// referenced from another resource (e.g.,
@@ -143,36 +173,19 @@ func (r *LimitResource) ValidateConfig(ctx context.Context, req resource.Validat
 	// even though X is set — the framework re-validates after Unknowns
 	// resolve.
 	switch limitType {
-	case "token_cost":
-		if data.Model.IsNull() {
-			resp.Diagnostics.AddAttributeError(
-				path.Root("model"),
-				"Missing Required Attribute",
-				"limit_type = 'token_cost' requires `model`. Set `model = [\"<model-id>\", ...]` or change `limit_type`.",
-			)
-		} else if !data.Model.IsUnknown() {
-			var models []string
-			data.Model.ElementsAs(ctx, &models, false)
-			if len(models) == 0 {
-				resp.Diagnostics.AddAttributeError(
-					path.Root("model"),
-					"Invalid Attribute Value",
-					"`model` must contain at least one value when limit_type = 'token_cost'.",
-				)
-			}
-		}
+	case "token_cost", "requests", "tokens", "requests_per_minute", "tokens_per_minute":
 		if !data.MCPServerName.IsNull() && !data.MCPServerName.IsUnknown() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("mcp_server_name"),
 				"Invalid Attribute Combination",
-				"`mcp_server_name` must not be set when limit_type = 'token_cost'.",
+				"`mcp_server_name` must not be set for cost or throughput limits.",
 			)
 		}
 		if !data.ToolName.IsNull() && !data.ToolName.IsUnknown() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("tool_name"),
 				"Invalid Attribute Combination",
-				"`tool_name` must not be set when limit_type = 'token_cost'.",
+				"`tool_name` must not be set for cost or throughput limits.",
 			)
 		}
 
@@ -468,4 +481,11 @@ func (r *LimitResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 
 func (r *LimitResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+}
+
+func limitDimensionRequiresReplace(_ context.Context, req planmodifier.StringRequest, resp *stringplanmodifier.RequiresReplaceIfFuncResponse) {
+	if req.PlanValue.IsUnknown() || req.StateValue.IsUnknown() {
+		return
+	}
+	resp.RequiresReplace = req.PlanValue.ValueString() != strings.TrimSuffix(req.StateValue.ValueString(), "_per_minute")
 }

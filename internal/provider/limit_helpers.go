@@ -10,6 +10,7 @@ import (
 )
 
 var limitAttrSpec = []AttrSpec{
+	{TFName: "reason", JSONName: "reason", Kind: Scalar},
 	{TFName: "cleanup_interval", JSONName: "cleanupInterval", Kind: Scalar, OmitOnNull: true},
 	{TFName: "labels", JSONName: "labels", Kind: Set, OmitOnNull: true, Children: []AttrSpec{{TFName: "key", JSONName: "key", Kind: Scalar}, {TFName: "value", JSONName: "value", Kind: Scalar}}},
 	{TFName: "entity_id", JSONName: "entityId", Kind: Scalar},
@@ -51,6 +52,13 @@ func (r *LimitResource) refreshCurrentLimit(ctx context.Context, data *LimitReso
 }
 func (r *LimitResource) flattenCurrentLimit(ctx context.Context, data *LimitResourceModel, result *client.GetLimitResponse, diags *diag.Diagnostics) {
 	wire := result.JSON200
+	data.Reason = types.StringPointerValue(wire.Reason)
+	data.ThroughputUsage = types.ObjectNull(limitThroughputUsageAttrTypes)
+	if wire.ThroughputUsage != nil {
+		value, ds := types.ObjectValue(limitThroughputUsageAttrTypes, map[string]attr.Value{"current_usage": types.Float64Value(float64(wire.ThroughputUsage.CurrentUsage)), "resets_at": types.StringValue(wire.ThroughputUsage.ResetsAt)})
+		diags.Append(ds...)
+		data.ThroughputUsage = value
+	}
 	data.CleanupInterval = types.StringNull()
 	if wire.CleanupInterval != nil {
 		data.CleanupInterval = types.StringValue(string(*wire.CleanupInterval))
@@ -68,3 +76,5 @@ func (r *LimitResource) flattenCurrentLimit(ctx context.Context, data *LimitReso
 	data.ModelUsage = value
 
 }
+
+var limitThroughputUsageAttrTypes = map[string]attr.Type{"current_usage": types.Float64Type, "resets_at": types.StringType}
