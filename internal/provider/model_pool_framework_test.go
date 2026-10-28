@@ -16,6 +16,10 @@ func TestModelPoolTerraformFramework(t *testing.T) {
 	var remote map[string]any
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
+		if req.URL.Path == "/openapi.json" {
+			writePoolJSON(w, modelPoolContractFixture())
+			return
+		}
 		if req.URL.Path == "/health" {
 			fmt.Fprint(w, `{"version":"1.5.0-rc.10"}`)
 			return
@@ -35,6 +39,7 @@ func TestModelPoolTerraformFramework(t *testing.T) {
 				t.Error(err)
 			}
 			remote["id"] = poolTestID
+			remote["virtualApiKeyIds"] = []any{}
 			writePoolJSON(w, remote)
 		case http.MethodDelete:
 			remote = nil

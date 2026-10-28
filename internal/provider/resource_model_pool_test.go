@@ -38,7 +38,13 @@ func poolFixtureState(t *testing.T, r *ModelPoolResource, values string) tfsdk.S
 }
 func poolFixtureResource(t *testing.T, handler http.HandlerFunc) *ModelPoolResource {
 	t.Helper()
-	server := httptest.NewServer(handler)
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		if req.URL.Path == "/prefix/openapi.json" {
+			writePoolJSON(w, modelPoolContractFixture())
+			return
+		}
+		handler(w, req)
+	}))
 	t.Cleanup(server.Close)
 	api, err := client.NewClientWithResponses(server.URL+"/prefix/", client.WithHTTPClient(server.Client()), client.WithRequestEditorFn(func(_ context.Context, r *http.Request) error {
 		r.Header.Set("Authorization", "fixture-key")
@@ -80,7 +86,7 @@ func TestModelPoolLifecycle(t *testing.T) {
 			if err := json.NewDecoder(req.Body).Decode(&body); err != nil {
 				t.Error(err)
 			}
-			if len(body) != 3 || body["members"] == nil || body["virtualApiKeyIds"] == nil {
+			if len(body) != 2 || body["members"] == nil || body["virtualApiKeyIds"] != nil {
 				t.Errorf("replacement omitted settings: %#v", body)
 			}
 			if req.Header.Get("Content-Type") != "application/json" {
@@ -89,7 +95,9 @@ func TestModelPoolLifecycle(t *testing.T) {
 			if req.Method == http.MethodPut && req.URL.Path != "/prefix/api/model-pools/"+poolTestID {
 				t.Error("update lost pool identity")
 			}
+			grants := remote["virtualApiKeyIds"]
 			remote = body
+			remote["virtualApiKeyIds"] = grants
 			remote["id"] = poolTestID
 			writePoolJSON(w, remote)
 		case http.MethodGet:
@@ -144,14 +152,8 @@ func TestModelPoolLifecycle(t *testing.T) {
 	if updated.Diagnostics.HasError() || !updated.State.Raw.Equal(updatedPlan.Raw) {
 		t.Fatalf("full replacement failed: %v", updated.Diagnostics)
 	}
-	clearedPlan := poolFixtureState(t, r, strings.Replace(poolTestState, `["`+poolVirtualKeyID+`"]`, `[]`, 1))
-	updated.State = updatedPlan
-	r.Update(t.Context(), resource.UpdateRequest{Plan: tfsdk.Plan(clearedPlan), State: updatedPlan}, &updated)
-	if updated.Diagnostics.HasError() {
-		t.Fatal(updated.Diagnostics)
-	}
-	if grants, ok := remote["virtualApiKeyIds"].([]any); !ok || len(grants) != 0 {
-		t.Fatalf("explicit empty grants not sent: %#v", remote)
+	if grants, ok := remote["virtualApiKeyIds"].([]string); !ok || len(grants) != 1 || grants[0] != poolVirtualKeyID {
+		t.Fatal("updating pool settings changed credential-owned grants")
 	}
 	var deleted resource.DeleteResponse
 	r.Delete(t.Context(), resource.DeleteRequest{State: updated.State}, &deleted)
@@ -296,11 +298,23 @@ func TestModelPoolPlanValidation(t *testing.T) {
 		{"name-trim", strings.Replace(poolTestState, `"balanced-model"`, `" balanced-model "`, 1)},
 		{"empty-model", strings.Replace(poolTestState, `"gpt-4.1"`, `""`, 1)},
 		{"invalid-provider-reference", strings.Replace(poolTestState, poolKeyID, "not-a-uuid", 1)},
-		{"invalid-virtual-reference", strings.Replace(poolTestState, poolVirtualKeyID, "not-a-uuid", 1)},
+		{"read-only-grants", poolTestState},
 		{"no-members", `{"name":"balanced-model","members":[],"virtual_api_key_ids":[]}`},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			config := strings.Replace(tc.config, `"id":"`+poolTestID+`",`, "", 1)
+			var fields map[string]any
+			if err := json.Unmarshal([]byte(tc.config), &fields); err != nil {
+				t.Fatal(err)
+			}
+			delete(fields, "id")
+			if tc.name != "read-only-grants" {
+				delete(fields, "virtual_api_key_ids")
+			}
+			encoded, err := json.Marshal(fields)
+			if err != nil {
+				t.Fatal(err)
+			}
+			config := string(encoded)
 			state := poolFixtureState(t, &ModelPoolResource{}, config)
 			value, err := tfprotov6.NewDynamicValue(state.Raw.Type(), state.Raw)
 			if err != nil {
@@ -357,4 +371,9 @@ func TestModelPoolReadIgnoresMemberOrderAndReportsRoutingDrift(t *testing.T) {
 	if read.Diagnostics.HasError() || read.State.Raw.Equal(state.Raw) {
 		t.Fatalf("API routing changes were hidden: %v", read.Diagnostics)
 	}
+}
+
+func modelPoolContractFixture() map[string]any {
+	op := map[string]any{"requestBody": map[string]any{"content": map[string]any{"application/json": map[string]any{"schema": map[string]any{"properties": map[string]any{"name": map[string]any{}, "members": map[string]any{}}}}}}}
+	return map[string]any{"paths": map[string]any{"/api/model-pools": map[string]any{"post": op}, "/api/model-pools/{id}": map[string]any{"put": op}}}
 }

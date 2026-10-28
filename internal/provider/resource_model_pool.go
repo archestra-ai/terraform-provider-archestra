@@ -19,7 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -61,7 +60,6 @@ var modelPoolAttrSpec = []AttrSpec{
 		{TFName: "weight", JSONName: "weight", Kind: Scalar},
 		{TFName: "enabled", JSONName: "enabled", Kind: Scalar},
 	}},
-	{TFName: "virtual_api_key_ids", JSONName: "virtualApiKeyIds", Kind: Set},
 }
 
 func (r *ModelPoolResource) AttrSpecs() []AttrSpec { return modelPoolAttrSpec }
@@ -74,7 +72,7 @@ func (r *ModelPoolResource) Metadata(_ context.Context, req resource.MetadataReq
 	resp.TypeName = req.ProviderTypeName + "_model_pool"
 }
 func (r *ModelPoolResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	resp.Schema = schema.Schema{MarkdownDescription: "Model name balanced across shared provider keys with priority, weights and server-managed failover. Requires Archestra's model-pools API (PR #9681) and ARCHESTRA_LLM_MODEL_POOLS_ENABLED or ARCHESTRA_BETA. Members and explicit virtual-key grants are authoritative; import an existing pool by UUID before managing it.", Attributes: map[string]schema.Attribute{
+	resp.Schema = schema.Schema{MarkdownDescription: "Model name balanced across shared provider keys with priority, weights and server-managed failover. Requires Archestra's model-pools API (PR #9681) and ARCHESTRA_LLM_MODEL_POOLS_ENABLED or ARCHESTRA_BETA. Members are authoritative; grants are managed on credentials, and virtual_api_key_ids is read-only; import an existing pool by UUID before managing it.", Attributes: map[string]schema.Attribute{
 		"id":   schema.StringAttribute{Computed: true, MarkdownDescription: "Model pool UUID.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 		"name": schema.StringAttribute{Required: true, MarkdownDescription: "Model name callers request.", Validators: modelPoolStringValidators()},
 		"members": schema.SetNestedAttribute{Required: true, MarkdownDescription: "Shared provider keys and their upstream model identifiers.", Validators: []validator.Set{setvalidator.SizeBetween(1, 50)}, NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
@@ -84,7 +82,7 @@ func (r *ModelPoolResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 			"weight":              schema.Int64Attribute{Optional: true, Computed: true, Default: int64default.StaticInt64(1), MarkdownDescription: "Relative traffic weight from 1 to 1000 within the same priority.", Validators: []validator.Int64{int64validator.Between(1, 1000)}},
 			"enabled":             schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(true), MarkdownDescription: "Whether this member may receive traffic."},
 		}}},
-		"virtual_api_key_ids": schema.SetAttribute{Optional: true, Computed: true, Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{})), ElementType: types.StringType, MarkdownDescription: "Additional standard virtual key UUIDs explicitly allowed to call this pool.", Validators: []validator.Set{setvalidator.SizeAtMost(500), setvalidator.ValueStringsAre(stringvalidator.RegexMatches(canonicalUUIDRegexp, "Use lowercase canonical virtual key UUIDs."))}},
+		"virtual_api_key_ids": schema.SetAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Virtual key UUIDs currently granted access through credential settings."},
 	}}
 }
 func (r *ModelPoolResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -144,6 +142,7 @@ func (r *ModelPoolResource) Create(ctx context.Context, req resource.CreateReque
 	// Retain the created identity even if response mapping fails, so a later
 	// refresh or destroy can recover the remote pool instead of orphaning it.
 	data.ID = types.StringValue(pool.ID)
+	data.VirtualAPIKeyIDs = types.SetNull(types.StringType)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -182,8 +181,7 @@ func (r *ModelPoolResource) Update(ctx context.Context, req resource.UpdateReque
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	// PUT replaces the entire pool; a diff-only merge patch would reset members
-	// or grants. Use the shared encoder against a typed null to send the full plan.
+	// PUT replaces the entire pool; a diff-only merge patch would drop unchanged fields. Use the shared encoder against a typed null to send the full plan.
 	body := modelPoolBody(ctx, req.Plan.Raw, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return

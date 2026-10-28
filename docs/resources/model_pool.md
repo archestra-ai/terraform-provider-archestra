@@ -3,12 +3,12 @@
 page_title: "archestra_model_pool Resource - archestra"
 subcategory: ""
 description: |-
-  Model name balanced across shared provider keys with priority, weights and server-managed failover. Requires Archestra's model-pools API (PR #9681) and ARCHESTRA_LLM_MODEL_POOLS_ENABLED or ARCHESTRA_BETA. Members and explicit virtual-key grants are authoritative; import an existing pool by UUID before managing it.
+  Model name balanced across shared provider keys with priority, weights and server-managed failover. Requires Archestra's model-pools API (PR #9681) and ARCHESTRA_LLM_MODEL_POOLS_ENABLED or ARCHESTRA_BETA. Members are authoritative; grants are managed on credentials, and virtual_api_key_ids is read-only; import an existing pool by UUID before managing it.
 ---
 
 # archestra_model_pool (Resource)
 
-Model name balanced across shared provider keys with priority, weights and server-managed failover. Requires Archestra's model-pools API (PR #9681) and ARCHESTRA_LLM_MODEL_POOLS_ENABLED or ARCHESTRA_BETA. Members and explicit virtual-key grants are authoritative; import an existing pool by UUID before managing it.
+Model name balanced across shared provider keys with priority, weights and server-managed failover. Requires Archestra's model-pools API (PR #9681) and ARCHESTRA_LLM_MODEL_POOLS_ENABLED or ARCHESTRA_BETA. Members are authoritative; grants are managed on credentials, and virtual_api_key_ids is read-only; import an existing pool by UUID before managing it.
 
 ## Example Usage
 
@@ -26,10 +26,7 @@ variable "secondary_provider_key_id" {
 variable "fallback_provider_key_id" {
   type = string
 }
-variable "additional_virtual_key_ids" {
-  type    = set(string)
-  default = []
-}
+
 
 resource "archestra_model_pool" "balanced" {
   name = "gpt-4.1"
@@ -56,16 +53,15 @@ resource "archestra_model_pool" "balanced" {
       enabled             = true
     },
   ]
-  virtual_api_key_ids = var.additional_virtual_key_ids
 }
 
 # The first two members split new selections 3:1 while healthy. Priority 2
 # serves only after priority 1 fails. Sessions remain sticky while healthy.
 # Provider type comes from each saved key; model_id is its upstream model or
 # deployment identifier, not an archestra_model resource UUID.
-# Virtual keys mapping a member key already have access. This list grants
-# additional standard virtual keys access; [] removes all explicit grants.
-# Both members and grants are replaced authoritatively on every update.
+# Virtual keys mapping a member key already have access. Manage additional
+# pool grants through credential settings; virtual_api_key_ids is read-only.
+# The entire member set is replaced on every update.
 # Cooldowns, retry rules, timeouts and routing strategy are server-owned.
 # This API does not add Responses API support or utilization-aware routing.
 
@@ -81,13 +77,10 @@ resource "archestra_model_pool" "balanced" {
 - `members` (Attributes Set) Shared provider keys and their upstream model identifiers. (see [below for nested schema](#nestedatt--members))
 - `name` (String) Model name callers request.
 
-### Optional
-
-- `virtual_api_key_ids` (Set of String) Additional standard virtual key UUIDs explicitly allowed to call this pool.
-
 ### Read-Only
 
 - `id` (String) Model pool UUID.
+- `virtual_api_key_ids` (Set of String) Virtual key UUIDs currently granted access through credential settings.
 
 <a id="nestedatt--members"></a>
 ### Nested Schema for `members`

@@ -11,10 +11,7 @@ variable "secondary_provider_key_id" {
 variable "fallback_provider_key_id" {
   type = string
 }
-variable "additional_virtual_key_ids" {
-  type    = set(string)
-  default = []
-}
+
 
 resource "archestra_model_pool" "balanced" {
   name = "gpt-4.1"
@@ -41,16 +38,15 @@ resource "archestra_model_pool" "balanced" {
       enabled             = true
     },
   ]
-  virtual_api_key_ids = var.additional_virtual_key_ids
 }
 
 # The first two members split new selections 3:1 while healthy. Priority 2
 # serves only after priority 1 fails. Sessions remain sticky while healthy.
 # Provider type comes from each saved key; model_id is its upstream model or
 # deployment identifier, not an archestra_model resource UUID.
-# Virtual keys mapping a member key already have access. This list grants
-# additional standard virtual keys access; [] removes all explicit grants.
-# Both members and grants are replaced authoritatively on every update.
+# Virtual keys mapping a member key already have access. Manage additional
+# pool grants through credential settings; virtual_api_key_ids is read-only.
+# The entire member set is replaced on every update.
 # Cooldowns, retry rules, timeouts and routing strategy are server-owned.
 # This API does not add Responses API support or utilization-aware routing.
 

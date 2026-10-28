@@ -24,7 +24,11 @@ Two features need 1.5.0-rc.1 or later:
 
 `archestra_model_pool` additionally requires the model-pools CRUD API introduced
 in [Archestra PR #9681](https://github.com/archestra-ai/archestra/pull/9681), with
-`ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` or `ARCHESTRA_BETA=true`. The global
+`ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` or `ARCHESTRA_BETA=true`. It additionally
+requires the newer credential-owned grant contract (observed on API rc.11):
+OpenAPI must accept `name` and `members` without writable `virtualApiKeyIds`.
+Create/update refuse the older grant-replacing contract before mutation. Pool writes manage name and members. Virtual-key grants are read-only on
+the pool and belong to credential configuration in the current API. The global
 version floor does not establish this capability. Pool lifecycle and Terraform
 planning are covered by controlled HTTP fixtures; deployed-API acceptance and
 Crossplane reconciliation have not been run for this resource. The older
