@@ -1,63 +1,51 @@
-# crossplane-provider-archestra
+# Archestra Crossplane provider
 
+Manage Archestra agents, MCP servers, teams, projects, credentials, and other
+resources as Kubernetes objects.
 
-The v3 review candidate has **29 Terraform resources and four Terraform data sources**. All 29 resources have generated Crossplane types in both scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](../MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The [full native acceptance proof](../audit/consolidated-native-acceptance.json) records 147 passing cases with zero failures or skips against API 1.4.0-rc.49.
+## Install
 
-Crossplane provider for [Archestra](https://archestra.ai), generated from
-[`terraform-provider-archestra`](https://registry.terraform.io/providers/archestra-ai/archestra/latest/docs)
-using the [`upjet`](https://github.com/crossplane/upjet) code-generation
-toolchain.
+Install [Crossplane](https://docs.crossplane.io/latest/get-started/install/) first.
+The provider is tested with Crossplane 2.2.1. Choose a released version from
+[Upbound Marketplace](https://marketplace.upbound.io/providers/archestra/provider-archestra)
+and pin it in your manifest; this example uses v3.0.3:
 
-The [organization-defaults runtime proof](../audit/crossplane-organization-defaults.json) covers current settings behavior in both scopes.
-
-The v3 working schema includes 29 Terraform resources in both scopes. The shared
-configurator in [config/resources.go](config/resources.go) defines each group/kind
-and reference. Gateways use the `gateway` API group so their agent references do
-not form an import cycle with agent references to MCP servers. See the current
-[resource matrix](../README.md#resource-coverage) and [runtime evidence](../audit/README.md).
-Historical lifecycle and packaging evidence applies only to its recorded binaries;
-final combined-candidate repetition remains required.
-
-The [current consolidated runtime proof](../audit/consolidated-crossplane-runtime.json)
-verifies all 29 families in both scopes with normal cleanup.
-
-The v3 package remains unreleased pending full validation. Upgrade existing state
-and manifests using [MIGRATION-v3.md](../MIGRATION-v3.md).
-
-## Installation
-
-Install a supported Crossplane release first. The v3 runtime probes use Crossplane 2.2.1.
-The package tag below is the v2 maintenance release; select v3 only after its validation and publication complete.
-
-```bash
-kubectl apply -f - <<'EOF'
+```yaml
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-archestra
 spec:
-  package: xpkg.upbound.io/archestra/provider-archestra:v2.4.1
-EOF
+  package: xpkg.upbound.io/archestra/provider-archestra:v3.0.3
 ```
 
-Replace the tag with the latest release from
-[GitHub Releases](https://github.com/archestra-ai/terraform-provider-archestra/releases).
+Save this as `provider.yaml`, then wait for the provider to become healthy:
+
+```bash
+kubectl apply -f provider.yaml
+kubectl wait provider.pkg.crossplane.io/provider-archestra --for=condition=Healthy --timeout=5m
+```
 
 ## Configure credentials
 
-The provider authenticates to the Archestra API with an API key. Mint
-one in the Archestra UI under Settings → API Keys.
+Create an Archestra API key under **Settings → API Keys**. Set `base_url` to your
+Archestra API endpoint reachable from the provider pod. The default,
+`http://localhost:9000`, points inside the pod and usually needs overriding.
 
 ```bash
-kubectl create secret generic archestra-creds \
-  -n crossplane-system \
-  --from-literal=credentials='{"api_key":"arch_...","base_url":"https://app.archestra.ai"}'
+kubectl create secret generic archestra-creds -n crossplane-system \
+  --from-literal=credentials='{"api_key":"arch_REPLACE_ME","base_url":"https://archestra.example.com"}'
+```
 
-kubectl apply -f - <<'EOF'
-apiVersion: archestra.crossplane.io/v1beta1
+The following namespaced `ProviderConfig` uses that Secret. Save it as
+`providerconfig.yaml` and apply it with `kubectl apply -f providerconfig.yaml`:
+
+```yaml
+apiVersion: archestra.m.crossplane.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: default
+  namespace: crossplane-system
 spec:
   credentials:
     source: Secret
@@ -65,222 +53,69 @@ spec:
       namespace: crossplane-system
       name: archestra-creds
       key: credentials
-EOF
 ```
 
-`base_url` is optional; falls back to the Archestra TF provider's default
-when absent. For namespaced (Crossplane v2) usage see
-`examples/namespaced/providerconfig/`.
+## Create a team
 
-## Create a managed resource
-
-```yaml
-apiVersion: mcp.archestra.crossplane.io/v1alpha1
-kind: RegistryEntry
-metadata:
-  name: everything
-spec:
-  forProvider:
-    name: everything
-    localConfig:
-      command: npx
-      arguments:
-        - "-y"
-        - "@modelcontextprotocol/server-everything"
-  providerConfigRef:
-    name: default
----
-apiVersion: mcp.archestra.crossplane.io/v1alpha1
-kind: Server
-metadata:
-  name: everything
-spec:
-  forProvider:
-    name: everything
-    catalogIdRef:
-      name: everything       # resolves to the RegistryEntry above
-  providerConfigRef:
-    name: default
-```
-
-`tool_id_by_name` (the per-tool UUID map) lands on
-`status.atProvider.toolIdByName` once the installation reconciles —
-use those IDs in `Agent.spec.forProvider.tools` or `Gateway.spec.forProvider.tools`.
-
-## Data sources
-
-Crossplane has no data sources. To read an existing agent or team, the
-equivalent of the `archestra_agent` and `archestra_team` Terraform data
-sources, apply an observe-only managed resource. Set the external-name
-annotation to the object's API ID; the controller never writes to it, the
-current state appears in `status.atProvider`, and deleting the managed
-resource leaves the object in place:
+Save this as `team.yaml` and run `kubectl apply -f team.yaml`:
 
 ```yaml
 apiVersion: team.archestra.m.crossplane.io/v1alpha1
 kind: Team
 metadata:
-  name: platform-team
-  namespace: default
-  annotations:
-    crossplane.io/external-name: 00000000-0000-4000-8000-000000000000   # the team's API ID
+  name: engineering
+  namespace: crossplane-system
 spec:
-  managementPolicies: ["Observe"]
-  forProvider: {}
+  forProvider:
+    name: Engineering
+    description: Engineering team
   providerConfigRef:
-    kind: ClusterProviderConfig
+    kind: ProviderConfig
     name: default
 ```
 
-Use `kind: Agent` with `apiVersion: agent.archestra.m.crossplane.io/v1alpha1`
-for an agent. `archestra_tool` and `archestra_mcp_tool_calls` are read-only
-lookups with no managed object behind them, so they have no Crossplane
-equivalent; read them from the API.
-
-## Development
-
-`apis/**/zz_*.go`, `internal/controller/**/zz_*.go`, and
-`package/crds/*.yaml` are gitignored — `make generate` invokes
-upjet's codegen pipeline (`cmd/generator`) to (re)produce them
-from the TF provider's JSON schema. No `make generate` ⇒ those
-packages don't exist on disk ⇒ `go build` fails with "package not
-found".
-
-First time on a clean clone:
-
 ```bash
-# in repo root: produce the TF binary that upjet shells out to
-go build -o terraform-provider-archestra .
-
-# in crossplane/: dump schema, run upjet codegen, build the controller
-cd crossplane
-make schema     # writes config/schema.json from the local TF binary
-make generate   # runs upjet -> apis/, internal/controller/, package/crds/
-make build      # binary at _output/bin/<host-platform>/provider
+kubectl wait teams.team.archestra.m.crossplane.io/engineering -n crossplane-system --for=condition=Ready --timeout=5m
+kubectl get teams.team.archestra.m.crossplane.io/engineering -n crossplane-system -o yaml
 ```
 
-Iteration loop after a TF schema change: rebuild the TF binary at
-the repo root, then re-run `make generate` here. `make schema`
-defaults to fetching the published TF provider from the registry;
-the local-binary path is the relevant one for unreleased changes
-(see `hack/generate-schema.sh` and the `TF_PROVIDER_BIN` env var).
+Inputs belong in `spec.forProvider`; observed values appear in
+`status.atProvider`. Use `*Ref` or `*Selector` fields where available to refer to
+other managed resources. Sensitive inputs use Kubernetes Secret references.
 
-### Run the controller out-of-cluster
+Deleting this managed resource deletes its Archestra object by default. To retain
+the object, set `spec.deletionPolicy: Orphan` before deleting the manifest.
 
-Useful for fast iteration without rebuilding the xpkg:
+## API reference and examples
 
-```bash
-make build
-./_output/bin/$(go env GOOS)_$(go env GOARCH)/provider --debug \
-  --terraform-version=1.5.7 \
-  --terraform-provider-source=archestra-ai/archestra
-```
+The **Managed Resources** tab on
+[Upbound Marketplace](https://marketplace.upbound.io/providers/archestra/provider-archestra)
+contains the field reference for each package version. Both API scopes are included:
 
-Point `kubectl` at a cluster with Crossplane installed and the CRDs
-applied; the controller will reconcile MRs against your local
-Archestra instance using the `ProviderConfig` named `default`.
+| Scope | API group suffix | Credentials configuration |
+| --- | --- | --- |
+| Namespaced | `archestra.m.crossplane.io` | `ProviderConfig` in the resource namespace, or `ClusterProviderConfig` |
+| Cluster | `archestra.crossplane.io` | Cluster-scoped `ProviderConfig` |
 
-## Adding a resource
+Managed resources use `v1alpha1`; credential configuration uses `v1beta1`.
+For cluster-scoped resources, omit `metadata.namespace` and the
+`providerConfigRef.kind` field. See the
+[credential examples](https://github.com/archestra-ai/terraform-provider-archestra/tree/main/crossplane/examples).
 
-1. **Whitelist the TF resource.** Add it to `ExternalNameConfigs`
-   in [`config/external_name.go`](config/external_name.go). The
-   map doubles as upjet's IncludeList — anything not listed is
-   skipped during codegen.
+Use the resource examples as templates: replace placeholders and expressions
+such as `${...}`, supply referenced resources and Secrets, and select your
+`providerConfigRef` before applying them.
 
-   ```go
-   "archestra_<thing>": ujconfig.IdentifierFromProvider,
-   ```
+For upgrades from v2, read the
+[v3 migration guide](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/MIGRATION-v3.md).
+Report bugs or request features in
+[GitHub issues](https://github.com/archestra-ai/terraform-provider-archestra/issues).
 
-2. **Configure both scopes.** Add the group, kind and references to the shared
-   [config/resources.go](config/resources.go). `ConfigureResources` applies the
-   same declarations to both cluster and namespaced providers.
+## Contributing
 
-   ```go
-   p.AddResourceConfigurator("archestra_<thing>", func(r *ujconfig.Resource) {
-       r.ShortGroup = "<group>"           // -> <group>.archestra.crossplane.io
-       r.Kind       = "<Thing>"           // CamelCase singular
-       r.References["<fk_field>"] = ujconfig.Reference{
-           TerraformName: "archestra_<other>",  // for cross-MR refs
-       }
-   })
-   ```
-
-3. **Run upjet codegen.** `make generate` is what turns the
-   config changes from steps 1–2 into real Go types
-   (`apis/<scope>/<group>/v1alpha1/zz_<kind>_types.go`),
-   reconcilers (`internal/controller/<scope>/<group>/<kind>/zz_controller.go`),
-   and a CRD (`package/crds/<group>.archestra....yaml`). Without
-   this step the new resource exists only in the upjet config and
-   nothing else compiles. Commit nothing from these trees —
-   they're gitignored and CI regenerates them every build.
-
-4. **Add an example.** YAML manifests under
-   `examples/cluster/<group>/<kind>.yaml` and the namespaced
-   sibling. Uptest reads from this directory.
-
-5. **Sanity-check** with `go build ./... && go test ./...` from
-   the `crossplane/` directory.
-
-## Testing
-
-```bash
-make generate          # required after pulling — generated code is gitignored
-go test ./...          # unit tests
-make e2e               # full end-to-end against a local kind cluster
-```
-
-`make e2e` chains `local-deploy` (spins up a kind cluster, builds
-the xpkg locally, installs it as a `Provider`) and `uptest` (runs
-the examples and waits for `Ready=True`). It needs:
-
-- `UPTEST_EXAMPLE_LIST` — comma-separated paths under `examples/`
-  to exercise (e.g. `examples/cluster/agent/agent.yaml`).
-- `UPTEST_CLOUD_CREDENTIALS` — Archestra API credentials,
-  surfaced as a Kubernetes secret to the provider:
-
-  ```bash
-  export UPTEST_CLOUD_CREDENTIALS='{"api_key":"arch_...","base_url":"https://app.archestra.ai"}'
-  ```
-
-Per-PR CI runs `make -C crossplane generate && go test ./...`
-(see [`.github/workflows/crossplane.yml`](../.github/workflows/crossplane.yml));
-`make e2e` is not in CI yet — run it locally before promoting a
-non-trivial schema change.
-
-## Releasing
-
-Released on the same `vX.Y.Z` track as the Terraform provider — see
-the [root README's Releases section](../README.md#releases). The
-xpkg is published to `xpkg.upbound.io/archestra/provider-archestra` alongside
-each Terraform provider release. The release workflow then adds the
-[Marketplace assets](marketplace/README.md) to that same package.
-
-The existing [Crossplane release job](../.github/workflows/release-please.yml)
-uses the existing `UPBOUND_ACCESS_ID` and `UPBOUND_TOKEN` GitHub Actions secrets
-for the `archestra/provider-archestra` repository. No second namespace or
-publisher credentials are needed.
-
-After the Crossplane package push succeeds, that same job appends the logo and
-verifies that the Linux amd64 and arm64 runtime manifests are unchanged.
-Retry a failed publication by re-running **Publish Crossplane Provider** for
-that release in GitHub Actions.
-
-Registry publication and Marketplace listing are separate. After adding the
-assets, the workflow uses `up repository update --private=false --publish=true`
-to enable the public listing for the existing `archestra/provider-archestra`
-repository. If its current robot credential cannot update repository settings,
-an administrator must enable **Publish to Marketplace** once. Valid release
-versions and their assets are then listed at
-[Upbound Marketplace](https://marketplace.upbound.io/providers/archestra/provider-archestra).
+See the [development guide](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/crossplane/CONTRIBUTING.md)
+for building, testing, and adding resources.
 
 ## License
 
-Apache 2.0 — see [`LICENSE`](./LICENSE).
-
-## Required collection serialization
-
-The generator preserves required collection tags for both Terraform parameters
-and Kubernetes JSON. Explicit empty sets and maps must survive reconciliation:
-omitting them can fail Terraform validation or Kubernetes object updates. Optional
-collections retain their normal omission behavior. Regression tests exercise the
-actual generated parameter and Kubernetes JSON serializers in both scopes.
+[Apache 2.0](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/LICENSE).

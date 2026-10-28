@@ -18,3 +18,7 @@ config/schema.json
 apis/**/zz_*.go
 internal/controller/**/zz_*.go
 package/crds/*.yaml
+
+# Generated documentation inputs and examples.
+config/provider-metadata.yaml
+examples-generated/
