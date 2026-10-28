@@ -144,6 +144,8 @@ authenticates, even if Terraform fails. Remove its private input file afterward.
 Stop only services started for this probe. Never put a key value in HCL, command
 arguments, screenshots, or the acceptance record.
 
-The existing local cluster did not have Crossplane installed, so live ModelPool
-reconciliation in either scope remains untested. Generated schemas and builds
-are separate checks and do not settle that gap.
+A subsequent approved local run installed Crossplane temporarily and proved
+ModelPool reconciliation in both scopes, including reference resolution,
+automatic drift repair and adoption. See the
+[Crossplane procedure](model-pool-local-crossplane.md) and its recorded evidence.
+Container/xpkg deployment and release compatibility remain separate checks.

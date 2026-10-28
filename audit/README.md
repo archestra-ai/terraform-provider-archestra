@@ -18,6 +18,25 @@ for the recorded bytes, not inference routing, a release compatibility matrix,
 or live Crossplane reconciliation. Follow the
 [local procedure](../docs/guides/model-pool-local-acceptance.md) to reproduce it.
 
+## Model-pool local Crossplane proof
+
+The [actual controller run](model-pool-local-crossplane-rc11.json) passes ModelPool
+create, existing-provider reference resolution, Ready/Synced, update, automatic
+name/weight drift repair, orphan/adoption by external-name, and deletion in both
+scopes. It uses Crossplane 2.2.1 on an existing kind cluster, an unpublished Mac
+controller with one worker, and the same local Terraform provider/API build as
+the native proof. The two disabled synthetic pools run sequentially; no inference
+or credential grants are exercised. The existing provider key is referenced
+through an Observe-only ModelProvider wrapper.
+
+Both original pools retain their settings. The temporary key is revoked (404
+lookup, 401 authentication), and its Secret, configs and private auth files are
+removed. The task controller, chart, namespace and nine empty provider CRDs are
+removed; 21 official core Crossplane CRDs remain as inert API definitions. Original
+cluster objects and the user-requested app/backend are preserved. This proves
+local reconciliation, not container/xpkg packaging or release compatibility.
+See the [replay procedure](../docs/guides/model-pool-local-crossplane.md).
+
 ## 3.0.0 release evidence (API 1.5.0-rc.3)
 
 Provider 3.0.0 has 31 resources and four data sources. All release evidence below

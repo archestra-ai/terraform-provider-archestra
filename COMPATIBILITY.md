@@ -35,9 +35,13 @@ an existing local development API reporting `1.5.0-rc.11` passed create, read,
 update, import, drift repair and destroy, with actual UI checks and verified cleanup
 ([record](audit/model-pool-local-native-rc11.json),
 [procedure](docs/guides/model-pool-local-acceptance.md)). This is one recorded
-local build, not a release compatibility sweep. Live Crossplane reconciliation
-has not been run for ModelPool. The older 31-family reconciliation evidence
-below does not cover it.
+local build, not a release compatibility sweep. Actual local Crossplane
+ModelPool reconciliation also passed create, reference resolution, update,
+automatic drift repair, orphan/adoption and deletion in both scopes with the
+unpublished host controller ([record](audit/model-pool-local-crossplane-rc11.json),
+[procedure](docs/guides/model-pool-local-crossplane.md)). Container/xpkg deployment
+and a release compatibility sweep remain separate checks. The older 31-family
+reconciliation evidence below does not cover ModelPool.
 
 `platform-version.txt` at the provider release tag names the tested release.
 Acceptance CI runs the native suite against that release and records the image

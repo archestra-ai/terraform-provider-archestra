@@ -30,7 +30,7 @@ CASE_RESOURCES = {
     'repository-plugins': {'PluginGitSource'}, 'manual-plugins': {'PluginFiles'},
     'github-registrations': {'GitHubPAT', 'GitHubApp'},
     'api-compatibility': {'APICompatibilityConstraint'},
-    'model-pools': {'AgentModelPool', 'OAuthClientModelPools'},
+    'model-pools': {'AgentModelPool', 'OAuthClientModelPools', 'ModelPool'},
     'routing-credentials': {'VirtualKey', 'OAuthClient'}, 'remote-agents': {'RemoteAgent'},
     'extensions': {'Directory', 'ServiceAccount', 'ServiceAccountAPIKey', 'GatewaySubagentControl', 'InstallationControls'},
     'core': {'Agent', 'Environment', 'Team', 'Gateway', 'Project', 'KnowledgeBase', 'Role'},
@@ -110,7 +110,14 @@ def main():
     parser.add_argument('--evidence', type=Path, required=True)
     parser.add_argument('--terraform-binary', type=Path, required=True)
     parser.add_argument('--controller-binary', type=Path, required=True)
+    parser.add_argument('--pool-resource-only', action='store_true', help='Test only ModelPool using an existing shared key; no provider keys, agents or grants are created')
+    parser.add_argument('--existing-provider-key-id', help='Existing shared fixture provider-key UUID for --pool-resource-only')
     args = parser.parse_args()
+    if args.pool_resource_only:
+        if args.cases != ['model-pools'] or not args.existing_provider_key_id:
+            parser.error('--pool-resource-only requires --cases model-pools and --existing-provider-key-id')
+        if str(uuid.UUID(args.existing_provider_key_id)) != args.existing_provider_key_id:
+            parser.error('Use a canonical lowercase existing provider-key UUID')
     parsed = urllib.parse.urlparse(args.api_url)
     if parsed.scheme != 'http' or parsed.hostname not in ('127.0.0.1', 'localhost', '::1'):
         parser.error('Only an isolated loopback HTTP API is supported')
@@ -152,7 +159,7 @@ def main():
         def redirect_request(self, req, fp, code, msg, headers, newurl):
             raise RuntimeError('Local API redirects are refused')
 
-    opener = urllib.request.build_opener(NoRedirect())
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
 
     def api(path, payload=None, method=None):
         request = urllib.request.Request(args.api_url.rstrip('/') + path,
@@ -186,7 +193,7 @@ def main():
             resource_names[key] = matches[0]
         return resource_names[key]
 
-    def create(scope, group, kind, plural, fields, suffix_name="", init_fields=None, external_name=None):
+    def create(scope, group, kind, plural, fields, suffix_name="", init_fields=None, external_name=None, management_policies=None):
         if kind == 'Gateway':
             group = 'gateway'
         suffix = '.m' if scope == 'namespaced' else ''
@@ -205,6 +212,8 @@ def main():
                     'metadata': metadata, 'spec': {'forProvider': fields, 'providerConfigRef': config}}
         if init_fields is not None:
             manifest['spec']['initProvider'] = init_fields
+        if management_policies is not None:
+            manifest['spec']['managementPolicies'] = management_policies
         if kind in ('ServiceAccountAPIKey', 'VirtualKey', 'OAuthClient', 'ShareLink'):
             ref = {'name': name + '-connection'}
             if scope == 'cluster':
@@ -264,6 +273,81 @@ def main():
         save()
         print(json.dumps(results[-1]), flush=True)
 
+    def model_pool_resource(scope, provider, provider_id):
+        name = 'cp-disabled-pool-' + run + '-' + scope
+
+        def members(weight):
+            return [{'providerApiKeyIdRef': {'name': provider[2]}, 'modelId': model,
+                     'priority': index + 1, 'weight': weight if index == 0 else 1, 'enabled': False}
+                    for index, model in enumerate(('cp-dummy-primary', 'cp-dummy-fallback'))]
+
+        fields = {'name': name, 'members': members(3)}
+        pool, identifier, _ = create(scope, 'llm', 'ModelPool', 'modelpools', fields)
+
+        def value():
+            status, values = api('/api/model-pools')
+            if status != 200:
+                raise RuntimeError('ModelPool authenticated list failed')
+            return next((item for item in values if item['id'] == identifier), None)
+
+        def matches(lease, expected_name, weight):
+            obj = observation(lease)
+            conditions = {item['type']: item['status'] for item in obj.get('status', {}).get('conditions', [])}
+            row = value()
+            return (conditions.get('Ready') == conditions.get('Synced') == 'True'
+                    and obj['metadata']['annotations']['crossplane.io/external-name'] == identifier
+                    and row is not None and row['name'] == expected_name and not row['virtualApiKeyIds']
+                    and sorted((m['modelId'], m['providerApiKeyId'], m['priority'], m['weight'], m['enabled']) for m in row['members'])
+                    == sorted((m['modelId'], provider_id, m['priority'], m['weight'], False) for m in members(weight)))
+
+        snapshots = []
+
+        def snapshot(stage):
+            row = value()
+            snapshots.append({'stage': stage, 'id': identifier, 'name': row['name'],
+                              'members': [{key: member[key] for key in ('modelId', 'priority', 'weight', 'enabled')} for member in row['members']],
+                              'provider_reference_matches': all(m['providerApiKeyId'] == provider_id for m in row['members']),
+                              'virtual_key_grants': row['virtualApiKeyIds']})
+
+        wait('ModelPool create Ready/Synced and API persistence', lambda: matches(pool, name, 3))
+        snapshot('create')
+        updated = name + '-updated'
+        fields = {'name': updated, 'members': members(7)}
+        patch(pool, fields)
+        wait('ModelPool in-place name/weight update', lambda: matches(pool, updated, 7))
+        snapshot('update')
+        drift = {'name': name + '-drift', 'members': [
+            {key: member[key] for key in ('providerApiKeyId', 'modelId', 'priority', 'weight', 'enabled')}
+            for member in value()['members']]}
+        next(m for m in drift['members'] if m['modelId'] == 'cp-dummy-primary')['weight'] = 11
+        path = '/api/model-pools/' + identifier
+        status, injected = api(path, drift, 'PUT')
+        if (status != 200 or injected.get('name') != drift['name']
+                or next(m for m in injected['members'] if m['modelId'] == 'cp-dummy-primary')['weight'] != 11):
+            raise RuntimeError('Unable to write owned ModelPool drift')
+        wait('ModelPool automatic name/weight drift repair', lambda: matches(pool, updated, 7))
+        snapshot('drift-repaired')
+        kube(*pool[0], 'patch', pool[1], pool[2], '--type=merge', '-p',
+             json.dumps({'spec': {'managementPolicies': ['Create', 'Observe', 'Update', 'LateInitialize']}}))
+        fallback = ([], 'api-fixture', path)
+        # Reverse cleanup must remove a live owning CR before its API fallback.
+        leases.insert(leases.index(pool), fallback)
+        delete(pool)
+        if value() is None:
+            raise RuntimeError('Orphaning ModelPool deleted its API record')
+        adopted, adopted_id, _ = create(scope, 'llm', 'ModelPool', 'modelpools', fields, '-adopt', external_name=identifier)
+        if adopted_id != identifier:
+            raise RuntimeError('ModelPool adoption changed identity')
+        wait('ModelPool adopted UUID Ready/Synced', lambda: matches(adopted, updated, 7))
+        snapshot('adopted')
+        delete(adopted)
+        if value() is not None:
+            raise RuntimeError('ModelPool survived normal controller deletion')
+        leases.remove(fallback)
+        record('ModelPool', scope, create='passed', provider_reference='passed', ready_synced='passed',
+               update='passed', drift_repair='passed', orphan='passed', uuid_adoption='passed', delete='passed',
+               identity_preserved=True, members_disabled=True, inference='not_invoked', api_snapshots=snapshots)
+
     try:
         status, snapshot = api('/openapi.json')
         if status != 200:
@@ -271,6 +355,7 @@ def main():
         evidence['api_url'] = args.api_url.rstrip('/')
         evidence['api_spec_sha256'] = hashlib.sha256(json.dumps(snapshot, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
         evidence['api_version'] = snapshot['info']['version']
+        evidence['pool_resource_only'] = args.pool_resource_only
         if args.resume_from:
             results.extend(resume_results(args.resume_from, evidence))
             evidence['resumed_from'] = {'file': args.resume_from.name, 'sha256': hashlib.sha256(args.resume_from.read_bytes()).hexdigest()}
@@ -280,7 +365,7 @@ def main():
             raise RuntimeError('Unable to read the isolated test organization')
         for scope in args.scopes:
             scope_cases = set(args.cases) - completed_cases(results, scope)
-            if scope_cases & {'llm', 'routing-credentials', 'model-pools'}:
+            if scope_cases & {'llm', 'routing-credentials'} or ('model-pools' in scope_cases and not args.pool_resource_only):
                 secret, model_fixture = model_provider_fixture(args.namespace, scope, run)
                 kube('apply', '-f', '-', payload=secret)
                 leases.append((['-n', args.namespace], 'secrets', secret['metadata']['name']))
@@ -1411,7 +1496,20 @@ def main():
                 delete(catalog)
                 record('InstallationControls', scope, create='passed', personal_user='passed', update='passed', drift_repair='passed', identity_preserved=True, delete='passed')
 
-            if 'model-pools' in scope_cases:
+            if 'model-pools' in scope_cases and args.pool_resource_only:
+                code, fixture = api('/api/llm-provider-api-keys/' + args.existing_provider_key_id)
+                if code != 200 or fixture.get('scope') != 'org' or fixture.get('isAgentKey'):
+                    raise RuntimeError('Expected an existing organization-owned fixture provider key')
+                observer, observed_id, _ = create(scope, 'llm', 'ModelProvider', 'providerkeys', {}, '-observe',
+                    external_name=args.existing_provider_key_id, management_policies=['Observe'])
+                if observed_id != args.existing_provider_key_id:
+                    raise RuntimeError('Observe-only provider reference changed the approved fixture identity')
+                model_pool_resource(scope, observer, args.existing_provider_key_id)
+                delete(observer)
+                if api('/api/llm-provider-api-keys/' + args.existing_provider_key_id)[0] != 200:
+                    raise RuntimeError('Observe-only provider reference removed the existing fixture key')
+
+            if 'model-pools' in scope_cases and not args.pool_resource_only:
                 keys, pools = [], []
                 for index in range(2):
                     key, key_id, _ = create(scope, 'llm', 'ModelProvider', 'providerkeys',
@@ -1467,6 +1565,7 @@ def main():
                     raise RuntimeError('Model-pool managed resources survived deletion')
                 for fixture, _ in pools:
                     delete(fixture)
+                model_pool_resource(scope, keys[0][0], keys[0][1])
                 for lease, key_id in keys:
                     delete(lease)
                     if api('/api/llm-provider-api-keys/' + key_id)[0] != 404:

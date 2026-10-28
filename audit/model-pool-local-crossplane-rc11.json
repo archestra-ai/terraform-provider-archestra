@@ -1,0 +1,294 @@
+{
+  "date": "2026-10-28",
+  "scope": "Actual local unpublished Crossplane controller and Terraform provider against an existing development API; both generated scopes",
+  "provider_source_commit": "cbaf6236f2c9c346978a0b92fc37647cefea6a3c",
+  "controller_source_commit": "cbaf6236f2c9c346978a0b92fc37647cefea6a3c",
+  "harness_base_commit": "ae18e1cc00cb022b20a58a2e77a98374f5918e26",
+  "harness_sha256": "13da099afbf748d172f0d838019db6df7c39f42fb83854af2a3586e1e896fe91",
+  "api_source_commit": "493ea3c118f3982fe1a9333e8ebccd71b863a740",
+  "api_build": "Existing local development checkout, not a published image compatibility sweep",
+  "crossplane_version": "2.2.1",
+  "kubernetes_version": "v1.37.0",
+  "controller_execution": "Mac host, one reconcile worker, 2-second polling, local filesystem Terraform provider mirror; no provider publication or image deployment",
+  "terraform_version": "1.5.7",
+  "execution": {
+    "run_id": "8fc0f614",
+    "terraform_sha256": "c050a21eded120ddbd2807dd20abcbd9525b87a7cf552e07f65dbd493de2201c",
+    "controller_sha256": "f3a333d0235403a879eefef0acbe098d94d35403b7d16f3f5dee24e35a39bcdb",
+    "results": [
+      {
+        "resource": "ModelPool",
+        "scope": "cluster",
+        "create": "passed",
+        "provider_reference": "passed",
+        "ready_synced": "passed",
+        "update": "passed",
+        "drift_repair": "passed",
+        "orphan": "passed",
+        "uuid_adoption": "passed",
+        "delete": "passed",
+        "identity_preserved": true,
+        "members_disabled": true,
+        "inference": "not_invoked",
+        "api_snapshots": [
+          {
+            "stage": "create",
+            "id": "764782e5-1098-488c-86fe-bc8169eb6d1e",
+            "name": "cp-disabled-pool-8fc0f614-cluster",
+            "members": [
+              {
+                "modelId": "cp-dummy-primary",
+                "priority": 1,
+                "weight": 3,
+                "enabled": false
+              },
+              {
+                "modelId": "cp-dummy-fallback",
+                "priority": 2,
+                "weight": 1,
+                "enabled": false
+              }
+            ],
+            "provider_reference_matches": true,
+            "virtual_key_grants": []
+          },
+          {
+            "stage": "update",
+            "id": "764782e5-1098-488c-86fe-bc8169eb6d1e",
+            "name": "cp-disabled-pool-8fc0f614-cluster-updated",
+            "members": [
+              {
+                "modelId": "cp-dummy-primary",
+                "priority": 1,
+                "weight": 7,
+                "enabled": false
+              },
+              {
+                "modelId": "cp-dummy-fallback",
+                "priority": 2,
+                "weight": 1,
+                "enabled": false
+              }
+            ],
+            "provider_reference_matches": true,
+            "virtual_key_grants": []
+          },
+          {
+            "stage": "drift-repaired",
+            "id": "764782e5-1098-488c-86fe-bc8169eb6d1e",
+            "name": "cp-disabled-pool-8fc0f614-cluster-updated",
+            "members": [
+              {
+                "modelId": "cp-dummy-primary",
+                "priority": 1,
+                "weight": 7,
+                "enabled": false
+              },
+              {
+                "modelId": "cp-dummy-fallback",
+                "priority": 2,
+                "weight": 1,
+                "enabled": false
+              }
+            ],
+            "provider_reference_matches": true,
+            "virtual_key_grants": []
+          },
+          {
+            "stage": "adopted",
+            "id": "764782e5-1098-488c-86fe-bc8169eb6d1e",
+            "name": "cp-disabled-pool-8fc0f614-cluster-updated",
+            "members": [
+              {
+                "modelId": "cp-dummy-primary",
+                "priority": 1,
+                "weight": 7,
+                "enabled": false
+              },
+              {
+                "modelId": "cp-dummy-fallback",
+                "priority": 2,
+                "weight": 1,
+                "enabled": false
+              }
+            ],
+            "provider_reference_matches": true,
+            "virtual_key_grants": []
+          }
+        ]
+      },
+      {
+        "resource": "ModelPool",
+        "scope": "namespaced",
+        "create": "passed",
+        "provider_reference": "passed",
+        "ready_synced": "passed",
+        "update": "passed",
+        "drift_repair": "passed",
+        "orphan": "passed",
+        "uuid_adoption": "passed",
+        "delete": "passed",
+        "identity_preserved": true,
+        "members_disabled": true,
+        "inference": "not_invoked",
+        "api_snapshots": [
+          {
+            "stage": "create",
+            "id": "3761f55c-1ab8-471c-966e-bcd7b28eadc1",
+            "name": "cp-disabled-pool-8fc0f614-namespaced",
+            "members": [
+              {
+                "modelId": "cp-dummy-primary",
+                "priority": 1,
+                "weight": 3,
+                "enabled": false
+              },
+              {
+                "modelId": "cp-dummy-fallback",
+                "priority": 2,
+                "weight": 1,
+                "enabled": false
+              }
+            ],
+            "provider_reference_matches": true,
+            "virtual_key_grants": []
+          },
+          {
+            "stage": "update",
+            "id": "3761f55c-1ab8-471c-966e-bcd7b28eadc1",
+            "name": "cp-disabled-pool-8fc0f614-namespaced-updated",
+            "members": [
+              {
+                "modelId": "cp-dummy-primary",
+                "priority": 1,
+                "weight": 7,
+                "enabled": false
+              },
+              {
+                "modelId": "cp-dummy-fallback",
+                "priority": 2,
+                "weight": 1,
+                "enabled": false
+              }
+            ],
+            "provider_reference_matches": true,
+            "virtual_key_grants": []
+          },
+          {
+            "stage": "drift-repaired",
+            "id": "3761f55c-1ab8-471c-966e-bcd7b28eadc1",
+            "name": "cp-disabled-pool-8fc0f614-namespaced-updated",
+            "members": [
+              {
+                "modelId": "cp-dummy-primary",
+                "priority": 1,
+                "weight": 7,
+                "enabled": false
+              },
+              {
+                "modelId": "cp-dummy-fallback",
+                "priority": 2,
+                "weight": 1,
+                "enabled": false
+              }
+            ],
+            "provider_reference_matches": true,
+            "virtual_key_grants": []
+          },
+          {
+            "stage": "adopted",
+            "id": "3761f55c-1ab8-471c-966e-bcd7b28eadc1",
+            "name": "cp-disabled-pool-8fc0f614-namespaced-updated",
+            "members": [
+              {
+                "modelId": "cp-dummy-primary",
+                "priority": 1,
+                "weight": 7,
+                "enabled": false
+              },
+              {
+                "modelId": "cp-dummy-fallback",
+                "priority": 2,
+                "weight": 1,
+                "enabled": false
+              }
+            ],
+            "provider_reference_matches": true,
+            "virtual_key_grants": []
+          }
+        ]
+      }
+    ],
+    "cleanup": "passed",
+    "kubernetes_context": "kind-archestra",
+    "api_url": "http://localhost:9000",
+    "api_spec_sha256": "ee93e5efa33973698e05dd9a8e50adcc63877804c896d9b784b038201246df49",
+    "api_version": "1.5.0-rc.11",
+    "pool_resource_only": true,
+    "outcome": "passed"
+  },
+  "unrelated_api_verification": {
+    "preexisting_pool_count": 2,
+    "remaining_pool_count": 2,
+    "only_preexisting_pools_remain": true,
+    "all_preexisting_pool_settings_unchanged": true,
+    "existing_fixture_metadata_unchanged": true
+  },
+  "credential_cleanup": {
+    "temporary_key_revoked": true,
+    "lookup_after_revoke_http_status": 404,
+    "revoked_key_auth_http_status": 401,
+    "secret_and_configs_removed": true,
+    "transient_key_cookie_and_kubeconfig_files_removed": true
+  },
+  "cluster_cleanup": {
+    "original_objects_preserved": true,
+    "task_controller_stopped": true,
+    "task_chart_uninstalled": true,
+    "task_namespace_removed": true,
+    "nine_empty_provider_crds_removed": true,
+    "official_core_crds_retained": [
+      "clusterusages.protection.crossplane.io",
+      "compositeresourcedefinitions.apiextensions.crossplane.io",
+      "compositionrevisions.apiextensions.crossplane.io",
+      "compositions.apiextensions.crossplane.io",
+      "configurationrevisions.pkg.crossplane.io",
+      "configurations.pkg.crossplane.io",
+      "cronoperations.ops.crossplane.io",
+      "deploymentruntimeconfigs.pkg.crossplane.io",
+      "environmentconfigs.apiextensions.crossplane.io",
+      "functionrevisions.pkg.crossplane.io",
+      "functions.pkg.crossplane.io",
+      "imageconfigs.pkg.crossplane.io",
+      "locks.pkg.crossplane.io",
+      "managedresourceactivationpolicies.apiextensions.crossplane.io",
+      "managedresourcedefinitions.apiextensions.crossplane.io",
+      "operations.ops.crossplane.io",
+      "providerrevisions.pkg.crossplane.io",
+      "providers.pkg.crossplane.io",
+      "usages.apiextensions.crossplane.io",
+      "usages.protection.crossplane.io",
+      "watchoperations.ops.crossplane.io"
+    ],
+    "remaining_task_deployments": 0,
+    "app3000_and_existing_backend9000_preserved": true
+  },
+  "limits": [
+    "No inference, traffic distribution measurement or live failover invocation",
+    "No grants or upstream provider keys created/modified; local wrapper was Observe-only",
+    "No container/xpkg deployment or multi-architecture runtime packaging proof",
+    "No release compatibility sweep; this records one local API build"
+  ],
+  "reproduce": "docs/guides/model-pool-local-crossplane.md",
+  "review_and_regression_checks": {
+    "independent_reviews": 2,
+    "status": "approved after cleanup ordering, authorized reference and drift injection guards were fixed",
+    "controlled_failure_tests": {
+      "wrong_adoption_cleanup": "passed",
+      "orphan_CR_timeout_cleanup_ordering": "passed",
+      "no_op_drift_rejected": "passed",
+      "normal_lifecycle_cleanup": "passed"
+    },
+    "final_live_rerun": "passed in both scopes with the reviewed final driver"
+  }
+}
