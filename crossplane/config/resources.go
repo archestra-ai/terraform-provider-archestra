@@ -138,6 +138,11 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.ShortGroup = "limit"
 		r.Kind = "Limit"
 	})
+	p.AddResourceConfigurator("archestra_model_pool", func(r *ujconfig.Resource) {
+		r.ShortGroup = "llm"
+		r.Kind = "ModelPool"
+		r.References["members.provider_api_key_id"] = ujconfig.Reference{TerraformName: "archestra_model_provider"}
+	})
 	p.AddResourceConfigurator("archestra_model", func(r *ujconfig.Resource) {
 		r.ShortGroup = "llm"
 		r.Kind = "Model"

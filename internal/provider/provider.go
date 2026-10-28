@@ -209,6 +209,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewMCPServerRegistryResource,
 		NewTeamResource,
 		NewLlmModelResource,
+		NewModelPoolResource,
 		NewLimitResource,
 		NewOrganizationSettingsResource,
 		NewLLMProviderApiKeyResource,

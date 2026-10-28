@@ -1,7 +1,7 @@
 # Archestra Provider
 
 
-Provider 3.0.0 has **31 Terraform resources and four Terraform data sources**. Every resource is generated as a Crossplane managed resource in both the cluster and namespaced scopes. Relationships, team bindings, sharing and organization defaults are configured on their parent resource. Retired resource names have no aliases; the [migration guide](MIGRATION-v3.md) maps each one to its replacement.
+Provider 3.0.0 has **32 Terraform resources and four Terraform data sources**. Every resource is generated as a Crossplane managed resource in both the cluster and namespaced scopes. Relationships, team bindings, sharing and organization defaults are configured on their parent resource. Retired resource names have no aliases; the [migration guide](MIGRATION-v3.md) maps each one to its replacement.
 
 [![Crossplane mappings](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
 
@@ -40,6 +40,7 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_mcp_gateway` | `gateway` / `Gateway` |
 | `archestra_mcp_registry_entry` | `mcp` / `RegistryEntry` |
 | `archestra_mcp_server` | `mcp` / `Server` |
+| `archestra_model_pool` | `llm` / `ModelPool` |
 | `archestra_model` | `llm` / `Model` |
 | `archestra_model_provider` | `llm` / `ModelProvider` |
 | `archestra_oauth_client` | `credential` / `OAuthClient` |
@@ -199,8 +200,9 @@ tag vX.Y.Z  ──▶  goreleaser       ──▶  GitHub release zips ──▶
 The publish jobs run one after the other: `publish-crossplane` needs
 `publish-terraform-provider`, because the runtime image downloads the
 release zips. The same `publish-crossplane` job then adds the logo to that package
-and verifies that both runtime manifests are unchanged, then enables the public
-Marketplace listing for the existing repository through the Upbound CLI.
+and verifies that both runtime manifests are unchanged, then waits for the
+existing public Marketplace listing, digest and logo. Repository visibility is
+managed by the Upbound organization owner.
 A publication failure does not roll back earlier publication steps.
 
 See [the audit](audit/README.md) for the release evidence.

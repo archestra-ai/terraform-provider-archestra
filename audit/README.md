@@ -1,5 +1,42 @@
 # Provider audit
 
+## Model-pool local native proof
+
+The [recorded local run](model-pool-local-native-rc11.json) exercises the
+unpublished provider against an existing development API reporting `1.5.0-rc.11`.
+One synthetic pool passes create, no-change refresh, in-place update, UUID import,
+import no-change plan, out-of-band drift detection/repair, final no-change plan,
+and destroy. Fresh API reads confirm persisted member settings. Actual UI
+screenshots verify the created/updated pool has both members off and the pool
+is absent after destroy; the screenshots and Terraform logs remain in the
+private evidence workspace rather than being uploaded by this change.
+
+Both pre-existing pools retain their settings. The temporary management key is
+revoked, its use returns 401, and its transient secret files are removed. The
+only task-started frontend is stopped. This proves native resource persistence
+for the recorded bytes, not inference routing, a release compatibility matrix,
+or live Crossplane reconciliation. Follow the
+[local procedure](../docs/guides/model-pool-local-acceptance.md) to reproduce it.
+
+## Model-pool local Crossplane proof
+
+The [actual controller run](model-pool-local-crossplane-rc11.json) passes ModelPool
+create, existing-provider reference resolution, Ready/Synced, update, automatic
+name/weight drift repair, orphan/adoption by external-name, and deletion in both
+scopes. It uses Crossplane 2.2.1 on an existing kind cluster, an unpublished Mac
+controller with one worker, and the same local Terraform provider/API build as
+the native proof. The two disabled synthetic pools run sequentially; no inference
+or credential grants are exercised. The existing provider key is referenced
+through an Observe-only ModelProvider wrapper.
+
+Both original pools retain their settings. The temporary key is revoked (404
+lookup, 401 authentication), and its Secret, configs and private auth files are
+removed. The task controller, chart, namespace and nine empty provider CRDs are
+removed; 21 official core Crossplane CRDs remain as inert API definitions. Original
+cluster objects and the user-requested app/backend are preserved. This proves
+local reconciliation, not container/xpkg packaging or release compatibility.
+See the [replay procedure](../docs/guides/model-pool-local-crossplane.md).
+
 ## 3.0.0 release evidence (API 1.5.0-rc.3)
 
 Provider 3.0.0 has 31 resources and four data sources. All release evidence below
