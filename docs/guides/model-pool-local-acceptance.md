@@ -25,8 +25,8 @@ flowchart LR
 
 ## Prepare without credentials
 
-Use an existing owner-confirmed local API that exposes pool CRUD and has model
-pools enabled. Do not restart another development stack to run this probe.
+Use an existing owner-confirmed local API with the credential-owned grant
+contract first released in Archestra 1.5.0-rc.12 and model pools enabled. Do not restart another development stack to run this probe.
 The `prepare` command reads only public health and OpenAPI endpoints and creates
 new private files. Choose a workspace path that does not already exist.
 
@@ -115,9 +115,11 @@ creating a new cluster or installing Crossplane is a separate setup operation.
 The [acceptance record](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/model-pool-local-native-rc11.json)
 identifies the tested provider bytes and local API revision. On 2026-10-28,
 Terraform completed all thirteen recorded steps against a development API
-reporting `1.5.0-rc.11`: create, three unchanged plans (including after import),
+reporting `1.5.0-rc.11`, with development source containing the later
+credential-owned grant changes: create, three unchanged plans (including after import),
 in-place update, import, drift detection/repair, and destroy. The same pool UUID
-survived update and import. Fresh API reads verified weight changed from 3 to 7,
+survived update and import. This does not establish compatibility with the
+official rc.11 release, whose older write contract the provider rejects. Fresh API reads verified weight changed from 3 to 7,
 priorities stayed 1/2, and both members remained disabled. The drift plan
 contained exactly one in-place resource update.
 

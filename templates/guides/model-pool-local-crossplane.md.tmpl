@@ -24,7 +24,8 @@ flowchart LR
 ## Scope and prerequisites
 
 Use an owner-confirmed local kind cluster and an existing loopback Archestra API
-with model pools enabled and the credential-owned grant contract. Obtain scoped
+with model pools enabled and the credential-owned grant contract first released
+in Archestra 1.5.0-rc.12. Obtain scoped
 permission for the Crossplane installation/CRDs, a temporary management key and
 Secret, and sequential disabled synthetic pools. The key inherits its caller's
 available management permissions; it is not an inference provider key.
@@ -140,7 +141,9 @@ can retain official core CRDs: inventory and report them rather than deleting
 shared API definitions blindly. Preserve evidence and unrelated services.
 
 The [recorded local proof](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/model-pool-local-crossplane-rc11.json)
-passed in both scopes against a development API reporting `1.5.0-rc.11`, with
+passed in both scopes against a development API reporting `1.5.0-rc.11`,
+with source containing the later credential-owned grant changes, rather than the
+official rc.11 release. It used
 Crossplane 2.2.1 and Kubernetes v1.37.0. Both members remained disabled; priorities
 were 1/2, the first weight changed 3 to 7, injected drift used weight 11, and repair
 restored 7. Update/adoption retained each pool UUID. Both original pools were

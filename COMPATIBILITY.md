@@ -25,8 +25,11 @@ Two features need 1.5.0-rc.1 or later:
 `archestra_model_pool` additionally requires the model-pools CRUD API introduced
 in [Archestra PR #9681](https://github.com/archestra-ai/archestra/pull/9681), with
 `ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` or `ARCHESTRA_BETA=true`. It additionally
-requires the newer credential-owned grant contract (observed on API rc.11):
+requires the credential-owned grant contract first published in
+[Archestra 1.5.0-rc.12](https://github.com/archestra-ai/archestra/releases/tag/platform-v1.5.0-rc.12):
 OpenAPI must accept `name` and `members` without writable `virtualApiKeyIds`.
+The official rc.11 release has the older contract and is unsupported for pool
+writes; stable 1.4.8 has no pool CRUD API.
 Create/update refuse the older grant-replacing contract before mutation. Pool writes manage name and members. Virtual-key grants are read-only on
 the pool and belong to credential configuration in the current API. The global
 version floor does not establish this capability. Pool lifecycle and Terraform
@@ -35,7 +38,8 @@ an existing local development API reporting `1.5.0-rc.11` passed create, read,
 update, import, drift repair and destroy, with actual UI checks and verified cleanup
 ([record](audit/model-pool-local-native-rc11.json),
 [procedure](docs/guides/model-pool-local-acceptance.md)). This is one recorded
-local build, not a release compatibility sweep. Actual local Crossplane
+local development build containing the later grant changes, not the official
+rc.11 release or a release compatibility sweep. Actual local Crossplane
 ModelPool reconciliation also passed create, reference resolution, update,
 automatic drift repair, orphan/adoption and deletion in both scopes with the
 unpublished host controller ([record](audit/model-pool-local-crossplane-rc11.json),
@@ -54,7 +58,13 @@ release. These checks are required, so a change that breaks a supported older
 release cannot merge. The runtime check below still warns on those releases,
 because it treats only the release in `platform-version.txt` as tested.
 
-Crossplane reconciliation is not part of CI. The recorded evidence for
+Crossplane lifecycle CI exercises both scopes against the release in
+`platform-version.txt`, including ModelPool create, update, automatic drift repair,
+UUID adoption and deletion. These jobs use source-built providers/controllers;
+they do not establish that a published xpkg installs and runs.
+[ModelPool CI against the released rc.12 app and chart](https://github.com/archestra-ai/terraform-provider-archestra/actions/runs/40715454241/job/122911867851)
+passed in both scopes with unpublished PR provider/controller binaries. The recorded
+historical evidence for
 1.5.0-rc.3 (image
 `sha256:ef2cc471d08b2af05e40cd211bc8b8292752723dff13b8d6c08530079e7167d6`)
 covers all 31 resource families in both scopes on one Terraform provider and
