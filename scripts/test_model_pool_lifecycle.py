@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, Mock, call
 
 spec = importlib.util.spec_from_file_location('pool_lifecycle', Path(__file__).parent / 'integration/model-pool-lifecycle.py')
 probe = importlib.util.module_from_spec(spec)
@@ -96,7 +96,10 @@ class LifecycleTests(unittest.TestCase):
         elif verb == 'import':
             self.bound = True
         elif verb == 'show':
-            output = json.dumps({'resource_changes': [{'address': probe.ADDRESS, 'change': {'actions': ['update']}}]})
+            if command[-1] == 'drift.tfplan':
+                output = json.dumps({'resource_changes': [{'address': probe.ADDRESS, 'change': {'actions': ['update']}}]})
+            else:
+                output = json.dumps({'values': {'root_module': {'resources': [{'address': probe.ADDRESS, 'values': {'id': POOL_ID}}] if self.bound else []}}})
         elif verb == 'destroy':
             if self.bound:
                 self.pools = [p for p in self.pools if p['id'] != POOL_ID]
@@ -141,6 +144,37 @@ class LifecycleTests(unittest.TestCase):
         self.assertTrue(any(method == 'DELETE' for _, _, method, _ in self.requests))
         self.assertEqual(json.loads((self.workspace / 'evidence.json').read_text())['cleanup'], 'passed')
 
+    def test_wrong_state_binding_cannot_destroy_another_pool(self):
+        self.prepare()
+        def wrong_state(command, **kwargs):
+            if command[1:] == ['show', '-json']:
+                return subprocess.CompletedProcess(command, 0, json.dumps({'values': {'root_module': {'resources': [
+                    {'address': probe.ADDRESS, 'values': {'id': 'unrelated'}}]}}}), '')
+            return self.terraform(command, **kwargs)
+        with contextlib.redirect_stdout(io.StringIO()), patch.object(probe, 'terraform_process', side_effect=wrong_state):
+            result = probe.execute(argparse.Namespace(workspace=self.workspace, key_file=self.key_file, provider_key_id=KEY_ID))
+        self.assertEqual(result, 1)
+        self.assertFalse(any(c[0] == 'destroy' for c in self.commands))
+        self.assertEqual(self.pools, [{'id': 'unrelated', 'name': 'existing-pool'}])
+        record = json.loads((self.workspace / 'evidence.json').read_text())
+        self.assertEqual(record['cleanup'], 'passed')
+        self.assertIn('State', record['terraform_cleanup_skipped'])
+
+    def test_api_fallback_does_not_prove_terraform_deletion(self):
+        self.prepare()
+        def no_delete(command, **kwargs):
+            if command[1] == 'destroy':
+                return subprocess.CompletedProcess(command, 0, '', '')
+            return self.terraform(command, **kwargs)
+        with contextlib.redirect_stdout(io.StringIO()), patch.object(probe, 'terraform_process', side_effect=no_delete):
+            result = probe.execute(argparse.Namespace(workspace=self.workspace, key_file=self.key_file, provider_key_id=KEY_ID))
+        self.assertEqual(result, 1)
+        self.assertEqual(self.pools, [{'id': 'unrelated', 'name': 'existing-pool'}])
+        record = json.loads((self.workspace / 'evidence.json').read_text())
+        self.assertEqual(record['cleanup'], 'passed')
+        self.assertTrue(record['api_cleanup_fallback'])
+        self.assertEqual(record['outcome'], 'failed')
+
     def test_disabled_or_denied_api_never_applies(self):
         self.prepare()
         self.auth_status = 404
@@ -182,6 +216,17 @@ class LifecycleTests(unittest.TestCase):
         for value in ('https://staging.example', 'http://127.0.0.1:9000/api', 'http://key@localhost:9000'):
             with self.assertRaises(ValueError):
                 probe.local_url(value)
+
+
+class ProcessLifetimeTests(unittest.TestCase):
+    def test_interruption_reaps_the_owned_group_before_propagating(self):
+        child = Mock(pid=12345)
+        child.communicate.side_effect = [KeyboardInterrupt(), ('', ''), ('', '')]
+        with patch.object(probe.subprocess, 'Popen', return_value=child), patch.object(probe.os, 'killpg') as kill:
+            with self.assertRaises(KeyboardInterrupt):
+                probe.terraform_process(['fixture'], env={}, cwd=Path('/tmp'))
+        self.assertEqual(kill.call_args_list, [call(12345, probe.signal.SIGTERM), call(12345, probe.signal.SIGKILL)])
+        self.assertEqual(child.communicate.call_count, 3)
 
 
 class RequestBoundaryTests(unittest.TestCase):

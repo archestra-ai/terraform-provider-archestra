@@ -87,6 +87,9 @@ generated name prefix, upstream model IDs, provider reference, disabled flags an
 changes or cleanup cannot be verified, the harness reports a blocked cleanup and
 retains the workspace and any recorded pool identity for operator review. Do not discard its
 state or rerun it as a fresh success; inspect `evidence.json` and private logs.
+Before Terraform cleanup, the harness checks that state binds only the owned
+pool. If scoped API fallback is needed, successful cleanup still leaves the
+Terraform lifecycle result failed; fallback does not prove provider deletion.
 
 ## What this proves
 

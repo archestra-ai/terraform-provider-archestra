@@ -120,17 +120,31 @@ def terraform_process(command, *, env, cwd):
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
     try:
         output, error = process.communicate(timeout=180)
-    except subprocess.TimeoutExpired:
+    except BaseException as error:
         try:
             os.killpg(process.pid, signal.SIGTERM)
             process.communicate(timeout=5)
-        except subprocess.TimeoutExpired:
-            os.killpg(process.pid, signal.SIGKILL)
+        except (subprocess.TimeoutExpired, ProcessLookupError):
+            pass
+        finally:
+            # Reaping the leader does not establish that its plugins exited.
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
             process.communicate()
-        except ProcessLookupError:
-            process.communicate()
-        raise RuntimeError('Terraform timed out; server mutation outcome may be uncertain') from None
+        if isinstance(error, subprocess.TimeoutExpired):
+            raise RuntimeError('Terraform timed out; server mutation outcome may be uncertain') from None
+        raise
     return subprocess.CompletedProcess(command, process.returncode, output, error)
+
+
+def pool_state_matches(document, identifier):
+    root = document.get('values', {}).get('root_module', {})
+    resources = root.get('resources', [])
+    return (not root.get('child_modules') and len(resources) == 1
+            and resources[0].get('address') == ADDRESS
+            and resources[0].get('values', {}).get('id') == identifier)
 
 
 def execute(args):
@@ -267,8 +281,18 @@ def execute(args):
                 if matches:
                     identifier = matches[0]['id']
                     record['pool_id'] = identifier
-                    run('destroy', 'destroy', '-auto-approve', '-input=false', '-no-color')
-                    if any(p.get('id') == identifier for p in pools()):
+                    state = json.loads(run('cleanup-state-json', 'show', '-json'))
+                    if pool_state_matches(state, identifier):
+                        run('destroy', 'destroy', '-auto-approve', '-input=false', '-no-color')
+                    else:
+                        record['outcome'] = 'failed'
+                        record['terraform_cleanup_skipped'] = 'State does not bind exactly the owned pool'
+                    remaining = [p for p in pools() if p.get('id') == identifier]
+                    if remaining:
+                        if len(remaining) != 1 or not owned(remaining[0]):
+                            raise RuntimeError('Ownership changed during cleanup; pool retained')
+                        record['outcome'] = 'failed'
+                        record['api_cleanup_fallback'] = True
                         status, _ = request(base, '/api/model-pools/' + identifier, key, 'DELETE')
                         if status not in (200, 404):
                             raise RuntimeError('Owned-pool cleanup failed')
