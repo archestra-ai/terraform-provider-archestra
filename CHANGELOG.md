@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.0.4](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.0.3...v3.0.4) (2026-10-28)
+
+
+### Bug Fixes
+
+* render and verify the public Marketplace logo ([#207](https://github.com/archestra-ai/terraform-provider-archestra/issues/207)) ([eb237fd](https://github.com/archestra-ai/terraform-provider-archestra/commit/eb237fd3261162f5e876eae47b7e1be01c390d9a))
+* synchronize platform API client ([#205](https://github.com/archestra-ai/terraform-provider-archestra/issues/205)) ([9201766](https://github.com/archestra-ai/terraform-provider-archestra/commit/920176622150774260c52c6753e3ccec3fde0607))
+
+
+### Documentation
+
+* improve Crossplane setup and Marketplace resource documentation ([#210](https://github.com/archestra-ai/terraform-provider-archestra/issues/210)) ([13b7d8c](https://github.com/archestra-ai/terraform-provider-archestra/commit/13b7d8c6dc91ed97503f489dd1003278386357e0))
+
+
+### Code Refactoring
+
+* **vault:** remove read-only secret references ([#209](https://github.com/archestra-ai/terraform-provider-archestra/issues/209)) ([732e0a8](https://github.com/archestra-ai/terraform-provider-archestra/commit/732e0a8246d8d3f224b7bb7f672d5c92a63eb564))
+
 ## [3.0.3](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.0.2...v3.0.3) (2026-10-24)
 
 
