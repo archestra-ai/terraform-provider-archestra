@@ -81,7 +81,7 @@ kubectl get teams.team.archestra.m.crossplane.io/engineering -n crossplane-syste
 
 Inputs belong in `spec.forProvider`; observed values appear in
 `status.atProvider`. Use `*Ref` or `*Selector` fields where available to refer to
-other managed resources. Sensitive inputs use Kubernetes Secret references.
+other managed resources. Sensitive inputs use Kubernetes Secret references. See the [relationship reference guide](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/crossplane/RELATIONSHIPS.md) for Team hierarchy/role examples and the coverage audit.
 
 Deleting this managed resource deletes its Archestra object by default. To retain
 the object, set `spec.deletionPolicy: Orphan` before deleting the manifest.

@@ -12,6 +12,9 @@ import (
 
 func main() {
 	if len(os.Args) == 3 && os.Args[1] == "--references" {
+		if err := config.PreserveTeamRoleReferences(os.Args[2]); err != nil {
+			panic(err)
+		}
 		if err := config.PreserveReferenceCollectionOmission(os.Args[2]); err != nil {
 			panic(err)
 		}

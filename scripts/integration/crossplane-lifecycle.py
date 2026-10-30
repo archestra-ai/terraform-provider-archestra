@@ -488,9 +488,21 @@ def main():
 
 
             if 'team-bindings' in scope_cases:
+                first, first_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-team-parent-' + run + '-' + scope}, '-parent')
+                second, second_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-team-second-' + run + '-' + scope}, '-second')
+                role, role_id, _ = create(scope, 'identity', 'Role', 'roles', {'name': 'cp-team-role-' + run + '-' + scope, 'permission': {'agent': ['read']}}, '-team')
+                role_slug = api('/api/roles/' + role_id)[1]['role']
+                for fixture in (second, role):
+                    kube(*fixture[0], 'patch', fixture[1], fixture[2], '--type=merge', '-p', json.dumps({'metadata': {'labels': {'reference-target': fixture[2]}}}))
                 team_name = 'cp-team-bindings-' + run + '-' + scope
-                team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': team_name, 'externalGroupIds': ['engineering', 'support']})
+                team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': team_name, 'externalGroupIds': ['engineering', 'support'], 'parentIdRef': {'name': first[2]}, 'rolesRefs': [{'name': role[2]}]})
                 path = '/api/teams/' + team_id
+                if api(path)[1].get('parentId') != first_id or api(path)[1].get('roles') != [role_slug]:
+                    raise RuntimeError('Team references did not resolve to the parent UUID and role slug')
+                patch(team, {'parentId': None, 'parentIdRef': None, 'parentIdSelector': {'matchLabels': {'reference-target': second[2]}}, 'roles': None, 'rolesRefs': None, 'rolesSelector': {'matchLabels': {'reference-target': role[2]}}})
+                wait('Team selector update', lambda: api(path)[1].get('parentId') == second_id and api(path)[1].get('roles') == [role_slug] and condition(team, 'True'))
+                patch(team, {'roles': [], 'rolesRefs': None, 'rolesSelector': None})
+                wait('Team role references clear', lambda: api(path)[1].get('roles') == [] and condition(team, 'True'))
                 def mappings():
                     code, value = api(path + '/external-groups')
                     if code != 200:
@@ -518,7 +530,10 @@ def main():
                 delete(team)
                 if api(path)[0] != 404:
                     raise RuntimeError('Team delete retained the parent')
-                record('TeamInlineBindings', scope, create='passed', update='passed', drift_repair='passed', omission_preserves_unmanaged='passed', empty_set_and_string_clear='passed', identity_preserved=True, delete='passed', external_secrets_created=False)
+                delete(role)
+                delete(second)
+                delete(first)
+                record('TeamInlineBindings', scope, create='passed', parent_reference='passed', role_slug_reference='passed', selectors='passed', role_clear='passed', update='passed', drift_repair='passed', omission_preserves_unmanaged='passed', empty_set_and_string_clear='passed', identity_preserved=True, delete='passed', external_secrets_created=False)
 
             if 'service-account-team' in scope_cases:
                 first, first_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-account-first-' + run + '-' + scope}, '-first')
