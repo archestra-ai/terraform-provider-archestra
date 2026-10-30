@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.2](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.1...v3.1.2) (2026-10-30)
+
+
+### Bug Fixes
+
+* identify model pool OpenAPI preflight failures ([#216](https://github.com/archestra-ai/terraform-provider-archestra/issues/216)) ([64a418b](https://github.com/archestra-ai/terraform-provider-archestra/commit/64a418b43e1cfc8d155c22c547113889170c1adf))
+
 ## [3.1.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.0...v3.1.1) (2026-10-30)
 
 
