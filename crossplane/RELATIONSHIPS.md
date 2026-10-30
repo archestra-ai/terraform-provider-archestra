@@ -79,7 +79,7 @@ The remaining raw inputs are intentional or deferred:
 | ModelPool member `model_id`, model `model_id`, identity-provider `provider_id`, OAuth upstream client IDs | Provider-facing identifiers, distinct from Archestra database object IDs. |
 | Organization `connection_default_client_id` / JSON shown-client configuration | Connection client identifiers are configuration values, not one unambiguous managed resource type. |
 | Agent runtime `credential_id` | Reuse key for runtime-secret declarations; requires a separately designed key/extractor contract. |
-| MCP Server `agent_ids` | Valid typed relationship, deferred: generated `mcp` → `agent` imports cycle with existing agent → server refs. Requires separate cycle-safe support; raw IDs remain usable. |
+| MCP Server `agent_ids` | Polymorphic Agent/Gateway identifiers; a single-kind reference would be incomplete. Generated `mcp` → `agent` imports also cycle with existing agent → server refs. Raw IDs remain usable for either subtype. |
 
 The Team → Role cycle is handled narrowly during generation: identity already
 imports Team through service-account ownership. `team_role_references.go` keeps

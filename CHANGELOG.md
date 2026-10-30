@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.0...v3.1.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* **crossplane:** resolve managed resource relationships consistently ([#214](https://github.com/archestra-ai/terraform-provider-archestra/issues/214)) ([b246520](https://github.com/archestra-ai/terraform-provider-archestra/commit/b246520f00d42d7d3b623081748afd269f3a8a1e))
+
 ## [3.1.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.0.4...v3.1.0) (2026-10-28)
 
 
