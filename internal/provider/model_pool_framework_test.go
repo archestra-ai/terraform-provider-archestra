@@ -21,14 +21,15 @@ func TestModelPoolTerraformFailureDiagnostics(t *testing.T) {
 					fmt.Fprint(w, `{"version":"1.5.0-rc.10"}`)
 					return
 				}
-				if req.Method == http.MethodGet && req.URL.Path == "/openapi.json" {
+				switch {
+				case req.Method == http.MethodGet && req.URL.Path == "/openapi.json":
 					if !failPreflight {
 						writePoolJSON(w, modelPoolContractFixture())
 						return
 					}
-				} else if req.Method == http.MethodPost && req.URL.Path == "/api/model-pools" {
+				case req.Method == http.MethodPost && req.URL.Path == "/api/model-pools":
 					writes.Add(1)
-				} else {
+				default:
 					t.Errorf("unexpected request: %s %s", req.Method, req.URL.Path)
 				}
 				w.WriteHeader(http.StatusNotFound)
