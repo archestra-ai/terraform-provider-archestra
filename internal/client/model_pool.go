@@ -120,17 +120,34 @@ func (c *ModelPoolClient) request(ctx context.Context, method, endpoint string, 
 	if err := c.base.applyEditors(ctx, req, nil); err != nil {
 		return 0, err
 	}
+	preflight := ""
+	if endpoint == "openapi.json" {
+		// Request editors can add credentials to the URL as well as headers.
+		safeURL := *req.URL
+		safeURL.User, safeURL.RawQuery, safeURL.Fragment = nil, "", ""
+		safeURL.ForceQuery = false
+		preflight = "OpenAPI preflight GET " + safeURL.String()
+	}
 	response, err := c.base.Client.Do(req)
 	if err != nil {
+		if preflight != "" {
+			return 0, fmt.Errorf("%s failed; verify base_url, connectivity and ingress routing to the backend", preflight)
+		}
 		return 0, err
 	}
 	defer response.Body.Close()
 	if response.StatusCode != http.StatusOK {
 		// Never echo upstream bodies, which can include credential material.
+		if preflight != "" {
+			return response.StatusCode, fmt.Errorf("%s returned HTTP %d; verify base_url, ingress routing to the backend and authentication", preflight, response.StatusCode)
+		}
 		return response.StatusCode, fmt.Errorf("model pool %s returned HTTP %d; verify API support, model-pools feature flag, permissions and references", strings.ToLower(method), response.StatusCode)
 	}
 	if result != nil {
 		if err := json.NewDecoder(response.Body).Decode(result); err != nil {
+			if preflight != "" {
+				return response.StatusCode, fmt.Errorf("%s returned an invalid JSON response; verify base_url and ingress routing to the backend OpenAPI document", preflight)
+			}
 			return response.StatusCode, fmt.Errorf("invalid model pool response: %w", err)
 		}
 	}
