@@ -34,8 +34,13 @@ same slug; literal predefined roles and comma-separated role strings remain
 available through `role`. Team `roles` can contain literal predefined and
 custom slugs.
 
-Crossplane's standard reference policies determine refresh and literal/reference
-precedence. Omitted collections stay unmanaged; an explicit `roles: []` revokes
+By default a nonempty literal or previously resolved value is retained even when
+a reference is present. Set the reference/selector policy `resolve: Always` to
+refresh it, or clear the resolved value to trigger resolution again. An unresolved
+Role with no observed `status.atProvider.role` produces a reference error and is
+retried after the Role reconciles; its database ID is never substituted.
+
+Omitted collections stay unmanaged; an explicit `roles: []` revokes
 assignments. References in `initProvider` follow normal creation-only semantics.
 Reference lookup does not authorize an assignment: the platform still validates
 role delegation, organization boundaries, and self/cyclic team parent links.

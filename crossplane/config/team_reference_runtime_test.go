@@ -116,10 +116,12 @@ func TestTeamReferencesUseParentIdentityAndRoleSlugs(t *testing.T) {
 				t.Fatal("role without observed slug succeeded")
 			}
 			if scope.name == "namespaced" {
-				other := scope.team()
-				decode(`{"metadata":{"namespace":"other"},"spec":{"forProvider":{"rolesRefs":[{"name":"reader"}]}}}`, other)
-				if err := other.ResolveReferences(t.Context(), reader); err == nil {
-					t.Fatal("cross-namespace role reference succeeded")
+				for _, input := range []string{`{"rolesRefs":[{"name":"reader"}]}`, `{"rolesSelector":{"matchLabels":{"fixture":"role"}}}`} {
+					other := scope.team()
+					decode(`{"metadata":{"namespace":"other"},"spec":{"forProvider":`+input+`}}`, other)
+					if err := other.ResolveReferences(t.Context(), reader); err == nil {
+						t.Fatal("cross-namespace role reference/selector succeeded")
+					}
 				}
 			}
 			missing := scope.team()
