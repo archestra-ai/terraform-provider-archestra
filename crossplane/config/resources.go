@@ -187,5 +187,45 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "external_group_ids", "roles")
 		r.ShortGroup = "team"
 		r.Kind = "Team"
+		r.References["parent_id"] = ujconfig.Reference{TerraformName: "archestra_team"}
+		r.References["roles"] = ujconfig.Reference{TerraformName: "archestra_role", Extractor: roleSlugExtractor}
+	})
+	configureAdditionalRelationships(p)
+}
+
+const roleSlugExtractor = `github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("role", true)`
+
+func configureAdditionalRelationships(p *ujconfig.Provider) {
+	for owner, targets := range map[string]map[string]string{
+		"archestra_agent": {
+			"model_pool_id": "archestra_model_pool", "model_id": "archestra_model",
+			"fast_model_id": "archestra_model", "smart_model_id": "archestra_model",
+			"skills.allowed.mcp_server_id": "archestra_mcp_server", "skills.excluded.mcp_server_id": "archestra_mcp_server",
+			"skills.allowed.plugin_id": "archestra_plugin", "skills.excluded.plugin_id": "archestra_plugin",
+		},
+		"archestra_mcp_gateway": {
+			"environment_id": "archestra_environment", "knowledge_base_ids": "archestra_knowledge_base",
+		},
+		"archestra_mcp_registry_entry": {
+			"environment_id": "archestra_environment", "dynamic_connection_mcp_server_id": "archestra_mcp_server",
+			"enterprise_managed_config.identity_provider_id": "archestra_identity_provider",
+		},
+		"archestra_mcp_server":   {"team_id": "archestra_team"},
+		"archestra_oauth_client": {"model_pool_ids": "archestra_model_pool"},
+		"archestra_organization_settings": {
+			"default_agent_id": "archestra_agent", "default_llm_api_key_id": "archestra_model_provider",
+			"default_model_id": "archestra_model", "default_fast_model_id": "archestra_model", "default_smart_model_id": "archestra_model",
+			"embedding_chat_api_key_id": "archestra_model_provider", "ocr_chat_api_key_id": "archestra_model_provider", "reranker_chat_api_key_id": "archestra_model_provider",
+			"connection_default_mcp_gateway_id": "archestra_mcp_gateway",
+		},
+	} {
+		p.AddResourceConfigurator(owner, func(r *ujconfig.Resource) {
+			for field, target := range targets {
+				r.References[field] = ujconfig.Reference{TerraformName: target}
+			}
+		})
+	}
+	p.AddResourceConfigurator("archestra_service_account", func(r *ujconfig.Resource) {
+		r.References["role"] = ujconfig.Reference{TerraformName: "archestra_role", Extractor: roleSlugExtractor}
 	})
 }
