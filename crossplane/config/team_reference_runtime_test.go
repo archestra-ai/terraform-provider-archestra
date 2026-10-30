@@ -123,6 +123,20 @@ func TestTeamReferencesUseParentIdentityAndRoleSlugs(t *testing.T) {
 						t.Fatal("cross-namespace role reference/selector succeeded")
 					}
 				}
+				for _, input := range []string{`{"rolesRefs":[{"name":"reader","namespace":"proof"}]}`, `{"rolesSelector":{"matchLabels":{"fixture":"role"},"namespace":"proof"}}`} {
+					explicit := scope.team()
+					decode(`{"metadata":{"namespace":"other"},"spec":{"forProvider":`+input+`}}`, explicit)
+					if err := explicit.ResolveReferences(t.Context(), reader); err != nil {
+						t.Fatal(err)
+					}
+					parameters, err := explicit.GetParameters()
+					if err != nil {
+						t.Fatal(err)
+					}
+					if !reflect.DeepEqual(parameters["roles"], []any{"custom_reader"}) {
+						t.Fatalf("explicit namespace did not resolve: %#v", parameters)
+					}
+				}
 			}
 			missing := scope.team()
 			decode(`{"spec":{"forProvider":{"parentIdRef":{"name":"missing"}}}}`, missing)

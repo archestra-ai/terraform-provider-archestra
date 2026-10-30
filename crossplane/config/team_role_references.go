@@ -34,6 +34,7 @@ func PreserveTeamRoleReferences(root string) error {
 		source = strings.Replace(source, `resource "github.com/crossplane/upjet/v2/pkg/resource"`, `rolereference "github.com/archestra-ai/provider-archestra/internal/rolereference"`, 1)
 		source = strings.ReplaceAll(source, `resource.ExtractParamPath("role", true)`, `rolereference.Slug()`)
 		source = strings.Replace(source, "reference.NewAPIResolver(c, mg)", "reference.NewAPIResolver(rolereference.Reader(c), mg)", 1)
+		source = strings.Replace(source, "reference.NewAPINamespacedResolver(c, mg)", "reference.NewAPINamespacedResolver(rolereference.Reader(c), mg)", 1)
 		if err := os.WriteFile(file, []byte(source), 0644); err != nil {
 			return err
 		}

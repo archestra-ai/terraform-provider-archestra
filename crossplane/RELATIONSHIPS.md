@@ -26,8 +26,9 @@ spec:
 ```
 
 The parent must be an existing Team managed resource and the role must be a
-custom Role managed resource in the same scope (and namespace, for namespaced
-resources). Role references extract `status.atProvider.role`, the immutable
+custom Role managed resource in the same API scope. Namespaced references and
+selectors default to the requesting resource's namespace; their optional
+`namespace` field explicitly selects another namespace. Role references extract `status.atProvider.role`, the immutable
 role slug. A Role's external-name/database ID is a different identity and is
 not a valid role assignment. ServiceAccount `roleRef` / `roleSelector` uses the
 same slug; literal predefined roles and comma-separated role strings remain
