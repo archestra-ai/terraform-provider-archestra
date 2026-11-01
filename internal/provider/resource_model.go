@@ -514,17 +514,9 @@ func (r *LlmModelResource) readModelState(ctx context.Context, data *LlmModelRes
 				data.OutputModalities = types.ListNull(types.StringType)
 			}
 
-			if model.CustomPricePerMillionInput != nil {
-				data.CustomPricePerMillionInput = types.StringValue(*model.CustomPricePerMillionInput)
-			} else {
-				data.CustomPricePerMillionInput = types.StringNull()
-			}
+			data.CustomPricePerMillionInput = modelPriceFromAPI(data.CustomPricePerMillionInput, model.CustomPricePerMillionInput)
 
-			if model.CustomPricePerMillionOutput != nil {
-				data.CustomPricePerMillionOutput = types.StringValue(*model.CustomPricePerMillionOutput)
-			} else {
-				data.CustomPricePerMillionOutput = types.StringNull()
-			}
+			data.CustomPricePerMillionOutput = modelPriceFromAPI(data.CustomPricePerMillionOutput, model.CustomPricePerMillionOutput)
 
 			if model.PricePerMillionInput != nil {
 				data.PricePerMillionInput = types.StringValue(*model.PricePerMillionInput)

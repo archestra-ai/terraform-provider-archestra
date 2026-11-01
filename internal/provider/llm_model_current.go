@@ -93,10 +93,10 @@ func flattenCurrentModelFields(ctx context.Context, data *LlmModelResourceModel,
 		return
 	}
 	data.LongContextThreshold = types.Int64PointerValue(wire.LongContextThreshold)
-	data.LongContextPricePerMillionInput = types.StringPointerValue(wire.LongContextPricePerMillionInput)
-	data.LongContextPricePerMillionOutput = types.StringPointerValue(wire.LongContextPricePerMillionOutput)
-	data.LongContextPricePerMillionCacheRead = types.StringPointerValue(wire.LongContextPricePerMillionCacheRead)
-	data.LongContextPricePerMillionCacheWrite = types.StringPointerValue(wire.LongContextPricePerMillionCacheWrite)
+	data.LongContextPricePerMillionInput = modelPriceFromAPI(data.LongContextPricePerMillionInput, wire.LongContextPricePerMillionInput)
+	data.LongContextPricePerMillionOutput = modelPriceFromAPI(data.LongContextPricePerMillionOutput, wire.LongContextPricePerMillionOutput)
+	data.LongContextPricePerMillionCacheRead = modelPriceFromAPI(data.LongContextPricePerMillionCacheRead, wire.LongContextPricePerMillionCacheRead)
+	data.LongContextPricePerMillionCacheWrite = modelPriceFromAPI(data.LongContextPricePerMillionCacheWrite, wire.LongContextPricePerMillionCacheWrite)
 	data.MediaPricing = jsontypes.NewNormalizedNull()
 	if len(wire.MediaPricing) > 0 && string(wire.MediaPricing) != "null" {
 		value, err := normalizedOrganizationJSON(wire.MediaPricing)
@@ -112,8 +112,8 @@ func flattenCurrentModelFields(ctx context.Context, data *LlmModelResourceModel,
 	} else {
 		data.EmbeddingDimensions = types.Int64Null()
 	}
-	data.CustomPricePerMillionCacheRead = types.StringPointerValue(wire.CustomPricePerMillionCacheRead)
-	data.CustomPricePerMillionCacheWrite = types.StringPointerValue(wire.CustomPricePerMillionCacheWrite)
+	data.CustomPricePerMillionCacheRead = modelPriceFromAPI(data.CustomPricePerMillionCacheRead, wire.CustomPricePerMillionCacheRead)
+	data.CustomPricePerMillionCacheWrite = modelPriceFromAPI(data.CustomPricePerMillionCacheWrite, wire.CustomPricePerMillionCacheWrite)
 	data.CachePriceSource = types.StringPointerValue(wire.CachePriceSource)
 	data.CacheReadPricePerToken = types.StringPointerValue(wire.CacheReadPricePerToken)
 	data.CacheWritePricePerToken = types.StringPointerValue(wire.CacheWritePricePerToken)

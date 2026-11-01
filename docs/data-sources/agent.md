@@ -135,9 +135,11 @@ Read-Only:
 - `image` (String) Container image reference the run starts from
 - `inference_protocol` (String) Wire protocol the image uses to reach Archestra's model router: `openai_responses`, `openai_chat`, or `anthropic`
 - `max_cost_usd` (Number) Hard LLM spend ceiling in USD for the short-lived virtual key backing one run; omit for no ceiling
+- `max_tier` (String) Largest organization-defined tier a run may request (API 1.5.0-rc.19 or later).
 - `privileged` (Boolean) Whether the container runs privileged (default `false`)
 - `resources` (Attributes) Kubernetes-style resource requests/limits for the run (see [below for nested schema](#nestedatt--runtime--resources))
 - `steer_mode` (String) How a steer message reaches the running process: `pipe` (runtime-agent FIFO) or `tmux_keys` (typed into the tmux session, for CLIs that own their input loop)
+- `tier` (String) Organization-defined default runtime tier (API 1.5.0-rc.19 or later).
 - `ttl_hours` (Number) Hard lifetime cap for a run in hours (1–720); omit for no cap
 
 <a id="nestedatt--runtime--claude_code"></a>

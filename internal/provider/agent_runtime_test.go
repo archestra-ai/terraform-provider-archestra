@@ -2,6 +2,8 @@ package provider
 
 import (
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
@@ -157,5 +159,35 @@ func TestRuntimeClaudeCodeRoundTrip(t *testing.T) {
 		if model != nil && decoded.ClaudeCode.Model.ValueString() != model {
 			t.Fatal("alias lost")
 		}
+	}
+}
+
+func TestRuntimeTierContractRoundTrip(t *testing.T) {
+	var schema resource.SchemaResponse
+	(&AgentResource{}).Schema(t.Context(), resource.SchemaRequest{}, &schema)
+	kind := schema.Schema.Type().TerraformType(t.Context())
+	body, err := projectStateJSON([]byte(`{"name":"worker","runtime":{"image":"image:latest","inference_protocol":"openai_chat","steer_mode":"pipe","backend":"kubernetes","privileged":false,"tier":"S","max_tier":"L"}}`), kind)
+	if err != nil {
+		t.Fatal(err)
+	}
+	planned, err := (tfprotov6.RawState{JSON: body}).Unmarshal(kind)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var ds diag.Diagnostics
+	patch := MergePatch(t.Context(), planned, tftypes.NewValue(kind, nil), agentAttrSpec, &ds)
+	if ds.HasError() {
+		t.Fatal(ds)
+	}
+	runtime, ok := patch["runtime"].(map[string]any)
+	if !ok {
+		t.Fatal("missing runtime patch", patch)
+	}
+	if runtime["tier"] != "S" || runtime["maxTier"] != "L" {
+		t.Fatal("tier selection was not sent", runtime)
+	}
+	got := runtimeFromResponse(t.Context(), []byte(`{"runtime":{"image":"image:latest","tier":"S","maxTier":"L"}}`), &ds)
+	if ds.HasError() || got == nil || got.Tier.ValueString() != "S" || got.MaxTier.ValueString() != "L" || got.Resources != nil {
+		t.Fatal("tier selection did not refresh", got, ds)
 	}
 }

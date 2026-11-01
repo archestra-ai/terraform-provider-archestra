@@ -46,7 +46,7 @@ func TestLongContextOverrideUpdateAndReset(t *testing.T) {
 			fmt.Fprint(w, `{}`)
 			return
 		}
-		fmt.Fprint(w, `[{"id":"`+id+`","modelId":"llama3","provider":"ollama-native","longContextThreshold":1000,"longContextPricePerMillionInput":"4.00","longContextPricePerMillionOutput":"3.00","longContextPricePerMillionCacheRead":"0.10","longContextPricePerMillionCacheWrite":"0.20"}]`)
+		fmt.Fprint(w, `[{"id":"`+id+`","modelId":"llama3","provider":"ollama-native","longContextThreshold":1000,"longContextPricePerMillionInput":"4.00000000","longContextPricePerMillionOutput":"3.00","longContextPricePerMillionCacheRead":"0.10","longContextPricePerMillionCacheWrite":"0.20"}]`)
 	}))
 	defer server.Close()
 	api, err := client.NewClientWithResponses(server.URL)
