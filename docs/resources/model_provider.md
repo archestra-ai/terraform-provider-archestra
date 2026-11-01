@@ -85,8 +85,10 @@ resource "archestra_model_provider" "azure_openai" {
 
 - `created_by` (String) Creator identity metadata as JSON.
 - `created_by_service_account_id` (String) Service account that created the key.
+- `github_organization` (String) GitHub organization associated with this provider credential.
 - `id` (String) LLM Provider API key identifier
 - `is_agent_key` (Boolean) True for a platform-managed agent key, which rejects user edits.
+- `is_github_app_key` (Boolean) Whether this credential is backed by a GitHub App.
 - `requires_reauthentication` (Boolean) Whether the credential requires reauthentication.
 - `scope` (String) Backend credential scope.
 - `subscription_kind` (String) Subscription credential type, when applicable.

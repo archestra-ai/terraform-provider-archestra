@@ -40,6 +40,8 @@ type OrganizationSettingsResource struct {
 }
 
 type OrganizationSettingsResourceModel struct {
+	KeepMediaInLogs                          types.Bool           `tfsdk:"keep_media_in_logs"`
+	AgentRuntimeTiers                        jsontypes.Normalized `tfsdk:"agent_runtime_tiers"`
 	PlaywrightMcpEnabled                     types.Bool           `tfsdk:"playwright_mcp_enabled"`
 	EnvironmentDefaults                      types.Object         `tfsdk:"environment_defaults"`
 	DefaultUserLimits                        types.Map            `tfsdk:"default_user_limits"`

@@ -76,6 +76,8 @@ func (r *LLMProviderApiKeyResource) refreshKey(ctx context.Context, data *LLMPro
 
 func (r *LLMProviderApiKeyResource) flattenKey(ctx context.Context, data *LLMProviderApiKeyResourceModel, response *client.GetLlmProviderApiKeyResponse, diags *diag.Diagnostics) {
 	wire := response.JSON200
+	data.IsGithubAppKey = types.BoolPointerValue(wire.IsGithubAppKey)
+	data.GithubOrganization = types.StringPointerValue(wire.GithubOrganization)
 	data.Name = types.StringValue(wire.Name)
 	data.LLMProvider = types.StringValue(string(wire.Provider))
 	data.IsPrimary = types.BoolValue(wire.IsPrimary)

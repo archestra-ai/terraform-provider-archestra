@@ -33,6 +33,8 @@ type LLMProviderApiKeyResource struct {
 }
 
 type LLMProviderApiKeyResourceModel struct {
+	IsGithubAppKey            types.Bool        `tfsdk:"is_github_app_key"`
+	GithubOrganization        types.String      `tfsdk:"github_organization"`
 	InitialGrants             types.Set         `tfsdk:"permissions"`
 	AWSAccessKeyID            types.String      `tfsdk:"aws_access_key_id"`
 	AWSSecretAccessKey        types.String      `tfsdk:"aws_secret_access_key"`
@@ -66,6 +68,8 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "API key for an LLM provider (OpenAI, Anthropic, etc.). Models are auto-discovered after creation.",
 
 		Attributes: map[string]schema.Attribute{
+			"is_github_app_key":             schema.BoolAttribute{Computed: true, MarkdownDescription: "Whether this credential is backed by a GitHub App."},
+			"github_organization":           schema.StringAttribute{Computed: true, MarkdownDescription: "GitHub organization associated with this provider credential."},
 			"permissions":                   initialGrantsAttribute(),
 			"aws_access_key_id":             sigV4Attribute("AWS access key identifier for Bedrock SigV4 authentication.", "aws_secret_access_key"),
 			"aws_secret_access_key":         sigV4Attribute("AWS secret access key for Bedrock SigV4 authentication.", "aws_access_key_id"),

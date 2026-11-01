@@ -166,6 +166,7 @@ resource "archestra_organization_settings" "main" {
 - `kb_bm25_b` (Number) BM25 document-length normalization coefficient.
 - `kb_bm25_k1` (Number) BM25 term-frequency saturation coefficient.
 - `kb_contextual_retrieval_mode` (String) Contextual retrieval mode for knowledge chunks.
+- `keep_media_in_logs` (Boolean) Whether request logs retain media content.
 - `knowledge_connector_overrides` (String) JSON configuration for knowledge connector overrides.
 - `logo` (String) Base64 encoded logo image for the organization
 - `logo_dark` (String) Base64 encoded dark mode logo image for the organization
@@ -193,6 +194,7 @@ resource "archestra_organization_settings" "main" {
 
 ### Read-Only
 
+- `agent_runtime_tiers` (String) Stored Agent Runtime tier configuration as JSON.
 - `created_at` (String) RFC3339 timestamp the organization was created.
 - `embedding_dimensions` (Number, Deprecated) Configured embedding model output dimensions. **Deprecated** — the backend is migrating this to `models.embeddingDimensions` (per-model rather than per-org). Exposed here only so existing organizations whose dimensions are still pinned at the org level can read the value via Terraform.
 - `id` (String) Organization identifier

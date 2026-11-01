@@ -46,6 +46,9 @@ type LimitModelUsageModel struct {
 }
 
 type LimitResourceModel struct {
+	Behavior        types.String      `tfsdk:"behavior"`
+	EstimatedUsage  types.Bool        `tfsdk:"estimated_usage"`
+	TeamManaged     types.Bool        `tfsdk:"team_managed"`
 	Reason          types.String      `tfsdk:"reason"`
 	ThroughputUsage types.Object      `tfsdk:"throughput_usage"`
 	CleanupInterval types.String      `tfsdk:"cleanup_interval"`
@@ -70,6 +73,9 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 		MarkdownDescription: "Usage limit on costs, requests, tokens or MCP call counts.",
 
 		Attributes: map[string]schema.Attribute{
+			"behavior":         schema.StringAttribute{Optional: true, Computed: true, Validators: []validator.String{stringvalidator.OneOf("hard", "soft")}, MarkdownDescription: "Whether exceeding the limit blocks requests (hard) or only reports usage (soft)."},
+			"estimated_usage":  schema.BoolAttribute{Computed: true, MarkdownDescription: "Whether some recorded spend is estimated because model prices were unavailable."},
+			"team_managed":     schema.BoolAttribute{Computed: true, MarkdownDescription: "Whether a team administrator created this limit."},
 			"reason":           schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.LengthAtMost(500), stringvalidator.RegexMatches(regexp.MustCompile(`^(?:\S(?:[\s\S]*\S)?)?$`), "Must not start or end with whitespace.")}, MarkdownDescription: "Administrator explanation for this limit (up to 500 characters)."},
 			"throughput_usage": schema.SingleNestedAttribute{Computed: true, MarkdownDescription: "Recorded throughput usage and allowance recovery time.", Attributes: map[string]schema.Attribute{"current_usage": schema.Float64Attribute{Computed: true}, "resets_at": schema.StringAttribute{Computed: true}}},
 			"cleanup_interval": schema.StringAttribute{Optional: true, Computed: true, Validators: []validator.String{stringvalidator.OneOf("1h", "12h", "24h", "minute", "1w", "1m", "calendar_day", "calendar_week_monday", "calendar_week_sunday", "calendar_month")}, MarkdownDescription: "Interval used to reset limit usage."},
@@ -141,6 +147,9 @@ func (r *LimitResource) ValidateConfig(ctx context.Context, req resource.Validat
 	}
 
 	limitType := data.LimitType.ValueString()
+	if data.Behavior.ValueString() == "soft" && (limitType == "tool_calls" || limitType == "mcp_server_calls") {
+		resp.Diagnostics.AddAttributeError(path.Root("behavior"), "Invalid Limit Behavior", "Soft limits are supported only for cost and throughput limits.")
+	}
 	throughput := limitType == "requests" || limitType == "tokens" || limitType == "requests_per_minute" || limitType == "tokens_per_minute"
 	minute := data.CleanupInterval.ValueString() == "minute"
 	if throughput || minute {
