@@ -1096,6 +1096,12 @@ const (
 	UploadKnowledgeFileJSONBodyInitialGrantsSubject4TypeOrganization UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type = "organization"
 )
 
+// Defines values for CreateLimitJSONBodyBehavior.
+const (
+	CreateLimitJSONBodyBehaviorHard CreateLimitJSONBodyBehavior = "hard"
+	CreateLimitJSONBodyBehaviorSoft CreateLimitJSONBodyBehavior = "soft"
+)
+
 // Defines values for CreateLimitJSONBodyCleanupInterval.
 const (
 	CreateLimitJSONBodyCleanupIntervalCalendarDay        CreateLimitJSONBodyCleanupInterval = "calendar_day"
@@ -1132,6 +1138,12 @@ const (
 	CreateLimitJSONBodyLimitTypeToolCalls         CreateLimitJSONBodyLimitType = "tool_calls"
 )
 
+// Defines values for UpdateLimitJSONBodyBehavior.
+const (
+	UpdateLimitJSONBodyBehaviorHard UpdateLimitJSONBodyBehavior = "hard"
+	UpdateLimitJSONBodyBehaviorSoft UpdateLimitJSONBodyBehavior = "soft"
+)
+
 // Defines values for UpdateLimitJSONBodyCleanupInterval.
 const (
 	UpdateLimitJSONBodyCleanupIntervalCalendarDay        UpdateLimitJSONBodyCleanupInterval = "calendar_day"
@@ -1144,6 +1156,11 @@ const (
 	UpdateLimitJSONBodyCleanupIntervalN1m                UpdateLimitJSONBodyCleanupInterval = "1m"
 	UpdateLimitJSONBodyCleanupIntervalN1w                UpdateLimitJSONBodyCleanupInterval = "1w"
 	UpdateLimitJSONBodyCleanupIntervalN24h               UpdateLimitJSONBodyCleanupInterval = "24h"
+)
+
+// Defines values for UpdateLimitJSONBodyLastCleanup.
+const (
+	UpdateLimitJSONBodyLastCleanupLessThannil UpdateLimitJSONBodyLastCleanup = "<nil>"
 )
 
 // Defines values for UpdateLimitJSONBodyLimitType.
@@ -1958,28 +1975,30 @@ const (
 
 // Defines values for CreateRoleJSONBodyPermission.
 const (
-	CreateRoleJSONBodyPermissionAdmin       CreateRoleJSONBodyPermission = "admin"
-	CreateRoleJSONBodyPermissionCancel      CreateRoleJSONBodyPermission = "cancel"
-	CreateRoleJSONBodyPermissionCreate      CreateRoleJSONBodyPermission = "create"
-	CreateRoleJSONBodyPermissionDelete      CreateRoleJSONBodyPermission = "delete"
-	CreateRoleJSONBodyPermissionFullView    CreateRoleJSONBodyPermission = "full-view"
-	CreateRoleJSONBodyPermissionImpersonate CreateRoleJSONBodyPermission = "impersonate"
-	CreateRoleJSONBodyPermissionQuery       CreateRoleJSONBodyPermission = "query"
-	CreateRoleJSONBodyPermissionRead        CreateRoleJSONBodyPermission = "read"
-	CreateRoleJSONBodyPermissionUpdate      CreateRoleJSONBodyPermission = "update"
+	CreateRoleJSONBodyPermissionAdmin            CreateRoleJSONBodyPermission = "admin"
+	CreateRoleJSONBodyPermissionCancel           CreateRoleJSONBodyPermission = "cancel"
+	CreateRoleJSONBodyPermissionConfigureRuntime CreateRoleJSONBodyPermission = "configure-runtime"
+	CreateRoleJSONBodyPermissionCreate           CreateRoleJSONBodyPermission = "create"
+	CreateRoleJSONBodyPermissionDelete           CreateRoleJSONBodyPermission = "delete"
+	CreateRoleJSONBodyPermissionFullView         CreateRoleJSONBodyPermission = "full-view"
+	CreateRoleJSONBodyPermissionImpersonate      CreateRoleJSONBodyPermission = "impersonate"
+	CreateRoleJSONBodyPermissionQuery            CreateRoleJSONBodyPermission = "query"
+	CreateRoleJSONBodyPermissionRead             CreateRoleJSONBodyPermission = "read"
+	CreateRoleJSONBodyPermissionUpdate           CreateRoleJSONBodyPermission = "update"
 )
 
 // Defines values for UpdateRoleJSONBodyPermission.
 const (
-	UpdateRoleJSONBodyPermissionAdmin       UpdateRoleJSONBodyPermission = "admin"
-	UpdateRoleJSONBodyPermissionCancel      UpdateRoleJSONBodyPermission = "cancel"
-	UpdateRoleJSONBodyPermissionCreate      UpdateRoleJSONBodyPermission = "create"
-	UpdateRoleJSONBodyPermissionDelete      UpdateRoleJSONBodyPermission = "delete"
-	UpdateRoleJSONBodyPermissionFullView    UpdateRoleJSONBodyPermission = "full-view"
-	UpdateRoleJSONBodyPermissionImpersonate UpdateRoleJSONBodyPermission = "impersonate"
-	UpdateRoleJSONBodyPermissionQuery       UpdateRoleJSONBodyPermission = "query"
-	UpdateRoleJSONBodyPermissionRead        UpdateRoleJSONBodyPermission = "read"
-	UpdateRoleJSONBodyPermissionUpdate      UpdateRoleJSONBodyPermission = "update"
+	UpdateRoleJSONBodyPermissionAdmin            UpdateRoleJSONBodyPermission = "admin"
+	UpdateRoleJSONBodyPermissionCancel           UpdateRoleJSONBodyPermission = "cancel"
+	UpdateRoleJSONBodyPermissionConfigureRuntime UpdateRoleJSONBodyPermission = "configure-runtime"
+	UpdateRoleJSONBodyPermissionCreate           UpdateRoleJSONBodyPermission = "create"
+	UpdateRoleJSONBodyPermissionDelete           UpdateRoleJSONBodyPermission = "delete"
+	UpdateRoleJSONBodyPermissionFullView         UpdateRoleJSONBodyPermission = "full-view"
+	UpdateRoleJSONBodyPermissionImpersonate      UpdateRoleJSONBodyPermission = "impersonate"
+	UpdateRoleJSONBodyPermissionQuery            UpdateRoleJSONBodyPermission = "query"
+	UpdateRoleJSONBodyPermissionRead             UpdateRoleJSONBodyPermission = "read"
+	UpdateRoleJSONBodyPermissionUpdate           UpdateRoleJSONBodyPermission = "update"
 )
 
 // Defines values for CreateServiceAccountJSONBodyInitialGrantsActions.
@@ -2140,9 +2159,9 @@ const (
 
 // Defines values for UpdateSkillGithubSyncJSONBodyInterval.
 const (
-	N15m UpdateSkillGithubSyncJSONBodyInterval = "15m"
-	N1d  UpdateSkillGithubSyncJSONBodyInterval = "1d"
-	N1h  UpdateSkillGithubSyncJSONBodyInterval = "1h"
+	UpdateSkillGithubSyncJSONBodyIntervalN15m UpdateSkillGithubSyncJSONBodyInterval = "15m"
+	UpdateSkillGithubSyncJSONBodyIntervalN1d  UpdateSkillGithubSyncJSONBodyInterval = "1d"
+	UpdateSkillGithubSyncJSONBodyIntervalN1h  UpdateSkillGithubSyncJSONBodyInterval = "1h"
 )
 
 // Defines values for UpdateSkillGithubSyncJSONBodySourceProvider.
@@ -2156,6 +2175,12 @@ const (
 	True UpdateSkillGithubSyncJSONBodySyncNow = true
 )
 
+// Defines values for AddTeamExternalGroupJSONBodyRole.
+const (
+	AddTeamExternalGroupJSONBodyRoleAdmin  AddTeamExternalGroupJSONBodyRole = "admin"
+	AddTeamExternalGroupJSONBodyRoleMember AddTeamExternalGroupJSONBodyRole = "member"
+)
+
 // Defines values for AddTeamMemberJSONBodyRole.
 const (
 	AddTeamMemberJSONBodyRoleAdmin  AddTeamMemberJSONBodyRole = "admin"
@@ -2164,8 +2189,8 @@ const (
 
 // Defines values for UpdateTeamMemberJSONBodyRole.
 const (
-	UpdateTeamMemberJSONBodyRoleAdmin  UpdateTeamMemberJSONBodyRole = "admin"
-	UpdateTeamMemberJSONBodyRoleMember UpdateTeamMemberJSONBodyRole = "member"
+	Admin  UpdateTeamMemberJSONBodyRole = "admin"
+	Member UpdateTeamMemberJSONBodyRole = "member"
 )
 
 // Defines values for GetToolsWithAssignmentsParamsSortBy.
@@ -2191,6 +2216,7 @@ const (
 	GetToolsWithAssignmentsParamsObservedByClientCopilotCli    GetToolsWithAssignmentsParamsObservedByClient = "copilot-cli"
 	GetToolsWithAssignmentsParamsObservedByClientCursor        GetToolsWithAssignmentsParamsObservedByClient = "cursor"
 	GetToolsWithAssignmentsParamsObservedByClientKilo          GetToolsWithAssignmentsParamsObservedByClient = "kilo"
+	GetToolsWithAssignmentsParamsObservedByClientKimiCode      GetToolsWithAssignmentsParamsObservedByClient = "kimi-code"
 	GetToolsWithAssignmentsParamsObservedByClientOpencode      GetToolsWithAssignmentsParamsObservedByClient = "opencode"
 	GetToolsWithAssignmentsParamsObservedByClientPi            GetToolsWithAssignmentsParamsObservedByClient = "pi"
 )
@@ -2612,7 +2638,6 @@ type CreateAgentJSONBody struct {
 	DeletedAt                  interface{}                                   `json:"deletedAt"`
 	Description                *string                                       `json:"description"`
 	EnvironmentId              *openapi_types.UUID                           `json:"environmentId"`
-	FastModelId                *openapi_types.UUID                           `json:"fastModelId"`
 	Icon                       *string                                       `json:"icon"`
 	IdentityProviderId         *string                                       `json:"identityProviderId"`
 	IncomingEmailAllowedDomain *string                                       `json:"incomingEmailAllowedDomain"`
@@ -2663,19 +2688,14 @@ type CreateAgentJSONBody struct {
 		Image              string                                      `json:"image"`
 		InferenceProtocol  CreateAgentJSONBodyRuntimeInferenceProtocol `json:"inferenceProtocol"`
 		MaxCostUsd         *int                                        `json:"maxCostUsd"`
+		MaxTier            *string                                     `json:"maxTier"`
 		Ports              *[]int                                      `json:"ports,omitempty"`
 		Privileged         bool                                        `json:"privileged"`
-		Resources          *struct {
-			CpuLimit      *string `json:"cpuLimit,omitempty"`
-			CpuRequest    *string `json:"cpuRequest,omitempty"`
-			MemoryLimit   *string `json:"memoryLimit,omitempty"`
-			MemoryRequest *string `json:"memoryRequest,omitempty"`
-		} `json:"resources"`
-		SteerMode CreateAgentJSONBodyRuntimeSteerMode `json:"steerMode"`
-		TtlHours  *int                                `json:"ttlHours"`
+		SteerMode          CreateAgentJSONBodyRuntimeSteerMode         `json:"steerMode"`
+		Tier               *string                                     `json:"tier"`
+		TtlHours           *int                                        `json:"ttlHours"`
 	} `json:"runtime"`
-	Scope            interface{}         `json:"scope,omitempty"`
-	SmartModelId     *openapi_types.UUID `json:"smartModelId"`
+	Scope            interface{} `json:"scope,omitempty"`
 	SuggestedPrompts *[]struct {
 		Prompt       string `json:"prompt"`
 		SummaryTitle string `json:"summaryTitle"`
@@ -2947,7 +2967,6 @@ type UpdateAgentJSONBody struct {
 	DeletedAt           interface{}                             `json:"deletedAt"`
 	Description         *string                                 `json:"description"`
 	EnvironmentId       *openapi_types.UUID                     `json:"environmentId"`
-	FastModelId         *openapi_types.UUID                     `json:"fastModelId"`
 	GithubActionsAccess *struct {
 		ActAs                  *UpdateAgentJSONBodyGithubActionsAccessActAs `json:"actAs,omitempty"`
 		GithubAppCredentialKey string                                       `json:"githubAppCredentialKey"`
@@ -3001,19 +3020,14 @@ type UpdateAgentJSONBody struct {
 		Image              string                                      `json:"image"`
 		InferenceProtocol  UpdateAgentJSONBodyRuntimeInferenceProtocol `json:"inferenceProtocol"`
 		MaxCostUsd         *int                                        `json:"maxCostUsd"`
+		MaxTier            *string                                     `json:"maxTier"`
 		Ports              *[]int                                      `json:"ports,omitempty"`
 		Privileged         bool                                        `json:"privileged"`
-		Resources          *struct {
-			CpuLimit      *string `json:"cpuLimit,omitempty"`
-			CpuRequest    *string `json:"cpuRequest,omitempty"`
-			MemoryLimit   *string `json:"memoryLimit,omitempty"`
-			MemoryRequest *string `json:"memoryRequest,omitempty"`
-		} `json:"resources"`
-		SteerMode UpdateAgentJSONBodyRuntimeSteerMode `json:"steerMode"`
-		TtlHours  *int                                `json:"ttlHours"`
+		SteerMode          UpdateAgentJSONBodyRuntimeSteerMode         `json:"steerMode"`
+		Tier               *string                                     `json:"tier"`
+		TtlHours           *int                                        `json:"ttlHours"`
 	} `json:"runtime"`
-	Scope            interface{}         `json:"scope,omitempty"`
-	SmartModelId     *openapi_types.UUID `json:"smartModelId"`
+	Scope            interface{} `json:"scope,omitempty"`
 	SuggestedPrompts *[]struct {
 		Prompt       string `json:"prompt"`
 		SummaryTitle string `json:"summaryTitle"`
@@ -4483,6 +4497,7 @@ type UpdateKnowledgeFileJSONBody struct {
 
 // CreateLimitJSONBody defines parameters for CreateLimit.
 type CreateLimitJSONBody struct {
+	Behavior        *CreateLimitJSONBodyBehavior        `json:"behavior,omitempty"`
 	CleanupInterval *CreateLimitJSONBodyCleanupInterval `json:"cleanupInterval,omitempty"`
 	EntityId        string                              `json:"entityId"`
 	EntityType      CreateLimitJSONBodyEntityType       `json:"entityType"`
@@ -4501,6 +4516,9 @@ type CreateLimitJSONBody struct {
 	ToolName      *string                      `json:"toolName"`
 }
 
+// CreateLimitJSONBodyBehavior defines parameters for CreateLimit.
+type CreateLimitJSONBodyBehavior string
+
 // CreateLimitJSONBodyCleanupInterval defines parameters for CreateLimit.
 type CreateLimitJSONBodyCleanupInterval string
 
@@ -4512,6 +4530,7 @@ type CreateLimitJSONBodyLimitType string
 
 // UpdateLimitJSONBody defines parameters for UpdateLimit.
 type UpdateLimitJSONBody struct {
+	Behavior        *UpdateLimitJSONBodyBehavior        `json:"behavior,omitempty"`
 	CleanupInterval *UpdateLimitJSONBodyCleanupInterval `json:"cleanupInterval,omitempty"`
 	Labels          *[]struct {
 		Key     string              `json:"key"`
@@ -4519,17 +4538,23 @@ type UpdateLimitJSONBody struct {
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 	} `json:"labels,omitempty"`
-	LastCleanup   interface{}                   `json:"lastCleanup"`
-	LimitType     *UpdateLimitJSONBodyLimitType `json:"limitType,omitempty"`
-	LimitValue    *int                          `json:"limitValue,omitempty"`
-	McpServerName *string                       `json:"mcpServerName"`
-	Model         *[]string                     `json:"model"`
-	Reason        *string                       `json:"reason"`
-	ToolName      *string                       `json:"toolName"`
+	LastCleanup   *UpdateLimitJSONBodyLastCleanup `json:"lastCleanup"`
+	LimitType     *UpdateLimitJSONBodyLimitType   `json:"limitType,omitempty"`
+	LimitValue    *int                            `json:"limitValue,omitempty"`
+	McpServerName *string                         `json:"mcpServerName"`
+	Model         *[]string                       `json:"model"`
+	Reason        *string                         `json:"reason"`
+	ToolName      *string                         `json:"toolName"`
 }
+
+// UpdateLimitJSONBodyBehavior defines parameters for UpdateLimit.
+type UpdateLimitJSONBodyBehavior string
 
 // UpdateLimitJSONBodyCleanupInterval defines parameters for UpdateLimit.
 type UpdateLimitJSONBodyCleanupInterval string
+
+// UpdateLimitJSONBodyLastCleanup defines parameters for UpdateLimit.
+type UpdateLimitJSONBodyLastCleanup string
 
 // UpdateLimitJSONBodyLimitType defines parameters for UpdateLimit.
 type UpdateLimitJSONBodyLimitType string
@@ -4583,8 +4608,13 @@ type UpdateModelJSONBody struct {
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 	} `json:"labels,omitempty"`
-	OutputModalities *[]UpdateModelJSONBodyOutputModalities `json:"outputModalities"`
-	TeamIds          interface{}                            `json:"teamIds,omitempty"`
+	LongContextPricePerMillionCacheRead  *string                                `json:"longContextPricePerMillionCacheRead"`
+	LongContextPricePerMillionCacheWrite *string                                `json:"longContextPricePerMillionCacheWrite"`
+	LongContextPricePerMillionInput      *string                                `json:"longContextPricePerMillionInput"`
+	LongContextPricePerMillionOutput     *string                                `json:"longContextPricePerMillionOutput"`
+	LongContextThreshold                 *int                                   `json:"longContextThreshold"`
+	OutputModalities                     *[]UpdateModelJSONBodyOutputModalities `json:"outputModalities"`
+	TeamIds                              interface{}                            `json:"teamIds,omitempty"`
 }
 
 // UpdateModelJSONBodyConfiguredParametersReasoningEffort defines parameters for UpdateModel.
@@ -5088,6 +5118,17 @@ type UpdateOauthClientJSONBodySpendCapCleanupInterval string
 
 // UpdateAgentSettingsJSONBody defines parameters for UpdateAgentSettings.
 type UpdateAgentSettingsJSONBody struct {
+	AgentRuntimeTiers *struct {
+		DefaultTier string `json:"defaultTier"`
+		Tiers       []struct {
+			CpuLimit     *float32 `json:"cpuLimit"`
+			CpuRequest   float32  `json:"cpuRequest"`
+			Name         string   `json:"name"`
+			Pooled       bool     `json:"pooled"`
+			PreviousName *string  `json:"previousName,omitempty"`
+			WorkspaceGiB *int     `json:"workspaceGiB"`
+		} `json:"tiers"`
+	} `json:"agentRuntimeTiers"`
 	DefaultAgentId      *openapi_types.UUID `json:"defaultAgentId"`
 	DefaultFastModelId  *openapi_types.UUID `json:"defaultFastModelId"`
 	DefaultLlmApiKeyId  *openapi_types.UUID `json:"defaultLlmApiKeyId"`
@@ -5218,6 +5259,10 @@ type UpdateIntegrationSettingsJSONBody struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
 		} `json:"codex,omitempty"`
+		Copilot *struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"copilot,omitempty"`
 		Grok *struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -5266,6 +5311,7 @@ type UpdateSecuritySettingsJSONBody struct {
 	AllowChatFileUploads                 *bool `json:"allowChatFileUploads,omitempty"`
 	AllowToolAutoAssignment              *bool `json:"allowToolAutoAssignment,omitempty"`
 	AllowUnauthenticatedLlmProxyRequests *bool `json:"allowUnauthenticatedLlmProxyRequests,omitempty"`
+	KeepMediaInLogs                      *bool `json:"keepMediaInLogs,omitempty"`
 	NewAppsDisabledByDefault             *bool `json:"newAppsDisabledByDefault,omitempty"`
 	NewAppsLockedByDefault               *bool `json:"newAppsLockedByDefault,omitempty"`
 	PlaywrightMcpEnabled                 *bool `json:"playwrightMcpEnabled,omitempty"`
@@ -6139,7 +6185,16 @@ type UpdateTeamJSONBody struct {
 // AddTeamExternalGroupJSONBody defines parameters for AddTeamExternalGroup.
 type AddTeamExternalGroupJSONBody struct {
 	GroupIdentifier string `json:"groupIdentifier"`
+
+	// IdentityProviderId Match the group only for sign-ins through this identity provider. Omit to match it from any provider.
+	IdentityProviderId *string `json:"identityProviderId"`
+
+	// Role The team role members of this group receive.
+	Role *AddTeamExternalGroupJSONBodyRole `json:"role,omitempty"`
 }
+
+// AddTeamExternalGroupJSONBodyRole defines parameters for AddTeamExternalGroup.
+type AddTeamExternalGroupJSONBodyRole string
 
 // AddTeamMemberJSONBody defines parameters for AddTeamMember.
 type AddTeamMemberJSONBody struct {
@@ -21060,7 +21115,6 @@ type GetAgentsResponse struct {
 			DeletedAt                 *time.Time          `json:"deletedAt"`
 			Description               *string             `json:"description"`
 			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
-			FastModelId               *openapi_types.UUID `json:"fastModelId"`
 			GithubActionsAccess       *struct {
 				ActAs                  *GetAgents200DataGithubActionsAccessActAs `json:"actAs,omitempty"`
 				GithubAppCredentialKey string                                    `json:"githubAppCredentialKey"`
@@ -21123,22 +21177,17 @@ type GetAgentsResponse struct {
 				Image              string                                   `json:"image"`
 				InferenceProtocol  GetAgents200DataRuntimeInferenceProtocol `json:"inferenceProtocol"`
 				MaxCostUsd         *int                                     `json:"maxCostUsd"`
+				MaxTier            *string                                  `json:"maxTier"`
 				Ports              *[]int                                   `json:"ports,omitempty"`
 				Privileged         bool                                     `json:"privileged"`
-				Resources          *struct {
-					CpuLimit      *string `json:"cpuLimit,omitempty"`
-					CpuRequest    *string `json:"cpuRequest,omitempty"`
-					MemoryLimit   *string `json:"memoryLimit,omitempty"`
-					MemoryRequest *string `json:"memoryRequest,omitempty"`
-				} `json:"resources"`
-				SteerMode GetAgents200DataRuntimeSteerMode `json:"steerMode"`
-				TtlHours  *int                             `json:"ttlHours"`
+				SteerMode          GetAgents200DataRuntimeSteerMode         `json:"steerMode"`
+				Tier               *string                                  `json:"tier"`
+				TtlHours           *int                                     `json:"ttlHours"`
 			} `json:"runtime"`
 			RuntimeSecretId  *openapi_types.UUID   `json:"runtimeSecretId"`
 			SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
 			Scope            GetAgents200DataScope `json:"scope"`
 			Slug             *string               `json:"slug"`
-			SmartModelId     *openapi_types.UUID   `json:"smartModelId"`
 
 			// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
 			SubagentsCount   int `json:"subagentsCount"`
@@ -21309,7 +21358,6 @@ type CreateAgentResponse struct {
 		DeletedAt                 *time.Time          `json:"deletedAt"`
 		Description               *string             `json:"description"`
 		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
-		FastModelId               *openapi_types.UUID `json:"fastModelId"`
 		GithubActionsAccess       *struct {
 			ActAs                  *CreateAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
 			GithubAppCredentialKey string                                  `json:"githubAppCredentialKey"`
@@ -21371,22 +21419,17 @@ type CreateAgentResponse struct {
 			Image              string                                 `json:"image"`
 			InferenceProtocol  CreateAgent200RuntimeInferenceProtocol `json:"inferenceProtocol"`
 			MaxCostUsd         *int                                   `json:"maxCostUsd"`
+			MaxTier            *string                                `json:"maxTier"`
 			Ports              *[]int                                 `json:"ports,omitempty"`
 			Privileged         bool                                   `json:"privileged"`
-			Resources          *struct {
-				CpuLimit      *string `json:"cpuLimit,omitempty"`
-				CpuRequest    *string `json:"cpuRequest,omitempty"`
-				MemoryLimit   *string `json:"memoryLimit,omitempty"`
-				MemoryRequest *string `json:"memoryRequest,omitempty"`
-			} `json:"resources"`
-			SteerMode CreateAgent200RuntimeSteerMode `json:"steerMode"`
-			TtlHours  *int                           `json:"ttlHours"`
+			SteerMode          CreateAgent200RuntimeSteerMode         `json:"steerMode"`
+			Tier               *string                                `json:"tier"`
+			TtlHours           *int                                   `json:"ttlHours"`
 		} `json:"runtime"`
 		RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
 		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 		Scope            CreateAgent200Scope `json:"scope"`
 		Slug             *string             `json:"slug"`
-		SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -22294,7 +22337,6 @@ type GetAgentResponse struct {
 		DeletedAt                 *time.Time          `json:"deletedAt"`
 		Description               *string             `json:"description"`
 		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
-		FastModelId               *openapi_types.UUID `json:"fastModelId"`
 		GithubActionsAccess       *struct {
 			ActAs                  *GetAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
 			GithubAppCredentialKey string                               `json:"githubAppCredentialKey"`
@@ -22356,22 +22398,17 @@ type GetAgentResponse struct {
 			Image              string                              `json:"image"`
 			InferenceProtocol  GetAgent200RuntimeInferenceProtocol `json:"inferenceProtocol"`
 			MaxCostUsd         *int                                `json:"maxCostUsd"`
+			MaxTier            *string                             `json:"maxTier"`
 			Ports              *[]int                              `json:"ports,omitempty"`
 			Privileged         bool                                `json:"privileged"`
-			Resources          *struct {
-				CpuLimit      *string `json:"cpuLimit,omitempty"`
-				CpuRequest    *string `json:"cpuRequest,omitempty"`
-				MemoryLimit   *string `json:"memoryLimit,omitempty"`
-				MemoryRequest *string `json:"memoryRequest,omitempty"`
-			} `json:"resources"`
-			SteerMode GetAgent200RuntimeSteerMode `json:"steerMode"`
-			TtlHours  *int                        `json:"ttlHours"`
+			SteerMode          GetAgent200RuntimeSteerMode         `json:"steerMode"`
+			Tier               *string                             `json:"tier"`
+			TtlHours           *int                                `json:"ttlHours"`
 		} `json:"runtime"`
 		RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
 		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 		Scope            GetAgent200Scope    `json:"scope"`
 		Slug             *string             `json:"slug"`
-		SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -22527,7 +22564,6 @@ type UpdateAgentResponse struct {
 		DeletedAt                 *time.Time          `json:"deletedAt"`
 		Description               *string             `json:"description"`
 		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
-		FastModelId               *openapi_types.UUID `json:"fastModelId"`
 		GithubActionsAccess       *struct {
 			ActAs                  *UpdateAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
 			GithubAppCredentialKey string                                  `json:"githubAppCredentialKey"`
@@ -22589,22 +22625,17 @@ type UpdateAgentResponse struct {
 			Image              string                                 `json:"image"`
 			InferenceProtocol  UpdateAgent200RuntimeInferenceProtocol `json:"inferenceProtocol"`
 			MaxCostUsd         *int                                   `json:"maxCostUsd"`
+			MaxTier            *string                                `json:"maxTier"`
 			Ports              *[]int                                 `json:"ports,omitempty"`
 			Privileged         bool                                   `json:"privileged"`
-			Resources          *struct {
-				CpuLimit      *string `json:"cpuLimit,omitempty"`
-				CpuRequest    *string `json:"cpuRequest,omitempty"`
-				MemoryLimit   *string `json:"memoryLimit,omitempty"`
-				MemoryRequest *string `json:"memoryRequest,omitempty"`
-			} `json:"resources"`
-			SteerMode UpdateAgent200RuntimeSteerMode `json:"steerMode"`
-			TtlHours  *int                           `json:"ttlHours"`
+			SteerMode          UpdateAgent200RuntimeSteerMode         `json:"steerMode"`
+			Tier               *string                                `json:"tier"`
+			TtlHours           *int                                   `json:"ttlHours"`
 		} `json:"runtime"`
 		RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
 		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 		Scope            UpdateAgent200Scope `json:"scope"`
 		Slug             *string             `json:"slug"`
-		SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -30435,6 +30466,7 @@ type CreateLimitResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
+		Behavior        CreateLimit200Behavior         `json:"behavior"`
 		CleanupInterval *CreateLimit200CleanupInterval `json:"cleanupInterval,omitempty"`
 		CreatedAt       time.Time                      `json:"createdAt"`
 		EntityId        string                         `json:"entityId"`
@@ -30446,8 +30478,11 @@ type CreateLimitResponse struct {
 		McpServerName   *string                        `json:"mcpServerName"`
 		Model           *[]string                      `json:"model"`
 		Reason          *string                        `json:"reason"`
-		ToolName        *string                        `json:"toolName"`
-		UpdatedAt       time.Time                      `json:"updatedAt"`
+
+		// TeamManaged Whether a team admin created this team limit. Team admins can change or delete only these.
+		TeamManaged bool      `json:"teamManaged"`
+		ToolName    *string   `json:"toolName"`
+		UpdatedAt   time.Time `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -30493,6 +30528,7 @@ type CreateLimitResponse struct {
 		} `json:"error"`
 	}
 }
+type CreateLimit200Behavior string
 type CreateLimit200CleanupInterval string
 type CreateLimit200EntityType string
 type CreateLimit200LimitType string
@@ -30596,12 +30632,16 @@ type GetLimitResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
+		Behavior        GetLimit200Behavior         `json:"behavior"`
 		CleanupInterval *GetLimit200CleanupInterval `json:"cleanupInterval,omitempty"`
 		CreatedAt       time.Time                   `json:"createdAt"`
 		EntityId        string                      `json:"entityId"`
 		EntityType      GetLimit200EntityType       `json:"entityType"`
-		Id              openapi_types.UUID          `json:"id"`
-		Labels          []struct {
+
+		// EstimatedUsage Spend limits only: part of the spend is estimated because a model had no price for some of the tokens a request used.
+		EstimatedUsage *bool              `json:"estimatedUsage,omitempty"`
+		Id             openapi_types.UUID `json:"id"`
+		Labels         []struct {
 			Key     string              `json:"key"`
 			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
 			Value   string              `json:"value"`
@@ -30618,7 +30658,10 @@ type GetLimitResponse struct {
 			TokensIn  float32 `json:"tokensIn"`
 			TokensOut float32 `json:"tokensOut"`
 		} `json:"modelUsage,omitempty"`
-		Reason          *string `json:"reason"`
+		Reason *string `json:"reason"`
+
+		// TeamManaged Whether a team admin created this team limit. Team admins can change or delete only these.
+		TeamManaged     bool `json:"teamManaged"`
 		ThroughputUsage *struct {
 			// CurrentUsage Recorded usage. Token limits count only provider-reported tokens; requests already in flight can exceed the cap.
 			CurrentUsage float32 `json:"currentUsage"`
@@ -30673,6 +30716,7 @@ type GetLimitResponse struct {
 		} `json:"error"`
 	}
 }
+type GetLimit200Behavior string
 type GetLimit200CleanupInterval string
 type GetLimit200EntityType string
 type GetLimit200LimitType string
@@ -30703,6 +30747,7 @@ type UpdateLimitResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
+		Behavior        UpdateLimit200Behavior         `json:"behavior"`
 		CleanupInterval *UpdateLimit200CleanupInterval `json:"cleanupInterval,omitempty"`
 		CreatedAt       time.Time                      `json:"createdAt"`
 		EntityId        string                         `json:"entityId"`
@@ -30714,8 +30759,11 @@ type UpdateLimitResponse struct {
 		McpServerName   *string                        `json:"mcpServerName"`
 		Model           *[]string                      `json:"model"`
 		Reason          *string                        `json:"reason"`
-		ToolName        *string                        `json:"toolName"`
-		UpdatedAt       time.Time                      `json:"updatedAt"`
+
+		// TeamManaged Whether a team admin created this team limit. Team admins can change or delete only these.
+		TeamManaged bool      `json:"teamManaged"`
+		ToolName    *string   `json:"toolName"`
+		UpdatedAt   time.Time `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -30761,6 +30809,7 @@ type UpdateLimitResponse struct {
 		} `json:"error"`
 	}
 }
+type UpdateLimit200Behavior string
 type UpdateLimit200CleanupInterval string
 type UpdateLimit200EntityType string
 type UpdateLimit200LimitType string
@@ -30840,7 +30889,23 @@ type GetModelsWithApiKeysResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		LastSyncedAt              time.Time                                  `json:"lastSyncedAt"`
+		LastSyncedAt                         time.Time `json:"lastSyncedAt"`
+		LongContextPricePerMillionCacheRead  *string   `json:"longContextPricePerMillionCacheRead"`
+		LongContextPricePerMillionCacheWrite *string   `json:"longContextPricePerMillionCacheWrite"`
+		LongContextPricePerMillionInput      *string   `json:"longContextPricePerMillionInput"`
+		LongContextPricePerMillionOutput     *string   `json:"longContextPricePerMillionOutput"`
+		LongContextThreshold                 *int      `json:"longContextThreshold"`
+		MediaPricing                         *struct {
+			Input []struct {
+				Kind GetModelsWithApiKeys200MediaPricingInputKind `json:"kind"`
+				Usd  float32                                      `json:"usd"`
+			} `json:"input"`
+			Output []struct {
+				Kind GetModelsWithApiKeys200MediaPricingOutputKind `json:"kind"`
+				Usd  float32                                       `json:"usd"`
+			} `json:"output"`
+			Per GetModelsWithApiKeys200MediaPricingPer `json:"per"`
+		} `json:"mediaPricing"`
 		ModelId                   string                                     `json:"modelId"`
 		OutputLength              *int                                       `json:"outputLength"`
 		OutputModalities          *[]GetModelsWithApiKeys200OutputModalities `json:"outputModalities"`
@@ -30912,6 +30977,9 @@ type GetModelsWithApiKeysResponse struct {
 type GetModelsWithApiKeys200CachePriceSource string
 type GetModelsWithApiKeys200ConfiguredParametersReasoningEffort string
 type GetModelsWithApiKeys200InputModalities string
+type GetModelsWithApiKeys200MediaPricingInputKind string
+type GetModelsWithApiKeys200MediaPricingOutputKind string
+type GetModelsWithApiKeys200MediaPricingPer string
 type GetModelsWithApiKeys200OutputModalities string
 type GetModelsWithApiKeys200PriceSource string
 type GetModelsWithApiKeys200Provider string
@@ -30956,32 +31024,37 @@ type UpdateModelResponse struct {
 			TopK            *int                                               `json:"top_k,omitempty"`
 			TopP            *float32                                           `json:"top_p,omitempty"`
 		} `json:"configuredParameters"`
-		ContextLength                   *int                              `json:"contextLength"`
-		CreatedAt                       time.Time                         `json:"createdAt"`
-		CustomContextLength             *int                              `json:"customContextLength"`
-		CustomOutputLength              *int                              `json:"customOutputLength"`
-		CustomPricePerMillionCacheRead  *string                           `json:"customPricePerMillionCacheRead"`
-		CustomPricePerMillionCacheWrite *string                           `json:"customPricePerMillionCacheWrite"`
-		CustomPricePerMillionInput      *string                           `json:"customPricePerMillionInput"`
-		CustomPricePerMillionOutput     *string                           `json:"customPricePerMillionOutput"`
-		DefaultParameters               *map[string]interface{}           `json:"defaultParameters"`
-		Description                     *string                           `json:"description"`
-		DiscoveredViaLlmProxy           bool                              `json:"discoveredViaLlmProxy"`
-		EmbeddingDimensions             *EmbeddingDimensions              `json:"embeddingDimensions"`
-		ExternalId                      string                            `json:"externalId"`
-		Id                              openapi_types.UUID                `json:"id"`
-		Ignored                         bool                              `json:"ignored"`
-		InputModalities                 *[]UpdateModel200InputModalities  `json:"inputModalities"`
-		LastSyncedAt                    time.Time                         `json:"lastSyncedAt"`
-		ModelId                         string                            `json:"modelId"`
-		OutputLength                    *int                              `json:"outputLength"`
-		OutputModalities                *[]UpdateModel200OutputModalities `json:"outputModalities"`
-		PromptPricePerToken             *string                           `json:"promptPricePerToken"`
-		Provider                        UpdateModel200Provider            `json:"provider"`
-		SupportedEndpoints              interface{}                       `json:"supportedEndpoints"`
-		SupportsReasoningEffort         *bool                             `json:"supportsReasoningEffort"`
-		SupportsToolCalling             *bool                             `json:"supportsToolCalling"`
-		UpdatedAt                       time.Time                         `json:"updatedAt"`
+		ContextLength                        *int                              `json:"contextLength"`
+		CreatedAt                            time.Time                         `json:"createdAt"`
+		CustomContextLength                  *int                              `json:"customContextLength"`
+		CustomOutputLength                   *int                              `json:"customOutputLength"`
+		CustomPricePerMillionCacheRead       *string                           `json:"customPricePerMillionCacheRead"`
+		CustomPricePerMillionCacheWrite      *string                           `json:"customPricePerMillionCacheWrite"`
+		CustomPricePerMillionInput           *string                           `json:"customPricePerMillionInput"`
+		CustomPricePerMillionOutput          *string                           `json:"customPricePerMillionOutput"`
+		DefaultParameters                    *map[string]interface{}           `json:"defaultParameters"`
+		Description                          *string                           `json:"description"`
+		DiscoveredViaLlmProxy                bool                              `json:"discoveredViaLlmProxy"`
+		EmbeddingDimensions                  *EmbeddingDimensions              `json:"embeddingDimensions"`
+		ExternalId                           string                            `json:"externalId"`
+		Id                                   openapi_types.UUID                `json:"id"`
+		Ignored                              bool                              `json:"ignored"`
+		InputModalities                      *[]UpdateModel200InputModalities  `json:"inputModalities"`
+		LastSyncedAt                         time.Time                         `json:"lastSyncedAt"`
+		LongContextPricePerMillionCacheRead  *string                           `json:"longContextPricePerMillionCacheRead"`
+		LongContextPricePerMillionCacheWrite *string                           `json:"longContextPricePerMillionCacheWrite"`
+		LongContextPricePerMillionInput      *string                           `json:"longContextPricePerMillionInput"`
+		LongContextPricePerMillionOutput     *string                           `json:"longContextPricePerMillionOutput"`
+		LongContextThreshold                 *int                              `json:"longContextThreshold"`
+		ModelId                              string                            `json:"modelId"`
+		OutputLength                         *int                              `json:"outputLength"`
+		OutputModalities                     *[]UpdateModel200OutputModalities `json:"outputModalities"`
+		PromptPricePerToken                  *string                           `json:"promptPricePerToken"`
+		Provider                             UpdateModel200Provider            `json:"provider"`
+		SupportedEndpoints                   interface{}                       `json:"supportedEndpoints"`
+		SupportsReasoningEffort              *bool                             `json:"supportsReasoningEffort"`
+		SupportsToolCalling                  *bool                             `json:"supportsToolCalling"`
+		UpdatedAt                            time.Time                         `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -31069,9 +31142,11 @@ type CreateLlmProviderApiKeyResponse struct {
 		} `json:"createdBy"`
 		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 		ExtraHeaders              *map[string]string  `json:"extraHeaders"`
+		GithubOrganization        *string             `json:"githubOrganization"`
 		Id                        openapi_types.UUID  `json:"id"`
 		InferenceBaseUrl          *string             `json:"inferenceBaseUrl"`
 		IsAgentKey                *bool               `json:"isAgentKey,omitempty"`
+		IsGithubAppKey            *bool               `json:"isGithubAppKey,omitempty"`
 		IsPrimary                 bool                `json:"isPrimary"`
 		IsSystem                  bool                `json:"isSystem"`
 		Labels                    *[]struct {
@@ -31254,9 +31329,11 @@ type GetLlmProviderApiKeyResponse struct {
 		} `json:"createdBy"`
 		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 		ExtraHeaders              *map[string]string  `json:"extraHeaders"`
+		GithubOrganization        *string             `json:"githubOrganization"`
 		Id                        openapi_types.UUID  `json:"id"`
 		InferenceBaseUrl          *string             `json:"inferenceBaseUrl"`
 		IsAgentKey                *bool               `json:"isAgentKey,omitempty"`
+		IsGithubAppKey            *bool               `json:"isGithubAppKey,omitempty"`
 		IsPrimary                 bool                `json:"isPrimary"`
 		IsSystem                  bool                `json:"isSystem"`
 		Labels                    *[]struct {
@@ -31366,9 +31443,11 @@ type UpdateLlmProviderApiKeyResponse struct {
 		} `json:"createdBy"`
 		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 		ExtraHeaders              *map[string]string  `json:"extraHeaders"`
+		GithubOrganization        *string             `json:"githubOrganization"`
 		Id                        openapi_types.UUID  `json:"id"`
 		InferenceBaseUrl          *string             `json:"inferenceBaseUrl"`
 		IsAgentKey                *bool               `json:"isAgentKey,omitempty"`
+		IsGithubAppKey            *bool               `json:"isGithubAppKey,omitempty"`
 		IsPrimary                 bool                `json:"isPrimary"`
 		IsSystem                  bool                `json:"isSystem"`
 		Labels                    *[]struct {
@@ -31505,6 +31584,7 @@ type CreateVirtualApiKeyResponse struct {
 		SpendCap *struct {
 			CleanupInterval CreateVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
 			CurrentUsage    float32                                       `json:"currentUsage"`
+			EstimatedUsage  bool                                          `json:"estimatedUsage"`
 			LimitId         string                                        `json:"limitId"`
 			LimitValue      int                                           `json:"limitValue"`
 		} `json:"spendCap"`
@@ -31702,6 +31782,7 @@ type GetVirtualApiKeyResponse struct {
 		SpendCap *struct {
 			CleanupInterval GetVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
 			CurrentUsage    float32                                    `json:"currentUsage"`
+			EstimatedUsage  bool                                       `json:"estimatedUsage"`
 			LimitId         string                                     `json:"limitId"`
 			LimitValue      int                                        `json:"limitValue"`
 		} `json:"spendCap"`
@@ -31825,6 +31906,7 @@ type UpdateVirtualApiKeyResponse struct {
 		SpendCap *struct {
 			CleanupInterval UpdateVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
 			CurrentUsage    float32                                       `json:"currentUsage"`
+			EstimatedUsage  bool                                          `json:"estimatedUsage"`
 			LimitId         string                                        `json:"limitId"`
 			LimitValue      int                                           `json:"limitValue"`
 		} `json:"spendCap"`
@@ -32744,6 +32826,7 @@ type GetOauthClientsResponse struct {
 			SpendCap         *struct {
 				CleanupInterval GetOauthClients200DataSpendCapCleanupInterval `json:"cleanupInterval"`
 				CurrentUsage    float32                                       `json:"currentUsage"`
+				EstimatedUsage  bool                                          `json:"estimatedUsage"`
 				LimitId         string                                        `json:"limitId"`
 				LimitValue      int                                           `json:"limitValue"`
 			} `json:"spendCap"`
@@ -32874,6 +32957,7 @@ type CreateOauthClientResponse struct {
 		SpendCap         *struct {
 			CleanupInterval CreateOauthClient200SpendCapCleanupInterval `json:"cleanupInterval"`
 			CurrentUsage    float32                                     `json:"currentUsage"`
+			EstimatedUsage  bool                                        `json:"estimatedUsage"`
 			LimitId         string                                      `json:"limitId"`
 			LimitValue      int                                         `json:"limitValue"`
 		} `json:"spendCap"`
@@ -33067,6 +33151,7 @@ type UpdateOauthClientResponse struct {
 		SpendCap         *struct {
 			CleanupInterval UpdateOauthClient200SpendCapCleanupInterval `json:"cleanupInterval"`
 			CurrentUsage    float32                                     `json:"currentUsage"`
+			EstimatedUsage  bool                                        `json:"estimatedUsage"`
 			LimitId         string                                      `json:"limitId"`
 			LimitValue      int                                         `json:"limitValue"`
 		} `json:"spendCap"`
@@ -33188,6 +33273,7 @@ type RotateOauthClientSecretResponse struct {
 		SpendCap         *struct {
 			CleanupInterval RotateOauthClientSecret200SpendCapCleanupInterval `json:"cleanupInterval"`
 			CurrentUsage    float32                                           `json:"currentUsage"`
+			EstimatedUsage  bool                                              `json:"estimatedUsage"`
 			LimitId         string                                            `json:"limitId"`
 			LimitValue      int                                               `json:"limitValue"`
 		} `json:"spendCap"`
@@ -33269,13 +33355,14 @@ type GetOrganizationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -33339,6 +33426,7 @@ type GetOrganizationResponse struct {
 		KbBm25B                            *float32                                           `json:"kbBm25B"`
 		KbBm25K1                           *float32                                           `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                           `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                               `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -33464,13 +33552,14 @@ type UpdateAgentSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -33534,6 +33623,7 @@ type UpdateAgentSettingsResponse struct {
 		KbBm25B                            *float32                                               `json:"kbBm25B"`
 		KbBm25K1                           *float32                                               `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                               `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                                   `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -33659,13 +33749,14 @@ type UpdateAppearanceSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -33729,6 +33820,7 @@ type UpdateAppearanceSettingsResponse struct {
 		KbBm25B                            *float32                                                    `json:"kbBm25B"`
 		KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                                        `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -33854,13 +33946,14 @@ type UpdateAuthSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -33924,6 +34017,7 @@ type UpdateAuthSettingsResponse struct {
 		KbBm25B                            *float32                                              `json:"kbBm25B"`
 		KbBm25K1                           *float32                                              `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                                  `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -34049,13 +34143,14 @@ type CompleteOnboardingResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -34119,6 +34214,7 @@ type CompleteOnboardingResponse struct {
 		KbBm25B                            *float32                                              `json:"kbBm25B"`
 		KbBm25K1                           *float32                                              `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                                  `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -34244,13 +34340,14 @@ type UpdateConnectionSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -34314,6 +34411,7 @@ type UpdateConnectionSettingsResponse struct {
 		KbBm25B                            *float32                                                    `json:"kbBm25B"`
 		KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                                        `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -34439,13 +34537,14 @@ type UpdateDefaultEnvironmentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -34509,6 +34608,7 @@ type UpdateDefaultEnvironmentResponse struct {
 		KbBm25B                            *float32                                                    `json:"kbBm25B"`
 		KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                                        `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -34634,13 +34734,14 @@ type UpdateIntegrationSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -34704,6 +34805,7 @@ type UpdateIntegrationSettingsResponse struct {
 		KbBm25B                            *float32                                                     `json:"kbBm25B"`
 		KbBm25K1                           *float32                                                     `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                                     `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                                         `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -34829,13 +34931,14 @@ type UpdateKnowledgeSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -34899,6 +35002,7 @@ type UpdateKnowledgeSettingsResponse struct {
 		KbBm25B                            *float32                                                   `json:"kbBm25B"`
 		KbBm25K1                           *float32                                                   `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                                   `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                                       `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -35024,13 +35128,14 @@ type UpdateMcpSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -35094,6 +35199,7 @@ type UpdateMcpSettingsResponse struct {
 		KbBm25B                            *float32                                             `json:"kbBm25B"`
 		KbBm25K1                           *float32                                             `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                             `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                                 `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -35219,13 +35325,14 @@ type UpdateSecuritySettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -35289,6 +35396,7 @@ type UpdateSecuritySettingsResponse struct {
 		KbBm25B                            *float32                                                  `json:"kbBm25B"`
 		KbBm25K1                           *float32                                                  `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                                  `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                                      `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -35414,13 +35522,14 @@ type UpdateSkillsSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-		AppName                              *string            `json:"appName"`
-		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+		AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+		AppName                              *string                 `json:"appName"`
+		ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
@@ -35484,6 +35593,7 @@ type UpdateSkillsSettingsResponse struct {
 		KbBm25B                            *float32                                                `json:"kbBm25B"`
 		KbBm25K1                           *float32                                                `json:"kbBm25K1"`
 		KbContextualRetrievalMode          *ContextualRetrievalMode                                `json:"kbContextualRetrievalMode"`
+		KeepMediaInLogs                    bool                                                    `json:"keepMediaInLogs"`
 		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
@@ -40089,12 +40199,13 @@ type CreateTeamResponse struct {
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels,omitempty"`
 		Members *[]struct {
-			CreatedAt     time.Time `json:"createdAt"`
-			Id            string    `json:"id"`
-			Role          string    `json:"role"`
-			SyncedFromSso bool      `json:"syncedFromSso"`
-			TeamId        string    `json:"teamId"`
-			UserId        string    `json:"userId"`
+			CreatedAt         time.Time `json:"createdAt"`
+			Id                string    `json:"id"`
+			Role              string    `json:"role"`
+			RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+			SyncedFromSso     bool      `json:"syncedFromSso"`
+			TeamId            string    `json:"teamId"`
+			UserId            string    `json:"userId"`
 		} `json:"members,omitempty"`
 		MyRole         *CreateTeam200MyRole `json:"myRole,omitempty"`
 		Name           string               `json:"name"`
@@ -40264,12 +40375,13 @@ type GetTeamResponse struct {
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels,omitempty"`
 		Members *[]struct {
-			CreatedAt     time.Time `json:"createdAt"`
-			Id            string    `json:"id"`
-			Role          string    `json:"role"`
-			SyncedFromSso bool      `json:"syncedFromSso"`
-			TeamId        string    `json:"teamId"`
-			UserId        string    `json:"userId"`
+			CreatedAt         time.Time `json:"createdAt"`
+			Id                string    `json:"id"`
+			Role              string    `json:"role"`
+			RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+			SyncedFromSso     bool      `json:"syncedFromSso"`
+			TeamId            string    `json:"teamId"`
+			UserId            string    `json:"userId"`
 		} `json:"members,omitempty"`
 		MyRole         *GetTeam200MyRole `json:"myRole,omitempty"`
 		Name           string            `json:"name"`
@@ -40366,12 +40478,13 @@ type UpdateTeamResponse struct {
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels,omitempty"`
 		Members *[]struct {
-			CreatedAt     time.Time `json:"createdAt"`
-			Id            string    `json:"id"`
-			Role          string    `json:"role"`
-			SyncedFromSso bool      `json:"syncedFromSso"`
-			TeamId        string    `json:"teamId"`
-			UserId        string    `json:"userId"`
+			CreatedAt         time.Time `json:"createdAt"`
+			Id                string    `json:"id"`
+			Role              string    `json:"role"`
+			RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+			SyncedFromSso     bool      `json:"syncedFromSso"`
+			TeamId            string    `json:"teamId"`
+			UserId            string    `json:"userId"`
 		} `json:"members,omitempty"`
 		MyRole         *UpdateTeam200MyRole `json:"myRole,omitempty"`
 		Name           string               `json:"name"`
@@ -40452,10 +40565,12 @@ type GetTeamExternalGroupsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		CreatedAt       time.Time `json:"createdAt"`
-		GroupIdentifier string    `json:"groupIdentifier"`
-		Id              string    `json:"id"`
-		TeamId          string    `json:"teamId"`
+		CreatedAt          time.Time                    `json:"createdAt"`
+		GroupIdentifier    string                       `json:"groupIdentifier"`
+		Id                 string                       `json:"id"`
+		IdentityProviderId *string                      `json:"identityProviderId"`
+		Role               GetTeamExternalGroups200Role `json:"role"`
+		TeamId             string                       `json:"teamId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -40501,6 +40616,7 @@ type GetTeamExternalGroupsResponse struct {
 		} `json:"error"`
 	}
 }
+type GetTeamExternalGroups200Role string
 type GetTeamExternalGroups400ErrorType string
 type GetTeamExternalGroups401ErrorType string
 type GetTeamExternalGroups403ErrorType string
@@ -40528,10 +40644,12 @@ type AddTeamExternalGroupResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CreatedAt       time.Time `json:"createdAt"`
-		GroupIdentifier string    `json:"groupIdentifier"`
-		Id              string    `json:"id"`
-		TeamId          string    `json:"teamId"`
+		CreatedAt          time.Time                   `json:"createdAt"`
+		GroupIdentifier    string                      `json:"groupIdentifier"`
+		Id                 string                      `json:"id"`
+		IdentityProviderId *string                     `json:"identityProviderId"`
+		Role               AddTeamExternalGroup200Role `json:"role"`
+		TeamId             string                      `json:"teamId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -40577,6 +40695,7 @@ type AddTeamExternalGroupResponse struct {
 		} `json:"error"`
 	}
 }
+type AddTeamExternalGroup200Role string
 type AddTeamExternalGroup400ErrorType string
 type AddTeamExternalGroup401ErrorType string
 type AddTeamExternalGroup403ErrorType string
@@ -40677,15 +40796,16 @@ type GetTeamMembersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		CreatedAt     time.Time `json:"createdAt"`
-		Email         string    `json:"email"`
-		Id            string    `json:"id"`
-		Image         *string   `json:"image"`
-		Name          *string   `json:"name"`
-		Role          string    `json:"role"`
-		SyncedFromSso bool      `json:"syncedFromSso"`
-		TeamId        string    `json:"teamId"`
-		UserId        string    `json:"userId"`
+		CreatedAt         time.Time `json:"createdAt"`
+		Email             string    `json:"email"`
+		Id                string    `json:"id"`
+		Image             *string   `json:"image"`
+		Name              *string   `json:"name"`
+		Role              string    `json:"role"`
+		RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+		SyncedFromSso     bool      `json:"syncedFromSso"`
+		TeamId            string    `json:"teamId"`
+		UserId            string    `json:"userId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -40758,12 +40878,13 @@ type AddTeamMemberResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CreatedAt     time.Time `json:"createdAt"`
-		Id            string    `json:"id"`
-		Role          string    `json:"role"`
-		SyncedFromSso bool      `json:"syncedFromSso"`
-		TeamId        string    `json:"teamId"`
-		UserId        string    `json:"userId"`
+		CreatedAt         time.Time `json:"createdAt"`
+		Id                string    `json:"id"`
+		Role              string    `json:"role"`
+		RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+		SyncedFromSso     bool      `json:"syncedFromSso"`
+		TeamId            string    `json:"teamId"`
+		UserId            string    `json:"userId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -40909,12 +41030,13 @@ type UpdateTeamMemberResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CreatedAt     time.Time `json:"createdAt"`
-		Id            string    `json:"id"`
-		Role          string    `json:"role"`
-		SyncedFromSso bool      `json:"syncedFromSso"`
-		TeamId        string    `json:"teamId"`
-		UserId        string    `json:"userId"`
+		CreatedAt         time.Time `json:"createdAt"`
+		Id                string    `json:"id"`
+		Role              string    `json:"role"`
+		RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+		SyncedFromSso     bool      `json:"syncedFromSso"`
+		TeamId            string    `json:"teamId"`
+		UserId            string    `json:"userId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -44421,7 +44543,6 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 				DeletedAt                 *time.Time          `json:"deletedAt"`
 				Description               *string             `json:"description"`
 				EnvironmentId             *openapi_types.UUID `json:"environmentId"`
-				FastModelId               *openapi_types.UUID `json:"fastModelId"`
 				GithubActionsAccess       *struct {
 					ActAs                  *GetAgents200DataGithubActionsAccessActAs `json:"actAs,omitempty"`
 					GithubAppCredentialKey string                                    `json:"githubAppCredentialKey"`
@@ -44484,22 +44605,17 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 					Image              string                                   `json:"image"`
 					InferenceProtocol  GetAgents200DataRuntimeInferenceProtocol `json:"inferenceProtocol"`
 					MaxCostUsd         *int                                     `json:"maxCostUsd"`
+					MaxTier            *string                                  `json:"maxTier"`
 					Ports              *[]int                                   `json:"ports,omitempty"`
 					Privileged         bool                                     `json:"privileged"`
-					Resources          *struct {
-						CpuLimit      *string `json:"cpuLimit,omitempty"`
-						CpuRequest    *string `json:"cpuRequest,omitempty"`
-						MemoryLimit   *string `json:"memoryLimit,omitempty"`
-						MemoryRequest *string `json:"memoryRequest,omitempty"`
-					} `json:"resources"`
-					SteerMode GetAgents200DataRuntimeSteerMode `json:"steerMode"`
-					TtlHours  *int                             `json:"ttlHours"`
+					SteerMode          GetAgents200DataRuntimeSteerMode         `json:"steerMode"`
+					Tier               *string                                  `json:"tier"`
+					TtlHours           *int                                     `json:"ttlHours"`
 				} `json:"runtime"`
 				RuntimeSecretId  *openapi_types.UUID   `json:"runtimeSecretId"`
 				SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
 				Scope            GetAgents200DataScope `json:"scope"`
 				Slug             *string               `json:"slug"`
-				SmartModelId     *openapi_types.UUID   `json:"smartModelId"`
 
 				// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
 				SubagentsCount   int `json:"subagentsCount"`
@@ -44671,7 +44787,6 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 			DeletedAt                 *time.Time          `json:"deletedAt"`
 			Description               *string             `json:"description"`
 			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
-			FastModelId               *openapi_types.UUID `json:"fastModelId"`
 			GithubActionsAccess       *struct {
 				ActAs                  *CreateAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
 				GithubAppCredentialKey string                                  `json:"githubAppCredentialKey"`
@@ -44733,22 +44848,17 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 				Image              string                                 `json:"image"`
 				InferenceProtocol  CreateAgent200RuntimeInferenceProtocol `json:"inferenceProtocol"`
 				MaxCostUsd         *int                                   `json:"maxCostUsd"`
+				MaxTier            *string                                `json:"maxTier"`
 				Ports              *[]int                                 `json:"ports,omitempty"`
 				Privileged         bool                                   `json:"privileged"`
-				Resources          *struct {
-					CpuLimit      *string `json:"cpuLimit,omitempty"`
-					CpuRequest    *string `json:"cpuRequest,omitempty"`
-					MemoryLimit   *string `json:"memoryLimit,omitempty"`
-					MemoryRequest *string `json:"memoryRequest,omitempty"`
-				} `json:"resources"`
-				SteerMode CreateAgent200RuntimeSteerMode `json:"steerMode"`
-				TtlHours  *int                           `json:"ttlHours"`
+				SteerMode          CreateAgent200RuntimeSteerMode         `json:"steerMode"`
+				Tier               *string                                `json:"tier"`
+				TtlHours           *int                                   `json:"ttlHours"`
 			} `json:"runtime"`
 			RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
 			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 			Scope            CreateAgent200Scope `json:"scope"`
 			Slug             *string             `json:"slug"`
-			SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -45997,7 +46107,6 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 			DeletedAt                 *time.Time          `json:"deletedAt"`
 			Description               *string             `json:"description"`
 			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
-			FastModelId               *openapi_types.UUID `json:"fastModelId"`
 			GithubActionsAccess       *struct {
 				ActAs                  *GetAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
 				GithubAppCredentialKey string                               `json:"githubAppCredentialKey"`
@@ -46059,22 +46168,17 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 				Image              string                              `json:"image"`
 				InferenceProtocol  GetAgent200RuntimeInferenceProtocol `json:"inferenceProtocol"`
 				MaxCostUsd         *int                                `json:"maxCostUsd"`
+				MaxTier            *string                             `json:"maxTier"`
 				Ports              *[]int                              `json:"ports,omitempty"`
 				Privileged         bool                                `json:"privileged"`
-				Resources          *struct {
-					CpuLimit      *string `json:"cpuLimit,omitempty"`
-					CpuRequest    *string `json:"cpuRequest,omitempty"`
-					MemoryLimit   *string `json:"memoryLimit,omitempty"`
-					MemoryRequest *string `json:"memoryRequest,omitempty"`
-				} `json:"resources"`
-				SteerMode GetAgent200RuntimeSteerMode `json:"steerMode"`
-				TtlHours  *int                        `json:"ttlHours"`
+				SteerMode          GetAgent200RuntimeSteerMode         `json:"steerMode"`
+				Tier               *string                             `json:"tier"`
+				TtlHours           *int                                `json:"ttlHours"`
 			} `json:"runtime"`
 			RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
 			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 			Scope            GetAgent200Scope    `json:"scope"`
 			Slug             *string             `json:"slug"`
-			SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -46231,7 +46335,6 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 			DeletedAt                 *time.Time          `json:"deletedAt"`
 			Description               *string             `json:"description"`
 			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
-			FastModelId               *openapi_types.UUID `json:"fastModelId"`
 			GithubActionsAccess       *struct {
 				ActAs                  *UpdateAgent200GithubActionsAccessActAs `json:"actAs,omitempty"`
 				GithubAppCredentialKey string                                  `json:"githubAppCredentialKey"`
@@ -46293,22 +46396,17 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 				Image              string                                 `json:"image"`
 				InferenceProtocol  UpdateAgent200RuntimeInferenceProtocol `json:"inferenceProtocol"`
 				MaxCostUsd         *int                                   `json:"maxCostUsd"`
+				MaxTier            *string                                `json:"maxTier"`
 				Ports              *[]int                                 `json:"ports,omitempty"`
 				Privileged         bool                                   `json:"privileged"`
-				Resources          *struct {
-					CpuLimit      *string `json:"cpuLimit,omitempty"`
-					CpuRequest    *string `json:"cpuRequest,omitempty"`
-					MemoryLimit   *string `json:"memoryLimit,omitempty"`
-					MemoryRequest *string `json:"memoryRequest,omitempty"`
-				} `json:"resources"`
-				SteerMode UpdateAgent200RuntimeSteerMode `json:"steerMode"`
-				TtlHours  *int                           `json:"ttlHours"`
+				SteerMode          UpdateAgent200RuntimeSteerMode         `json:"steerMode"`
+				Tier               *string                                `json:"tier"`
+				TtlHours           *int                                   `json:"ttlHours"`
 			} `json:"runtime"`
 			RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
 			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 			Scope            UpdateAgent200Scope `json:"scope"`
 			Slug             *string             `json:"slug"`
-			SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -56251,6 +56349,7 @@ func ParseCreateLimitResponse(rsp *http.Response) (*CreateLimitResponse, error) 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
+			Behavior        CreateLimit200Behavior         `json:"behavior"`
 			CleanupInterval *CreateLimit200CleanupInterval `json:"cleanupInterval,omitempty"`
 			CreatedAt       time.Time                      `json:"createdAt"`
 			EntityId        string                         `json:"entityId"`
@@ -56262,8 +56361,11 @@ func ParseCreateLimitResponse(rsp *http.Response) (*CreateLimitResponse, error) 
 			McpServerName   *string                        `json:"mcpServerName"`
 			Model           *[]string                      `json:"model"`
 			Reason          *string                        `json:"reason"`
-			ToolName        *string                        `json:"toolName"`
-			UpdatedAt       time.Time                      `json:"updatedAt"`
+
+			// TeamManaged Whether a team admin created this team limit. Team admins can change or delete only these.
+			TeamManaged bool      `json:"teamManaged"`
+			ToolName    *string   `json:"toolName"`
+			UpdatedAt   time.Time `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -56477,12 +56579,16 @@ func ParseGetLimitResponse(rsp *http.Response) (*GetLimitResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
+			Behavior        GetLimit200Behavior         `json:"behavior"`
 			CleanupInterval *GetLimit200CleanupInterval `json:"cleanupInterval,omitempty"`
 			CreatedAt       time.Time                   `json:"createdAt"`
 			EntityId        string                      `json:"entityId"`
 			EntityType      GetLimit200EntityType       `json:"entityType"`
-			Id              openapi_types.UUID          `json:"id"`
-			Labels          []struct {
+
+			// EstimatedUsage Spend limits only: part of the spend is estimated because a model had no price for some of the tokens a request used.
+			EstimatedUsage *bool              `json:"estimatedUsage,omitempty"`
+			Id             openapi_types.UUID `json:"id"`
+			Labels         []struct {
 				Key     string              `json:"key"`
 				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
 				Value   string              `json:"value"`
@@ -56499,7 +56605,10 @@ func ParseGetLimitResponse(rsp *http.Response) (*GetLimitResponse, error) {
 				TokensIn  float32 `json:"tokensIn"`
 				TokensOut float32 `json:"tokensOut"`
 			} `json:"modelUsage,omitempty"`
-			Reason          *string `json:"reason"`
+			Reason *string `json:"reason"`
+
+			// TeamManaged Whether a team admin created this team limit. Team admins can change or delete only these.
+			TeamManaged     bool `json:"teamManaged"`
 			ThroughputUsage *struct {
 				// CurrentUsage Recorded usage. Token limits count only provider-reported tokens; requests already in flight can exceed the cap.
 				CurrentUsage float32 `json:"currentUsage"`
@@ -56615,6 +56724,7 @@ func ParseUpdateLimitResponse(rsp *http.Response) (*UpdateLimitResponse, error) 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
+			Behavior        UpdateLimit200Behavior         `json:"behavior"`
 			CleanupInterval *UpdateLimit200CleanupInterval `json:"cleanupInterval,omitempty"`
 			CreatedAt       time.Time                      `json:"createdAt"`
 			EntityId        string                         `json:"entityId"`
@@ -56626,8 +56736,11 @@ func ParseUpdateLimitResponse(rsp *http.Response) (*UpdateLimitResponse, error) 
 			McpServerName   *string                        `json:"mcpServerName"`
 			Model           *[]string                      `json:"model"`
 			Reason          *string                        `json:"reason"`
-			ToolName        *string                        `json:"toolName"`
-			UpdatedAt       time.Time                      `json:"updatedAt"`
+
+			// TeamManaged Whether a team admin created this team limit. Team admins can change or delete only these.
+			TeamManaged bool      `json:"teamManaged"`
+			ToolName    *string   `json:"toolName"`
+			UpdatedAt   time.Time `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -56783,7 +56896,23 @@ func ParseGetModelsWithApiKeysResponse(rsp *http.Response) (*GetModelsWithApiKey
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			LastSyncedAt              time.Time                                  `json:"lastSyncedAt"`
+			LastSyncedAt                         time.Time `json:"lastSyncedAt"`
+			LongContextPricePerMillionCacheRead  *string   `json:"longContextPricePerMillionCacheRead"`
+			LongContextPricePerMillionCacheWrite *string   `json:"longContextPricePerMillionCacheWrite"`
+			LongContextPricePerMillionInput      *string   `json:"longContextPricePerMillionInput"`
+			LongContextPricePerMillionOutput     *string   `json:"longContextPricePerMillionOutput"`
+			LongContextThreshold                 *int      `json:"longContextThreshold"`
+			MediaPricing                         *struct {
+				Input []struct {
+					Kind GetModelsWithApiKeys200MediaPricingInputKind `json:"kind"`
+					Usd  float32                                      `json:"usd"`
+				} `json:"input"`
+				Output []struct {
+					Kind GetModelsWithApiKeys200MediaPricingOutputKind `json:"kind"`
+					Usd  float32                                       `json:"usd"`
+				} `json:"output"`
+				Per GetModelsWithApiKeys200MediaPricingPer `json:"per"`
+			} `json:"mediaPricing"`
 			ModelId                   string                                     `json:"modelId"`
 			OutputLength              *int                                       `json:"outputLength"`
 			OutputModalities          *[]GetModelsWithApiKeys200OutputModalities `json:"outputModalities"`
@@ -56927,32 +57056,37 @@ func ParseUpdateModelResponse(rsp *http.Response) (*UpdateModelResponse, error) 
 				TopK            *int                                               `json:"top_k,omitempty"`
 				TopP            *float32                                           `json:"top_p,omitempty"`
 			} `json:"configuredParameters"`
-			ContextLength                   *int                              `json:"contextLength"`
-			CreatedAt                       time.Time                         `json:"createdAt"`
-			CustomContextLength             *int                              `json:"customContextLength"`
-			CustomOutputLength              *int                              `json:"customOutputLength"`
-			CustomPricePerMillionCacheRead  *string                           `json:"customPricePerMillionCacheRead"`
-			CustomPricePerMillionCacheWrite *string                           `json:"customPricePerMillionCacheWrite"`
-			CustomPricePerMillionInput      *string                           `json:"customPricePerMillionInput"`
-			CustomPricePerMillionOutput     *string                           `json:"customPricePerMillionOutput"`
-			DefaultParameters               *map[string]interface{}           `json:"defaultParameters"`
-			Description                     *string                           `json:"description"`
-			DiscoveredViaLlmProxy           bool                              `json:"discoveredViaLlmProxy"`
-			EmbeddingDimensions             *EmbeddingDimensions              `json:"embeddingDimensions"`
-			ExternalId                      string                            `json:"externalId"`
-			Id                              openapi_types.UUID                `json:"id"`
-			Ignored                         bool                              `json:"ignored"`
-			InputModalities                 *[]UpdateModel200InputModalities  `json:"inputModalities"`
-			LastSyncedAt                    time.Time                         `json:"lastSyncedAt"`
-			ModelId                         string                            `json:"modelId"`
-			OutputLength                    *int                              `json:"outputLength"`
-			OutputModalities                *[]UpdateModel200OutputModalities `json:"outputModalities"`
-			PromptPricePerToken             *string                           `json:"promptPricePerToken"`
-			Provider                        UpdateModel200Provider            `json:"provider"`
-			SupportedEndpoints              interface{}                       `json:"supportedEndpoints"`
-			SupportsReasoningEffort         *bool                             `json:"supportsReasoningEffort"`
-			SupportsToolCalling             *bool                             `json:"supportsToolCalling"`
-			UpdatedAt                       time.Time                         `json:"updatedAt"`
+			ContextLength                        *int                              `json:"contextLength"`
+			CreatedAt                            time.Time                         `json:"createdAt"`
+			CustomContextLength                  *int                              `json:"customContextLength"`
+			CustomOutputLength                   *int                              `json:"customOutputLength"`
+			CustomPricePerMillionCacheRead       *string                           `json:"customPricePerMillionCacheRead"`
+			CustomPricePerMillionCacheWrite      *string                           `json:"customPricePerMillionCacheWrite"`
+			CustomPricePerMillionInput           *string                           `json:"customPricePerMillionInput"`
+			CustomPricePerMillionOutput          *string                           `json:"customPricePerMillionOutput"`
+			DefaultParameters                    *map[string]interface{}           `json:"defaultParameters"`
+			Description                          *string                           `json:"description"`
+			DiscoveredViaLlmProxy                bool                              `json:"discoveredViaLlmProxy"`
+			EmbeddingDimensions                  *EmbeddingDimensions              `json:"embeddingDimensions"`
+			ExternalId                           string                            `json:"externalId"`
+			Id                                   openapi_types.UUID                `json:"id"`
+			Ignored                              bool                              `json:"ignored"`
+			InputModalities                      *[]UpdateModel200InputModalities  `json:"inputModalities"`
+			LastSyncedAt                         time.Time                         `json:"lastSyncedAt"`
+			LongContextPricePerMillionCacheRead  *string                           `json:"longContextPricePerMillionCacheRead"`
+			LongContextPricePerMillionCacheWrite *string                           `json:"longContextPricePerMillionCacheWrite"`
+			LongContextPricePerMillionInput      *string                           `json:"longContextPricePerMillionInput"`
+			LongContextPricePerMillionOutput     *string                           `json:"longContextPricePerMillionOutput"`
+			LongContextThreshold                 *int                              `json:"longContextThreshold"`
+			ModelId                              string                            `json:"modelId"`
+			OutputLength                         *int                              `json:"outputLength"`
+			OutputModalities                     *[]UpdateModel200OutputModalities `json:"outputModalities"`
+			PromptPricePerToken                  *string                           `json:"promptPricePerToken"`
+			Provider                             UpdateModel200Provider            `json:"provider"`
+			SupportedEndpoints                   interface{}                       `json:"supportedEndpoints"`
+			SupportsReasoningEffort              *bool                             `json:"supportsReasoningEffort"`
+			SupportsToolCalling                  *bool                             `json:"supportsToolCalling"`
+			UpdatedAt                            time.Time                         `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -57070,9 +57204,11 @@ func ParseCreateLlmProviderApiKeyResponse(rsp *http.Response) (*CreateLlmProvide
 			} `json:"createdBy"`
 			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 			ExtraHeaders              *map[string]string  `json:"extraHeaders"`
+			GithubOrganization        *string             `json:"githubOrganization"`
 			Id                        openapi_types.UUID  `json:"id"`
 			InferenceBaseUrl          *string             `json:"inferenceBaseUrl"`
 			IsAgentKey                *bool               `json:"isAgentKey,omitempty"`
+			IsGithubAppKey            *bool               `json:"isGithubAppKey,omitempty"`
 			IsPrimary                 bool                `json:"isPrimary"`
 			IsSystem                  bool                `json:"isSystem"`
 			Labels                    *[]struct {
@@ -57318,9 +57454,11 @@ func ParseGetLlmProviderApiKeyResponse(rsp *http.Response) (*GetLlmProviderApiKe
 			} `json:"createdBy"`
 			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 			ExtraHeaders              *map[string]string  `json:"extraHeaders"`
+			GithubOrganization        *string             `json:"githubOrganization"`
 			Id                        openapi_types.UUID  `json:"id"`
 			InferenceBaseUrl          *string             `json:"inferenceBaseUrl"`
 			IsAgentKey                *bool               `json:"isAgentKey,omitempty"`
+			IsGithubAppKey            *bool               `json:"isGithubAppKey,omitempty"`
 			IsPrimary                 bool                `json:"isPrimary"`
 			IsSystem                  bool                `json:"isSystem"`
 			Labels                    *[]struct {
@@ -57459,9 +57597,11 @@ func ParseUpdateLlmProviderApiKeyResponse(rsp *http.Response) (*UpdateLlmProvide
 			} `json:"createdBy"`
 			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 			ExtraHeaders              *map[string]string  `json:"extraHeaders"`
+			GithubOrganization        *string             `json:"githubOrganization"`
 			Id                        openapi_types.UUID  `json:"id"`
 			InferenceBaseUrl          *string             `json:"inferenceBaseUrl"`
 			IsAgentKey                *bool               `json:"isAgentKey,omitempty"`
+			IsGithubAppKey            *bool               `json:"isGithubAppKey,omitempty"`
 			IsPrimary                 bool                `json:"isPrimary"`
 			IsSystem                  bool                `json:"isSystem"`
 			Labels                    *[]struct {
@@ -57627,6 +57767,7 @@ func ParseCreateVirtualApiKeyResponse(rsp *http.Response) (*CreateVirtualApiKeyR
 			SpendCap *struct {
 				CleanupInterval CreateVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
 				CurrentUsage    float32                                       `json:"currentUsage"`
+				EstimatedUsage  bool                                          `json:"estimatedUsage"`
 				LimitId         string                                        `json:"limitId"`
 				LimitValue      int                                           `json:"limitValue"`
 			} `json:"spendCap"`
@@ -57887,6 +58028,7 @@ func ParseGetVirtualApiKeyResponse(rsp *http.Response) (*GetVirtualApiKeyRespons
 			SpendCap *struct {
 				CleanupInterval GetVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
 				CurrentUsage    float32                                    `json:"currentUsage"`
+				EstimatedUsage  bool                                       `json:"estimatedUsage"`
 				LimitId         string                                     `json:"limitId"`
 				LimitValue      int                                        `json:"limitValue"`
 			} `json:"spendCap"`
@@ -58039,6 +58181,7 @@ func ParseUpdateVirtualApiKeyResponse(rsp *http.Response) (*UpdateVirtualApiKeyR
 			SpendCap *struct {
 				CleanupInterval UpdateVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
 				CurrentUsage    float32                                       `json:"currentUsage"`
+				EstimatedUsage  bool                                          `json:"estimatedUsage"`
 				LimitId         string                                        `json:"limitId"`
 				LimitValue      int                                           `json:"limitValue"`
 			} `json:"spendCap"`
@@ -59229,6 +59372,7 @@ func ParseGetOauthClientsResponse(rsp *http.Response) (*GetOauthClientsResponse,
 				SpendCap         *struct {
 					CleanupInterval GetOauthClients200DataSpendCapCleanupInterval `json:"cleanupInterval"`
 					CurrentUsage    float32                                       `json:"currentUsage"`
+					EstimatedUsage  bool                                          `json:"estimatedUsage"`
 					LimitId         string                                        `json:"limitId"`
 					LimitValue      int                                           `json:"limitValue"`
 				} `json:"spendCap"`
@@ -59388,6 +59532,7 @@ func ParseCreateOauthClientResponse(rsp *http.Response) (*CreateOauthClientRespo
 			SpendCap         *struct {
 				CleanupInterval CreateOauthClient200SpendCapCleanupInterval `json:"cleanupInterval"`
 				CurrentUsage    float32                                     `json:"currentUsage"`
+				EstimatedUsage  bool                                        `json:"estimatedUsage"`
 				LimitId         string                                      `json:"limitId"`
 				LimitValue      int                                         `json:"limitValue"`
 			} `json:"spendCap"`
@@ -59644,6 +59789,7 @@ func ParseUpdateOauthClientResponse(rsp *http.Response) (*UpdateOauthClientRespo
 			SpendCap         *struct {
 				CleanupInterval UpdateOauthClient200SpendCapCleanupInterval `json:"cleanupInterval"`
 				CurrentUsage    float32                                     `json:"currentUsage"`
+				EstimatedUsage  bool                                        `json:"estimatedUsage"`
 				LimitId         string                                      `json:"limitId"`
 				LimitValue      int                                         `json:"limitValue"`
 			} `json:"spendCap"`
@@ -59794,6 +59940,7 @@ func ParseRotateOauthClientSecretResponse(rsp *http.Response) (*RotateOauthClien
 			SpendCap         *struct {
 				CleanupInterval RotateOauthClientSecret200SpendCapCleanupInterval `json:"cleanupInterval"`
 				CurrentUsage    float32                                           `json:"currentUsage"`
+				EstimatedUsage  bool                                              `json:"estimatedUsage"`
 				LimitId         string                                            `json:"limitId"`
 				LimitValue      int                                               `json:"limitValue"`
 			} `json:"spendCap"`
@@ -59904,13 +60051,14 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -59974,6 +60122,7 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 			KbBm25B                            *float32                                           `json:"kbBm25B"`
 			KbBm25K1                           *float32                                           `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                           `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                               `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -60126,13 +60275,14 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -60196,6 +60346,7 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 			KbBm25B                            *float32                                               `json:"kbBm25B"`
 			KbBm25K1                           *float32                                               `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                               `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                                   `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -60348,13 +60499,14 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -60418,6 +60570,7 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 			KbBm25B                            *float32                                                    `json:"kbBm25B"`
 			KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                                        `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -60570,13 +60723,14 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -60640,6 +60794,7 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 			KbBm25B                            *float32                                              `json:"kbBm25B"`
 			KbBm25K1                           *float32                                              `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                                  `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -60792,13 +60947,14 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -60862,6 +61018,7 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 			KbBm25B                            *float32                                              `json:"kbBm25B"`
 			KbBm25K1                           *float32                                              `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                                  `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -61014,13 +61171,14 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -61084,6 +61242,7 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 			KbBm25B                            *float32                                                    `json:"kbBm25B"`
 			KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                                        `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -61236,13 +61395,14 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -61306,6 +61466,7 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 			KbBm25B                            *float32                                                    `json:"kbBm25B"`
 			KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                                        `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -61458,13 +61619,14 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -61528,6 +61690,7 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 			KbBm25B                            *float32                                                     `json:"kbBm25B"`
 			KbBm25K1                           *float32                                                     `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                                     `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                                         `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -61680,13 +61843,14 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -61750,6 +61914,7 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 			KbBm25B                            *float32                                                   `json:"kbBm25B"`
 			KbBm25K1                           *float32                                                   `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                                   `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                                       `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -61902,13 +62067,14 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -61972,6 +62138,7 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 			KbBm25B                            *float32                                             `json:"kbBm25B"`
 			KbBm25K1                           *float32                                             `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                             `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                                 `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -62124,13 +62291,14 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -62194,6 +62362,7 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 			KbBm25B                            *float32                                                  `json:"kbBm25B"`
 			KbBm25K1                           *float32                                                  `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                                  `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                                      `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -62346,13 +62515,14 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
-			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
-			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
-			AppName                              *string            `json:"appName"`
-			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			AgentRuntimeTiers                    *map[string]interface{} `json:"agentRuntimeTiers"`
+			AllowChatFileUploads                 bool                    `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool                    `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool                    `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID      `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool                    `json:"animateChatPlaceholders"`
+			AppName                              *string                 `json:"appName"`
+			ChatErrorSupportMessage              *string                 `json:"chatErrorSupportMessage"`
 			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
@@ -62416,6 +62586,7 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 			KbBm25B                            *float32                                                `json:"kbBm25B"`
 			KbBm25K1                           *float32                                                `json:"kbBm25K1"`
 			KbContextualRetrievalMode          *ContextualRetrievalMode                                `json:"kbContextualRetrievalMode"`
+			KeepMediaInLogs                    bool                                                    `json:"keepMediaInLogs"`
 			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
@@ -68268,12 +68439,13 @@ func ParseCreateTeamResponse(rsp *http.Response) (*CreateTeamResponse, error) {
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels,omitempty"`
 			Members *[]struct {
-				CreatedAt     time.Time `json:"createdAt"`
-				Id            string    `json:"id"`
-				Role          string    `json:"role"`
-				SyncedFromSso bool      `json:"syncedFromSso"`
-				TeamId        string    `json:"teamId"`
-				UserId        string    `json:"userId"`
+				CreatedAt         time.Time `json:"createdAt"`
+				Id                string    `json:"id"`
+				Role              string    `json:"role"`
+				RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+				SyncedFromSso     bool      `json:"syncedFromSso"`
+				TeamId            string    `json:"teamId"`
+				UserId            string    `json:"userId"`
 			} `json:"members,omitempty"`
 			MyRole         *CreateTeam200MyRole `json:"myRole,omitempty"`
 			Name           string               `json:"name"`
@@ -68510,12 +68682,13 @@ func ParseGetTeamResponse(rsp *http.Response) (*GetTeamResponse, error) {
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels,omitempty"`
 			Members *[]struct {
-				CreatedAt     time.Time `json:"createdAt"`
-				Id            string    `json:"id"`
-				Role          string    `json:"role"`
-				SyncedFromSso bool      `json:"syncedFromSso"`
-				TeamId        string    `json:"teamId"`
-				UserId        string    `json:"userId"`
+				CreatedAt         time.Time `json:"createdAt"`
+				Id                string    `json:"id"`
+				Role              string    `json:"role"`
+				RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+				SyncedFromSso     bool      `json:"syncedFromSso"`
+				TeamId            string    `json:"teamId"`
+				UserId            string    `json:"userId"`
 			} `json:"members,omitempty"`
 			MyRole         *GetTeam200MyRole `json:"myRole,omitempty"`
 			Name           string            `json:"name"`
@@ -68645,12 +68818,13 @@ func ParseUpdateTeamResponse(rsp *http.Response) (*UpdateTeamResponse, error) {
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels,omitempty"`
 			Members *[]struct {
-				CreatedAt     time.Time `json:"createdAt"`
-				Id            string    `json:"id"`
-				Role          string    `json:"role"`
-				SyncedFromSso bool      `json:"syncedFromSso"`
-				TeamId        string    `json:"teamId"`
-				UserId        string    `json:"userId"`
+				CreatedAt         time.Time `json:"createdAt"`
+				Id                string    `json:"id"`
+				Role              string    `json:"role"`
+				RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+				SyncedFromSso     bool      `json:"syncedFromSso"`
+				TeamId            string    `json:"teamId"`
+				UserId            string    `json:"userId"`
 			} `json:"members,omitempty"`
 			MyRole         *UpdateTeam200MyRole `json:"myRole,omitempty"`
 			Name           string               `json:"name"`
@@ -68764,10 +68938,12 @@ func ParseGetTeamExternalGroupsResponse(rsp *http.Response) (*GetTeamExternalGro
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			CreatedAt       time.Time `json:"createdAt"`
-			GroupIdentifier string    `json:"groupIdentifier"`
-			Id              string    `json:"id"`
-			TeamId          string    `json:"teamId"`
+			CreatedAt          time.Time                    `json:"createdAt"`
+			GroupIdentifier    string                       `json:"groupIdentifier"`
+			Id                 string                       `json:"id"`
+			IdentityProviderId *string                      `json:"identityProviderId"`
+			Role               GetTeamExternalGroups200Role `json:"role"`
+			TeamId             string                       `json:"teamId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -68874,10 +69050,12 @@ func ParseAddTeamExternalGroupResponse(rsp *http.Response) (*AddTeamExternalGrou
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CreatedAt       time.Time `json:"createdAt"`
-			GroupIdentifier string    `json:"groupIdentifier"`
-			Id              string    `json:"id"`
-			TeamId          string    `json:"teamId"`
+			CreatedAt          time.Time                   `json:"createdAt"`
+			GroupIdentifier    string                      `json:"groupIdentifier"`
+			Id                 string                      `json:"id"`
+			IdentityProviderId *string                     `json:"identityProviderId"`
+			Role               AddTeamExternalGroup200Role `json:"role"`
+			TeamId             string                      `json:"teamId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -69091,15 +69269,16 @@ func ParseGetTeamMembersResponse(rsp *http.Response) (*GetTeamMembersResponse, e
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			CreatedAt     time.Time `json:"createdAt"`
-			Email         string    `json:"email"`
-			Id            string    `json:"id"`
-			Image         *string   `json:"image"`
-			Name          *string   `json:"name"`
-			Role          string    `json:"role"`
-			SyncedFromSso bool      `json:"syncedFromSso"`
-			TeamId        string    `json:"teamId"`
-			UserId        string    `json:"userId"`
+			CreatedAt         time.Time `json:"createdAt"`
+			Email             string    `json:"email"`
+			Id                string    `json:"id"`
+			Image             *string   `json:"image"`
+			Name              *string   `json:"name"`
+			Role              string    `json:"role"`
+			RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+			SyncedFromSso     bool      `json:"syncedFromSso"`
+			TeamId            string    `json:"teamId"`
+			UserId            string    `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -69206,12 +69385,13 @@ func ParseAddTeamMemberResponse(rsp *http.Response) (*AddTeamMemberResponse, err
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CreatedAt     time.Time `json:"createdAt"`
-			Id            string    `json:"id"`
-			Role          string    `json:"role"`
-			SyncedFromSso bool      `json:"syncedFromSso"`
-			TeamId        string    `json:"teamId"`
-			UserId        string    `json:"userId"`
+			CreatedAt         time.Time `json:"createdAt"`
+			Id                string    `json:"id"`
+			Role              string    `json:"role"`
+			RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+			SyncedFromSso     bool      `json:"syncedFromSso"`
+			TeamId            string    `json:"teamId"`
+			UserId            string    `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -69425,12 +69605,13 @@ func ParseUpdateTeamMemberResponse(rsp *http.Response) (*UpdateTeamMemberRespons
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CreatedAt     time.Time `json:"createdAt"`
-			Id            string    `json:"id"`
-			Role          string    `json:"role"`
-			SyncedFromSso bool      `json:"syncedFromSso"`
-			TeamId        string    `json:"teamId"`
-			UserId        string    `json:"userId"`
+			CreatedAt         time.Time `json:"createdAt"`
+			Id                string    `json:"id"`
+			Role              string    `json:"role"`
+			RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+			SyncedFromSso     bool      `json:"syncedFromSso"`
+			TeamId            string    `json:"teamId"`
+			UserId            string    `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
