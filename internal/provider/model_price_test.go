@@ -55,3 +55,20 @@ func TestConfiguredModelPriceRefreshPreservesOnlyEquivalentValues(t *testing.T) 
 		t.Fatal("real pricing drift was hidden", data)
 	}
 }
+
+func TestImportedModelPriceRepresentation(t *testing.T) {
+	for _, tc := range []struct{ wire, want string }{
+		{"1.00000000", "1.00"},
+		{"0.10000000", "0.10"},
+		{"2", "2.00"},
+		{"0.00000001", "0.00000001"},
+		{"1.23456789", "1.23456789"},
+	} {
+		t.Run(tc.wire, func(t *testing.T) {
+			got := modelPriceFromAPI(types.StringNull(), &tc.wire)
+			if got.ValueString() != tc.want {
+				t.Fatalf("imported price %s, want %s", got, tc.want)
+			}
+		})
+	}
+}
