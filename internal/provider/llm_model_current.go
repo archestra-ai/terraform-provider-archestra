@@ -14,30 +14,36 @@ import (
 
 func currentModelAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
-		"embedding_dimensions":                 schema.Int64Attribute{Optional: true, Validators: []validator.Int64{int64validator.OneOf(3072, 1536, 1408, 1024, 768, 384)}, MarkdownDescription: "Embedding dimension override; removing it clears the dimension configuration."},
-		"effective_embedding_dimensions":       schema.Int64Attribute{Computed: true, MarkdownDescription: "Current dimensions reported by the model API."},
-		"effective_input_modalities":           schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Current model input modalities, including provider-discovered values."},
-		"effective_output_modalities":          schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Current model output modalities, including provider-discovered values."},
-		"custom_price_per_million_cache_read":  schema.StringAttribute{Optional: true, MarkdownDescription: "Custom price per million cache read."},
-		"custom_price_per_million_cache_write": schema.StringAttribute{Optional: true, MarkdownDescription: "Custom price per million cache write."},
-		"cache_price_source":                   schema.StringAttribute{Computed: true, MarkdownDescription: "Cache price source."},
-		"cache_read_price_per_token":           schema.StringAttribute{Computed: true, MarkdownDescription: "Cache read price per token."},
-		"cache_write_price_per_token":          schema.StringAttribute{Computed: true, MarkdownDescription: "Cache write price per token."},
-		"price_per_million_cache_read":         schema.StringAttribute{Computed: true, MarkdownDescription: "Price per million cache read."},
-		"price_per_million_cache_write":        schema.StringAttribute{Computed: true, MarkdownDescription: "Price per million cache write."},
-		"custom_context_length":                schema.Int64Attribute{Optional: true, Validators: []validator.Int64{int64validator.AtLeast(1)}, MarkdownDescription: "Custom context length in tokens."},
-		"custom_output_length":                 schema.Int64Attribute{Optional: true, Validators: []validator.Int64{int64validator.AtLeast(1)}, MarkdownDescription: "Custom output length in tokens."},
-		"output_length":                        schema.Int64Attribute{Computed: true, MarkdownDescription: "Output length in tokens."},
-		"embedding_client_image_capable":       schema.BoolAttribute{Computed: true, MarkdownDescription: "Embedding client image capable."},
-		"is_free":                              schema.BoolAttribute{Computed: true, MarkdownDescription: "Is free."},
-		"supports_reasoning_effort":            schema.BoolAttribute{Computed: true, MarkdownDescription: "Supports reasoning effort."},
-		"configured_parameters":                schema.StringAttribute{Optional: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Configured parameters as JSON."},
-		"default_parameters":                   schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Default parameters as JSON."},
-		"teams":                                schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Teams as JSON."},
-		"users":                                schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Users as JSON."},
-		"effective_context_length":             schema.Float64Attribute{Computed: true, MarkdownDescription: "Context window after applying configured limits."},
-		"supported_endpoints":                  schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Supported inference endpoints."},
-		"labels":                               schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Labels assigned to the model.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
+		"long_context_threshold":                     schema.Int64Attribute{Optional: true, MarkdownDescription: "Input token threshold for long-context pricing."},
+		"long_context_price_per_million_input":       schema.StringAttribute{Optional: true, MarkdownDescription: "Price per million input tokens above the long-context threshold."},
+		"long_context_price_per_million_output":      schema.StringAttribute{Optional: true, MarkdownDescription: "Price per million output tokens above the long-context threshold."},
+		"long_context_price_per_million_cache_read":  schema.StringAttribute{Optional: true, MarkdownDescription: "Price per million cache-read tokens above the long-context threshold."},
+		"long_context_price_per_million_cache_write": schema.StringAttribute{Optional: true, MarkdownDescription: "Price per million cache-write tokens above the long-context threshold."},
+		"media_pricing":                              schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Provider-reported media pricing as JSON."},
+		"embedding_dimensions":                       schema.Int64Attribute{Optional: true, Validators: []validator.Int64{int64validator.OneOf(3072, 1536, 1408, 1024, 768, 384)}, MarkdownDescription: "Embedding dimension override; removing it clears the dimension configuration."},
+		"effective_embedding_dimensions":             schema.Int64Attribute{Computed: true, MarkdownDescription: "Current dimensions reported by the model API."},
+		"effective_input_modalities":                 schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Current model input modalities, including provider-discovered values."},
+		"effective_output_modalities":                schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Current model output modalities, including provider-discovered values."},
+		"custom_price_per_million_cache_read":        schema.StringAttribute{Optional: true, MarkdownDescription: "Custom price per million cache read."},
+		"custom_price_per_million_cache_write":       schema.StringAttribute{Optional: true, MarkdownDescription: "Custom price per million cache write."},
+		"cache_price_source":                         schema.StringAttribute{Computed: true, MarkdownDescription: "Cache price source."},
+		"cache_read_price_per_token":                 schema.StringAttribute{Computed: true, MarkdownDescription: "Cache read price per token."},
+		"cache_write_price_per_token":                schema.StringAttribute{Computed: true, MarkdownDescription: "Cache write price per token."},
+		"price_per_million_cache_read":               schema.StringAttribute{Computed: true, MarkdownDescription: "Price per million cache read."},
+		"price_per_million_cache_write":              schema.StringAttribute{Computed: true, MarkdownDescription: "Price per million cache write."},
+		"custom_context_length":                      schema.Int64Attribute{Optional: true, Validators: []validator.Int64{int64validator.AtLeast(1)}, MarkdownDescription: "Custom context length in tokens."},
+		"custom_output_length":                       schema.Int64Attribute{Optional: true, Validators: []validator.Int64{int64validator.AtLeast(1)}, MarkdownDescription: "Custom output length in tokens."},
+		"output_length":                              schema.Int64Attribute{Computed: true, MarkdownDescription: "Output length in tokens."},
+		"embedding_client_image_capable":             schema.BoolAttribute{Computed: true, MarkdownDescription: "Embedding client image capable."},
+		"is_free":                                    schema.BoolAttribute{Computed: true, MarkdownDescription: "Is free."},
+		"supports_reasoning_effort":                  schema.BoolAttribute{Computed: true, MarkdownDescription: "Supports reasoning effort."},
+		"configured_parameters":                      schema.StringAttribute{Optional: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Configured parameters as JSON."},
+		"default_parameters":                         schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Default parameters as JSON."},
+		"teams":                                      schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Teams as JSON."},
+		"users":                                      schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Users as JSON."},
+		"effective_context_length":                   schema.Float64Attribute{Computed: true, MarkdownDescription: "Context window after applying configured limits."},
+		"supported_endpoints":                        schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Supported inference endpoints."},
+		"labels":                                     schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Labels assigned to the model.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
 	}
 }
 func flattenCurrentModelFields(ctx context.Context, data *LlmModelResourceModel, model any, diags *diag.Diagnostics) {
@@ -47,29 +53,35 @@ func flattenCurrentModelFields(ctx context.Context, data *LlmModelResourceModel,
 		return
 	}
 	var wire struct {
-		EmbeddingDimensions             *int64          `json:"embeddingDimensions"`
-		InputModalities                 []string        `json:"inputModalities"`
-		OutputModalities                []string        `json:"outputModalities"`
-		CustomPricePerMillionCacheRead  *string         `json:"customPricePerMillionCacheRead"`
-		CustomPricePerMillionCacheWrite *string         `json:"customPricePerMillionCacheWrite"`
-		CachePriceSource                *string         `json:"cachePriceSource"`
-		CacheReadPricePerToken          *string         `json:"cacheReadPricePerToken"`
-		CacheWritePricePerToken         *string         `json:"cacheWritePricePerToken"`
-		PricePerMillionCacheRead        *string         `json:"pricePerMillionCacheRead"`
-		PricePerMillionCacheWrite       *string         `json:"pricePerMillionCacheWrite"`
-		CustomContextLength             *int64          `json:"customContextLength"`
-		CustomOutputLength              *int64          `json:"customOutputLength"`
-		OutputLength                    *int64          `json:"outputLength"`
-		EmbeddingClientImageCapable     *bool           `json:"embeddingClientImageCapable"`
-		IsFree                          *bool           `json:"isFree"`
-		SupportsReasoningEffort         *bool           `json:"supportsReasoningEffort"`
-		ConfiguredParameters            json.RawMessage `json:"configuredParameters"`
-		DefaultParameters               json.RawMessage `json:"defaultParameters"`
-		Teams                           json.RawMessage `json:"teams"`
-		Users                           json.RawMessage `json:"users"`
-		EffectiveContextLength          *float64        `json:"effectiveContextLength"`
-		SupportedEndpoints              []string        `json:"supportedEndpoints"`
-		Labels                          []struct {
+		LongContextThreshold                 *int64          `json:"longContextThreshold"`
+		LongContextPricePerMillionInput      *string         `json:"longContextPricePerMillionInput"`
+		LongContextPricePerMillionOutput     *string         `json:"longContextPricePerMillionOutput"`
+		LongContextPricePerMillionCacheRead  *string         `json:"longContextPricePerMillionCacheRead"`
+		LongContextPricePerMillionCacheWrite *string         `json:"longContextPricePerMillionCacheWrite"`
+		MediaPricing                         json.RawMessage `json:"mediaPricing"`
+		EmbeddingDimensions                  *int64          `json:"embeddingDimensions"`
+		InputModalities                      []string        `json:"inputModalities"`
+		OutputModalities                     []string        `json:"outputModalities"`
+		CustomPricePerMillionCacheRead       *string         `json:"customPricePerMillionCacheRead"`
+		CustomPricePerMillionCacheWrite      *string         `json:"customPricePerMillionCacheWrite"`
+		CachePriceSource                     *string         `json:"cachePriceSource"`
+		CacheReadPricePerToken               *string         `json:"cacheReadPricePerToken"`
+		CacheWritePricePerToken              *string         `json:"cacheWritePricePerToken"`
+		PricePerMillionCacheRead             *string         `json:"pricePerMillionCacheRead"`
+		PricePerMillionCacheWrite            *string         `json:"pricePerMillionCacheWrite"`
+		CustomContextLength                  *int64          `json:"customContextLength"`
+		CustomOutputLength                   *int64          `json:"customOutputLength"`
+		OutputLength                         *int64          `json:"outputLength"`
+		EmbeddingClientImageCapable          *bool           `json:"embeddingClientImageCapable"`
+		IsFree                               *bool           `json:"isFree"`
+		SupportsReasoningEffort              *bool           `json:"supportsReasoningEffort"`
+		ConfiguredParameters                 json.RawMessage `json:"configuredParameters"`
+		DefaultParameters                    json.RawMessage `json:"defaultParameters"`
+		Teams                                json.RawMessage `json:"teams"`
+		Users                                json.RawMessage `json:"users"`
+		EffectiveContextLength               *float64        `json:"effectiveContextLength"`
+		SupportedEndpoints                   []string        `json:"supportedEndpoints"`
+		Labels                               []struct {
 			Key     string              `json:"key"`
 			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
 			Value   string              `json:"value"`
@@ -80,14 +92,28 @@ func flattenCurrentModelFields(ctx context.Context, data *LlmModelResourceModel,
 		diags.AddError("Invalid Model Response", "Unable to decode model metadata.")
 		return
 	}
+	data.LongContextThreshold = types.Int64PointerValue(wire.LongContextThreshold)
+	data.LongContextPricePerMillionInput = modelPriceFromAPI(data.LongContextPricePerMillionInput, wire.LongContextPricePerMillionInput)
+	data.LongContextPricePerMillionOutput = modelPriceFromAPI(data.LongContextPricePerMillionOutput, wire.LongContextPricePerMillionOutput)
+	data.LongContextPricePerMillionCacheRead = modelPriceFromAPI(data.LongContextPricePerMillionCacheRead, wire.LongContextPricePerMillionCacheRead)
+	data.LongContextPricePerMillionCacheWrite = modelPriceFromAPI(data.LongContextPricePerMillionCacheWrite, wire.LongContextPricePerMillionCacheWrite)
+	data.MediaPricing = jsontypes.NewNormalizedNull()
+	if len(wire.MediaPricing) > 0 && string(wire.MediaPricing) != "null" {
+		value, err := normalizedOrganizationJSON(wire.MediaPricing)
+		if err != nil {
+			diags.AddError("Invalid Model Metadata", "Unable to decode mediaPricing.")
+			return
+		}
+		data.MediaPricing = value
+	}
 	data.EffectiveEmbeddingDimensions = types.Int64PointerValue(wire.EmbeddingDimensions)
 	if !data.EmbeddingDimensions.IsNull() && !data.EmbeddingDimensions.IsUnknown() {
 		data.EmbeddingDimensions = types.Int64PointerValue(wire.EmbeddingDimensions)
 	} else {
 		data.EmbeddingDimensions = types.Int64Null()
 	}
-	data.CustomPricePerMillionCacheRead = types.StringPointerValue(wire.CustomPricePerMillionCacheRead)
-	data.CustomPricePerMillionCacheWrite = types.StringPointerValue(wire.CustomPricePerMillionCacheWrite)
+	data.CustomPricePerMillionCacheRead = modelPriceFromAPI(data.CustomPricePerMillionCacheRead, wire.CustomPricePerMillionCacheRead)
+	data.CustomPricePerMillionCacheWrite = modelPriceFromAPI(data.CustomPricePerMillionCacheWrite, wire.CustomPricePerMillionCacheWrite)
 	data.CachePriceSource = types.StringPointerValue(wire.CachePriceSource)
 	data.CacheReadPricePerToken = types.StringPointerValue(wire.CacheReadPricePerToken)
 	data.CacheWritePricePerToken = types.StringPointerValue(wire.CacheWritePricePerToken)
@@ -154,5 +180,45 @@ func flattenCurrentModelFields(ctx context.Context, data *LlmModelResourceModel,
 		value, ds := types.ListValueFrom(ctx, types.StringType, wire.OutputModalities)
 		diags.Append(ds...)
 		data.EffectiveOutputModalities = value
+	}
+}
+
+// The API treats the threshold and its four prices as one atomic override.
+func completeLongContextPatch(data *LlmModelResourceModel, patch map[string]any) {
+	keys := []string{"longContextThreshold", "longContextPricePerMillionInput", "longContextPricePerMillionOutput", "longContextPricePerMillionCacheRead", "longContextPricePerMillionCacheWrite"}
+	changed := false
+	for _, key := range keys {
+		if _, exists := patch[key]; exists {
+			changed = true
+			break
+		}
+	}
+	if !changed {
+		return
+	}
+	if data.LongContextThreshold.IsNull() {
+		patch["longContextThreshold"] = nil
+	} else {
+		patch["longContextThreshold"] = data.LongContextThreshold.ValueInt64()
+	}
+	if data.LongContextPricePerMillionInput.IsNull() {
+		patch["longContextPricePerMillionInput"] = nil
+	} else {
+		patch["longContextPricePerMillionInput"] = data.LongContextPricePerMillionInput.ValueString()
+	}
+	if data.LongContextPricePerMillionOutput.IsNull() {
+		patch["longContextPricePerMillionOutput"] = nil
+	} else {
+		patch["longContextPricePerMillionOutput"] = data.LongContextPricePerMillionOutput.ValueString()
+	}
+	if data.LongContextPricePerMillionCacheRead.IsNull() {
+		patch["longContextPricePerMillionCacheRead"] = nil
+	} else {
+		patch["longContextPricePerMillionCacheRead"] = data.LongContextPricePerMillionCacheRead.ValueString()
+	}
+	if data.LongContextPricePerMillionCacheWrite.IsNull() {
+		patch["longContextPricePerMillionCacheWrite"] = nil
+	} else {
+		patch["longContextPricePerMillionCacheWrite"] = data.LongContextPricePerMillionCacheWrite.ValueString()
 	}
 }

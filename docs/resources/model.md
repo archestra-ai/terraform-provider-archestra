@@ -72,6 +72,11 @@ output "gpt4o_price_source" {
 - `input_modalities` (List of String) Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.
 - `labels` (Attributes Set) Labels assigned to the model. (see [below for nested schema](#nestedatt--labels))
 - `llm_provider` (String) LLM provider used to disambiguate model names shared by multiple providers.
+- `long_context_price_per_million_cache_read` (String) Price per million cache-read tokens above the long-context threshold.
+- `long_context_price_per_million_cache_write` (String) Price per million cache-write tokens above the long-context threshold.
+- `long_context_price_per_million_input` (String) Price per million input tokens above the long-context threshold.
+- `long_context_price_per_million_output` (String) Price per million output tokens above the long-context threshold.
+- `long_context_threshold` (Number) Input token threshold for long-context pricing.
 - `output_modalities` (List of String) Output modality overrides. Valid values: `text`, `image`, `audio`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.
 - `permissions` (Attributes Set) Additional direct sharing grants. Applied after the parent identity exists, then reconciled in place. Omit to preserve grants; [] clears additional grants while retaining the owner's existing access. (see [below for nested schema](#nestedatt--permissions))
 
@@ -91,6 +96,7 @@ output "gpt4o_price_source" {
 - `id` (String) Model UUID (internal identifier)
 - `is_custom_price` (Boolean) Whether custom pricing is active
 - `is_free` (Boolean) Is free.
+- `media_pricing` (String) Provider-reported media pricing as JSON.
 - `output_length` (Number) Output length in tokens.
 - `price_per_million_cache_read` (String) Price per million cache read.
 - `price_per_million_cache_write` (String) Price per million cache write.

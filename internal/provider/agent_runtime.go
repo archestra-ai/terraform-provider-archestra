@@ -73,7 +73,10 @@ func runtimeSchema() schema.SingleNestedAttribute {
 					},
 				},
 			},
+			"tier":     schema.StringAttribute{Optional: true, MarkdownDescription: "Organization-defined default runtime tier (API 1.5.0-rc.19 or later)."},
+			"max_tier": schema.StringAttribute{Optional: true, MarkdownDescription: "Largest organization-defined tier a run may request (API 1.5.0-rc.19 or later)."},
 			"resources": schema.SingleNestedAttribute{
+				DeprecationMessage:  "Legacy sizing for older APIs; use tier and max_tier on API 1.5.0-rc.19 or later.",
 				Optional:            true,
 				MarkdownDescription: "Kubernetes-style resource requests/limits for the run",
 				Attributes: map[string]schema.Attribute{
@@ -144,6 +147,8 @@ func runtimeSchema() schema.SingleNestedAttribute {
 
 // AgentRuntimeModel mirrors the `runtime` nested attribute.
 type AgentRuntimeModel struct {
+	Tier              types.String                 `tfsdk:"tier"`
+	MaxTier           types.String                 `tfsdk:"max_tier"`
 	ClaudeCode        *AgentRuntimeClaudeCodeModel `tfsdk:"claude_code"`
 	Image             types.String                 `tfsdk:"image"`
 	Command           types.List                   `tfsdk:"command"`
@@ -207,6 +212,8 @@ var runtimeCredentialType = types.ObjectType{AttrTypes: map[string]attr.Type{
 // runtimeAttrSpec is the Children spec of the `runtime`
 // AtomicObject entry in agentAttrSpec.
 var runtimeAttrSpec = []AttrSpec{
+	{TFName: "tier", JSONName: "tier", Kind: Scalar, OmitOnNull: true},
+	{TFName: "max_tier", JSONName: "maxTier", Kind: Scalar, OmitOnNull: true},
 	{TFName: "claude_code", JSONName: "claudeCode", Kind: AtomicObject, OmitOnNull: true,
 		Children: []AttrSpec{
 			{TFName: "authentication", JSONName: "authentication", Kind: Scalar},
@@ -273,6 +280,8 @@ func encodeRuntime(v any) any {
 // runtimeAPI mirrors the wire shape of an agent's `runtime` payload so the
 // create, read, and update response variants share one decoder.
 type runtimeAPI struct {
+	Tier       *string `json:"tier"`
+	MaxTier    *string `json:"maxTier"`
 	ClaudeCode *struct {
 		Authentication string  `json:"authentication"`
 		Model          *string `json:"model"`
@@ -319,6 +328,8 @@ func runtimeFromResponse(ctx context.Context, responseBody []byte, diags *diag.D
 	api := raw.Runtime
 
 	out := &AgentRuntimeModel{
+		Tier:               types.StringPointerValue(api.Tier),
+		MaxTier:            types.StringPointerValue(api.MaxTier),
 		Image:              types.StringValue(api.Image),
 		Command:            types.ListNull(types.StringType),
 		Environment:        types.ListNull(runtimeEnvEntryType),

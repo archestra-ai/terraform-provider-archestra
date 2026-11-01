@@ -75,6 +75,7 @@ resource "archestra_limit" "claude_family_budget" {
 
 ### Optional
 
+- `behavior` (String) Whether exceeding the limit blocks requests (hard) or only reports usage (soft).
 - `cleanup_interval` (String) Interval used to reset limit usage.
 - `labels` (Attributes Set) Resource labels. (see [below for nested schema](#nestedatt--labels))
 - `mcp_server_name` (String) Required when limit_type is 'mcp_server_calls' or 'tool_calls'. Name of the MCP server.
@@ -84,8 +85,10 @@ resource "archestra_limit" "claude_family_budget" {
 
 ### Read-Only
 
+- `estimated_usage` (Boolean) Whether some recorded spend is estimated because model prices were unavailable.
 - `id` (String) Limit identifier
 - `model_usage` (Attributes List) Current per-model usage counters. (see [below for nested schema](#nestedatt--model_usage))
+- `team_managed` (Boolean) Whether a team administrator created this limit.
 - `throughput_usage` (Attributes) Recorded throughput usage and allowance recovery time. (see [below for nested schema](#nestedatt--throughput_usage))
 
 <a id="nestedatt--labels"></a>

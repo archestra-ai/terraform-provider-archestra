@@ -2,7 +2,9 @@ package provider
 
 import (
 	"fmt"
+	"os"
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
@@ -142,35 +144,54 @@ resource "archestra_agent" "test" {
 // then clear the block entirely (wire null).
 func TestAccAgentResource_Runtime(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-agent-runtime")
+	useTiers := os.Getenv("TF_ACC") != "" && testAccAPIVersionAtLeast(t, "1.5.0-rc.19")
+	config := func(cost int) string {
+		value := testAccAgentResourceConfigRuntime(rName, cost)
+		if useTiers {
+			value = strings.Replace(value, `resources = {
+      cpu_request    = "2"
+      memory_request = "4Gi"
+      memory_limit   = "20Gi"
+    }`, `tier="S"
+    max_tier="L"`, 1)
+		}
+		return value
+	}
+	sizingCheck := statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("resources").AtMapKey("memory_limit"), knownvalue.StringExact("20Gi"))
+	if useTiers {
+		sizingCheck = statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("tier"), knownvalue.StringExact("S"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t); testAccRequireAgentRuntimeEnabled(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAgentResourceConfigRuntime(rName, 25),
+				Config: config(25),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("access_all_tools"), knownvalue.Bool(true)),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("missing_credential_behavior"), knownvalue.StringExact("warn")),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("image"), knownvalue.StringExact("registry.example.com/tf-acc/worker:latest")),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("backend"), knownvalue.StringExact("kubernetes")),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("privileged"), knownvalue.Bool(false)),
-					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("resources").AtMapKey("memory_limit"), knownvalue.StringExact("20Gi")),
+					sizingCheck,
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("credentials"), knownvalue.ListSizeExact(1)),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("max_cost_usd"), knownvalue.Int64Exact(25)),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("ttl_hours"), knownvalue.Null()),
 				},
 			},
+			{Config: config(25), PlanOnly: true},
 			{
 				ResourceName:      "archestra_agent.runtime",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccAgentResourceConfigRuntime(rName, 50),
+				Config: config(50),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("max_cost_usd"), knownvalue.Int64Exact(50)),
 				},
 			},
+			{Config: config(50), PlanOnly: true},
 			{
 				Config: testAccAgentResourceConfigNoRuntime(rName),
 				ConfigStateChecks: []statecheck.StateCheck{

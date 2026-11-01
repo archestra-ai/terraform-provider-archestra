@@ -18,6 +18,8 @@ import (
 // Current organization settings are split by their actual API write domain.
 func currentOrganizationAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
+		"keep_media_in_logs":                           schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether request logs retain media content."},
+		"agent_runtime_tiers":                          schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Stored Agent Runtime tier configuration as JSON."},
 		"playwright_mcp_enabled":                       schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether the built-in Playwright MCP browser is enabled (administrator only)."},
 		"online_mcp_catalog_enabled":                   schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the online MCP catalog is available."},
 		"online_skill_catalog_enabled":                 schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the online skill catalog is available."},
@@ -82,6 +84,7 @@ func currentOrganizationSpecs(domain string) []AttrSpec {
 		}
 	case "security-settings":
 		return []AttrSpec{
+			{TFName: "keep_media_in_logs", JSONName: "keepMediaInLogs", Kind: Scalar, OmitOnNull: true},
 			{TFName: "playwright_mcp_enabled", JSONName: "playwrightMcpEnabled", Kind: Scalar, OmitOnNull: true},
 			{TFName: "allow_tool_auto_assignment", JSONName: "allowToolAutoAssignment", Kind: Scalar},
 			{TFName: "apps_hackathon_recorder_enabled", JSONName: "appsHackathonRecorderEnabled", Kind: Scalar},
@@ -167,6 +170,26 @@ func flattenCurrentOrganizationSettings(data *OrganizationSettingsResourceModel,
 	if err := json.Unmarshal(body, &values); err != nil {
 		diags.AddError("Invalid Organization Response", "Unable to decode organization settings.")
 		return
+	}
+
+	{
+		var value *bool
+		if raw := values["keepMediaInLogs"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Organization Response", "Unexpected type for keepMediaInLogs.")
+				return
+			}
+		}
+		data.KeepMediaInLogs = types.BoolPointerValue(value)
+	}
+	data.AgentRuntimeTiers = jsontypes.NewNormalizedNull()
+	if raw := values["agentRuntimeTiers"]; len(raw) > 0 && string(raw) != "null" {
+		value, err := normalizedOrganizationJSON(raw)
+		if err != nil {
+			diags.AddError("Invalid Organization Response", "Unable to decode agentRuntimeTiers.")
+			return
+		}
+		data.AgentRuntimeTiers = value
 	}
 	{
 		var value *bool

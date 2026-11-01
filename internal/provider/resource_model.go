@@ -31,31 +31,37 @@ type LlmModelResource struct {
 }
 
 type LlmModelResourceModel struct {
-	InitialGrants                   types.Set            `tfsdk:"permissions"`
-	EmbeddingDimensions             types.Int64          `tfsdk:"embedding_dimensions"`
-	EffectiveEmbeddingDimensions    types.Int64          `tfsdk:"effective_embedding_dimensions"`
-	EffectiveInputModalities        types.List           `tfsdk:"effective_input_modalities"`
-	EffectiveOutputModalities       types.List           `tfsdk:"effective_output_modalities"`
-	CustomPricePerMillionCacheRead  types.String         `tfsdk:"custom_price_per_million_cache_read"`
-	CustomPricePerMillionCacheWrite types.String         `tfsdk:"custom_price_per_million_cache_write"`
-	CachePriceSource                types.String         `tfsdk:"cache_price_source"`
-	CacheReadPricePerToken          types.String         `tfsdk:"cache_read_price_per_token"`
-	CacheWritePricePerToken         types.String         `tfsdk:"cache_write_price_per_token"`
-	PricePerMillionCacheRead        types.String         `tfsdk:"price_per_million_cache_read"`
-	PricePerMillionCacheWrite       types.String         `tfsdk:"price_per_million_cache_write"`
-	CustomContextLength             types.Int64          `tfsdk:"custom_context_length"`
-	CustomOutputLength              types.Int64          `tfsdk:"custom_output_length"`
-	OutputLength                    types.Int64          `tfsdk:"output_length"`
-	EmbeddingClientImageCapable     types.Bool           `tfsdk:"embedding_client_image_capable"`
-	IsFree                          types.Bool           `tfsdk:"is_free"`
-	SupportsReasoningEffort         types.Bool           `tfsdk:"supports_reasoning_effort"`
-	ConfiguredParameters            jsontypes.Normalized `tfsdk:"configured_parameters"`
-	DefaultParameters               jsontypes.Normalized `tfsdk:"default_parameters"`
-	Teams                           jsontypes.Normalized `tfsdk:"teams"`
-	Users                           jsontypes.Normalized `tfsdk:"users"`
-	EffectiveContextLength          types.Float64        `tfsdk:"effective_context_length"`
-	SupportedEndpoints              types.List           `tfsdk:"supported_endpoints"`
-	Labels                          []AgentLabelModel    `tfsdk:"labels"`
+	LongContextThreshold                 types.Int64          `tfsdk:"long_context_threshold"`
+	LongContextPricePerMillionInput      types.String         `tfsdk:"long_context_price_per_million_input"`
+	LongContextPricePerMillionOutput     types.String         `tfsdk:"long_context_price_per_million_output"`
+	LongContextPricePerMillionCacheRead  types.String         `tfsdk:"long_context_price_per_million_cache_read"`
+	LongContextPricePerMillionCacheWrite types.String         `tfsdk:"long_context_price_per_million_cache_write"`
+	MediaPricing                         jsontypes.Normalized `tfsdk:"media_pricing"`
+	InitialGrants                        types.Set            `tfsdk:"permissions"`
+	EmbeddingDimensions                  types.Int64          `tfsdk:"embedding_dimensions"`
+	EffectiveEmbeddingDimensions         types.Int64          `tfsdk:"effective_embedding_dimensions"`
+	EffectiveInputModalities             types.List           `tfsdk:"effective_input_modalities"`
+	EffectiveOutputModalities            types.List           `tfsdk:"effective_output_modalities"`
+	CustomPricePerMillionCacheRead       types.String         `tfsdk:"custom_price_per_million_cache_read"`
+	CustomPricePerMillionCacheWrite      types.String         `tfsdk:"custom_price_per_million_cache_write"`
+	CachePriceSource                     types.String         `tfsdk:"cache_price_source"`
+	CacheReadPricePerToken               types.String         `tfsdk:"cache_read_price_per_token"`
+	CacheWritePricePerToken              types.String         `tfsdk:"cache_write_price_per_token"`
+	PricePerMillionCacheRead             types.String         `tfsdk:"price_per_million_cache_read"`
+	PricePerMillionCacheWrite            types.String         `tfsdk:"price_per_million_cache_write"`
+	CustomContextLength                  types.Int64          `tfsdk:"custom_context_length"`
+	CustomOutputLength                   types.Int64          `tfsdk:"custom_output_length"`
+	OutputLength                         types.Int64          `tfsdk:"output_length"`
+	EmbeddingClientImageCapable          types.Bool           `tfsdk:"embedding_client_image_capable"`
+	IsFree                               types.Bool           `tfsdk:"is_free"`
+	SupportsReasoningEffort              types.Bool           `tfsdk:"supports_reasoning_effort"`
+	ConfiguredParameters                 jsontypes.Normalized `tfsdk:"configured_parameters"`
+	DefaultParameters                    jsontypes.Normalized `tfsdk:"default_parameters"`
+	Teams                                jsontypes.Normalized `tfsdk:"teams"`
+	Users                                jsontypes.Normalized `tfsdk:"users"`
+	EffectiveContextLength               types.Float64        `tfsdk:"effective_context_length"`
+	SupportedEndpoints                   types.List           `tfsdk:"supported_endpoints"`
+	Labels                               []AgentLabelModel    `tfsdk:"labels"`
 
 	ID                          types.String `tfsdk:"id"`
 	ModelID                     types.String `tfsdk:"model_id"`
@@ -227,6 +233,7 @@ func (r *LlmModelResource) Create(ctx context.Context, req resource.CreateReques
 
 	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
 	patch := MergePatch(ctx, req.Plan.Raw, prior, llmModelAttrSpec, &resp.Diagnostics)
+	completeLongContextPatch(&data, patch)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -307,6 +314,7 @@ func (r *LlmModelResource) Update(ctx context.Context, req resource.UpdateReques
 	}
 
 	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, llmModelAttrSpec, &resp.Diagnostics)
+	completeLongContextPatch(&data, patch)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -368,6 +376,13 @@ func (r *LlmModelResource) Delete(ctx context.Context, req resource.DeleteReques
 		"customPricePerMillionInput": nil, "customPricePerMillionOutput": nil,
 		"customPricePerMillionCacheRead": nil, "customPricePerMillionCacheWrite": nil,
 		"customContextLength": nil, "customOutputLength": nil, "ignored": false,
+	}
+	if !data.LongContextThreshold.IsNull() {
+		patch["longContextThreshold"] = nil
+		patch["longContextPricePerMillionInput"] = nil
+		patch["longContextPricePerMillionOutput"] = nil
+		patch["longContextPricePerMillionCacheRead"] = nil
+		patch["longContextPricePerMillionCacheWrite"] = nil
 	}
 	if !data.ConfiguredParameters.IsNull() {
 		patch["configuredParameters"] = nil
@@ -499,17 +514,9 @@ func (r *LlmModelResource) readModelState(ctx context.Context, data *LlmModelRes
 				data.OutputModalities = types.ListNull(types.StringType)
 			}
 
-			if model.CustomPricePerMillionInput != nil {
-				data.CustomPricePerMillionInput = types.StringValue(*model.CustomPricePerMillionInput)
-			} else {
-				data.CustomPricePerMillionInput = types.StringNull()
-			}
+			data.CustomPricePerMillionInput = modelPriceFromAPI(data.CustomPricePerMillionInput, model.CustomPricePerMillionInput)
 
-			if model.CustomPricePerMillionOutput != nil {
-				data.CustomPricePerMillionOutput = types.StringValue(*model.CustomPricePerMillionOutput)
-			} else {
-				data.CustomPricePerMillionOutput = types.StringNull()
-			}
+			data.CustomPricePerMillionOutput = modelPriceFromAPI(data.CustomPricePerMillionOutput, model.CustomPricePerMillionOutput)
 
 			if model.PricePerMillionInput != nil {
 				data.PricePerMillionInput = types.StringValue(*model.PricePerMillionInput)

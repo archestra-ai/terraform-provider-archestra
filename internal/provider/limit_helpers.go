@@ -10,6 +10,7 @@ import (
 )
 
 var limitAttrSpec = []AttrSpec{
+	{TFName: "behavior", JSONName: "behavior", Kind: Scalar, OmitOnNull: true},
 	{TFName: "reason", JSONName: "reason", Kind: Scalar},
 	{TFName: "cleanup_interval", JSONName: "cleanupInterval", Kind: Scalar, OmitOnNull: true},
 	{TFName: "labels", JSONName: "labels", Kind: Set, OmitOnNull: true, Children: []AttrSpec{{TFName: "key", JSONName: "key", Kind: Scalar}, {TFName: "value", JSONName: "value", Kind: Scalar}}},
@@ -52,6 +53,12 @@ func (r *LimitResource) refreshCurrentLimit(ctx context.Context, data *LimitReso
 }
 func (r *LimitResource) flattenCurrentLimit(ctx context.Context, data *LimitResourceModel, result *client.GetLimitResponse, diags *diag.Diagnostics) {
 	wire := result.JSON200
+	data.Behavior = types.StringNull()
+	if wire.Behavior != "" {
+		data.Behavior = types.StringValue(string(wire.Behavior))
+	}
+	data.EstimatedUsage = types.BoolPointerValue(wire.EstimatedUsage)
+	data.TeamManaged = types.BoolValue(wire.TeamManaged)
 	data.Reason = types.StringPointerValue(wire.Reason)
 	data.ThroughputUsage = types.ObjectNull(limitThroughputUsageAttrTypes)
 	if wire.ThroughputUsage != nil {

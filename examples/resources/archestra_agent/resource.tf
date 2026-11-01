@@ -102,11 +102,9 @@ resource "archestra_agent" "worker" {
     steer_mode         = "tmux_keys"
     privileged         = true
 
-    resources = {
-      cpu_request    = "2"
-      memory_request = "4Gi"
-      memory_limit   = "20Gi"
-    }
+    # API 1.5.0-rc.19+: choose organization-defined runtime tiers.
+    tier     = "S"
+    max_tier = "L"
 
     # Secrets never go in `environment` — declare them as credentials and
     # deposit values via `archestra_credential` (shared) or per user.

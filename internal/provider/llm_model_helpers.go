@@ -12,6 +12,12 @@ import (
 // price_per_million_*, is_custom_price, price_source) are excluded by
 // the drift-check helper.
 var llmModelAttrSpec = []AttrSpec{
+	{TFName: "long_context_threshold", JSONName: "longContextThreshold", Kind: Scalar},
+	{TFName: "long_context_price_per_million_input", JSONName: "longContextPricePerMillionInput", Kind: Scalar},
+	{TFName: "long_context_price_per_million_output", JSONName: "longContextPricePerMillionOutput", Kind: Scalar},
+	{TFName: "long_context_price_per_million_cache_read", JSONName: "longContextPricePerMillionCacheRead", Kind: Scalar},
+	{TFName: "long_context_price_per_million_cache_write", JSONName: "longContextPricePerMillionCacheWrite", Kind: Scalar},
+
 	{TFName: "permissions", Kind: Synthetic},
 	{TFName: "embedding_dimensions", JSONName: "embeddingDimensions", Kind: Scalar},
 	{TFName: "llm_provider", Kind: Synthetic},
