@@ -367,6 +367,20 @@ const (
 	CreateAgentJSONBodyMissingCredentialBehaviorWarn  CreateAgentJSONBodyMissingCredentialBehavior = "warn"
 )
 
+// Defines values for CreateAgentJSONBodyNetworkPolicyDomainPreset.
+const (
+	CreateAgentJSONBodyNetworkPolicyDomainPresetCommonDependencies CreateAgentJSONBodyNetworkPolicyDomainPreset = "common_dependencies"
+	CreateAgentJSONBodyNetworkPolicyDomainPresetNone               CreateAgentJSONBodyNetworkPolicyDomainPreset = "none"
+	CreateAgentJSONBodyNetworkPolicyDomainPresetPackageManagers    CreateAgentJSONBodyNetworkPolicyDomainPreset = "package_managers"
+)
+
+// Defines values for CreateAgentJSONBodyNetworkPolicyEgressMode.
+const (
+	CreateAgentJSONBodyNetworkPolicyEgressModeOff          CreateAgentJSONBodyNetworkPolicyEgressMode = "off"
+	CreateAgentJSONBodyNetworkPolicyEgressModeRestricted   CreateAgentJSONBodyNetworkPolicyEgressMode = "restricted"
+	CreateAgentJSONBodyNetworkPolicyEgressModeUnrestricted CreateAgentJSONBodyNetworkPolicyEgressMode = "unrestricted"
+)
+
 // Defines values for CreateAgentJSONBodyRuntimeBackend.
 const (
 	CreateAgentJSONBodyRuntimeBackendKubernetes CreateAgentJSONBodyRuntimeBackend = "kubernetes"
@@ -463,6 +477,20 @@ const (
 	UpdateAgentJSONBodyMissingCredentialBehaviorAllow UpdateAgentJSONBodyMissingCredentialBehavior = "allow"
 	UpdateAgentJSONBodyMissingCredentialBehaviorBlock UpdateAgentJSONBodyMissingCredentialBehavior = "block"
 	UpdateAgentJSONBodyMissingCredentialBehaviorWarn  UpdateAgentJSONBodyMissingCredentialBehavior = "warn"
+)
+
+// Defines values for UpdateAgentJSONBodyNetworkPolicyDomainPreset.
+const (
+	UpdateAgentJSONBodyNetworkPolicyDomainPresetCommonDependencies UpdateAgentJSONBodyNetworkPolicyDomainPreset = "common_dependencies"
+	UpdateAgentJSONBodyNetworkPolicyDomainPresetNone               UpdateAgentJSONBodyNetworkPolicyDomainPreset = "none"
+	UpdateAgentJSONBodyNetworkPolicyDomainPresetPackageManagers    UpdateAgentJSONBodyNetworkPolicyDomainPreset = "package_managers"
+)
+
+// Defines values for UpdateAgentJSONBodyNetworkPolicyEgressMode.
+const (
+	UpdateAgentJSONBodyNetworkPolicyEgressModeOff          UpdateAgentJSONBodyNetworkPolicyEgressMode = "off"
+	UpdateAgentJSONBodyNetworkPolicyEgressModeRestricted   UpdateAgentJSONBodyNetworkPolicyEgressMode = "restricted"
+	UpdateAgentJSONBodyNetworkPolicyEgressModeUnrestricted UpdateAgentJSONBodyNetworkPolicyEgressMode = "unrestricted"
 )
 
 // Defines values for UpdateAgentJSONBodyRuntimeBackend.
@@ -2662,9 +2690,15 @@ type CreateAgentJSONBody struct {
 	ModelId                   *openapi_types.UUID                           `json:"modelId"`
 	ModelPoolId               *openapi_types.UUID                           `json:"modelPoolId"`
 	Name                      string                                        `json:"name"`
-	OrganizationId            *string                                       `json:"organizationId,omitempty"`
-	PassthroughHeaders        *[]string                                     `json:"passthroughHeaders"`
-	Runtime                   *struct {
+	NetworkPolicy             *struct {
+		AllowedCidrs   *[]string                                     `json:"allowedCidrs,omitempty"`
+		AllowedDomains *[]string                                     `json:"allowedDomains,omitempty"`
+		DomainPreset   *CreateAgentJSONBodyNetworkPolicyDomainPreset `json:"domainPreset,omitempty"`
+		EgressMode     *CreateAgentJSONBodyNetworkPolicyEgressMode   `json:"egressMode,omitempty"`
+	} `json:"networkPolicy"`
+	OrganizationId     *string   `json:"organizationId,omitempty"`
+	PassthroughHeaders *[]string `json:"passthroughHeaders"`
+	Runtime            *struct {
 		AllowAgentSuppliedCredentialValues *bool                             `json:"allowAgentSuppliedCredentialValues,omitempty"`
 		Backend                            CreateAgentJSONBodyRuntimeBackend `json:"backend"`
 		ClaudeCode                         *struct {
@@ -2905,6 +2939,12 @@ type CreateAgentJSONBody_InitialGrants_Subject struct {
 // CreateAgentJSONBodyMissingCredentialBehavior defines parameters for CreateAgent.
 type CreateAgentJSONBodyMissingCredentialBehavior string
 
+// CreateAgentJSONBodyNetworkPolicyDomainPreset defines parameters for CreateAgent.
+type CreateAgentJSONBodyNetworkPolicyDomainPreset string
+
+// CreateAgentJSONBodyNetworkPolicyEgressMode defines parameters for CreateAgent.
+type CreateAgentJSONBodyNetworkPolicyEgressMode string
+
 // CreateAgentJSONBodyRuntimeBackend defines parameters for CreateAgent.
 type CreateAgentJSONBodyRuntimeBackend string
 
@@ -2994,9 +3034,15 @@ type UpdateAgentJSONBody struct {
 	ModelId                   *openapi_types.UUID                           `json:"modelId"`
 	ModelPoolId               *openapi_types.UUID                           `json:"modelPoolId"`
 	Name                      *string                                       `json:"name,omitempty"`
-	OrganizationId            *string                                       `json:"organizationId,omitempty"`
-	PassthroughHeaders        *[]string                                     `json:"passthroughHeaders"`
-	Runtime                   *struct {
+	NetworkPolicy             *struct {
+		AllowedCidrs   *[]string                                     `json:"allowedCidrs,omitempty"`
+		AllowedDomains *[]string                                     `json:"allowedDomains,omitempty"`
+		DomainPreset   *UpdateAgentJSONBodyNetworkPolicyDomainPreset `json:"domainPreset,omitempty"`
+		EgressMode     *UpdateAgentJSONBodyNetworkPolicyEgressMode   `json:"egressMode,omitempty"`
+	} `json:"networkPolicy"`
+	OrganizationId     *string   `json:"organizationId,omitempty"`
+	PassthroughHeaders *[]string `json:"passthroughHeaders"`
+	Runtime            *struct {
 		AllowAgentSuppliedCredentialValues *bool                             `json:"allowAgentSuppliedCredentialValues,omitempty"`
 		Backend                            UpdateAgentJSONBodyRuntimeBackend `json:"backend"`
 		ClaudeCode                         *struct {
@@ -3086,6 +3132,12 @@ type UpdateAgentJSONBodyIncomingEmailSecurityMode string
 
 // UpdateAgentJSONBodyMissingCredentialBehavior defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyMissingCredentialBehavior string
+
+// UpdateAgentJSONBodyNetworkPolicyDomainPreset defines parameters for UpdateAgent.
+type UpdateAgentJSONBodyNetworkPolicyDomainPreset string
+
+// UpdateAgentJSONBodyNetworkPolicyEgressMode defines parameters for UpdateAgent.
+type UpdateAgentJSONBodyNetworkPolicyEgressMode string
 
 // UpdateAgentJSONBodyRuntimeBackend defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyRuntimeBackend string
@@ -21147,13 +21199,19 @@ type GetAgentsResponse struct {
 			ModelId                              *openapi_types.UUID                       `json:"modelId"`
 			ModelPoolId                          *openapi_types.UUID                       `json:"modelPoolId"`
 			Name                                 string                                    `json:"name"`
-			OrganizationId                       string                                    `json:"organizationId"`
-			PassthroughHeaders                   *[]string                                 `json:"passthroughHeaders"`
-			PinnedAt                             *time.Time                                `json:"pinnedAt"`
-			ResolvedLlmModelName                 *string                                   `json:"resolvedLlmModelName"`
-			ResolvedLlmProvider                  *GetAgents200DataResolvedLlmProvider      `json:"resolvedLlmProvider"`
-			ResolvedLlmProviderKeyName           *string                                   `json:"resolvedLlmProviderKeyName"`
-			Runtime                              *struct {
+			NetworkPolicy                        *struct {
+				AllowedCidrs   []string                                  `json:"allowedCidrs"`
+				AllowedDomains []string                                  `json:"allowedDomains"`
+				DomainPreset   GetAgents200DataNetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     GetAgents200DataNetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"networkPolicy"`
+			OrganizationId             string                               `json:"organizationId"`
+			PassthroughHeaders         *[]string                            `json:"passthroughHeaders"`
+			PinnedAt                   *time.Time                           `json:"pinnedAt"`
+			ResolvedLlmModelName       *string                              `json:"resolvedLlmModelName"`
+			ResolvedLlmProvider        *GetAgents200DataResolvedLlmProvider `json:"resolvedLlmProvider"`
+			ResolvedLlmProviderKeyName *string                              `json:"resolvedLlmProviderKeyName"`
+			Runtime                    *struct {
 				AllowAgentSuppliedCredentialValues *bool                          `json:"allowAgentSuppliedCredentialValues,omitempty"`
 				Backend                            GetAgents200DataRuntimeBackend `json:"backend"`
 				ClaudeCode                         *struct {
@@ -21299,6 +21357,8 @@ type GetAgents200DataCreatedByType string
 type GetAgents200DataGithubActionsAccessActAs string
 type GetAgents200DataIncomingEmailSecurityMode string
 type GetAgents200DataMissingCredentialBehavior string
+type GetAgents200DataNetworkPolicyDomainPreset string
+type GetAgents200DataNetworkPolicyEgressMode string
 type GetAgents200DataResolvedLlmProvider string
 type GetAgents200DataRuntimeBackend string
 type GetAgents200DataRuntimeClaudeCodeAuthentication string
@@ -21390,12 +21450,18 @@ type CreateAgentResponse struct {
 		ModelId                              *openapi_types.UUID                     `json:"modelId"`
 		ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 		Name                                 string                                  `json:"name"`
-		OrganizationId                       string                                  `json:"organizationId"`
-		PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
-		ResolvedLlmModelName                 *string                                 `json:"resolvedLlmModelName"`
-		ResolvedLlmProvider                  *CreateAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-		ResolvedLlmProviderKeyName           *string                                 `json:"resolvedLlmProviderKeyName"`
-		Runtime                              *struct {
+		NetworkPolicy                        *struct {
+			AllowedCidrs   []string                                `json:"allowedCidrs"`
+			AllowedDomains []string                                `json:"allowedDomains"`
+			DomainPreset   CreateAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+			EgressMode     CreateAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+		} `json:"networkPolicy"`
+		OrganizationId             string                             `json:"organizationId"`
+		PassthroughHeaders         *[]string                          `json:"passthroughHeaders"`
+		ResolvedLlmModelName       *string                            `json:"resolvedLlmModelName"`
+		ResolvedLlmProvider        *CreateAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+		ResolvedLlmProviderKeyName *string                            `json:"resolvedLlmProviderKeyName"`
+		Runtime                    *struct {
 			AllowAgentSuppliedCredentialValues *bool                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
 			Backend                            CreateAgent200RuntimeBackend `json:"backend"`
 			ClaudeCode                         *struct {
@@ -21526,6 +21592,8 @@ type CreateAgent200CreatedByType string
 type CreateAgent200GithubActionsAccessActAs string
 type CreateAgent200IncomingEmailSecurityMode string
 type CreateAgent200MissingCredentialBehavior string
+type CreateAgent200NetworkPolicyDomainPreset string
+type CreateAgent200NetworkPolicyEgressMode string
 type CreateAgent200ResolvedLlmProvider string
 type CreateAgent200RuntimeBackend string
 type CreateAgent200RuntimeClaudeCodeAuthentication string
@@ -22369,12 +22437,18 @@ type GetAgentResponse struct {
 		ModelId                              *openapi_types.UUID                  `json:"modelId"`
 		ModelPoolId                          *openapi_types.UUID                  `json:"modelPoolId"`
 		Name                                 string                               `json:"name"`
-		OrganizationId                       string                               `json:"organizationId"`
-		PassthroughHeaders                   *[]string                            `json:"passthroughHeaders"`
-		ResolvedLlmModelName                 *string                              `json:"resolvedLlmModelName"`
-		ResolvedLlmProvider                  *GetAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-		ResolvedLlmProviderKeyName           *string                              `json:"resolvedLlmProviderKeyName"`
-		Runtime                              *struct {
+		NetworkPolicy                        *struct {
+			AllowedCidrs   []string                             `json:"allowedCidrs"`
+			AllowedDomains []string                             `json:"allowedDomains"`
+			DomainPreset   GetAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+			EgressMode     GetAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+		} `json:"networkPolicy"`
+		OrganizationId             string                          `json:"organizationId"`
+		PassthroughHeaders         *[]string                       `json:"passthroughHeaders"`
+		ResolvedLlmModelName       *string                         `json:"resolvedLlmModelName"`
+		ResolvedLlmProvider        *GetAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+		ResolvedLlmProviderKeyName *string                         `json:"resolvedLlmProviderKeyName"`
+		Runtime                    *struct {
 			AllowAgentSuppliedCredentialValues *bool                     `json:"allowAgentSuppliedCredentialValues,omitempty"`
 			Backend                            GetAgent200RuntimeBackend `json:"backend"`
 			ClaudeCode                         *struct {
@@ -22505,6 +22579,8 @@ type GetAgent200CreatedByType string
 type GetAgent200GithubActionsAccessActAs string
 type GetAgent200IncomingEmailSecurityMode string
 type GetAgent200MissingCredentialBehavior string
+type GetAgent200NetworkPolicyDomainPreset string
+type GetAgent200NetworkPolicyEgressMode string
 type GetAgent200ResolvedLlmProvider string
 type GetAgent200RuntimeBackend string
 type GetAgent200RuntimeClaudeCodeAuthentication string
@@ -22596,12 +22672,18 @@ type UpdateAgentResponse struct {
 		ModelId                              *openapi_types.UUID                     `json:"modelId"`
 		ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 		Name                                 string                                  `json:"name"`
-		OrganizationId                       string                                  `json:"organizationId"`
-		PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
-		ResolvedLlmModelName                 *string                                 `json:"resolvedLlmModelName"`
-		ResolvedLlmProvider                  *UpdateAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-		ResolvedLlmProviderKeyName           *string                                 `json:"resolvedLlmProviderKeyName"`
-		Runtime                              *struct {
+		NetworkPolicy                        *struct {
+			AllowedCidrs   []string                                `json:"allowedCidrs"`
+			AllowedDomains []string                                `json:"allowedDomains"`
+			DomainPreset   UpdateAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+			EgressMode     UpdateAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+		} `json:"networkPolicy"`
+		OrganizationId             string                             `json:"organizationId"`
+		PassthroughHeaders         *[]string                          `json:"passthroughHeaders"`
+		ResolvedLlmModelName       *string                            `json:"resolvedLlmModelName"`
+		ResolvedLlmProvider        *UpdateAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+		ResolvedLlmProviderKeyName *string                            `json:"resolvedLlmProviderKeyName"`
+		Runtime                    *struct {
 			AllowAgentSuppliedCredentialValues *bool                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
 			Backend                            UpdateAgent200RuntimeBackend `json:"backend"`
 			ClaudeCode                         *struct {
@@ -22732,6 +22814,8 @@ type UpdateAgent200CreatedByType string
 type UpdateAgent200GithubActionsAccessActAs string
 type UpdateAgent200IncomingEmailSecurityMode string
 type UpdateAgent200MissingCredentialBehavior string
+type UpdateAgent200NetworkPolicyDomainPreset string
+type UpdateAgent200NetworkPolicyEgressMode string
 type UpdateAgent200ResolvedLlmProvider string
 type UpdateAgent200RuntimeBackend string
 type UpdateAgent200RuntimeClaudeCodeAuthentication string
@@ -44575,13 +44659,19 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 				ModelId                              *openapi_types.UUID                       `json:"modelId"`
 				ModelPoolId                          *openapi_types.UUID                       `json:"modelPoolId"`
 				Name                                 string                                    `json:"name"`
-				OrganizationId                       string                                    `json:"organizationId"`
-				PassthroughHeaders                   *[]string                                 `json:"passthroughHeaders"`
-				PinnedAt                             *time.Time                                `json:"pinnedAt"`
-				ResolvedLlmModelName                 *string                                   `json:"resolvedLlmModelName"`
-				ResolvedLlmProvider                  *GetAgents200DataResolvedLlmProvider      `json:"resolvedLlmProvider"`
-				ResolvedLlmProviderKeyName           *string                                   `json:"resolvedLlmProviderKeyName"`
-				Runtime                              *struct {
+				NetworkPolicy                        *struct {
+					AllowedCidrs   []string                                  `json:"allowedCidrs"`
+					AllowedDomains []string                                  `json:"allowedDomains"`
+					DomainPreset   GetAgents200DataNetworkPolicyDomainPreset `json:"domainPreset"`
+					EgressMode     GetAgents200DataNetworkPolicyEgressMode   `json:"egressMode"`
+				} `json:"networkPolicy"`
+				OrganizationId             string                               `json:"organizationId"`
+				PassthroughHeaders         *[]string                            `json:"passthroughHeaders"`
+				PinnedAt                   *time.Time                           `json:"pinnedAt"`
+				ResolvedLlmModelName       *string                              `json:"resolvedLlmModelName"`
+				ResolvedLlmProvider        *GetAgents200DataResolvedLlmProvider `json:"resolvedLlmProvider"`
+				ResolvedLlmProviderKeyName *string                              `json:"resolvedLlmProviderKeyName"`
+				Runtime                    *struct {
 					AllowAgentSuppliedCredentialValues *bool                          `json:"allowAgentSuppliedCredentialValues,omitempty"`
 					Backend                            GetAgents200DataRuntimeBackend `json:"backend"`
 					ClaudeCode                         *struct {
@@ -44819,12 +44909,18 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 			ModelId                              *openapi_types.UUID                     `json:"modelId"`
 			ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 			Name                                 string                                  `json:"name"`
-			OrganizationId                       string                                  `json:"organizationId"`
-			PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
-			ResolvedLlmModelName                 *string                                 `json:"resolvedLlmModelName"`
-			ResolvedLlmProvider                  *CreateAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-			ResolvedLlmProviderKeyName           *string                                 `json:"resolvedLlmProviderKeyName"`
-			Runtime                              *struct {
+			NetworkPolicy                        *struct {
+				AllowedCidrs   []string                                `json:"allowedCidrs"`
+				AllowedDomains []string                                `json:"allowedDomains"`
+				DomainPreset   CreateAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     CreateAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"networkPolicy"`
+			OrganizationId             string                             `json:"organizationId"`
+			PassthroughHeaders         *[]string                          `json:"passthroughHeaders"`
+			ResolvedLlmModelName       *string                            `json:"resolvedLlmModelName"`
+			ResolvedLlmProvider        *CreateAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+			ResolvedLlmProviderKeyName *string                            `json:"resolvedLlmProviderKeyName"`
+			Runtime                    *struct {
 				AllowAgentSuppliedCredentialValues *bool                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
 				Backend                            CreateAgent200RuntimeBackend `json:"backend"`
 				ClaudeCode                         *struct {
@@ -46139,12 +46235,18 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 			ModelId                              *openapi_types.UUID                  `json:"modelId"`
 			ModelPoolId                          *openapi_types.UUID                  `json:"modelPoolId"`
 			Name                                 string                               `json:"name"`
-			OrganizationId                       string                               `json:"organizationId"`
-			PassthroughHeaders                   *[]string                            `json:"passthroughHeaders"`
-			ResolvedLlmModelName                 *string                              `json:"resolvedLlmModelName"`
-			ResolvedLlmProvider                  *GetAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-			ResolvedLlmProviderKeyName           *string                              `json:"resolvedLlmProviderKeyName"`
-			Runtime                              *struct {
+			NetworkPolicy                        *struct {
+				AllowedCidrs   []string                             `json:"allowedCidrs"`
+				AllowedDomains []string                             `json:"allowedDomains"`
+				DomainPreset   GetAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     GetAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"networkPolicy"`
+			OrganizationId             string                          `json:"organizationId"`
+			PassthroughHeaders         *[]string                       `json:"passthroughHeaders"`
+			ResolvedLlmModelName       *string                         `json:"resolvedLlmModelName"`
+			ResolvedLlmProvider        *GetAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+			ResolvedLlmProviderKeyName *string                         `json:"resolvedLlmProviderKeyName"`
+			Runtime                    *struct {
 				AllowAgentSuppliedCredentialValues *bool                     `json:"allowAgentSuppliedCredentialValues,omitempty"`
 				Backend                            GetAgent200RuntimeBackend `json:"backend"`
 				ClaudeCode                         *struct {
@@ -46367,12 +46469,18 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 			ModelId                              *openapi_types.UUID                     `json:"modelId"`
 			ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 			Name                                 string                                  `json:"name"`
-			OrganizationId                       string                                  `json:"organizationId"`
-			PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
-			ResolvedLlmModelName                 *string                                 `json:"resolvedLlmModelName"`
-			ResolvedLlmProvider                  *UpdateAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-			ResolvedLlmProviderKeyName           *string                                 `json:"resolvedLlmProviderKeyName"`
-			Runtime                              *struct {
+			NetworkPolicy                        *struct {
+				AllowedCidrs   []string                                `json:"allowedCidrs"`
+				AllowedDomains []string                                `json:"allowedDomains"`
+				DomainPreset   UpdateAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     UpdateAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"networkPolicy"`
+			OrganizationId             string                             `json:"organizationId"`
+			PassthroughHeaders         *[]string                          `json:"passthroughHeaders"`
+			ResolvedLlmModelName       *string                            `json:"resolvedLlmModelName"`
+			ResolvedLlmProvider        *UpdateAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+			ResolvedLlmProviderKeyName *string                            `json:"resolvedLlmProviderKeyName"`
+			Runtime                    *struct {
 				AllowAgentSuppliedCredentialValues *bool                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
 				Backend                            UpdateAgent200RuntimeBackend `json:"backend"`
 				ClaudeCode                         *struct {
