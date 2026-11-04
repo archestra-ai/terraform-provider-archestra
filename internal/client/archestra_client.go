@@ -313,6 +313,11 @@ const (
 	CreateAgentJSONBodyBuiltInAgentConfig3NameAppRuntimeLlmAgent CreateAgentJSONBodyBuiltInAgentConfig3Name = "app-runtime-llm-agent"
 )
 
+// Defines values for CreateAgentJSONBodyBuiltInAgentConfig4Name.
+const (
+	CreateAgentJSONBodyBuiltInAgentConfig4NameSreAgent CreateAgentJSONBodyBuiltInAgentConfig4Name = "sre-agent"
+)
+
 // Defines values for CreateAgentJSONBodyIncomingEmailSecurityMode.
 const (
 	CreateAgentJSONBodyIncomingEmailSecurityModeInternal CreateAgentJSONBodyIncomingEmailSecurityMode = "internal"
@@ -457,6 +462,11 @@ const (
 // Defines values for UpdateAgentJSONBodyBuiltInAgentConfig3Name.
 const (
 	UpdateAgentJSONBodyBuiltInAgentConfig3NameAppRuntimeLlmAgent UpdateAgentJSONBodyBuiltInAgentConfig3Name = "app-runtime-llm-agent"
+)
+
+// Defines values for UpdateAgentJSONBodyBuiltInAgentConfig4Name.
+const (
+	UpdateAgentJSONBodyBuiltInAgentConfig4NameSreAgent UpdateAgentJSONBodyBuiltInAgentConfig4Name = "sre-agent"
 )
 
 // Defines values for UpdateAgentJSONBodyGithubActionsAccessActAs.
@@ -2237,6 +2247,7 @@ const (
 
 // Defines values for GetToolsWithAssignmentsParamsObservedByClient.
 const (
+	GetToolsWithAssignmentsParamsObservedByClientChatgpt       GetToolsWithAssignmentsParamsObservedByClient = "chatgpt"
 	GetToolsWithAssignmentsParamsObservedByClientClaude        GetToolsWithAssignmentsParamsObservedByClient = "claude"
 	GetToolsWithAssignmentsParamsObservedByClientClaudeCode    GetToolsWithAssignmentsParamsObservedByClient = "claude-code"
 	GetToolsWithAssignmentsParamsObservedByClientClaudeDesktop GetToolsWithAssignmentsParamsObservedByClient = "claude-desktop"
@@ -2872,6 +2883,14 @@ type CreateAgentJSONBodyBuiltInAgentConfig3 struct {
 // CreateAgentJSONBodyBuiltInAgentConfig3Name defines parameters for CreateAgent.
 type CreateAgentJSONBodyBuiltInAgentConfig3Name string
 
+// CreateAgentJSONBodyBuiltInAgentConfig4 defines parameters for CreateAgent.
+type CreateAgentJSONBodyBuiltInAgentConfig4 struct {
+	Name CreateAgentJSONBodyBuiltInAgentConfig4Name `json:"name"`
+}
+
+// CreateAgentJSONBodyBuiltInAgentConfig4Name defines parameters for CreateAgent.
+type CreateAgentJSONBodyBuiltInAgentConfig4Name string
+
 // CreateAgentJSONBody_BuiltInAgentConfig defines parameters for CreateAgent.
 type CreateAgentJSONBody_BuiltInAgentConfig struct {
 	union json.RawMessage
@@ -3118,6 +3137,14 @@ type UpdateAgentJSONBodyBuiltInAgentConfig3 struct {
 
 // UpdateAgentJSONBodyBuiltInAgentConfig3Name defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyBuiltInAgentConfig3Name string
+
+// UpdateAgentJSONBodyBuiltInAgentConfig4 defines parameters for UpdateAgent.
+type UpdateAgentJSONBodyBuiltInAgentConfig4 struct {
+	Name UpdateAgentJSONBodyBuiltInAgentConfig4Name `json:"name"`
+}
+
+// UpdateAgentJSONBodyBuiltInAgentConfig4Name defines parameters for UpdateAgent.
+type UpdateAgentJSONBodyBuiltInAgentConfig4Name string
 
 // UpdateAgentJSONBody_BuiltInAgentConfig defines parameters for UpdateAgent.
 type UpdateAgentJSONBody_BuiltInAgentConfig struct {
@@ -4421,9 +4448,12 @@ type UpdateKnowledgeBaseJSONBody struct {
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 	} `json:"labels,omitempty"`
-	Name       *string     `json:"name,omitempty"`
-	TeamIds    interface{} `json:"teamIds,omitempty"`
-	Visibility interface{} `json:"visibility,omitempty"`
+	Name    *string     `json:"name,omitempty"`
+	TeamIds interface{} `json:"teamIds,omitempty"`
+
+	// UploadedFilesEnvironmentId Environment for this knowledge base's indexed uploaded files. Requires uploaded files to have been indexed; omit to leave it unchanged.
+	UploadedFilesEnvironmentId *openapi_types.UUID `json:"uploadedFilesEnvironmentId"`
+	Visibility                 interface{}         `json:"visibility,omitempty"`
 }
 
 // CreateKnowledgeDirectoryJSONBody defines parameters for CreateKnowledgeDirectory.
@@ -21350,6 +21380,10 @@ type GetAgents200DataBuiltInAgentConfig3 struct {
 	Name GetAgents200DataBuiltInAgentConfig3Name `json:"name"`
 }
 type GetAgents200DataBuiltInAgentConfig3Name string
+type GetAgents200DataBuiltInAgentConfig4 struct {
+	Name GetAgents200DataBuiltInAgentConfig4Name `json:"name"`
+}
+type GetAgents200DataBuiltInAgentConfig4Name string
 type GetAgents_200_Data_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
@@ -21585,6 +21619,10 @@ type CreateAgent200BuiltInAgentConfig3 struct {
 	Name CreateAgent200BuiltInAgentConfig3Name `json:"name"`
 }
 type CreateAgent200BuiltInAgentConfig3Name string
+type CreateAgent200BuiltInAgentConfig4 struct {
+	Name CreateAgent200BuiltInAgentConfig4Name `json:"name"`
+}
+type CreateAgent200BuiltInAgentConfig4Name string
 type CreateAgent_200_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
@@ -22572,6 +22610,10 @@ type GetAgent200BuiltInAgentConfig3 struct {
 	Name GetAgent200BuiltInAgentConfig3Name `json:"name"`
 }
 type GetAgent200BuiltInAgentConfig3Name string
+type GetAgent200BuiltInAgentConfig4 struct {
+	Name GetAgent200BuiltInAgentConfig4Name `json:"name"`
+}
+type GetAgent200BuiltInAgentConfig4Name string
 type GetAgent_200_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
@@ -22807,6 +22849,10 @@ type UpdateAgent200BuiltInAgentConfig3 struct {
 	Name UpdateAgent200BuiltInAgentConfig3Name `json:"name"`
 }
 type UpdateAgent200BuiltInAgentConfig3Name string
+type UpdateAgent200BuiltInAgentConfig4 struct {
+	Name UpdateAgent200BuiltInAgentConfig4Name `json:"name"`
+}
+type UpdateAgent200BuiltInAgentConfig4Name string
 type UpdateAgent_200_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
@@ -29462,12 +29508,13 @@ type CreateKnowledgeBaseResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name           string                           `json:"name"`
-		OrganizationId string                           `json:"organizationId"`
-		Status         string                           `json:"status"`
-		TeamIds        []string                         `json:"teamIds"`
-		UpdatedAt      time.Time                        `json:"updatedAt"`
-		Visibility     CreateKnowledgeBase200Visibility `json:"visibility"`
+		Name                       string                           `json:"name"`
+		OrganizationId             string                           `json:"organizationId"`
+		Status                     string                           `json:"status"`
+		TeamIds                    []string                         `json:"teamIds"`
+		UpdatedAt                  time.Time                        `json:"updatedAt"`
+		UploadedFilesEnvironmentId *openapi_types.UUID              `json:"uploadedFilesEnvironmentId"`
+		Visibility                 CreateKnowledgeBase200Visibility `json:"visibility"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -29632,12 +29679,13 @@ type GetKnowledgeBaseResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name           string                        `json:"name"`
-		OrganizationId string                        `json:"organizationId"`
-		Status         string                        `json:"status"`
-		TeamIds        []string                      `json:"teamIds"`
-		UpdatedAt      time.Time                     `json:"updatedAt"`
-		Visibility     GetKnowledgeBase200Visibility `json:"visibility"`
+		Name                       string                        `json:"name"`
+		OrganizationId             string                        `json:"organizationId"`
+		Status                     string                        `json:"status"`
+		TeamIds                    []string                      `json:"teamIds"`
+		UpdatedAt                  time.Time                     `json:"updatedAt"`
+		UploadedFilesEnvironmentId *openapi_types.UUID           `json:"uploadedFilesEnvironmentId"`
+		Visibility                 GetKnowledgeBase200Visibility `json:"visibility"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -29729,12 +29777,13 @@ type UpdateKnowledgeBaseResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name           string                           `json:"name"`
-		OrganizationId string                           `json:"organizationId"`
-		Status         string                           `json:"status"`
-		TeamIds        []string                         `json:"teamIds"`
-		UpdatedAt      time.Time                        `json:"updatedAt"`
-		Visibility     UpdateKnowledgeBase200Visibility `json:"visibility"`
+		Name                       string                           `json:"name"`
+		OrganizationId             string                           `json:"organizationId"`
+		Status                     string                           `json:"status"`
+		TeamIds                    []string                         `json:"teamIds"`
+		UpdatedAt                  time.Time                        `json:"updatedAt"`
+		UploadedFilesEnvironmentId *openapi_types.UUID              `json:"uploadedFilesEnvironmentId"`
+		Visibility                 UpdateKnowledgeBase200Visibility `json:"visibility"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -31676,8 +31725,8 @@ type CreateVirtualApiKeyResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"teams"`
-		TokenStart string `json:"tokenStart"`
-		Value      string `json:"value"`
+		TokenStart string  `json:"tokenStart"`
+		Value      *string `json:"value,omitempty"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -54978,12 +55027,13 @@ func ParseCreateKnowledgeBaseResponse(rsp *http.Response) (*CreateKnowledgeBaseR
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name           string                           `json:"name"`
-			OrganizationId string                           `json:"organizationId"`
-			Status         string                           `json:"status"`
-			TeamIds        []string                         `json:"teamIds"`
-			UpdatedAt      time.Time                        `json:"updatedAt"`
-			Visibility     CreateKnowledgeBase200Visibility `json:"visibility"`
+			Name                       string                           `json:"name"`
+			OrganizationId             string                           `json:"organizationId"`
+			Status                     string                           `json:"status"`
+			TeamIds                    []string                         `json:"teamIds"`
+			UpdatedAt                  time.Time                        `json:"updatedAt"`
+			UploadedFilesEnvironmentId *openapi_types.UUID              `json:"uploadedFilesEnvironmentId"`
+			Visibility                 CreateKnowledgeBase200Visibility `json:"visibility"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -55214,12 +55264,13 @@ func ParseGetKnowledgeBaseResponse(rsp *http.Response) (*GetKnowledgeBaseRespons
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name           string                        `json:"name"`
-			OrganizationId string                        `json:"organizationId"`
-			Status         string                        `json:"status"`
-			TeamIds        []string                      `json:"teamIds"`
-			UpdatedAt      time.Time                     `json:"updatedAt"`
-			Visibility     GetKnowledgeBase200Visibility `json:"visibility"`
+			Name                       string                        `json:"name"`
+			OrganizationId             string                        `json:"organizationId"`
+			Status                     string                        `json:"status"`
+			TeamIds                    []string                      `json:"teamIds"`
+			UpdatedAt                  time.Time                     `json:"updatedAt"`
+			UploadedFilesEnvironmentId *openapi_types.UUID           `json:"uploadedFilesEnvironmentId"`
+			Visibility                 GetKnowledgeBase200Visibility `json:"visibility"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -55343,12 +55394,13 @@ func ParseUpdateKnowledgeBaseResponse(rsp *http.Response) (*UpdateKnowledgeBaseR
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name           string                           `json:"name"`
-			OrganizationId string                           `json:"organizationId"`
-			Status         string                           `json:"status"`
-			TeamIds        []string                         `json:"teamIds"`
-			UpdatedAt      time.Time                        `json:"updatedAt"`
-			Visibility     UpdateKnowledgeBase200Visibility `json:"visibility"`
+			Name                       string                           `json:"name"`
+			OrganizationId             string                           `json:"organizationId"`
+			Status                     string                           `json:"status"`
+			TeamIds                    []string                         `json:"teamIds"`
+			UpdatedAt                  time.Time                        `json:"updatedAt"`
+			UploadedFilesEnvironmentId *openapi_types.UUID              `json:"uploadedFilesEnvironmentId"`
+			Visibility                 UpdateKnowledgeBase200Visibility `json:"visibility"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -57883,8 +57935,8 @@ func ParseCreateVirtualApiKeyResponse(rsp *http.Response) (*CreateVirtualApiKeyR
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"teams"`
-			TokenStart string `json:"tokenStart"`
-			Value      string `json:"value"`
+			TokenStart string  `json:"tokenStart"`
+			Value      *string `json:"value,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
