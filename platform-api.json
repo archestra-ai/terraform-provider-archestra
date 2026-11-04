@@ -1,10 +1,10 @@
 {
-  "platform_commit": "f2576271f3aef93fbc839993137f0bec2eb3ea46",
-  "version": "1.5.0-rc.21",
-  "spec_sha256": "15684a289a61f9a9ed258a108bd1fcd999947514549b53a088c630f98fa9ef12",
+  "platform_commit": "48f0016706d150aed1d38c63e5b0491fd924634a",
+  "version": "1.5.0-rc.22",
+  "spec_sha256": "4e53ab67f6d698f76697241a4a8d7fe4345ec6479ad778794909473b0acfb23a",
   "generator_commit": "a9d6d576310a8619120a6bc296d7d0c41743ccdf",
   "files": {
-    "internal/client/archestra_client.go": "81ec135abcea95987ae9d6102e56db6677bd009eefb8a2a999dfc452077a34a9",
-    "platform-version.txt": "b9a5bb88237c76ca777b7128acc7008b70e376d5394b0d73f497c35a4996e212"
+    "internal/client/archestra_client.go": "35b0c86eb7f2f69384deb5ce35dbc027045b592b14b58e956c5c837c64711056",
+    "platform-version.txt": "9a27915b2030e331345fbd7de32387bef5d35d6a9d2ee2e54b6c1554f4e1a3ce"
   }
 }

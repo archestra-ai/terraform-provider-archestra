@@ -5203,12 +5203,14 @@ type UpdateAgentSettingsJSONBody struct {
 	AgentRuntimeTiers *struct {
 		DefaultTier string `json:"defaultTier"`
 		Tiers       []struct {
-			CpuLimit     *float32 `json:"cpuLimit"`
-			CpuRequest   float32  `json:"cpuRequest"`
-			Name         string   `json:"name"`
-			Pooled       bool     `json:"pooled"`
-			PreviousName *string  `json:"previousName,omitempty"`
-			WorkspaceGiB *int     `json:"workspaceGiB"`
+			CpuLimit         *float32 `json:"cpuLimit"`
+			CpuRequest       float32  `json:"cpuRequest"`
+			MemoryLimitMiB   *int     `json:"memoryLimitMiB"`
+			MemoryRequestMiB *int     `json:"memoryRequestMiB"`
+			Name             string   `json:"name"`
+			Pooled           bool     `json:"pooled"`
+			PreviousName     *string  `json:"previousName,omitempty"`
+			WorkspaceGiB     *int     `json:"workspaceGiB"`
 		} `json:"tiers"`
 	} `json:"agentRuntimeTiers"`
 	DefaultAgentId      *openapi_types.UUID `json:"defaultAgentId"`
