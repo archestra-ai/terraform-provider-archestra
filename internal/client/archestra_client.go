@@ -416,6 +416,13 @@ const (
 	CreateAgentJSONBodyRuntimeSteerModeTmuxKeys CreateAgentJSONBodyRuntimeSteerMode = "tmux_keys"
 )
 
+// Defines values for CreateAgentJSONBodySubagentLoadBalancingAlgorithm.
+const (
+	CreateAgentJSONBodySubagentLoadBalancingAlgorithmRandom     CreateAgentJSONBodySubagentLoadBalancingAlgorithm = "random"
+	CreateAgentJSONBodySubagentLoadBalancingAlgorithmRoundRobin CreateAgentJSONBodySubagentLoadBalancingAlgorithm = "round_robin"
+	CreateAgentJSONBodySubagentLoadBalancingAlgorithmWeighted   CreateAgentJSONBodySubagentLoadBalancingAlgorithm = "weighted"
+)
+
 // Defines values for CreateAgentJSONBodyToolExposureMode.
 const (
 	CreateAgentJSONBodyToolExposureModeFull             CreateAgentJSONBodyToolExposureMode = "full"
@@ -531,6 +538,13 @@ const (
 const (
 	UpdateAgentJSONBodyRuntimeSteerModePipe     UpdateAgentJSONBodyRuntimeSteerMode = "pipe"
 	UpdateAgentJSONBodyRuntimeSteerModeTmuxKeys UpdateAgentJSONBodyRuntimeSteerMode = "tmux_keys"
+)
+
+// Defines values for UpdateAgentJSONBodySubagentLoadBalancingAlgorithm.
+const (
+	UpdateAgentJSONBodySubagentLoadBalancingAlgorithmRandom     UpdateAgentJSONBodySubagentLoadBalancingAlgorithm = "random"
+	UpdateAgentJSONBodySubagentLoadBalancingAlgorithmRoundRobin UpdateAgentJSONBodySubagentLoadBalancingAlgorithm = "round_robin"
+	UpdateAgentJSONBodySubagentLoadBalancingAlgorithmWeighted   UpdateAgentJSONBodySubagentLoadBalancingAlgorithm = "weighted"
 )
 
 // Defines values for UpdateAgentJSONBodyToolExposureMode.
@@ -2627,7 +2641,7 @@ type GetAgentsParams struct {
 	// Pinned Filter by the current user's pins. Pinned results are ordered by newest pin first; unpinned results keep the requested sort.
 	Pinned *bool `form:"pinned,omitempty" json:"pinned,omitempty"`
 
-	// IncludeTools Attach each agent's assigned tools. Defaults to true. The tools carry every name and description, so they are most of the response. Pass false when you need only the agents, `toolsCount`, or `subagentsCount`, which are always present. With false, `tools` is an empty array that means 'not requested', not 'none assigned'.
+	// IncludeTools Include assigned tools (default: true). Set `includeTools=false` for a smaller response when you only need agents or their counts. `toolsCount` and `subagentsCount` remain available; an empty `tools` array then means tools were omitted, not that none are assigned.
 	IncludeTools *bool `form:"includeTools,omitempty" json:"includeTools,omitempty"`
 
 	// IncludeTotal Count every matching agent for `pagination.total`. Defaults to true. Pass false from lists that never show a total, such as pinned rows. With false, the count is skipped and `hasNext` stays exact. `total` is then a lower bound: the agents up to this page, plus one when more follow.
@@ -2740,7 +2754,14 @@ type CreateAgentJSONBody struct {
 		Tier               *string                                     `json:"tier"`
 		TtlHours           *int                                        `json:"ttlHours"`
 	} `json:"runtime"`
-	Scope            interface{} `json:"scope,omitempty"`
+	Scope                 interface{} `json:"scope,omitempty"`
+	SubagentLoadBalancing *struct {
+		Algorithm       *CreateAgentJSONBodySubagentLoadBalancingAlgorithm `json:"algorithm,omitempty"`
+		Enabled         *bool                                              `json:"enabled,omitempty"`
+		FallbackEnabled *bool                                              `json:"fallbackEnabled,omitempty"`
+		Retries         *int                                               `json:"retries,omitempty"`
+		Weights         *map[string]int                                    `json:"weights,omitempty"`
+	} `json:"subagentLoadBalancing"`
 	SuggestedPrompts *[]struct {
 		Prompt       string `json:"prompt"`
 		SummaryTitle string `json:"summaryTitle"`
@@ -2979,6 +3000,9 @@ type CreateAgentJSONBodyRuntimeInferenceProtocol string
 // CreateAgentJSONBodyRuntimeSteerMode defines parameters for CreateAgent.
 type CreateAgentJSONBodyRuntimeSteerMode string
 
+// CreateAgentJSONBodySubagentLoadBalancingAlgorithm defines parameters for CreateAgent.
+type CreateAgentJSONBodySubagentLoadBalancingAlgorithm string
+
 // CreateAgentJSONBodyToolExposureMode defines parameters for CreateAgent.
 type CreateAgentJSONBodyToolExposureMode string
 
@@ -3092,7 +3116,14 @@ type UpdateAgentJSONBody struct {
 		Tier               *string                                     `json:"tier"`
 		TtlHours           *int                                        `json:"ttlHours"`
 	} `json:"runtime"`
-	Scope            interface{} `json:"scope,omitempty"`
+	Scope                 interface{} `json:"scope,omitempty"`
+	SubagentLoadBalancing *struct {
+		Algorithm       *UpdateAgentJSONBodySubagentLoadBalancingAlgorithm `json:"algorithm,omitempty"`
+		Enabled         *bool                                              `json:"enabled,omitempty"`
+		FallbackEnabled *bool                                              `json:"fallbackEnabled,omitempty"`
+		Retries         *int                                               `json:"retries,omitempty"`
+		Weights         *map[string]int                                    `json:"weights,omitempty"`
+	} `json:"subagentLoadBalancing"`
 	SuggestedPrompts *[]struct {
 		Prompt       string `json:"prompt"`
 		SummaryTitle string `json:"summaryTitle"`
@@ -3180,6 +3211,9 @@ type UpdateAgentJSONBodyRuntimeInferenceProtocol string
 
 // UpdateAgentJSONBodyRuntimeSteerMode defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyRuntimeSteerMode string
+
+// UpdateAgentJSONBodySubagentLoadBalancingAlgorithm defines parameters for UpdateAgent.
+type UpdateAgentJSONBodySubagentLoadBalancingAlgorithm string
 
 // UpdateAgentJSONBodyToolExposureMode defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyToolExposureMode string
@@ -4958,7 +4992,7 @@ type GetMcpToolCallsParams struct {
 	// McpServerName Filter by exact MCP server name
 	McpServerName *string `form:"mcpServerName,omitempty" json:"mcpServerName,omitempty"`
 
-	// UserId Filter by the user the call is attributed to. Ignored without `log:admin`, which already scopes the listing to the caller.
+	// UserId Filter by the user the call is attributed to. Ignored without [`log:admin`](/docs/reference/permissions#log:admin), which already scopes the listing to the caller.
 	UserId *string `form:"userId,omitempty" json:"userId,omitempty"`
 
 	// SessionId Filter by the LLM proxy session that issued the call: calls recorded with that session, and tool calls whose run resolves to it.
@@ -21274,10 +21308,17 @@ type GetAgentsResponse struct {
 				Tier               *string                                  `json:"tier"`
 				TtlHours           *int                                     `json:"ttlHours"`
 			} `json:"runtime"`
-			RuntimeSecretId  *openapi_types.UUID   `json:"runtimeSecretId"`
-			SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
-			Scope            GetAgents200DataScope `json:"scope"`
-			Slug             *string               `json:"slug"`
+			RuntimeSecretId       *openapi_types.UUID   `json:"runtimeSecretId"`
+			SandboxAvailable      *bool                 `json:"sandboxAvailable,omitempty"`
+			Scope                 GetAgents200DataScope `json:"scope"`
+			Slug                  *string               `json:"slug"`
+			SubagentLoadBalancing *struct {
+				Algorithm       GetAgents200DataSubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled         bool                                           `json:"enabled"`
+				FallbackEnabled bool                                           `json:"fallbackEnabled"`
+				Retries         int                                            `json:"retries"`
+				Weights         *map[string]int                                `json:"weights,omitempty"`
+			} `json:"subagentLoadBalancing"`
 
 			// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
 			SubagentsCount   int `json:"subagentsCount"`
@@ -21402,6 +21443,7 @@ type GetAgents200DataRuntimeCredentialsScope string
 type GetAgents200DataRuntimeInferenceProtocol string
 type GetAgents200DataRuntimeSteerMode string
 type GetAgents200DataScope string
+type GetAgents200DataSubagentLoadBalancingAlgorithm string
 type GetAgents200DataToolExposureMode string
 type GetAgents400ErrorType string
 type GetAgents401ErrorType string
@@ -21528,10 +21570,17 @@ type CreateAgentResponse struct {
 			Tier               *string                                `json:"tier"`
 			TtlHours           *int                                   `json:"ttlHours"`
 		} `json:"runtime"`
-		RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-		Scope            CreateAgent200Scope `json:"scope"`
-		Slug             *string             `json:"slug"`
+		RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+		SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+		Scope                 CreateAgent200Scope `json:"scope"`
+		Slug                  *string             `json:"slug"`
+		SubagentLoadBalancing *struct {
+			Algorithm       CreateAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+			Enabled         bool                                         `json:"enabled"`
+			FallbackEnabled bool                                         `json:"fallbackEnabled"`
+			Retries         int                                          `json:"retries"`
+			Weights         *map[string]int                              `json:"weights,omitempty"`
+		} `json:"subagentLoadBalancing"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -21641,6 +21690,7 @@ type CreateAgent200RuntimeCredentialsScope string
 type CreateAgent200RuntimeInferenceProtocol string
 type CreateAgent200RuntimeSteerMode string
 type CreateAgent200Scope string
+type CreateAgent200SubagentLoadBalancingAlgorithm string
 type CreateAgent200ToolExposureMode string
 type CreateAgent400ErrorType string
 type CreateAgent401ErrorType string
@@ -22519,10 +22569,17 @@ type GetAgentResponse struct {
 			Tier               *string                             `json:"tier"`
 			TtlHours           *int                                `json:"ttlHours"`
 		} `json:"runtime"`
-		RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-		Scope            GetAgent200Scope    `json:"scope"`
-		Slug             *string             `json:"slug"`
+		RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+		SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+		Scope                 GetAgent200Scope    `json:"scope"`
+		Slug                  *string             `json:"slug"`
+		SubagentLoadBalancing *struct {
+			Algorithm       GetAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+			Enabled         bool                                      `json:"enabled"`
+			FallbackEnabled bool                                      `json:"fallbackEnabled"`
+			Retries         int                                       `json:"retries"`
+			Weights         *map[string]int                           `json:"weights,omitempty"`
+		} `json:"subagentLoadBalancing"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -22632,6 +22689,7 @@ type GetAgent200RuntimeCredentialsScope string
 type GetAgent200RuntimeInferenceProtocol string
 type GetAgent200RuntimeSteerMode string
 type GetAgent200Scope string
+type GetAgent200SubagentLoadBalancingAlgorithm string
 type GetAgent200ToolExposureMode string
 type GetAgent400ErrorType string
 type GetAgent401ErrorType string
@@ -22758,10 +22816,17 @@ type UpdateAgentResponse struct {
 			Tier               *string                                `json:"tier"`
 			TtlHours           *int                                   `json:"ttlHours"`
 		} `json:"runtime"`
-		RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-		Scope            UpdateAgent200Scope `json:"scope"`
-		Slug             *string             `json:"slug"`
+		RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+		SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+		Scope                 UpdateAgent200Scope `json:"scope"`
+		Slug                  *string             `json:"slug"`
+		SubagentLoadBalancing *struct {
+			Algorithm       UpdateAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+			Enabled         bool                                         `json:"enabled"`
+			FallbackEnabled bool                                         `json:"fallbackEnabled"`
+			Retries         int                                          `json:"retries"`
+			Weights         *map[string]int                              `json:"weights,omitempty"`
+		} `json:"subagentLoadBalancing"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -22871,6 +22936,7 @@ type UpdateAgent200RuntimeCredentialsScope string
 type UpdateAgent200RuntimeInferenceProtocol string
 type UpdateAgent200RuntimeSteerMode string
 type UpdateAgent200Scope string
+type UpdateAgent200SubagentLoadBalancingAlgorithm string
 type UpdateAgent200ToolExposureMode string
 type UpdateAgent400ErrorType string
 type UpdateAgent401ErrorType string
@@ -44753,10 +44819,17 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 					Tier               *string                                  `json:"tier"`
 					TtlHours           *int                                     `json:"ttlHours"`
 				} `json:"runtime"`
-				RuntimeSecretId  *openapi_types.UUID   `json:"runtimeSecretId"`
-				SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
-				Scope            GetAgents200DataScope `json:"scope"`
-				Slug             *string               `json:"slug"`
+				RuntimeSecretId       *openapi_types.UUID   `json:"runtimeSecretId"`
+				SandboxAvailable      *bool                 `json:"sandboxAvailable,omitempty"`
+				Scope                 GetAgents200DataScope `json:"scope"`
+				Slug                  *string               `json:"slug"`
+				SubagentLoadBalancing *struct {
+					Algorithm       GetAgents200DataSubagentLoadBalancingAlgorithm `json:"algorithm"`
+					Enabled         bool                                           `json:"enabled"`
+					FallbackEnabled bool                                           `json:"fallbackEnabled"`
+					Retries         int                                            `json:"retries"`
+					Weights         *map[string]int                                `json:"weights,omitempty"`
+				} `json:"subagentLoadBalancing"`
 
 				// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
 				SubagentsCount   int `json:"subagentsCount"`
@@ -45002,10 +45075,17 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 				Tier               *string                                `json:"tier"`
 				TtlHours           *int                                   `json:"ttlHours"`
 			} `json:"runtime"`
-			RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-			Scope            CreateAgent200Scope `json:"scope"`
-			Slug             *string             `json:"slug"`
+			RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+			SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+			Scope                 CreateAgent200Scope `json:"scope"`
+			Slug                  *string             `json:"slug"`
+			SubagentLoadBalancing *struct {
+				Algorithm       CreateAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled         bool                                         `json:"enabled"`
+				FallbackEnabled bool                                         `json:"fallbackEnabled"`
+				Retries         int                                          `json:"retries"`
+				Weights         *map[string]int                              `json:"weights,omitempty"`
+			} `json:"subagentLoadBalancing"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -46328,10 +46408,17 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 				Tier               *string                             `json:"tier"`
 				TtlHours           *int                                `json:"ttlHours"`
 			} `json:"runtime"`
-			RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-			Scope            GetAgent200Scope    `json:"scope"`
-			Slug             *string             `json:"slug"`
+			RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+			SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+			Scope                 GetAgent200Scope    `json:"scope"`
+			Slug                  *string             `json:"slug"`
+			SubagentLoadBalancing *struct {
+				Algorithm       GetAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled         bool                                      `json:"enabled"`
+				FallbackEnabled bool                                      `json:"fallbackEnabled"`
+				Retries         int                                       `json:"retries"`
+				Weights         *map[string]int                           `json:"weights,omitempty"`
+			} `json:"subagentLoadBalancing"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -46562,10 +46649,17 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 				Tier               *string                                `json:"tier"`
 				TtlHours           *int                                   `json:"ttlHours"`
 			} `json:"runtime"`
-			RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-			Scope            UpdateAgent200Scope `json:"scope"`
-			Slug             *string             `json:"slug"`
+			RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+			SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+			Scope                 UpdateAgent200Scope `json:"scope"`
+			Slug                  *string             `json:"slug"`
+			SubagentLoadBalancing *struct {
+				Algorithm       UpdateAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled         bool                                         `json:"enabled"`
+				FallbackEnabled bool                                         `json:"fallbackEnabled"`
+				Retries         int                                          `json:"retries"`
+				Weights         *map[string]int                              `json:"weights,omitempty"`
+			} `json:"subagentLoadBalancing"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
