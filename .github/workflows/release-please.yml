@@ -26,45 +26,12 @@ jobs:
   release-please:
     if: inputs.marketplace_version == ''
     name: Release Please
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write # create release tags and commits
-      pull-requests: write # open/update release PRs
-      issues: write # label release PRs
-      id-token: write # OIDC for action identity
-    outputs:
-      # Single-package manifest mode -> outputs are flat (no `<path>--` prefix).
-      release_created: ${{ steps.release-please.outputs.release_created }}
-      tag_name: ${{ steps.release-please.outputs.tag_name }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Generate a token
-        id: generate-token
-        uses: archestra-ai/.github/actions/github-app-token@840a8b2c85a9deb01869cc956c9c77fbf50ccd68 # v1.1.0
-        with:
-          app-id: ${{ secrets.ARCHESTRA_RELEASER_GITHUB_APP_ID }}
-          private-key: ${{ secrets.ARCHESTRA_RELEASER_GITHUB_APP_PRIVATE_KEY }}
-
-      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
-        id: release-please
-        with:
-          token: ${{ steps.generate-token.outputs.token }}
-          config-file: .github/release-please/release-please-config.json
-          manifest-file: .github/release-please/.release-please-manifest.json
-          target-branch: main
-
-      - name: Log release-please outputs
-        # HACK to get toJson to sorta print the output to the console without failing this job
-        continue-on-error: true
-        env:
-          OUTPUTS: ${{ toJson(steps.release-please.outputs) }}
-        run: |
-          echo "$OUTPUTS"
+    # Single-package manifest mode -> release outputs are flat (no `<path>--` prefix).
+    permissions: {} # The shared workflow writes with the Archestra CI App token only.
+    uses: archestra-ai/.github/.github/workflows/release-please.yml@da5a22fd61f56b4a7fa6bd888292018982e1139e # v1.15.0
+    secrets:
+      APP_ID: ${{ secrets.ARCHESTRA_RELEASER_GITHUB_APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.ARCHESTRA_RELEASER_GITHUB_APP_PRIVATE_KEY }}
 
   publish-terraform-provider:
     name: Publish Terraform Provider
