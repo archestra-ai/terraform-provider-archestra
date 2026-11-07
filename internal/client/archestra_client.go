@@ -112,17 +112,22 @@ const (
 
 // Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3TypeRole CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4IdAsterisk CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Id = "*"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3TypeOauthClient CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4TypeOrganization CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4TypeRole CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5IdAsterisk CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5TypeOrganization CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for CreateA2aRemoteAgentJSONBodySource0Type.
@@ -313,6 +318,11 @@ const (
 	CreateAgentJSONBodyBuiltInAgentConfig3NameAppRuntimeLlmAgent CreateAgentJSONBodyBuiltInAgentConfig3Name = "app-runtime-llm-agent"
 )
 
+// Defines values for CreateAgentJSONBodyBuiltInAgentConfig4Name.
+const (
+	CreateAgentJSONBodyBuiltInAgentConfig4NameSreAgent CreateAgentJSONBodyBuiltInAgentConfig4Name = "sre-agent"
+)
+
 // Defines values for CreateAgentJSONBodyIncomingEmailSecurityMode.
 const (
 	CreateAgentJSONBodyIncomingEmailSecurityModeInternal CreateAgentJSONBodyIncomingEmailSecurityMode = "internal"
@@ -347,17 +357,22 @@ const (
 
 // Defines values for CreateAgentJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateAgentJSONBodyInitialGrantsSubject3TypeRole CreateAgentJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateAgentJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateAgentJSONBodyInitialGrantsSubject4IdAsterisk CreateAgentJSONBodyInitialGrantsSubject4Id = "*"
+	CreateAgentJSONBodyInitialGrantsSubject3TypeOauthClient CreateAgentJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateAgentJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateAgentJSONBodyInitialGrantsSubject4TypeOrganization CreateAgentJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateAgentJSONBodyInitialGrantsSubject4TypeRole CreateAgentJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateAgentJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateAgentJSONBodyInitialGrantsSubject5IdAsterisk CreateAgentJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateAgentJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateAgentJSONBodyInitialGrantsSubject5TypeOrganization CreateAgentJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for CreateAgentJSONBodyMissingCredentialBehavior.
@@ -365,6 +380,20 @@ const (
 	CreateAgentJSONBodyMissingCredentialBehaviorAllow CreateAgentJSONBodyMissingCredentialBehavior = "allow"
 	CreateAgentJSONBodyMissingCredentialBehaviorBlock CreateAgentJSONBodyMissingCredentialBehavior = "block"
 	CreateAgentJSONBodyMissingCredentialBehaviorWarn  CreateAgentJSONBodyMissingCredentialBehavior = "warn"
+)
+
+// Defines values for CreateAgentJSONBodyNetworkPolicyDomainPreset.
+const (
+	CreateAgentJSONBodyNetworkPolicyDomainPresetCommonDependencies CreateAgentJSONBodyNetworkPolicyDomainPreset = "common_dependencies"
+	CreateAgentJSONBodyNetworkPolicyDomainPresetNone               CreateAgentJSONBodyNetworkPolicyDomainPreset = "none"
+	CreateAgentJSONBodyNetworkPolicyDomainPresetPackageManagers    CreateAgentJSONBodyNetworkPolicyDomainPreset = "package_managers"
+)
+
+// Defines values for CreateAgentJSONBodyNetworkPolicyEgressMode.
+const (
+	CreateAgentJSONBodyNetworkPolicyEgressModeOff          CreateAgentJSONBodyNetworkPolicyEgressMode = "off"
+	CreateAgentJSONBodyNetworkPolicyEgressModeRestricted   CreateAgentJSONBodyNetworkPolicyEgressMode = "restricted"
+	CreateAgentJSONBodyNetworkPolicyEgressModeUnrestricted CreateAgentJSONBodyNetworkPolicyEgressMode = "unrestricted"
 )
 
 // Defines values for CreateAgentJSONBodyRuntimeBackend.
@@ -395,6 +424,13 @@ const (
 const (
 	CreateAgentJSONBodyRuntimeSteerModePipe     CreateAgentJSONBodyRuntimeSteerMode = "pipe"
 	CreateAgentJSONBodyRuntimeSteerModeTmuxKeys CreateAgentJSONBodyRuntimeSteerMode = "tmux_keys"
+)
+
+// Defines values for CreateAgentJSONBodySubagentLoadBalancingAlgorithm.
+const (
+	CreateAgentJSONBodySubagentLoadBalancingAlgorithmRandom     CreateAgentJSONBodySubagentLoadBalancingAlgorithm = "random"
+	CreateAgentJSONBodySubagentLoadBalancingAlgorithmRoundRobin CreateAgentJSONBodySubagentLoadBalancingAlgorithm = "round_robin"
+	CreateAgentJSONBodySubagentLoadBalancingAlgorithmWeighted   CreateAgentJSONBodySubagentLoadBalancingAlgorithm = "weighted"
 )
 
 // Defines values for CreateAgentJSONBodyToolExposureMode.
@@ -445,6 +481,11 @@ const (
 	UpdateAgentJSONBodyBuiltInAgentConfig3NameAppRuntimeLlmAgent UpdateAgentJSONBodyBuiltInAgentConfig3Name = "app-runtime-llm-agent"
 )
 
+// Defines values for UpdateAgentJSONBodyBuiltInAgentConfig4Name.
+const (
+	UpdateAgentJSONBodyBuiltInAgentConfig4NameSreAgent UpdateAgentJSONBodyBuiltInAgentConfig4Name = "sre-agent"
+)
+
 // Defines values for UpdateAgentJSONBodyGithubActionsAccessActAs.
 const (
 	Actor  UpdateAgentJSONBodyGithubActionsAccessActAs = "actor"
@@ -463,6 +504,20 @@ const (
 	UpdateAgentJSONBodyMissingCredentialBehaviorAllow UpdateAgentJSONBodyMissingCredentialBehavior = "allow"
 	UpdateAgentJSONBodyMissingCredentialBehaviorBlock UpdateAgentJSONBodyMissingCredentialBehavior = "block"
 	UpdateAgentJSONBodyMissingCredentialBehaviorWarn  UpdateAgentJSONBodyMissingCredentialBehavior = "warn"
+)
+
+// Defines values for UpdateAgentJSONBodyNetworkPolicyDomainPreset.
+const (
+	UpdateAgentJSONBodyNetworkPolicyDomainPresetCommonDependencies UpdateAgentJSONBodyNetworkPolicyDomainPreset = "common_dependencies"
+	UpdateAgentJSONBodyNetworkPolicyDomainPresetNone               UpdateAgentJSONBodyNetworkPolicyDomainPreset = "none"
+	UpdateAgentJSONBodyNetworkPolicyDomainPresetPackageManagers    UpdateAgentJSONBodyNetworkPolicyDomainPreset = "package_managers"
+)
+
+// Defines values for UpdateAgentJSONBodyNetworkPolicyEgressMode.
+const (
+	UpdateAgentJSONBodyNetworkPolicyEgressModeOff          UpdateAgentJSONBodyNetworkPolicyEgressMode = "off"
+	UpdateAgentJSONBodyNetworkPolicyEgressModeRestricted   UpdateAgentJSONBodyNetworkPolicyEgressMode = "restricted"
+	UpdateAgentJSONBodyNetworkPolicyEgressModeUnrestricted UpdateAgentJSONBodyNetworkPolicyEgressMode = "unrestricted"
 )
 
 // Defines values for UpdateAgentJSONBodyRuntimeBackend.
@@ -493,6 +548,13 @@ const (
 const (
 	UpdateAgentJSONBodyRuntimeSteerModePipe     UpdateAgentJSONBodyRuntimeSteerMode = "pipe"
 	UpdateAgentJSONBodyRuntimeSteerModeTmuxKeys UpdateAgentJSONBodyRuntimeSteerMode = "tmux_keys"
+)
+
+// Defines values for UpdateAgentJSONBodySubagentLoadBalancingAlgorithm.
+const (
+	UpdateAgentJSONBodySubagentLoadBalancingAlgorithmRandom     UpdateAgentJSONBodySubagentLoadBalancingAlgorithm = "random"
+	UpdateAgentJSONBodySubagentLoadBalancingAlgorithmRoundRobin UpdateAgentJSONBodySubagentLoadBalancingAlgorithm = "round_robin"
+	UpdateAgentJSONBodySubagentLoadBalancingAlgorithmWeighted   UpdateAgentJSONBodySubagentLoadBalancingAlgorithm = "weighted"
 )
 
 // Defines values for UpdateAgentJSONBodyToolExposureMode.
@@ -567,17 +629,22 @@ const (
 
 // Defines values for CreateAppJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateAppJSONBodyInitialGrantsSubject3TypeRole CreateAppJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateAppJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateAppJSONBodyInitialGrantsSubject4IdAsterisk CreateAppJSONBodyInitialGrantsSubject4Id = "*"
+	CreateAppJSONBodyInitialGrantsSubject3TypeOauthClient CreateAppJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateAppJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateAppJSONBodyInitialGrantsSubject4TypeOrganization CreateAppJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateAppJSONBodyInitialGrantsSubject4TypeRole CreateAppJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateAppJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateAppJSONBodyInitialGrantsSubject5IdAsterisk CreateAppJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateAppJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateAppJSONBodyInitialGrantsSubject5TypeOrganization CreateAppJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for AssignToolToAppJSONBodyCredentialResolutionMode.
@@ -622,17 +689,22 @@ const (
 
 // Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateRuntimeCredentialJSONBodyInitialGrantsSubject3TypeRole CreateRuntimeCredentialJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateRuntimeCredentialJSONBodyInitialGrantsSubject4IdAsterisk CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Id = "*"
+	CreateRuntimeCredentialJSONBodyInitialGrantsSubject3TypeOauthClient CreateRuntimeCredentialJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateRuntimeCredentialJSONBodyInitialGrantsSubject4TypeOrganization CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateRuntimeCredentialJSONBodyInitialGrantsSubject4TypeRole CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateRuntimeCredentialJSONBodyInitialGrantsSubject5IdAsterisk CreateRuntimeCredentialJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateRuntimeCredentialJSONBodyInitialGrantsSubject5TypeOrganization CreateRuntimeCredentialJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for CreateRuntimeCredentialJSONBodyKind.
@@ -834,17 +906,22 @@ const (
 
 // Defines values for CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject3TypeRole CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4IdAsterisk CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4Id = "*"
+	CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject3TypeOauthClient CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4TypeOrganization CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4TypeRole CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5IdAsterisk CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5TypeOrganization CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType.
@@ -1035,17 +1112,22 @@ const (
 
 // Defines values for CreateKnowledgeBaseJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateKnowledgeBaseJSONBodyInitialGrantsSubject3TypeRole CreateKnowledgeBaseJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateKnowledgeBaseJSONBodyInitialGrantsSubject4IdAsterisk CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Id = "*"
+	CreateKnowledgeBaseJSONBodyInitialGrantsSubject3TypeOauthClient CreateKnowledgeBaseJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateKnowledgeBaseJSONBodyInitialGrantsSubject4TypeOrganization CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateKnowledgeBaseJSONBodyInitialGrantsSubject4TypeRole CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateKnowledgeBaseJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateKnowledgeBaseJSONBodyInitialGrantsSubject5IdAsterisk CreateKnowledgeBaseJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateKnowledgeBaseJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateKnowledgeBaseJSONBodyInitialGrantsSubject5TypeOrganization CreateKnowledgeBaseJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for GetKnowledgeFilesParamsAccess.
@@ -1083,17 +1165,22 @@ const (
 
 // Defines values for UploadKnowledgeFileJSONBodyInitialGrantsSubject3Type.
 const (
-	UploadKnowledgeFileJSONBodyInitialGrantsSubject3TypeRole UploadKnowledgeFileJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for UploadKnowledgeFileJSONBodyInitialGrantsSubject4Id.
-const (
-	UploadKnowledgeFileJSONBodyInitialGrantsSubject4IdAsterisk UploadKnowledgeFileJSONBodyInitialGrantsSubject4Id = "*"
+	UploadKnowledgeFileJSONBodyInitialGrantsSubject3TypeOauthClient UploadKnowledgeFileJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type.
 const (
-	UploadKnowledgeFileJSONBodyInitialGrantsSubject4TypeOrganization UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type = "organization"
+	UploadKnowledgeFileJSONBodyInitialGrantsSubject4TypeRole UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for UploadKnowledgeFileJSONBodyInitialGrantsSubject5Id.
+const (
+	UploadKnowledgeFileJSONBodyInitialGrantsSubject5IdAsterisk UploadKnowledgeFileJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for UploadKnowledgeFileJSONBodyInitialGrantsSubject5Type.
+const (
+	UploadKnowledgeFileJSONBodyInitialGrantsSubject5TypeOrganization UploadKnowledgeFileJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for CreateLimitJSONBodyBehavior.
@@ -1233,17 +1320,22 @@ const (
 
 // Defines values for CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject3TypeRole CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4IdAsterisk CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4Id = "*"
+	CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject3TypeOauthClient CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4TypeOrganization CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4TypeRole CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5IdAsterisk CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5TypeOrganization CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for CreateLlmProviderApiKeyJSONBodyProvider.
@@ -1302,17 +1394,22 @@ const (
 
 // Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateVirtualApiKeyJSONBodyInitialGrantsSubject3TypeRole CreateVirtualApiKeyJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateVirtualApiKeyJSONBodyInitialGrantsSubject4IdAsterisk CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Id = "*"
+	CreateVirtualApiKeyJSONBodyInitialGrantsSubject3TypeOauthClient CreateVirtualApiKeyJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateVirtualApiKeyJSONBodyInitialGrantsSubject4TypeOrganization CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateVirtualApiKeyJSONBodyInitialGrantsSubject4TypeRole CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateVirtualApiKeyJSONBodyInitialGrantsSubject5IdAsterisk CreateVirtualApiKeyJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateVirtualApiKeyJSONBodyInitialGrantsSubject5TypeOrganization CreateVirtualApiKeyJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for CreateVirtualApiKeyJSONBodyKeyType.
@@ -1488,17 +1585,22 @@ const (
 
 // Defines values for CreateOauthClientJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateOauthClientJSONBodyInitialGrantsSubject3TypeRole CreateOauthClientJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateOauthClientJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateOauthClientJSONBodyInitialGrantsSubject4IdAsterisk CreateOauthClientJSONBodyInitialGrantsSubject4Id = "*"
+	CreateOauthClientJSONBodyInitialGrantsSubject3TypeOauthClient CreateOauthClientJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateOauthClientJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateOauthClientJSONBodyInitialGrantsSubject4TypeOrganization CreateOauthClientJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateOauthClientJSONBodyInitialGrantsSubject4TypeRole CreateOauthClientJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateOauthClientJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateOauthClientJSONBodyInitialGrantsSubject5IdAsterisk CreateOauthClientJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateOauthClientJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateOauthClientJSONBodyInitialGrantsSubject5TypeOrganization CreateOauthClientJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for CreateOauthClientJSONBodyProviderApiKeysProvider.
@@ -1739,17 +1841,22 @@ const (
 
 // Defines values for CreatePluginJSONBodyInitialGrantsSubject3Type.
 const (
-	CreatePluginJSONBodyInitialGrantsSubject3TypeRole CreatePluginJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreatePluginJSONBodyInitialGrantsSubject4Id.
-const (
-	CreatePluginJSONBodyInitialGrantsSubject4IdAsterisk CreatePluginJSONBodyInitialGrantsSubject4Id = "*"
+	CreatePluginJSONBodyInitialGrantsSubject3TypeOauthClient CreatePluginJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreatePluginJSONBodyInitialGrantsSubject4Type.
 const (
-	CreatePluginJSONBodyInitialGrantsSubject4TypeOrganization CreatePluginJSONBodyInitialGrantsSubject4Type = "organization"
+	CreatePluginJSONBodyInitialGrantsSubject4TypeRole CreatePluginJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreatePluginJSONBodyInitialGrantsSubject5Id.
+const (
+	CreatePluginJSONBodyInitialGrantsSubject5IdAsterisk CreatePluginJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreatePluginJSONBodyInitialGrantsSubject5Type.
+const (
+	CreatePluginJSONBodyInitialGrantsSubject5TypeOrganization CreatePluginJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for CreatePluginJSONBodySupportedPlatforms.
@@ -1794,17 +1901,22 @@ const (
 
 // Defines values for ImportGithubPluginJSONBodyInitialGrantsSubject3Type.
 const (
-	ImportGithubPluginJSONBodyInitialGrantsSubject3TypeRole ImportGithubPluginJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for ImportGithubPluginJSONBodyInitialGrantsSubject4Id.
-const (
-	ImportGithubPluginJSONBodyInitialGrantsSubject4IdAsterisk ImportGithubPluginJSONBodyInitialGrantsSubject4Id = "*"
+	ImportGithubPluginJSONBodyInitialGrantsSubject3TypeOauthClient ImportGithubPluginJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for ImportGithubPluginJSONBodyInitialGrantsSubject4Type.
 const (
-	ImportGithubPluginJSONBodyInitialGrantsSubject4TypeOrganization ImportGithubPluginJSONBodyInitialGrantsSubject4Type = "organization"
+	ImportGithubPluginJSONBodyInitialGrantsSubject4TypeRole ImportGithubPluginJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for ImportGithubPluginJSONBodyInitialGrantsSubject5Id.
+const (
+	ImportGithubPluginJSONBodyInitialGrantsSubject5IdAsterisk ImportGithubPluginJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for ImportGithubPluginJSONBodyInitialGrantsSubject5Type.
+const (
+	ImportGithubPluginJSONBodyInitialGrantsSubject5TypeOrganization ImportGithubPluginJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for ImportGithubPluginJSONBodyProvider.
@@ -1872,17 +1984,22 @@ const (
 
 // Defines values for CreateProjectJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateProjectJSONBodyInitialGrantsSubject3TypeRole CreateProjectJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateProjectJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateProjectJSONBodyInitialGrantsSubject4IdAsterisk CreateProjectJSONBodyInitialGrantsSubject4Id = "*"
+	CreateProjectJSONBodyInitialGrantsSubject3TypeOauthClient CreateProjectJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateProjectJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateProjectJSONBodyInitialGrantsSubject4TypeOrganization CreateProjectJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateProjectJSONBodyInitialGrantsSubject4TypeRole CreateProjectJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateProjectJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateProjectJSONBodyInitialGrantsSubject5IdAsterisk CreateProjectJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateProjectJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateProjectJSONBodyInitialGrantsSubject5TypeOrganization CreateProjectJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for GetResourcePermissionsParamsResource.
@@ -1960,17 +2077,22 @@ const (
 
 // Defines values for UpdateResourcePermissionsJSONBodyGrantsSubject3Type.
 const (
-	UpdateResourcePermissionsJSONBodyGrantsSubject3TypeRole UpdateResourcePermissionsJSONBodyGrantsSubject3Type = "role"
-)
-
-// Defines values for UpdateResourcePermissionsJSONBodyGrantsSubject4Id.
-const (
-	UpdateResourcePermissionsJSONBodyGrantsSubject4IdAsterisk UpdateResourcePermissionsJSONBodyGrantsSubject4Id = "*"
+	UpdateResourcePermissionsJSONBodyGrantsSubject3TypeOauthClient UpdateResourcePermissionsJSONBodyGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for UpdateResourcePermissionsJSONBodyGrantsSubject4Type.
 const (
-	UpdateResourcePermissionsJSONBodyGrantsSubject4TypeOrganization UpdateResourcePermissionsJSONBodyGrantsSubject4Type = "organization"
+	UpdateResourcePermissionsJSONBodyGrantsSubject4TypeRole UpdateResourcePermissionsJSONBodyGrantsSubject4Type = "role"
+)
+
+// Defines values for UpdateResourcePermissionsJSONBodyGrantsSubject5Id.
+const (
+	UpdateResourcePermissionsJSONBodyGrantsSubject5IdAsterisk UpdateResourcePermissionsJSONBodyGrantsSubject5Id = "*"
+)
+
+// Defines values for UpdateResourcePermissionsJSONBodyGrantsSubject5Type.
+const (
+	UpdateResourcePermissionsJSONBodyGrantsSubject5TypeOrganization UpdateResourcePermissionsJSONBodyGrantsSubject5Type = "organization"
 )
 
 // Defines values for CreateRoleJSONBodyPermission.
@@ -2028,17 +2150,22 @@ const (
 
 // Defines values for CreateServiceAccountJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateServiceAccountJSONBodyInitialGrantsSubject3TypeRole CreateServiceAccountJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateServiceAccountJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateServiceAccountJSONBodyInitialGrantsSubject4IdAsterisk CreateServiceAccountJSONBodyInitialGrantsSubject4Id = "*"
+	CreateServiceAccountJSONBodyInitialGrantsSubject3TypeOauthClient CreateServiceAccountJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateServiceAccountJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateServiceAccountJSONBodyInitialGrantsSubject4TypeOrganization CreateServiceAccountJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateServiceAccountJSONBodyInitialGrantsSubject4TypeRole CreateServiceAccountJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateServiceAccountJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateServiceAccountJSONBodyInitialGrantsSubject5IdAsterisk CreateServiceAccountJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateServiceAccountJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateServiceAccountJSONBodyInitialGrantsSubject5TypeOrganization CreateServiceAccountJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for CreateSkillShareLinkJSONBodyPluginPlatform.
@@ -2080,17 +2207,22 @@ const (
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateSkillJSONBodyInitialGrantsSubject3TypeRole CreateSkillJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for CreateSkillJSONBodyInitialGrantsSubject4Id.
-const (
-	CreateSkillJSONBodyInitialGrantsSubject4IdAsterisk CreateSkillJSONBodyInitialGrantsSubject4Id = "*"
+	CreateSkillJSONBodyInitialGrantsSubject3TypeOauthClient CreateSkillJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateSkillJSONBodyInitialGrantsSubject4TypeOrganization CreateSkillJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateSkillJSONBodyInitialGrantsSubject4TypeRole CreateSkillJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for CreateSkillJSONBodyInitialGrantsSubject5Id.
+const (
+	CreateSkillJSONBodyInitialGrantsSubject5IdAsterisk CreateSkillJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for CreateSkillJSONBodyInitialGrantsSubject5Type.
+const (
+	CreateSkillJSONBodyInitialGrantsSubject5TypeOrganization CreateSkillJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsActions.
@@ -2115,22 +2247,27 @@ const (
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject2Type.
 const (
-	ServiceAccount ImportGithubSkillsJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+	ImportGithubSkillsJSONBodyInitialGrantsSubject2TypeServiceAccount ImportGithubSkillsJSONBodyInitialGrantsSubject2Type = "serviceAccount"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject3Type.
 const (
-	Role ImportGithubSkillsJSONBodyInitialGrantsSubject3Type = "role"
-)
-
-// Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject4Id.
-const (
-	Asterisk ImportGithubSkillsJSONBodyInitialGrantsSubject4Id = "*"
+	ImportGithubSkillsJSONBodyInitialGrantsSubject3TypeOauthClient ImportGithubSkillsJSONBodyInitialGrantsSubject3Type = "oauthClient"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject4Type.
 const (
-	Organization ImportGithubSkillsJSONBodyInitialGrantsSubject4Type = "organization"
+	Role ImportGithubSkillsJSONBodyInitialGrantsSubject4Type = "role"
+)
+
+// Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject5Id.
+const (
+	Asterisk ImportGithubSkillsJSONBodyInitialGrantsSubject5Id = "*"
+)
+
+// Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject5Type.
+const (
+	Organization ImportGithubSkillsJSONBodyInitialGrantsSubject5Type = "organization"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyProvider.
@@ -2209,6 +2346,7 @@ const (
 
 // Defines values for GetToolsWithAssignmentsParamsObservedByClient.
 const (
+	GetToolsWithAssignmentsParamsObservedByClientChatgpt       GetToolsWithAssignmentsParamsObservedByClient = "chatgpt"
 	GetToolsWithAssignmentsParamsObservedByClientClaude        GetToolsWithAssignmentsParamsObservedByClient = "claude"
 	GetToolsWithAssignmentsParamsObservedByClientClaudeCode    GetToolsWithAssignmentsParamsObservedByClient = "claude-code"
 	GetToolsWithAssignmentsParamsObservedByClientClaudeDesktop GetToolsWithAssignmentsParamsObservedByClient = "claude-desktop"
@@ -2359,7 +2497,7 @@ type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject2Type string
 
 // CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3 defines parameters for CreateA2aRemoteAgent.
 type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                                `json:"id"`
+	Id   openapi_types.UUID                                    `json:"id"`
 	Type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -2368,15 +2506,24 @@ type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3Type string
 
 // CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4 defines parameters for CreateA2aRemoteAgent.
 type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                                `json:"id"`
 	Type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Id defines parameters for CreateA2aRemoteAgent.
-type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Id string
-
 // CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Type defines parameters for CreateA2aRemoteAgent.
 type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Type string
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5Id defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5Id string
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject5Type string
 
 // CreateA2aRemoteAgentJSONBody_InitialGrants_Subject defines parameters for CreateA2aRemoteAgent.
 type CreateA2aRemoteAgentJSONBody_InitialGrants_Subject struct {
@@ -2564,7 +2711,7 @@ type GetAgentsParams struct {
 	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
 	Access *[]GetAgentsParamsAccess `form:"access,omitempty" json:"access,omitempty"`
 
-	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>, oauthClient:<oauthClientId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
 	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
 
 	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
@@ -2588,7 +2735,7 @@ type GetAgentsParams struct {
 	// Pinned Filter by the current user's pins. Pinned results are ordered by newest pin first; unpinned results keep the requested sort.
 	Pinned *bool `form:"pinned,omitempty" json:"pinned,omitempty"`
 
-	// IncludeTools Attach each agent's assigned tools. Defaults to true. The tools carry every name and description, so they are most of the response. Pass false when you need only the agents, `toolsCount`, or `subagentsCount`, which are always present. With false, `tools` is an empty array that means 'not requested', not 'none assigned'.
+	// IncludeTools Include assigned tools (default: true). Set `includeTools=false` for a smaller response when you only need agents or their counts. `toolsCount` and `subagentsCount` remain available; an empty `tools` array then means tools were omitted, not that none are assigned.
 	IncludeTools *bool `form:"includeTools,omitempty" json:"includeTools,omitempty"`
 
 	// IncludeTotal Count every matching agent for `pagination.total`. Defaults to true. Pass false from lists that never show a total, such as pinned rows. With false, the count is skipped and `hasNext` stays exact. `total` is then a lower bound: the agents up to this page, plus one when more follow.
@@ -2662,9 +2809,15 @@ type CreateAgentJSONBody struct {
 	ModelId                   *openapi_types.UUID                           `json:"modelId"`
 	ModelPoolId               *openapi_types.UUID                           `json:"modelPoolId"`
 	Name                      string                                        `json:"name"`
-	OrganizationId            *string                                       `json:"organizationId,omitempty"`
-	PassthroughHeaders        *[]string                                     `json:"passthroughHeaders"`
-	Runtime                   *struct {
+	NetworkPolicy             *struct {
+		AllowedCidrs   *[]string                                     `json:"allowedCidrs,omitempty"`
+		AllowedDomains *[]string                                     `json:"allowedDomains,omitempty"`
+		DomainPreset   *CreateAgentJSONBodyNetworkPolicyDomainPreset `json:"domainPreset,omitempty"`
+		EgressMode     *CreateAgentJSONBodyNetworkPolicyEgressMode   `json:"egressMode,omitempty"`
+	} `json:"networkPolicy"`
+	OrganizationId     *string   `json:"organizationId,omitempty"`
+	PassthroughHeaders *[]string `json:"passthroughHeaders"`
+	Runtime            *struct {
 		AllowAgentSuppliedCredentialValues *bool                             `json:"allowAgentSuppliedCredentialValues,omitempty"`
 		Backend                            CreateAgentJSONBodyRuntimeBackend `json:"backend"`
 		ClaudeCode                         *struct {
@@ -2695,7 +2848,14 @@ type CreateAgentJSONBody struct {
 		Tier               *string                                     `json:"tier"`
 		TtlHours           *int                                        `json:"ttlHours"`
 	} `json:"runtime"`
-	Scope            interface{} `json:"scope,omitempty"`
+	Scope                 interface{} `json:"scope,omitempty"`
+	SubagentLoadBalancing *struct {
+		Algorithm       *CreateAgentJSONBodySubagentLoadBalancingAlgorithm `json:"algorithm,omitempty"`
+		Enabled         *bool                                              `json:"enabled,omitempty"`
+		FallbackEnabled *bool                                              `json:"fallbackEnabled,omitempty"`
+		Retries         *int                                               `json:"retries,omitempty"`
+		Weights         *map[string]int                                    `json:"weights,omitempty"`
+	} `json:"subagentLoadBalancing"`
 	SuggestedPrompts *[]struct {
 		Prompt       string `json:"prompt"`
 		SummaryTitle string `json:"summaryTitle"`
@@ -2838,6 +2998,14 @@ type CreateAgentJSONBodyBuiltInAgentConfig3 struct {
 // CreateAgentJSONBodyBuiltInAgentConfig3Name defines parameters for CreateAgent.
 type CreateAgentJSONBodyBuiltInAgentConfig3Name string
 
+// CreateAgentJSONBodyBuiltInAgentConfig4 defines parameters for CreateAgent.
+type CreateAgentJSONBodyBuiltInAgentConfig4 struct {
+	Name CreateAgentJSONBodyBuiltInAgentConfig4Name `json:"name"`
+}
+
+// CreateAgentJSONBodyBuiltInAgentConfig4Name defines parameters for CreateAgent.
+type CreateAgentJSONBodyBuiltInAgentConfig4Name string
+
 // CreateAgentJSONBody_BuiltInAgentConfig defines parameters for CreateAgent.
 type CreateAgentJSONBody_BuiltInAgentConfig struct {
 	union json.RawMessage
@@ -2878,7 +3046,7 @@ type CreateAgentJSONBodyInitialGrantsSubject2Type string
 
 // CreateAgentJSONBodyInitialGrantsSubject3 defines parameters for CreateAgent.
 type CreateAgentJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                       `json:"id"`
+	Id   openapi_types.UUID                           `json:"id"`
 	Type CreateAgentJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -2887,15 +3055,24 @@ type CreateAgentJSONBodyInitialGrantsSubject3Type string
 
 // CreateAgentJSONBodyInitialGrantsSubject4 defines parameters for CreateAgent.
 type CreateAgentJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateAgentJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                       `json:"id"`
 	Type CreateAgentJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateAgentJSONBodyInitialGrantsSubject4Id defines parameters for CreateAgent.
-type CreateAgentJSONBodyInitialGrantsSubject4Id string
-
 // CreateAgentJSONBodyInitialGrantsSubject4Type defines parameters for CreateAgent.
 type CreateAgentJSONBodyInitialGrantsSubject4Type string
+
+// CreateAgentJSONBodyInitialGrantsSubject5 defines parameters for CreateAgent.
+type CreateAgentJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateAgentJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateAgentJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateAgentJSONBodyInitialGrantsSubject5Id defines parameters for CreateAgent.
+type CreateAgentJSONBodyInitialGrantsSubject5Id string
+
+// CreateAgentJSONBodyInitialGrantsSubject5Type defines parameters for CreateAgent.
+type CreateAgentJSONBodyInitialGrantsSubject5Type string
 
 // CreateAgentJSONBody_InitialGrants_Subject defines parameters for CreateAgent.
 type CreateAgentJSONBody_InitialGrants_Subject struct {
@@ -2904,6 +3081,12 @@ type CreateAgentJSONBody_InitialGrants_Subject struct {
 
 // CreateAgentJSONBodyMissingCredentialBehavior defines parameters for CreateAgent.
 type CreateAgentJSONBodyMissingCredentialBehavior string
+
+// CreateAgentJSONBodyNetworkPolicyDomainPreset defines parameters for CreateAgent.
+type CreateAgentJSONBodyNetworkPolicyDomainPreset string
+
+// CreateAgentJSONBodyNetworkPolicyEgressMode defines parameters for CreateAgent.
+type CreateAgentJSONBodyNetworkPolicyEgressMode string
 
 // CreateAgentJSONBodyRuntimeBackend defines parameters for CreateAgent.
 type CreateAgentJSONBodyRuntimeBackend string
@@ -2919,6 +3102,9 @@ type CreateAgentJSONBodyRuntimeInferenceProtocol string
 
 // CreateAgentJSONBodyRuntimeSteerMode defines parameters for CreateAgent.
 type CreateAgentJSONBodyRuntimeSteerMode string
+
+// CreateAgentJSONBodySubagentLoadBalancingAlgorithm defines parameters for CreateAgent.
+type CreateAgentJSONBodySubagentLoadBalancingAlgorithm string
 
 // CreateAgentJSONBodyToolExposureMode defines parameters for CreateAgent.
 type CreateAgentJSONBodyToolExposureMode string
@@ -2994,9 +3180,15 @@ type UpdateAgentJSONBody struct {
 	ModelId                   *openapi_types.UUID                           `json:"modelId"`
 	ModelPoolId               *openapi_types.UUID                           `json:"modelPoolId"`
 	Name                      *string                                       `json:"name,omitempty"`
-	OrganizationId            *string                                       `json:"organizationId,omitempty"`
-	PassthroughHeaders        *[]string                                     `json:"passthroughHeaders"`
-	Runtime                   *struct {
+	NetworkPolicy             *struct {
+		AllowedCidrs   *[]string                                     `json:"allowedCidrs,omitempty"`
+		AllowedDomains *[]string                                     `json:"allowedDomains,omitempty"`
+		DomainPreset   *UpdateAgentJSONBodyNetworkPolicyDomainPreset `json:"domainPreset,omitempty"`
+		EgressMode     *UpdateAgentJSONBodyNetworkPolicyEgressMode   `json:"egressMode,omitempty"`
+	} `json:"networkPolicy"`
+	OrganizationId     *string   `json:"organizationId,omitempty"`
+	PassthroughHeaders *[]string `json:"passthroughHeaders"`
+	Runtime            *struct {
 		AllowAgentSuppliedCredentialValues *bool                             `json:"allowAgentSuppliedCredentialValues,omitempty"`
 		Backend                            UpdateAgentJSONBodyRuntimeBackend `json:"backend"`
 		ClaudeCode                         *struct {
@@ -3027,7 +3219,14 @@ type UpdateAgentJSONBody struct {
 		Tier               *string                                     `json:"tier"`
 		TtlHours           *int                                        `json:"ttlHours"`
 	} `json:"runtime"`
-	Scope            interface{} `json:"scope,omitempty"`
+	Scope                 interface{} `json:"scope,omitempty"`
+	SubagentLoadBalancing *struct {
+		Algorithm       *UpdateAgentJSONBodySubagentLoadBalancingAlgorithm `json:"algorithm,omitempty"`
+		Enabled         *bool                                              `json:"enabled,omitempty"`
+		FallbackEnabled *bool                                              `json:"fallbackEnabled,omitempty"`
+		Retries         *int                                               `json:"retries,omitempty"`
+		Weights         *map[string]int                                    `json:"weights,omitempty"`
+	} `json:"subagentLoadBalancing"`
 	SuggestedPrompts *[]struct {
 		Prompt       string `json:"prompt"`
 		SummaryTitle string `json:"summaryTitle"`
@@ -3073,6 +3272,14 @@ type UpdateAgentJSONBodyBuiltInAgentConfig3 struct {
 // UpdateAgentJSONBodyBuiltInAgentConfig3Name defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyBuiltInAgentConfig3Name string
 
+// UpdateAgentJSONBodyBuiltInAgentConfig4 defines parameters for UpdateAgent.
+type UpdateAgentJSONBodyBuiltInAgentConfig4 struct {
+	Name UpdateAgentJSONBodyBuiltInAgentConfig4Name `json:"name"`
+}
+
+// UpdateAgentJSONBodyBuiltInAgentConfig4Name defines parameters for UpdateAgent.
+type UpdateAgentJSONBodyBuiltInAgentConfig4Name string
+
 // UpdateAgentJSONBody_BuiltInAgentConfig defines parameters for UpdateAgent.
 type UpdateAgentJSONBody_BuiltInAgentConfig struct {
 	union json.RawMessage
@@ -3086,6 +3293,12 @@ type UpdateAgentJSONBodyIncomingEmailSecurityMode string
 
 // UpdateAgentJSONBodyMissingCredentialBehavior defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyMissingCredentialBehavior string
+
+// UpdateAgentJSONBodyNetworkPolicyDomainPreset defines parameters for UpdateAgent.
+type UpdateAgentJSONBodyNetworkPolicyDomainPreset string
+
+// UpdateAgentJSONBodyNetworkPolicyEgressMode defines parameters for UpdateAgent.
+type UpdateAgentJSONBodyNetworkPolicyEgressMode string
 
 // UpdateAgentJSONBodyRuntimeBackend defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyRuntimeBackend string
@@ -3101,6 +3314,9 @@ type UpdateAgentJSONBodyRuntimeInferenceProtocol string
 
 // UpdateAgentJSONBodyRuntimeSteerMode defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyRuntimeSteerMode string
+
+// UpdateAgentJSONBodySubagentLoadBalancingAlgorithm defines parameters for UpdateAgent.
+type UpdateAgentJSONBodySubagentLoadBalancingAlgorithm string
 
 // UpdateAgentJSONBodyToolExposureMode defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyToolExposureMode string
@@ -3276,7 +3492,7 @@ type CreateAppJSONBodyInitialGrantsSubject2Type string
 
 // CreateAppJSONBodyInitialGrantsSubject3 defines parameters for CreateApp.
 type CreateAppJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                     `json:"id"`
+	Id   openapi_types.UUID                         `json:"id"`
 	Type CreateAppJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -3285,15 +3501,24 @@ type CreateAppJSONBodyInitialGrantsSubject3Type string
 
 // CreateAppJSONBodyInitialGrantsSubject4 defines parameters for CreateApp.
 type CreateAppJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateAppJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                     `json:"id"`
 	Type CreateAppJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateAppJSONBodyInitialGrantsSubject4Id defines parameters for CreateApp.
-type CreateAppJSONBodyInitialGrantsSubject4Id string
-
 // CreateAppJSONBodyInitialGrantsSubject4Type defines parameters for CreateApp.
 type CreateAppJSONBodyInitialGrantsSubject4Type string
+
+// CreateAppJSONBodyInitialGrantsSubject5 defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateAppJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateAppJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateAppJSONBodyInitialGrantsSubject5Id defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject5Id string
+
+// CreateAppJSONBodyInitialGrantsSubject5Type defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject5Type string
 
 // CreateAppJSONBody_InitialGrants_Subject defines parameters for CreateApp.
 type CreateAppJSONBody_InitialGrants_Subject struct {
@@ -3339,7 +3564,7 @@ type ListRuntimeCredentialsParams struct {
 	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
 	Access *[]ListRuntimeCredentialsParamsAccess `form:"access,omitempty" json:"access,omitempty"`
 
-	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>, oauthClient:<oauthClientId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
 	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
 
 	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
@@ -3402,7 +3627,7 @@ type CreateRuntimeCredentialJSONBodyInitialGrantsSubject2Type string
 
 // CreateRuntimeCredentialJSONBodyInitialGrantsSubject3 defines parameters for CreateRuntimeCredential.
 type CreateRuntimeCredentialJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                                   `json:"id"`
+	Id   openapi_types.UUID                                       `json:"id"`
 	Type CreateRuntimeCredentialJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -3411,15 +3636,24 @@ type CreateRuntimeCredentialJSONBodyInitialGrantsSubject3Type string
 
 // CreateRuntimeCredentialJSONBodyInitialGrantsSubject4 defines parameters for CreateRuntimeCredential.
 type CreateRuntimeCredentialJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                                   `json:"id"`
 	Type CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Id defines parameters for CreateRuntimeCredential.
-type CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Id string
-
 // CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Type defines parameters for CreateRuntimeCredential.
 type CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Type string
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject5 defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateRuntimeCredentialJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateRuntimeCredentialJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject5Id defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject5Id string
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject5Type defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject5Type string
 
 // CreateRuntimeCredentialJSONBody_InitialGrants_Subject defines parameters for CreateRuntimeCredential.
 type CreateRuntimeCredentialJSONBody_InitialGrants_Subject struct {
@@ -4033,7 +4267,7 @@ type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject2Type string
 
 // CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject3 defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                                        `json:"id"`
+	Id   openapi_types.UUID                                            `json:"id"`
 	Type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -4042,15 +4276,24 @@ type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject3Type string
 
 // CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4 defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                                        `json:"id"`
 	Type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4Id defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4Id string
-
 // CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4Type defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject4Type string
+
+// CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5 defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5Id defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5Id string
+
+// CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5Type defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyInitialGrantsSubject5Type string
 
 // CreateInternalMcpCatalogItemJSONBody_InitialGrants_Subject defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBody_InitialGrants_Subject struct {
@@ -4336,7 +4579,7 @@ type CreateKnowledgeBaseJSONBodyInitialGrantsSubject2Type string
 
 // CreateKnowledgeBaseJSONBodyInitialGrantsSubject3 defines parameters for CreateKnowledgeBase.
 type CreateKnowledgeBaseJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                               `json:"id"`
+	Id   openapi_types.UUID                                   `json:"id"`
 	Type CreateKnowledgeBaseJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -4345,15 +4588,24 @@ type CreateKnowledgeBaseJSONBodyInitialGrantsSubject3Type string
 
 // CreateKnowledgeBaseJSONBodyInitialGrantsSubject4 defines parameters for CreateKnowledgeBase.
 type CreateKnowledgeBaseJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                               `json:"id"`
 	Type CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Id defines parameters for CreateKnowledgeBase.
-type CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Id string
-
 // CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Type defines parameters for CreateKnowledgeBase.
 type CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Type string
+
+// CreateKnowledgeBaseJSONBodyInitialGrantsSubject5 defines parameters for CreateKnowledgeBase.
+type CreateKnowledgeBaseJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateKnowledgeBaseJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateKnowledgeBaseJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateKnowledgeBaseJSONBodyInitialGrantsSubject5Id defines parameters for CreateKnowledgeBase.
+type CreateKnowledgeBaseJSONBodyInitialGrantsSubject5Id string
+
+// CreateKnowledgeBaseJSONBodyInitialGrantsSubject5Type defines parameters for CreateKnowledgeBase.
+type CreateKnowledgeBaseJSONBodyInitialGrantsSubject5Type string
 
 // CreateKnowledgeBaseJSONBody_InitialGrants_Subject defines parameters for CreateKnowledgeBase.
 type CreateKnowledgeBaseJSONBody_InitialGrants_Subject struct {
@@ -4369,9 +4621,12 @@ type UpdateKnowledgeBaseJSONBody struct {
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 	} `json:"labels,omitempty"`
-	Name       *string     `json:"name,omitempty"`
-	TeamIds    interface{} `json:"teamIds,omitempty"`
-	Visibility interface{} `json:"visibility,omitempty"`
+	Name    *string     `json:"name,omitempty"`
+	TeamIds interface{} `json:"teamIds,omitempty"`
+
+	// UploadedFilesEnvironmentId Environment for this knowledge base's indexed uploaded files. Requires uploaded files to have been indexed; omit to leave it unchanged.
+	UploadedFilesEnvironmentId *openapi_types.UUID `json:"uploadedFilesEnvironmentId"`
+	Visibility                 interface{}         `json:"visibility,omitempty"`
 }
 
 // CreateKnowledgeDirectoryJSONBody defines parameters for CreateKnowledgeDirectory.
@@ -4397,7 +4652,7 @@ type GetKnowledgeFilesParams struct {
 	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
 	Access *[]GetKnowledgeFilesParamsAccess `form:"access,omitempty" json:"access,omitempty"`
 
-	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>, oauthClient:<oauthClientId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
 	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
 
 	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
@@ -4457,7 +4712,7 @@ type UploadKnowledgeFileJSONBodyInitialGrantsSubject2Type string
 
 // UploadKnowledgeFileJSONBodyInitialGrantsSubject3 defines parameters for UploadKnowledgeFile.
 type UploadKnowledgeFileJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                               `json:"id"`
+	Id   openapi_types.UUID                                   `json:"id"`
 	Type UploadKnowledgeFileJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -4466,15 +4721,24 @@ type UploadKnowledgeFileJSONBodyInitialGrantsSubject3Type string
 
 // UploadKnowledgeFileJSONBodyInitialGrantsSubject4 defines parameters for UploadKnowledgeFile.
 type UploadKnowledgeFileJSONBodyInitialGrantsSubject4 struct {
-	Id   UploadKnowledgeFileJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                               `json:"id"`
 	Type UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// UploadKnowledgeFileJSONBodyInitialGrantsSubject4Id defines parameters for UploadKnowledgeFile.
-type UploadKnowledgeFileJSONBodyInitialGrantsSubject4Id string
-
 // UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type defines parameters for UploadKnowledgeFile.
 type UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type string
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject5 defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject5 struct {
+	Id   UploadKnowledgeFileJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type UploadKnowledgeFileJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject5Id defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject5Id string
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject5Type defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject5Type string
 
 // UploadKnowledgeFileJSONBody_InitialGrants_Subject defines parameters for UploadKnowledgeFile.
 type UploadKnowledgeFileJSONBody_InitialGrants_Subject struct {
@@ -4564,7 +4828,7 @@ type GetModelsWithApiKeysParams struct {
 	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
 	Access *[]GetModelsWithApiKeysParamsAccess `form:"access,omitempty" json:"access,omitempty"`
 
-	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>, oauthClient:<oauthClientId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
 	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
 
 	// ApiKeyIds Only models linked to one of these provider keys.
@@ -4687,7 +4951,7 @@ type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject2Type string
 
 // CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject3 defines parameters for CreateLlmProviderApiKey.
 type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                                   `json:"id"`
+	Id   openapi_types.UUID                                       `json:"id"`
 	Type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -4696,15 +4960,24 @@ type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject3Type string
 
 // CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4 defines parameters for CreateLlmProviderApiKey.
 type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                                   `json:"id"`
 	Type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4Id defines parameters for CreateLlmProviderApiKey.
-type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4Id string
-
 // CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4Type defines parameters for CreateLlmProviderApiKey.
 type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject4Type string
+
+// CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5 defines parameters for CreateLlmProviderApiKey.
+type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5Id defines parameters for CreateLlmProviderApiKey.
+type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5Id string
+
+// CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5Type defines parameters for CreateLlmProviderApiKey.
+type CreateLlmProviderApiKeyJSONBodyInitialGrantsSubject5Type string
 
 // CreateLlmProviderApiKeyJSONBody_InitialGrants_Subject defines parameters for CreateLlmProviderApiKey.
 type CreateLlmProviderApiKeyJSONBody_InitialGrants_Subject struct {
@@ -4796,7 +5069,7 @@ type CreateVirtualApiKeyJSONBodyInitialGrantsSubject2Type string
 
 // CreateVirtualApiKeyJSONBodyInitialGrantsSubject3 defines parameters for CreateVirtualApiKey.
 type CreateVirtualApiKeyJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                               `json:"id"`
+	Id   openapi_types.UUID                                   `json:"id"`
 	Type CreateVirtualApiKeyJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -4805,15 +5078,24 @@ type CreateVirtualApiKeyJSONBodyInitialGrantsSubject3Type string
 
 // CreateVirtualApiKeyJSONBodyInitialGrantsSubject4 defines parameters for CreateVirtualApiKey.
 type CreateVirtualApiKeyJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                               `json:"id"`
 	Type CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Id defines parameters for CreateVirtualApiKey.
-type CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Id string
-
 // CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Type defines parameters for CreateVirtualApiKey.
 type CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Type string
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject5 defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateVirtualApiKeyJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateVirtualApiKeyJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject5Id defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject5Id string
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject5Type defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject5Type string
 
 // CreateVirtualApiKeyJSONBody_InitialGrants_Subject defines parameters for CreateVirtualApiKey.
 type CreateVirtualApiKeyJSONBody_InitialGrants_Subject struct {
@@ -4876,7 +5158,7 @@ type GetMcpToolCallsParams struct {
 	// McpServerName Filter by exact MCP server name
 	McpServerName *string `form:"mcpServerName,omitempty" json:"mcpServerName,omitempty"`
 
-	// UserId Filter by the user the call is attributed to. Ignored without `log:admin`, which already scopes the listing to the caller.
+	// UserId Filter by the user the call is attributed to. Ignored without [`log:admin`](/docs/reference/permissions#log:admin), which already scopes the listing to the caller.
 	UserId *string `form:"userId,omitempty" json:"userId,omitempty"`
 
 	// SessionId Filter by the LLM proxy session that issued the call: calls recorded with that session, and tool calls whose run resolves to it.
@@ -4940,7 +5222,7 @@ type GetOauthClientsParams struct {
 	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
 	Access *[]GetOauthClientsParamsAccess `form:"access,omitempty" json:"access,omitempty"`
 
-	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>, oauthClient:<oauthClientId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
 	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
 
 	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
@@ -5034,7 +5316,7 @@ type CreateOauthClientJSONBodyInitialGrantsSubject2Type string
 
 // CreateOauthClientJSONBodyInitialGrantsSubject3 defines parameters for CreateOauthClient.
 type CreateOauthClientJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                             `json:"id"`
+	Id   openapi_types.UUID                                 `json:"id"`
 	Type CreateOauthClientJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -5043,15 +5325,24 @@ type CreateOauthClientJSONBodyInitialGrantsSubject3Type string
 
 // CreateOauthClientJSONBodyInitialGrantsSubject4 defines parameters for CreateOauthClient.
 type CreateOauthClientJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateOauthClientJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                             `json:"id"`
 	Type CreateOauthClientJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateOauthClientJSONBodyInitialGrantsSubject4Id defines parameters for CreateOauthClient.
-type CreateOauthClientJSONBodyInitialGrantsSubject4Id string
-
 // CreateOauthClientJSONBodyInitialGrantsSubject4Type defines parameters for CreateOauthClient.
 type CreateOauthClientJSONBodyInitialGrantsSubject4Type string
+
+// CreateOauthClientJSONBodyInitialGrantsSubject5 defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateOauthClientJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateOauthClientJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateOauthClientJSONBodyInitialGrantsSubject5Id defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject5Id string
+
+// CreateOauthClientJSONBodyInitialGrantsSubject5Type defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject5Type string
 
 // CreateOauthClientJSONBody_InitialGrants_Subject defines parameters for CreateOauthClient.
 type CreateOauthClientJSONBody_InitialGrants_Subject struct {
@@ -5121,12 +5412,14 @@ type UpdateAgentSettingsJSONBody struct {
 	AgentRuntimeTiers *struct {
 		DefaultTier string `json:"defaultTier"`
 		Tiers       []struct {
-			CpuLimit     *float32 `json:"cpuLimit"`
-			CpuRequest   float32  `json:"cpuRequest"`
-			Name         string   `json:"name"`
-			Pooled       bool     `json:"pooled"`
-			PreviousName *string  `json:"previousName,omitempty"`
-			WorkspaceGiB *int     `json:"workspaceGiB"`
+			CpuLimit         *float32 `json:"cpuLimit"`
+			CpuRequest       float32  `json:"cpuRequest"`
+			MemoryLimitMiB   *int     `json:"memoryLimitMiB"`
+			MemoryRequestMiB *int     `json:"memoryRequestMiB"`
+			Name             string   `json:"name"`
+			Pooled           bool     `json:"pooled"`
+			PreviousName     *string  `json:"previousName,omitempty"`
+			WorkspaceGiB     *int     `json:"workspaceGiB"`
 		} `json:"tiers"`
 	} `json:"agentRuntimeTiers"`
 	DefaultAgentId      *openapi_types.UUID `json:"defaultAgentId"`
@@ -5391,7 +5684,7 @@ type CreatePluginJSONBodyInitialGrantsSubject2Type string
 
 // CreatePluginJSONBodyInitialGrantsSubject3 defines parameters for CreatePlugin.
 type CreatePluginJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                        `json:"id"`
+	Id   openapi_types.UUID                            `json:"id"`
 	Type CreatePluginJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -5400,15 +5693,24 @@ type CreatePluginJSONBodyInitialGrantsSubject3Type string
 
 // CreatePluginJSONBodyInitialGrantsSubject4 defines parameters for CreatePlugin.
 type CreatePluginJSONBodyInitialGrantsSubject4 struct {
-	Id   CreatePluginJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                        `json:"id"`
 	Type CreatePluginJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreatePluginJSONBodyInitialGrantsSubject4Id defines parameters for CreatePlugin.
-type CreatePluginJSONBodyInitialGrantsSubject4Id string
-
 // CreatePluginJSONBodyInitialGrantsSubject4Type defines parameters for CreatePlugin.
 type CreatePluginJSONBodyInitialGrantsSubject4Type string
+
+// CreatePluginJSONBodyInitialGrantsSubject5 defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject5 struct {
+	Id   CreatePluginJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreatePluginJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreatePluginJSONBodyInitialGrantsSubject5Id defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject5Id string
+
+// CreatePluginJSONBodyInitialGrantsSubject5Type defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject5Type string
 
 // CreatePluginJSONBody_InitialGrants_Subject defines parameters for CreatePlugin.
 type CreatePluginJSONBody_InitialGrants_Subject struct {
@@ -5478,7 +5780,7 @@ type ImportGithubPluginJSONBodyInitialGrantsSubject2Type string
 
 // ImportGithubPluginJSONBodyInitialGrantsSubject3 defines parameters for ImportGithubPlugin.
 type ImportGithubPluginJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                              `json:"id"`
+	Id   openapi_types.UUID                                  `json:"id"`
 	Type ImportGithubPluginJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -5487,15 +5789,24 @@ type ImportGithubPluginJSONBodyInitialGrantsSubject3Type string
 
 // ImportGithubPluginJSONBodyInitialGrantsSubject4 defines parameters for ImportGithubPlugin.
 type ImportGithubPluginJSONBodyInitialGrantsSubject4 struct {
-	Id   ImportGithubPluginJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                              `json:"id"`
 	Type ImportGithubPluginJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// ImportGithubPluginJSONBodyInitialGrantsSubject4Id defines parameters for ImportGithubPlugin.
-type ImportGithubPluginJSONBodyInitialGrantsSubject4Id string
-
 // ImportGithubPluginJSONBodyInitialGrantsSubject4Type defines parameters for ImportGithubPlugin.
 type ImportGithubPluginJSONBodyInitialGrantsSubject4Type string
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject5 defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject5 struct {
+	Id   ImportGithubPluginJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type ImportGithubPluginJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject5Id defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject5Id string
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject5Type defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject5Type string
 
 // ImportGithubPluginJSONBody_InitialGrants_Subject defines parameters for ImportGithubPlugin.
 type ImportGithubPluginJSONBody_InitialGrants_Subject struct {
@@ -5603,7 +5914,7 @@ type CreateProjectJSONBodyInitialGrantsSubject2Type string
 
 // CreateProjectJSONBodyInitialGrantsSubject3 defines parameters for CreateProject.
 type CreateProjectJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                         `json:"id"`
+	Id   openapi_types.UUID                             `json:"id"`
 	Type CreateProjectJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -5612,15 +5923,24 @@ type CreateProjectJSONBodyInitialGrantsSubject3Type string
 
 // CreateProjectJSONBodyInitialGrantsSubject4 defines parameters for CreateProject.
 type CreateProjectJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateProjectJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                         `json:"id"`
 	Type CreateProjectJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateProjectJSONBodyInitialGrantsSubject4Id defines parameters for CreateProject.
-type CreateProjectJSONBodyInitialGrantsSubject4Id string
-
 // CreateProjectJSONBodyInitialGrantsSubject4Type defines parameters for CreateProject.
 type CreateProjectJSONBodyInitialGrantsSubject4Type string
+
+// CreateProjectJSONBodyInitialGrantsSubject5 defines parameters for CreateProject.
+type CreateProjectJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateProjectJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateProjectJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateProjectJSONBodyInitialGrantsSubject5Id defines parameters for CreateProject.
+type CreateProjectJSONBodyInitialGrantsSubject5Id string
+
+// CreateProjectJSONBodyInitialGrantsSubject5Type defines parameters for CreateProject.
+type CreateProjectJSONBodyInitialGrantsSubject5Type string
 
 // CreateProjectJSONBody_InitialGrants_Subject defines parameters for CreateProject.
 type CreateProjectJSONBody_InitialGrants_Subject struct {
@@ -5702,7 +6022,7 @@ type UpdateResourcePermissionsJSONBodyGrantsSubject2Type string
 
 // UpdateResourcePermissionsJSONBodyGrantsSubject3 defines parameters for UpdateResourcePermissions.
 type UpdateResourcePermissionsJSONBodyGrantsSubject3 struct {
-	Id   string                                              `json:"id"`
+	Id   openapi_types.UUID                                  `json:"id"`
 	Type UpdateResourcePermissionsJSONBodyGrantsSubject3Type `json:"type"`
 }
 
@@ -5711,15 +6031,24 @@ type UpdateResourcePermissionsJSONBodyGrantsSubject3Type string
 
 // UpdateResourcePermissionsJSONBodyGrantsSubject4 defines parameters for UpdateResourcePermissions.
 type UpdateResourcePermissionsJSONBodyGrantsSubject4 struct {
-	Id   UpdateResourcePermissionsJSONBodyGrantsSubject4Id   `json:"id"`
+	Id   string                                              `json:"id"`
 	Type UpdateResourcePermissionsJSONBodyGrantsSubject4Type `json:"type"`
 }
 
-// UpdateResourcePermissionsJSONBodyGrantsSubject4Id defines parameters for UpdateResourcePermissions.
-type UpdateResourcePermissionsJSONBodyGrantsSubject4Id string
-
 // UpdateResourcePermissionsJSONBodyGrantsSubject4Type defines parameters for UpdateResourcePermissions.
 type UpdateResourcePermissionsJSONBodyGrantsSubject4Type string
+
+// UpdateResourcePermissionsJSONBodyGrantsSubject5 defines parameters for UpdateResourcePermissions.
+type UpdateResourcePermissionsJSONBodyGrantsSubject5 struct {
+	Id   UpdateResourcePermissionsJSONBodyGrantsSubject5Id   `json:"id"`
+	Type UpdateResourcePermissionsJSONBodyGrantsSubject5Type `json:"type"`
+}
+
+// UpdateResourcePermissionsJSONBodyGrantsSubject5Id defines parameters for UpdateResourcePermissions.
+type UpdateResourcePermissionsJSONBodyGrantsSubject5Id string
+
+// UpdateResourcePermissionsJSONBodyGrantsSubject5Type defines parameters for UpdateResourcePermissions.
+type UpdateResourcePermissionsJSONBodyGrantsSubject5Type string
 
 // UpdateResourcePermissionsJSONBody_Grants_Subject defines parameters for UpdateResourcePermissions.
 type UpdateResourcePermissionsJSONBody_Grants_Subject struct {
@@ -5818,7 +6147,7 @@ type CreateServiceAccountJSONBodyInitialGrantsSubject2Type string
 
 // CreateServiceAccountJSONBodyInitialGrantsSubject3 defines parameters for CreateServiceAccount.
 type CreateServiceAccountJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                                `json:"id"`
+	Id   openapi_types.UUID                                    `json:"id"`
 	Type CreateServiceAccountJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -5827,15 +6156,24 @@ type CreateServiceAccountJSONBodyInitialGrantsSubject3Type string
 
 // CreateServiceAccountJSONBodyInitialGrantsSubject4 defines parameters for CreateServiceAccount.
 type CreateServiceAccountJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateServiceAccountJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                                `json:"id"`
 	Type CreateServiceAccountJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateServiceAccountJSONBodyInitialGrantsSubject4Id defines parameters for CreateServiceAccount.
-type CreateServiceAccountJSONBodyInitialGrantsSubject4Id string
-
 // CreateServiceAccountJSONBodyInitialGrantsSubject4Type defines parameters for CreateServiceAccount.
 type CreateServiceAccountJSONBodyInitialGrantsSubject4Type string
+
+// CreateServiceAccountJSONBodyInitialGrantsSubject5 defines parameters for CreateServiceAccount.
+type CreateServiceAccountJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateServiceAccountJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateServiceAccountJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateServiceAccountJSONBodyInitialGrantsSubject5Id defines parameters for CreateServiceAccount.
+type CreateServiceAccountJSONBodyInitialGrantsSubject5Id string
+
+// CreateServiceAccountJSONBodyInitialGrantsSubject5Type defines parameters for CreateServiceAccount.
+type CreateServiceAccountJSONBodyInitialGrantsSubject5Type string
 
 // CreateServiceAccountJSONBody_InitialGrants_Subject defines parameters for CreateServiceAccount.
 type CreateServiceAccountJSONBody_InitialGrants_Subject struct {
@@ -5962,7 +6300,7 @@ type CreateSkillJSONBodyInitialGrantsSubject2Type string
 
 // CreateSkillJSONBodyInitialGrantsSubject3 defines parameters for CreateSkill.
 type CreateSkillJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                       `json:"id"`
+	Id   openapi_types.UUID                           `json:"id"`
 	Type CreateSkillJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -5971,15 +6309,24 @@ type CreateSkillJSONBodyInitialGrantsSubject3Type string
 
 // CreateSkillJSONBodyInitialGrantsSubject4 defines parameters for CreateSkill.
 type CreateSkillJSONBodyInitialGrantsSubject4 struct {
-	Id   CreateSkillJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                       `json:"id"`
 	Type CreateSkillJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// CreateSkillJSONBodyInitialGrantsSubject4Id defines parameters for CreateSkill.
-type CreateSkillJSONBodyInitialGrantsSubject4Id string
-
 // CreateSkillJSONBodyInitialGrantsSubject4Type defines parameters for CreateSkill.
 type CreateSkillJSONBodyInitialGrantsSubject4Type string
+
+// CreateSkillJSONBodyInitialGrantsSubject5 defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject5 struct {
+	Id   CreateSkillJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type CreateSkillJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// CreateSkillJSONBodyInitialGrantsSubject5Id defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject5Id string
+
+// CreateSkillJSONBodyInitialGrantsSubject5Type defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject5Type string
 
 // CreateSkillJSONBody_InitialGrants_Subject defines parameters for CreateSkill.
 type CreateSkillJSONBody_InitialGrants_Subject struct {
@@ -6041,7 +6388,7 @@ type ImportGithubSkillsJSONBodyInitialGrantsSubject2Type string
 
 // ImportGithubSkillsJSONBodyInitialGrantsSubject3 defines parameters for ImportGithubSkills.
 type ImportGithubSkillsJSONBodyInitialGrantsSubject3 struct {
-	Id   string                                              `json:"id"`
+	Id   openapi_types.UUID                                  `json:"id"`
 	Type ImportGithubSkillsJSONBodyInitialGrantsSubject3Type `json:"type"`
 }
 
@@ -6050,15 +6397,24 @@ type ImportGithubSkillsJSONBodyInitialGrantsSubject3Type string
 
 // ImportGithubSkillsJSONBodyInitialGrantsSubject4 defines parameters for ImportGithubSkills.
 type ImportGithubSkillsJSONBodyInitialGrantsSubject4 struct {
-	Id   ImportGithubSkillsJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Id   string                                              `json:"id"`
 	Type ImportGithubSkillsJSONBodyInitialGrantsSubject4Type `json:"type"`
 }
 
-// ImportGithubSkillsJSONBodyInitialGrantsSubject4Id defines parameters for ImportGithubSkills.
-type ImportGithubSkillsJSONBodyInitialGrantsSubject4Id string
-
 // ImportGithubSkillsJSONBodyInitialGrantsSubject4Type defines parameters for ImportGithubSkills.
 type ImportGithubSkillsJSONBodyInitialGrantsSubject4Type string
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject5 defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject5 struct {
+	Id   ImportGithubSkillsJSONBodyInitialGrantsSubject5Id   `json:"id"`
+	Type ImportGithubSkillsJSONBodyInitialGrantsSubject5Type `json:"type"`
+}
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject5Id defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject5Id string
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject5Type defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject5Type string
 
 // ImportGithubSkillsJSONBody_InitialGrants_Subject defines parameters for ImportGithubSkills.
 type ImportGithubSkillsJSONBody_InitialGrants_Subject struct {
@@ -21147,13 +21503,19 @@ type GetAgentsResponse struct {
 			ModelId                              *openapi_types.UUID                       `json:"modelId"`
 			ModelPoolId                          *openapi_types.UUID                       `json:"modelPoolId"`
 			Name                                 string                                    `json:"name"`
-			OrganizationId                       string                                    `json:"organizationId"`
-			PassthroughHeaders                   *[]string                                 `json:"passthroughHeaders"`
-			PinnedAt                             *time.Time                                `json:"pinnedAt"`
-			ResolvedLlmModelName                 *string                                   `json:"resolvedLlmModelName"`
-			ResolvedLlmProvider                  *GetAgents200DataResolvedLlmProvider      `json:"resolvedLlmProvider"`
-			ResolvedLlmProviderKeyName           *string                                   `json:"resolvedLlmProviderKeyName"`
-			Runtime                              *struct {
+			NetworkPolicy                        *struct {
+				AllowedCidrs   []string                                  `json:"allowedCidrs"`
+				AllowedDomains []string                                  `json:"allowedDomains"`
+				DomainPreset   GetAgents200DataNetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     GetAgents200DataNetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"networkPolicy"`
+			OrganizationId             string                               `json:"organizationId"`
+			PassthroughHeaders         *[]string                            `json:"passthroughHeaders"`
+			PinnedAt                   *time.Time                           `json:"pinnedAt"`
+			ResolvedLlmModelName       *string                              `json:"resolvedLlmModelName"`
+			ResolvedLlmProvider        *GetAgents200DataResolvedLlmProvider `json:"resolvedLlmProvider"`
+			ResolvedLlmProviderKeyName *string                              `json:"resolvedLlmProviderKeyName"`
+			Runtime                    *struct {
 				AllowAgentSuppliedCredentialValues *bool                          `json:"allowAgentSuppliedCredentialValues,omitempty"`
 				Backend                            GetAgents200DataRuntimeBackend `json:"backend"`
 				ClaudeCode                         *struct {
@@ -21184,10 +21546,17 @@ type GetAgentsResponse struct {
 				Tier               *string                                  `json:"tier"`
 				TtlHours           *int                                     `json:"ttlHours"`
 			} `json:"runtime"`
-			RuntimeSecretId  *openapi_types.UUID   `json:"runtimeSecretId"`
-			SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
-			Scope            GetAgents200DataScope `json:"scope"`
-			Slug             *string               `json:"slug"`
+			RuntimeSecretId       *openapi_types.UUID   `json:"runtimeSecretId"`
+			SandboxAvailable      *bool                 `json:"sandboxAvailable,omitempty"`
+			Scope                 GetAgents200DataScope `json:"scope"`
+			Slug                  *string               `json:"slug"`
+			SubagentLoadBalancing *struct {
+				Algorithm       GetAgents200DataSubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled         bool                                           `json:"enabled"`
+				FallbackEnabled bool                                           `json:"fallbackEnabled"`
+				Retries         int                                            `json:"retries"`
+				Weights         *map[string]int                                `json:"weights,omitempty"`
+			} `json:"subagentLoadBalancing"`
 
 			// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
 			SubagentsCount   int `json:"subagentsCount"`
@@ -21292,6 +21661,10 @@ type GetAgents200DataBuiltInAgentConfig3 struct {
 	Name GetAgents200DataBuiltInAgentConfig3Name `json:"name"`
 }
 type GetAgents200DataBuiltInAgentConfig3Name string
+type GetAgents200DataBuiltInAgentConfig4 struct {
+	Name GetAgents200DataBuiltInAgentConfig4Name `json:"name"`
+}
+type GetAgents200DataBuiltInAgentConfig4Name string
 type GetAgents_200_Data_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
@@ -21299,6 +21672,8 @@ type GetAgents200DataCreatedByType string
 type GetAgents200DataGithubActionsAccessActAs string
 type GetAgents200DataIncomingEmailSecurityMode string
 type GetAgents200DataMissingCredentialBehavior string
+type GetAgents200DataNetworkPolicyDomainPreset string
+type GetAgents200DataNetworkPolicyEgressMode string
 type GetAgents200DataResolvedLlmProvider string
 type GetAgents200DataRuntimeBackend string
 type GetAgents200DataRuntimeClaudeCodeAuthentication string
@@ -21306,6 +21681,7 @@ type GetAgents200DataRuntimeCredentialsScope string
 type GetAgents200DataRuntimeInferenceProtocol string
 type GetAgents200DataRuntimeSteerMode string
 type GetAgents200DataScope string
+type GetAgents200DataSubagentLoadBalancingAlgorithm string
 type GetAgents200DataToolExposureMode string
 type GetAgents400ErrorType string
 type GetAgents401ErrorType string
@@ -21390,12 +21766,18 @@ type CreateAgentResponse struct {
 		ModelId                              *openapi_types.UUID                     `json:"modelId"`
 		ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 		Name                                 string                                  `json:"name"`
-		OrganizationId                       string                                  `json:"organizationId"`
-		PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
-		ResolvedLlmModelName                 *string                                 `json:"resolvedLlmModelName"`
-		ResolvedLlmProvider                  *CreateAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-		ResolvedLlmProviderKeyName           *string                                 `json:"resolvedLlmProviderKeyName"`
-		Runtime                              *struct {
+		NetworkPolicy                        *struct {
+			AllowedCidrs   []string                                `json:"allowedCidrs"`
+			AllowedDomains []string                                `json:"allowedDomains"`
+			DomainPreset   CreateAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+			EgressMode     CreateAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+		} `json:"networkPolicy"`
+		OrganizationId             string                             `json:"organizationId"`
+		PassthroughHeaders         *[]string                          `json:"passthroughHeaders"`
+		ResolvedLlmModelName       *string                            `json:"resolvedLlmModelName"`
+		ResolvedLlmProvider        *CreateAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+		ResolvedLlmProviderKeyName *string                            `json:"resolvedLlmProviderKeyName"`
+		Runtime                    *struct {
 			AllowAgentSuppliedCredentialValues *bool                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
 			Backend                            CreateAgent200RuntimeBackend `json:"backend"`
 			ClaudeCode                         *struct {
@@ -21426,10 +21808,17 @@ type CreateAgentResponse struct {
 			Tier               *string                                `json:"tier"`
 			TtlHours           *int                                   `json:"ttlHours"`
 		} `json:"runtime"`
-		RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-		Scope            CreateAgent200Scope `json:"scope"`
-		Slug             *string             `json:"slug"`
+		RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+		SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+		Scope                 CreateAgent200Scope `json:"scope"`
+		Slug                  *string             `json:"slug"`
+		SubagentLoadBalancing *struct {
+			Algorithm       CreateAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+			Enabled         bool                                         `json:"enabled"`
+			FallbackEnabled bool                                         `json:"fallbackEnabled"`
+			Retries         int                                          `json:"retries"`
+			Weights         *map[string]int                              `json:"weights,omitempty"`
+		} `json:"subagentLoadBalancing"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -21519,6 +21908,10 @@ type CreateAgent200BuiltInAgentConfig3 struct {
 	Name CreateAgent200BuiltInAgentConfig3Name `json:"name"`
 }
 type CreateAgent200BuiltInAgentConfig3Name string
+type CreateAgent200BuiltInAgentConfig4 struct {
+	Name CreateAgent200BuiltInAgentConfig4Name `json:"name"`
+}
+type CreateAgent200BuiltInAgentConfig4Name string
 type CreateAgent_200_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
@@ -21526,6 +21919,8 @@ type CreateAgent200CreatedByType string
 type CreateAgent200GithubActionsAccessActAs string
 type CreateAgent200IncomingEmailSecurityMode string
 type CreateAgent200MissingCredentialBehavior string
+type CreateAgent200NetworkPolicyDomainPreset string
+type CreateAgent200NetworkPolicyEgressMode string
 type CreateAgent200ResolvedLlmProvider string
 type CreateAgent200RuntimeBackend string
 type CreateAgent200RuntimeClaudeCodeAuthentication string
@@ -21533,6 +21928,7 @@ type CreateAgent200RuntimeCredentialsScope string
 type CreateAgent200RuntimeInferenceProtocol string
 type CreateAgent200RuntimeSteerMode string
 type CreateAgent200Scope string
+type CreateAgent200SubagentLoadBalancingAlgorithm string
 type CreateAgent200ToolExposureMode string
 type CreateAgent400ErrorType string
 type CreateAgent401ErrorType string
@@ -22369,12 +22765,18 @@ type GetAgentResponse struct {
 		ModelId                              *openapi_types.UUID                  `json:"modelId"`
 		ModelPoolId                          *openapi_types.UUID                  `json:"modelPoolId"`
 		Name                                 string                               `json:"name"`
-		OrganizationId                       string                               `json:"organizationId"`
-		PassthroughHeaders                   *[]string                            `json:"passthroughHeaders"`
-		ResolvedLlmModelName                 *string                              `json:"resolvedLlmModelName"`
-		ResolvedLlmProvider                  *GetAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-		ResolvedLlmProviderKeyName           *string                              `json:"resolvedLlmProviderKeyName"`
-		Runtime                              *struct {
+		NetworkPolicy                        *struct {
+			AllowedCidrs   []string                             `json:"allowedCidrs"`
+			AllowedDomains []string                             `json:"allowedDomains"`
+			DomainPreset   GetAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+			EgressMode     GetAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+		} `json:"networkPolicy"`
+		OrganizationId             string                          `json:"organizationId"`
+		PassthroughHeaders         *[]string                       `json:"passthroughHeaders"`
+		ResolvedLlmModelName       *string                         `json:"resolvedLlmModelName"`
+		ResolvedLlmProvider        *GetAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+		ResolvedLlmProviderKeyName *string                         `json:"resolvedLlmProviderKeyName"`
+		Runtime                    *struct {
 			AllowAgentSuppliedCredentialValues *bool                     `json:"allowAgentSuppliedCredentialValues,omitempty"`
 			Backend                            GetAgent200RuntimeBackend `json:"backend"`
 			ClaudeCode                         *struct {
@@ -22405,10 +22807,17 @@ type GetAgentResponse struct {
 			Tier               *string                             `json:"tier"`
 			TtlHours           *int                                `json:"ttlHours"`
 		} `json:"runtime"`
-		RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-		Scope            GetAgent200Scope    `json:"scope"`
-		Slug             *string             `json:"slug"`
+		RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+		SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+		Scope                 GetAgent200Scope    `json:"scope"`
+		Slug                  *string             `json:"slug"`
+		SubagentLoadBalancing *struct {
+			Algorithm       GetAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+			Enabled         bool                                      `json:"enabled"`
+			FallbackEnabled bool                                      `json:"fallbackEnabled"`
+			Retries         int                                       `json:"retries"`
+			Weights         *map[string]int                           `json:"weights,omitempty"`
+		} `json:"subagentLoadBalancing"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -22498,6 +22907,10 @@ type GetAgent200BuiltInAgentConfig3 struct {
 	Name GetAgent200BuiltInAgentConfig3Name `json:"name"`
 }
 type GetAgent200BuiltInAgentConfig3Name string
+type GetAgent200BuiltInAgentConfig4 struct {
+	Name GetAgent200BuiltInAgentConfig4Name `json:"name"`
+}
+type GetAgent200BuiltInAgentConfig4Name string
 type GetAgent_200_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
@@ -22505,6 +22918,8 @@ type GetAgent200CreatedByType string
 type GetAgent200GithubActionsAccessActAs string
 type GetAgent200IncomingEmailSecurityMode string
 type GetAgent200MissingCredentialBehavior string
+type GetAgent200NetworkPolicyDomainPreset string
+type GetAgent200NetworkPolicyEgressMode string
 type GetAgent200ResolvedLlmProvider string
 type GetAgent200RuntimeBackend string
 type GetAgent200RuntimeClaudeCodeAuthentication string
@@ -22512,6 +22927,7 @@ type GetAgent200RuntimeCredentialsScope string
 type GetAgent200RuntimeInferenceProtocol string
 type GetAgent200RuntimeSteerMode string
 type GetAgent200Scope string
+type GetAgent200SubagentLoadBalancingAlgorithm string
 type GetAgent200ToolExposureMode string
 type GetAgent400ErrorType string
 type GetAgent401ErrorType string
@@ -22596,12 +23012,18 @@ type UpdateAgentResponse struct {
 		ModelId                              *openapi_types.UUID                     `json:"modelId"`
 		ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 		Name                                 string                                  `json:"name"`
-		OrganizationId                       string                                  `json:"organizationId"`
-		PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
-		ResolvedLlmModelName                 *string                                 `json:"resolvedLlmModelName"`
-		ResolvedLlmProvider                  *UpdateAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-		ResolvedLlmProviderKeyName           *string                                 `json:"resolvedLlmProviderKeyName"`
-		Runtime                              *struct {
+		NetworkPolicy                        *struct {
+			AllowedCidrs   []string                                `json:"allowedCidrs"`
+			AllowedDomains []string                                `json:"allowedDomains"`
+			DomainPreset   UpdateAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+			EgressMode     UpdateAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+		} `json:"networkPolicy"`
+		OrganizationId             string                             `json:"organizationId"`
+		PassthroughHeaders         *[]string                          `json:"passthroughHeaders"`
+		ResolvedLlmModelName       *string                            `json:"resolvedLlmModelName"`
+		ResolvedLlmProvider        *UpdateAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+		ResolvedLlmProviderKeyName *string                            `json:"resolvedLlmProviderKeyName"`
+		Runtime                    *struct {
 			AllowAgentSuppliedCredentialValues *bool                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
 			Backend                            UpdateAgent200RuntimeBackend `json:"backend"`
 			ClaudeCode                         *struct {
@@ -22632,10 +23054,17 @@ type UpdateAgentResponse struct {
 			Tier               *string                                `json:"tier"`
 			TtlHours           *int                                   `json:"ttlHours"`
 		} `json:"runtime"`
-		RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-		Scope            UpdateAgent200Scope `json:"scope"`
-		Slug             *string             `json:"slug"`
+		RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+		SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+		Scope                 UpdateAgent200Scope `json:"scope"`
+		Slug                  *string             `json:"slug"`
+		SubagentLoadBalancing *struct {
+			Algorithm       UpdateAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+			Enabled         bool                                         `json:"enabled"`
+			FallbackEnabled bool                                         `json:"fallbackEnabled"`
+			Retries         int                                          `json:"retries"`
+			Weights         *map[string]int                              `json:"weights,omitempty"`
+		} `json:"subagentLoadBalancing"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -22725,6 +23154,10 @@ type UpdateAgent200BuiltInAgentConfig3 struct {
 	Name UpdateAgent200BuiltInAgentConfig3Name `json:"name"`
 }
 type UpdateAgent200BuiltInAgentConfig3Name string
+type UpdateAgent200BuiltInAgentConfig4 struct {
+	Name UpdateAgent200BuiltInAgentConfig4Name `json:"name"`
+}
+type UpdateAgent200BuiltInAgentConfig4Name string
 type UpdateAgent_200_BuiltInAgentConfig struct {
 	union json.RawMessage
 }
@@ -22732,6 +23165,8 @@ type UpdateAgent200CreatedByType string
 type UpdateAgent200GithubActionsAccessActAs string
 type UpdateAgent200IncomingEmailSecurityMode string
 type UpdateAgent200MissingCredentialBehavior string
+type UpdateAgent200NetworkPolicyDomainPreset string
+type UpdateAgent200NetworkPolicyEgressMode string
 type UpdateAgent200ResolvedLlmProvider string
 type UpdateAgent200RuntimeBackend string
 type UpdateAgent200RuntimeClaudeCodeAuthentication string
@@ -22739,6 +23174,7 @@ type UpdateAgent200RuntimeCredentialsScope string
 type UpdateAgent200RuntimeInferenceProtocol string
 type UpdateAgent200RuntimeSteerMode string
 type UpdateAgent200Scope string
+type UpdateAgent200SubagentLoadBalancingAlgorithm string
 type UpdateAgent200ToolExposureMode string
 type UpdateAgent400ErrorType string
 type UpdateAgent401ErrorType string
@@ -29378,12 +29814,13 @@ type CreateKnowledgeBaseResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name           string                           `json:"name"`
-		OrganizationId string                           `json:"organizationId"`
-		Status         string                           `json:"status"`
-		TeamIds        []string                         `json:"teamIds"`
-		UpdatedAt      time.Time                        `json:"updatedAt"`
-		Visibility     CreateKnowledgeBase200Visibility `json:"visibility"`
+		Name                       string                           `json:"name"`
+		OrganizationId             string                           `json:"organizationId"`
+		Status                     string                           `json:"status"`
+		TeamIds                    []string                         `json:"teamIds"`
+		UpdatedAt                  time.Time                        `json:"updatedAt"`
+		UploadedFilesEnvironmentId *openapi_types.UUID              `json:"uploadedFilesEnvironmentId"`
+		Visibility                 CreateKnowledgeBase200Visibility `json:"visibility"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -29548,12 +29985,13 @@ type GetKnowledgeBaseResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name           string                        `json:"name"`
-		OrganizationId string                        `json:"organizationId"`
-		Status         string                        `json:"status"`
-		TeamIds        []string                      `json:"teamIds"`
-		UpdatedAt      time.Time                     `json:"updatedAt"`
-		Visibility     GetKnowledgeBase200Visibility `json:"visibility"`
+		Name                       string                        `json:"name"`
+		OrganizationId             string                        `json:"organizationId"`
+		Status                     string                        `json:"status"`
+		TeamIds                    []string                      `json:"teamIds"`
+		UpdatedAt                  time.Time                     `json:"updatedAt"`
+		UploadedFilesEnvironmentId *openapi_types.UUID           `json:"uploadedFilesEnvironmentId"`
+		Visibility                 GetKnowledgeBase200Visibility `json:"visibility"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -29645,12 +30083,13 @@ type UpdateKnowledgeBaseResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name           string                           `json:"name"`
-		OrganizationId string                           `json:"organizationId"`
-		Status         string                           `json:"status"`
-		TeamIds        []string                         `json:"teamIds"`
-		UpdatedAt      time.Time                        `json:"updatedAt"`
-		Visibility     UpdateKnowledgeBase200Visibility `json:"visibility"`
+		Name                       string                           `json:"name"`
+		OrganizationId             string                           `json:"organizationId"`
+		Status                     string                           `json:"status"`
+		TeamIds                    []string                         `json:"teamIds"`
+		UpdatedAt                  time.Time                        `json:"updatedAt"`
+		UploadedFilesEnvironmentId *openapi_types.UUID              `json:"uploadedFilesEnvironmentId"`
+		Visibility                 UpdateKnowledgeBase200Visibility `json:"visibility"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -31592,8 +32031,8 @@ type CreateVirtualApiKeyResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"teams"`
-		TokenStart string `json:"tokenStart"`
-		Value      string `json:"value"`
+		TokenStart string  `json:"tokenStart"`
+		Value      *string `json:"value,omitempty"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -37362,16 +37801,21 @@ type GetResourcePermissions200ActorSubjects2 struct {
 }
 type GetResourcePermissions200ActorSubjects2Type string
 type GetResourcePermissions200ActorSubjects3 struct {
-	Id   string                                      `json:"id"`
+	Id   openapi_types.UUID                          `json:"id"`
 	Type GetResourcePermissions200ActorSubjects3Type `json:"type"`
 }
 type GetResourcePermissions200ActorSubjects3Type string
 type GetResourcePermissions200ActorSubjects4 struct {
-	Id   GetResourcePermissions200ActorSubjects4Id   `json:"id"`
+	Id   string                                      `json:"id"`
 	Type GetResourcePermissions200ActorSubjects4Type `json:"type"`
 }
-type GetResourcePermissions200ActorSubjects4Id string
 type GetResourcePermissions200ActorSubjects4Type string
+type GetResourcePermissions200ActorSubjects5 struct {
+	Id   GetResourcePermissions200ActorSubjects5Id   `json:"id"`
+	Type GetResourcePermissions200ActorSubjects5Type `json:"type"`
+}
+type GetResourcePermissions200ActorSubjects5Id string
+type GetResourcePermissions200ActorSubjects5Type string
 type GetResourcePermissions_200_ActorSubjects_Item struct {
 	union json.RawMessage
 }
@@ -37393,16 +37837,21 @@ type GetResourcePermissions200GrantsSubject2 struct {
 }
 type GetResourcePermissions200GrantsSubject2Type string
 type GetResourcePermissions200GrantsSubject3 struct {
-	Id   string                                      `json:"id"`
+	Id   openapi_types.UUID                          `json:"id"`
 	Type GetResourcePermissions200GrantsSubject3Type `json:"type"`
 }
 type GetResourcePermissions200GrantsSubject3Type string
 type GetResourcePermissions200GrantsSubject4 struct {
-	Id   GetResourcePermissions200GrantsSubject4Id   `json:"id"`
+	Id   string                                      `json:"id"`
 	Type GetResourcePermissions200GrantsSubject4Type `json:"type"`
 }
-type GetResourcePermissions200GrantsSubject4Id string
 type GetResourcePermissions200GrantsSubject4Type string
+type GetResourcePermissions200GrantsSubject5 struct {
+	Id   GetResourcePermissions200GrantsSubject5Id   `json:"id"`
+	Type GetResourcePermissions200GrantsSubject5Type `json:"type"`
+}
+type GetResourcePermissions200GrantsSubject5Id string
+type GetResourcePermissions200GrantsSubject5Type string
 type GetResourcePermissions_200_Grants_Subject struct {
 	union json.RawMessage
 }
@@ -37423,16 +37872,21 @@ type GetResourcePermissions200InheritedGrantsSubject2 struct {
 }
 type GetResourcePermissions200InheritedGrantsSubject2Type string
 type GetResourcePermissions200InheritedGrantsSubject3 struct {
-	Id   string                                               `json:"id"`
+	Id   openapi_types.UUID                                   `json:"id"`
 	Type GetResourcePermissions200InheritedGrantsSubject3Type `json:"type"`
 }
 type GetResourcePermissions200InheritedGrantsSubject3Type string
 type GetResourcePermissions200InheritedGrantsSubject4 struct {
-	Id   GetResourcePermissions200InheritedGrantsSubject4Id   `json:"id"`
+	Id   string                                               `json:"id"`
 	Type GetResourcePermissions200InheritedGrantsSubject4Type `json:"type"`
 }
-type GetResourcePermissions200InheritedGrantsSubject4Id string
 type GetResourcePermissions200InheritedGrantsSubject4Type string
+type GetResourcePermissions200InheritedGrantsSubject5 struct {
+	Id   GetResourcePermissions200InheritedGrantsSubject5Id   `json:"id"`
+	Type GetResourcePermissions200InheritedGrantsSubject5Type `json:"type"`
+}
+type GetResourcePermissions200InheritedGrantsSubject5Id string
+type GetResourcePermissions200InheritedGrantsSubject5Type string
 type GetResourcePermissions_200_InheritedGrants_Subject struct {
 	union json.RawMessage
 }
@@ -37544,16 +37998,21 @@ type UpdateResourcePermissions200ActorSubjects2 struct {
 }
 type UpdateResourcePermissions200ActorSubjects2Type string
 type UpdateResourcePermissions200ActorSubjects3 struct {
-	Id   string                                         `json:"id"`
+	Id   openapi_types.UUID                             `json:"id"`
 	Type UpdateResourcePermissions200ActorSubjects3Type `json:"type"`
 }
 type UpdateResourcePermissions200ActorSubjects3Type string
 type UpdateResourcePermissions200ActorSubjects4 struct {
-	Id   UpdateResourcePermissions200ActorSubjects4Id   `json:"id"`
+	Id   string                                         `json:"id"`
 	Type UpdateResourcePermissions200ActorSubjects4Type `json:"type"`
 }
-type UpdateResourcePermissions200ActorSubjects4Id string
 type UpdateResourcePermissions200ActorSubjects4Type string
+type UpdateResourcePermissions200ActorSubjects5 struct {
+	Id   UpdateResourcePermissions200ActorSubjects5Id   `json:"id"`
+	Type UpdateResourcePermissions200ActorSubjects5Type `json:"type"`
+}
+type UpdateResourcePermissions200ActorSubjects5Id string
+type UpdateResourcePermissions200ActorSubjects5Type string
 type UpdateResourcePermissions_200_ActorSubjects_Item struct {
 	union json.RawMessage
 }
@@ -37575,16 +38034,21 @@ type UpdateResourcePermissions200GrantsSubject2 struct {
 }
 type UpdateResourcePermissions200GrantsSubject2Type string
 type UpdateResourcePermissions200GrantsSubject3 struct {
-	Id   string                                         `json:"id"`
+	Id   openapi_types.UUID                             `json:"id"`
 	Type UpdateResourcePermissions200GrantsSubject3Type `json:"type"`
 }
 type UpdateResourcePermissions200GrantsSubject3Type string
 type UpdateResourcePermissions200GrantsSubject4 struct {
-	Id   UpdateResourcePermissions200GrantsSubject4Id   `json:"id"`
+	Id   string                                         `json:"id"`
 	Type UpdateResourcePermissions200GrantsSubject4Type `json:"type"`
 }
-type UpdateResourcePermissions200GrantsSubject4Id string
 type UpdateResourcePermissions200GrantsSubject4Type string
+type UpdateResourcePermissions200GrantsSubject5 struct {
+	Id   UpdateResourcePermissions200GrantsSubject5Id   `json:"id"`
+	Type UpdateResourcePermissions200GrantsSubject5Type `json:"type"`
+}
+type UpdateResourcePermissions200GrantsSubject5Id string
+type UpdateResourcePermissions200GrantsSubject5Type string
 type UpdateResourcePermissions_200_Grants_Subject struct {
 	union json.RawMessage
 }
@@ -37605,16 +38069,21 @@ type UpdateResourcePermissions200InheritedGrantsSubject2 struct {
 }
 type UpdateResourcePermissions200InheritedGrantsSubject2Type string
 type UpdateResourcePermissions200InheritedGrantsSubject3 struct {
-	Id   string                                                  `json:"id"`
+	Id   openapi_types.UUID                                      `json:"id"`
 	Type UpdateResourcePermissions200InheritedGrantsSubject3Type `json:"type"`
 }
 type UpdateResourcePermissions200InheritedGrantsSubject3Type string
 type UpdateResourcePermissions200InheritedGrantsSubject4 struct {
-	Id   UpdateResourcePermissions200InheritedGrantsSubject4Id   `json:"id"`
+	Id   string                                                  `json:"id"`
 	Type UpdateResourcePermissions200InheritedGrantsSubject4Type `json:"type"`
 }
-type UpdateResourcePermissions200InheritedGrantsSubject4Id string
 type UpdateResourcePermissions200InheritedGrantsSubject4Type string
+type UpdateResourcePermissions200InheritedGrantsSubject5 struct {
+	Id   UpdateResourcePermissions200InheritedGrantsSubject5Id   `json:"id"`
+	Type UpdateResourcePermissions200InheritedGrantsSubject5Type `json:"type"`
+}
+type UpdateResourcePermissions200InheritedGrantsSubject5Id string
+type UpdateResourcePermissions200InheritedGrantsSubject5Type string
 type UpdateResourcePermissions_200_InheritedGrants_Subject struct {
 	union json.RawMessage
 }
@@ -44575,13 +45044,19 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 				ModelId                              *openapi_types.UUID                       `json:"modelId"`
 				ModelPoolId                          *openapi_types.UUID                       `json:"modelPoolId"`
 				Name                                 string                                    `json:"name"`
-				OrganizationId                       string                                    `json:"organizationId"`
-				PassthroughHeaders                   *[]string                                 `json:"passthroughHeaders"`
-				PinnedAt                             *time.Time                                `json:"pinnedAt"`
-				ResolvedLlmModelName                 *string                                   `json:"resolvedLlmModelName"`
-				ResolvedLlmProvider                  *GetAgents200DataResolvedLlmProvider      `json:"resolvedLlmProvider"`
-				ResolvedLlmProviderKeyName           *string                                   `json:"resolvedLlmProviderKeyName"`
-				Runtime                              *struct {
+				NetworkPolicy                        *struct {
+					AllowedCidrs   []string                                  `json:"allowedCidrs"`
+					AllowedDomains []string                                  `json:"allowedDomains"`
+					DomainPreset   GetAgents200DataNetworkPolicyDomainPreset `json:"domainPreset"`
+					EgressMode     GetAgents200DataNetworkPolicyEgressMode   `json:"egressMode"`
+				} `json:"networkPolicy"`
+				OrganizationId             string                               `json:"organizationId"`
+				PassthroughHeaders         *[]string                            `json:"passthroughHeaders"`
+				PinnedAt                   *time.Time                           `json:"pinnedAt"`
+				ResolvedLlmModelName       *string                              `json:"resolvedLlmModelName"`
+				ResolvedLlmProvider        *GetAgents200DataResolvedLlmProvider `json:"resolvedLlmProvider"`
+				ResolvedLlmProviderKeyName *string                              `json:"resolvedLlmProviderKeyName"`
+				Runtime                    *struct {
 					AllowAgentSuppliedCredentialValues *bool                          `json:"allowAgentSuppliedCredentialValues,omitempty"`
 					Backend                            GetAgents200DataRuntimeBackend `json:"backend"`
 					ClaudeCode                         *struct {
@@ -44612,10 +45087,17 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 					Tier               *string                                  `json:"tier"`
 					TtlHours           *int                                     `json:"ttlHours"`
 				} `json:"runtime"`
-				RuntimeSecretId  *openapi_types.UUID   `json:"runtimeSecretId"`
-				SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
-				Scope            GetAgents200DataScope `json:"scope"`
-				Slug             *string               `json:"slug"`
+				RuntimeSecretId       *openapi_types.UUID   `json:"runtimeSecretId"`
+				SandboxAvailable      *bool                 `json:"sandboxAvailable,omitempty"`
+				Scope                 GetAgents200DataScope `json:"scope"`
+				Slug                  *string               `json:"slug"`
+				SubagentLoadBalancing *struct {
+					Algorithm       GetAgents200DataSubagentLoadBalancingAlgorithm `json:"algorithm"`
+					Enabled         bool                                           `json:"enabled"`
+					FallbackEnabled bool                                           `json:"fallbackEnabled"`
+					Retries         int                                            `json:"retries"`
+					Weights         *map[string]int                                `json:"weights,omitempty"`
+				} `json:"subagentLoadBalancing"`
 
 				// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
 				SubagentsCount   int `json:"subagentsCount"`
@@ -44819,12 +45301,18 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 			ModelId                              *openapi_types.UUID                     `json:"modelId"`
 			ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 			Name                                 string                                  `json:"name"`
-			OrganizationId                       string                                  `json:"organizationId"`
-			PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
-			ResolvedLlmModelName                 *string                                 `json:"resolvedLlmModelName"`
-			ResolvedLlmProvider                  *CreateAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-			ResolvedLlmProviderKeyName           *string                                 `json:"resolvedLlmProviderKeyName"`
-			Runtime                              *struct {
+			NetworkPolicy                        *struct {
+				AllowedCidrs   []string                                `json:"allowedCidrs"`
+				AllowedDomains []string                                `json:"allowedDomains"`
+				DomainPreset   CreateAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     CreateAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"networkPolicy"`
+			OrganizationId             string                             `json:"organizationId"`
+			PassthroughHeaders         *[]string                          `json:"passthroughHeaders"`
+			ResolvedLlmModelName       *string                            `json:"resolvedLlmModelName"`
+			ResolvedLlmProvider        *CreateAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+			ResolvedLlmProviderKeyName *string                            `json:"resolvedLlmProviderKeyName"`
+			Runtime                    *struct {
 				AllowAgentSuppliedCredentialValues *bool                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
 				Backend                            CreateAgent200RuntimeBackend `json:"backend"`
 				ClaudeCode                         *struct {
@@ -44855,10 +45343,17 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 				Tier               *string                                `json:"tier"`
 				TtlHours           *int                                   `json:"ttlHours"`
 			} `json:"runtime"`
-			RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-			Scope            CreateAgent200Scope `json:"scope"`
-			Slug             *string             `json:"slug"`
+			RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+			SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+			Scope                 CreateAgent200Scope `json:"scope"`
+			Slug                  *string             `json:"slug"`
+			SubagentLoadBalancing *struct {
+				Algorithm       CreateAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled         bool                                         `json:"enabled"`
+				FallbackEnabled bool                                         `json:"fallbackEnabled"`
+				Retries         int                                          `json:"retries"`
+				Weights         *map[string]int                              `json:"weights,omitempty"`
+			} `json:"subagentLoadBalancing"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -46139,12 +46634,18 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 			ModelId                              *openapi_types.UUID                  `json:"modelId"`
 			ModelPoolId                          *openapi_types.UUID                  `json:"modelPoolId"`
 			Name                                 string                               `json:"name"`
-			OrganizationId                       string                               `json:"organizationId"`
-			PassthroughHeaders                   *[]string                            `json:"passthroughHeaders"`
-			ResolvedLlmModelName                 *string                              `json:"resolvedLlmModelName"`
-			ResolvedLlmProvider                  *GetAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-			ResolvedLlmProviderKeyName           *string                              `json:"resolvedLlmProviderKeyName"`
-			Runtime                              *struct {
+			NetworkPolicy                        *struct {
+				AllowedCidrs   []string                             `json:"allowedCidrs"`
+				AllowedDomains []string                             `json:"allowedDomains"`
+				DomainPreset   GetAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     GetAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"networkPolicy"`
+			OrganizationId             string                          `json:"organizationId"`
+			PassthroughHeaders         *[]string                       `json:"passthroughHeaders"`
+			ResolvedLlmModelName       *string                         `json:"resolvedLlmModelName"`
+			ResolvedLlmProvider        *GetAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+			ResolvedLlmProviderKeyName *string                         `json:"resolvedLlmProviderKeyName"`
+			Runtime                    *struct {
 				AllowAgentSuppliedCredentialValues *bool                     `json:"allowAgentSuppliedCredentialValues,omitempty"`
 				Backend                            GetAgent200RuntimeBackend `json:"backend"`
 				ClaudeCode                         *struct {
@@ -46175,10 +46676,17 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 				Tier               *string                             `json:"tier"`
 				TtlHours           *int                                `json:"ttlHours"`
 			} `json:"runtime"`
-			RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-			Scope            GetAgent200Scope    `json:"scope"`
-			Slug             *string             `json:"slug"`
+			RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+			SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+			Scope                 GetAgent200Scope    `json:"scope"`
+			Slug                  *string             `json:"slug"`
+			SubagentLoadBalancing *struct {
+				Algorithm       GetAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled         bool                                      `json:"enabled"`
+				FallbackEnabled bool                                      `json:"fallbackEnabled"`
+				Retries         int                                       `json:"retries"`
+				Weights         *map[string]int                           `json:"weights,omitempty"`
+			} `json:"subagentLoadBalancing"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -46367,12 +46875,18 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 			ModelId                              *openapi_types.UUID                     `json:"modelId"`
 			ModelPoolId                          *openapi_types.UUID                     `json:"modelPoolId"`
 			Name                                 string                                  `json:"name"`
-			OrganizationId                       string                                  `json:"organizationId"`
-			PassthroughHeaders                   *[]string                               `json:"passthroughHeaders"`
-			ResolvedLlmModelName                 *string                                 `json:"resolvedLlmModelName"`
-			ResolvedLlmProvider                  *UpdateAgent200ResolvedLlmProvider      `json:"resolvedLlmProvider"`
-			ResolvedLlmProviderKeyName           *string                                 `json:"resolvedLlmProviderKeyName"`
-			Runtime                              *struct {
+			NetworkPolicy                        *struct {
+				AllowedCidrs   []string                                `json:"allowedCidrs"`
+				AllowedDomains []string                                `json:"allowedDomains"`
+				DomainPreset   UpdateAgent200NetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     UpdateAgent200NetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"networkPolicy"`
+			OrganizationId             string                             `json:"organizationId"`
+			PassthroughHeaders         *[]string                          `json:"passthroughHeaders"`
+			ResolvedLlmModelName       *string                            `json:"resolvedLlmModelName"`
+			ResolvedLlmProvider        *UpdateAgent200ResolvedLlmProvider `json:"resolvedLlmProvider"`
+			ResolvedLlmProviderKeyName *string                            `json:"resolvedLlmProviderKeyName"`
+			Runtime                    *struct {
 				AllowAgentSuppliedCredentialValues *bool                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
 				Backend                            UpdateAgent200RuntimeBackend `json:"backend"`
 				ClaudeCode                         *struct {
@@ -46403,10 +46917,17 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 				Tier               *string                                `json:"tier"`
 				TtlHours           *int                                   `json:"ttlHours"`
 			} `json:"runtime"`
-			RuntimeSecretId  *openapi_types.UUID `json:"runtimeSecretId"`
-			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
-			Scope            UpdateAgent200Scope `json:"scope"`
-			Slug             *string             `json:"slug"`
+			RuntimeSecretId       *openapi_types.UUID `json:"runtimeSecretId"`
+			SandboxAvailable      *bool               `json:"sandboxAvailable,omitempty"`
+			Scope                 UpdateAgent200Scope `json:"scope"`
+			Slug                  *string             `json:"slug"`
+			SubagentLoadBalancing *struct {
+				Algorithm       UpdateAgent200SubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled         bool                                         `json:"enabled"`
+				FallbackEnabled bool                                         `json:"fallbackEnabled"`
+				Retries         int                                          `json:"retries"`
+				Weights         *map[string]int                              `json:"weights,omitempty"`
+			} `json:"subagentLoadBalancing"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -54870,12 +55391,13 @@ func ParseCreateKnowledgeBaseResponse(rsp *http.Response) (*CreateKnowledgeBaseR
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name           string                           `json:"name"`
-			OrganizationId string                           `json:"organizationId"`
-			Status         string                           `json:"status"`
-			TeamIds        []string                         `json:"teamIds"`
-			UpdatedAt      time.Time                        `json:"updatedAt"`
-			Visibility     CreateKnowledgeBase200Visibility `json:"visibility"`
+			Name                       string                           `json:"name"`
+			OrganizationId             string                           `json:"organizationId"`
+			Status                     string                           `json:"status"`
+			TeamIds                    []string                         `json:"teamIds"`
+			UpdatedAt                  time.Time                        `json:"updatedAt"`
+			UploadedFilesEnvironmentId *openapi_types.UUID              `json:"uploadedFilesEnvironmentId"`
+			Visibility                 CreateKnowledgeBase200Visibility `json:"visibility"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -55106,12 +55628,13 @@ func ParseGetKnowledgeBaseResponse(rsp *http.Response) (*GetKnowledgeBaseRespons
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name           string                        `json:"name"`
-			OrganizationId string                        `json:"organizationId"`
-			Status         string                        `json:"status"`
-			TeamIds        []string                      `json:"teamIds"`
-			UpdatedAt      time.Time                     `json:"updatedAt"`
-			Visibility     GetKnowledgeBase200Visibility `json:"visibility"`
+			Name                       string                        `json:"name"`
+			OrganizationId             string                        `json:"organizationId"`
+			Status                     string                        `json:"status"`
+			TeamIds                    []string                      `json:"teamIds"`
+			UpdatedAt                  time.Time                     `json:"updatedAt"`
+			UploadedFilesEnvironmentId *openapi_types.UUID           `json:"uploadedFilesEnvironmentId"`
+			Visibility                 GetKnowledgeBase200Visibility `json:"visibility"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -55235,12 +55758,13 @@ func ParseUpdateKnowledgeBaseResponse(rsp *http.Response) (*UpdateKnowledgeBaseR
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name           string                           `json:"name"`
-			OrganizationId string                           `json:"organizationId"`
-			Status         string                           `json:"status"`
-			TeamIds        []string                         `json:"teamIds"`
-			UpdatedAt      time.Time                        `json:"updatedAt"`
-			Visibility     UpdateKnowledgeBase200Visibility `json:"visibility"`
+			Name                       string                           `json:"name"`
+			OrganizationId             string                           `json:"organizationId"`
+			Status                     string                           `json:"status"`
+			TeamIds                    []string                         `json:"teamIds"`
+			UpdatedAt                  time.Time                        `json:"updatedAt"`
+			UploadedFilesEnvironmentId *openapi_types.UUID              `json:"uploadedFilesEnvironmentId"`
+			Visibility                 UpdateKnowledgeBase200Visibility `json:"visibility"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -57775,8 +58299,8 @@ func ParseCreateVirtualApiKeyResponse(rsp *http.Response) (*CreateVirtualApiKeyR
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"teams"`
-			TokenStart string `json:"tokenStart"`
-			Value      string `json:"value"`
+			TokenStart string  `json:"tokenStart"`
+			Value      *string `json:"value,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
