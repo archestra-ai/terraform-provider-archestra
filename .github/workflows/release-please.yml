@@ -28,7 +28,7 @@ jobs:
     name: Release Please
     # Single-package manifest mode -> release outputs are flat (no `<path>--` prefix).
     permissions: {} # The shared workflow writes with the archestra-releaser App token only.
-    uses: archestra-ai/.github/.github/workflows/release-please.yml@ec618a434b933bcd826401c4c615210f2f56d2a0 # v1.16.0
+    uses: archestra-ai/.github/.github/workflows/release-please.yml@dc1baa65f528a62f6623c86a748824c9c4c925a7 # v1.17.0
     with:
       # The archestra-releaser App's key lives only in this environment, which
       # only main can deploy to.
@@ -43,7 +43,9 @@ jobs:
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'
     # Holds GPG_PRIVATE_KEY and GPG_PASSPHRASE; deployable from main only.
-    environment: release
+    environment:
+      name: release
+      deployment: false # A secrets and branch gate; nothing is deployed.
     permissions:
       contents: write # publish release assets
     steps:
@@ -82,7 +84,9 @@ jobs:
       ((needs.release-please.outputs.release_created == 'true' && needs.publish-terraform-provider.result == 'success') ||
        (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.marketplace_version != ''))
     # Holds UPBOUND_ACCESS_ID and UPBOUND_TOKEN; deployable from main only.
-    environment: release
+    environment:
+      name: release
+      deployment: false # A secrets and branch gate; nothing is deployed.
     env:
       VERSION: ${{ inputs.marketplace_version || needs.release-please.outputs.tag_name }}
     permissions:
