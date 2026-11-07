@@ -277,15 +277,15 @@ type mcpToolCallWire struct {
 	Source        *string         `json:"source"`
 	ToolCall      json.RawMessage `json:"toolCall"`
 
-	AgentId       *openapi_types.UUID                      `json:"agentId"`
-	AuthMethod    *client.GetMcpToolCalls200DataAuthMethod `json:"authMethod"`
-	CreatedAt     time.Time                                `json:"createdAt"`
-	Id            openapi_types.UUID                       `json:"id"`
-	McpServerName string                                   `json:"mcpServerName"`
-	Method        string                                   `json:"method"`
-	ToolResult    interface{}                              `json:"toolResult"`
-	UserId        *string                                  `json:"userId"`
-	UserName      *string                                  `json:"userName"`
+	AgentId       *openapi_types.UUID                                      `json:"agentId"`
+	AuthMethod    *client.GetMcpToolCalls200JSONResponseBodyDataAuthMethod `json:"authMethod"`
+	CreatedAt     time.Time                                                `json:"createdAt"`
+	Id            openapi_types.UUID                                       `json:"id"`
+	McpServerName string                                                   `json:"mcpServerName"`
+	Method        string                                                   `json:"method"`
+	ToolResult    interface{}                                              `json:"toolResult"`
+	UserId        *string                                                  `json:"userId"`
+	UserName      *string                                                  `json:"userName"`
 }
 
 func flattenMcpToolCall(raw any) (attr.Value, diag.Diagnostics) {
