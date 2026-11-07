@@ -37,6 +37,19 @@ CROSSPLANE_VERSION="${CROSSPLANE_VERSION:-2.2.1}"
 CROSSPLANE_NAMESPACE="${CROSSPLANE_NAMESPACE:-crossplane-system}"
 PROVIDER_CONFIG="${PROVIDER_CONFIG:-default}"
 TERRAFORM_VERSION=1.5.7
+# SHA256 of each terraform_1.5.7_<platform>.zip, from HashiCorp's
+# terraform_1.5.7_SHA256SUMS, whose GPG signature verifies against the HashiCorp
+# Security key (C874 011F 0AB4 0511 0D02 1055 3436 5D94 72D7 468F). Update them
+# together with TERRAFORM_VERSION.
+terraform_sha256() {
+  case "$1" in
+    darwin_amd64) echo b310ec0e626e9799000cfc8e30247cd827cf7f8030c8e0400257c7f111e93537 ;;
+    darwin_arm64) echo db7c33eb1a446b73a443e2c55b532845f7b70cd56100bec4c96f15cfab5f50cb ;;
+    linux_amd64) echo c0ed7bc32ee52ae255af9982c8c88a7a4c610485cf1d55feeb037eab75fa082c ;;
+    linux_arm64) echo f4b4ad7c6b6088960a667e34495cae490fb072947a9ff266bf5929f5333565e4 ;;
+    *) return 1 ;;
+  esac
+}
 # Version label of the locally built provider inside the filesystem mirror.
 TF_PROVIDER_VERSION="${CROSSPLANE_TF_PROVIDER_VERSION:-3.0.0}"
 # Lifecycle probes repair out-of-band drift within 75 seconds.
@@ -216,9 +229,15 @@ fi
 # 6. Terraform 1.5.7, the provider mirror and the controller.
 if [ ! -x "${TERRAFORM_DIR}/terraform" ]; then
   log "Downloading Terraform ${TERRAFORM_VERSION}..."
+  terraform_digest="$(terraform_sha256 "$GOOS_ARCH")" || { log "No pinned Terraform checksum for ${GOOS_ARCH}"; exit 1; }
   mkdir -p "$TERRAFORM_DIR"
   curl -fsSL "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_${GOOS_ARCH}.zip" \
     -o "${TERRAFORM_DIR}/terraform.zip"
+  if command -v sha256sum >/dev/null 2>&1; then
+    echo "${terraform_digest}  ${TERRAFORM_DIR}/terraform.zip" | sha256sum -c - >&2
+  else
+    echo "${terraform_digest}  ${TERRAFORM_DIR}/terraform.zip" | shasum -a 256 -c - >&2
+  fi
   python3 -c 'import sys, zipfile; zipfile.ZipFile(sys.argv[1]).extractall(sys.argv[2])' "${TERRAFORM_DIR}/terraform.zip" "$TERRAFORM_DIR"
   chmod +x "${TERRAFORM_DIR}/terraform"
   rm -f "${TERRAFORM_DIR}/terraform.zip"
