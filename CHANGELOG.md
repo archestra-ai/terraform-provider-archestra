@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.1.3](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.2...v3.1.3) (2026-11-07)
+
+
+### Bug Fixes
+
+* align provider with platform rc.19 contracts ([#220](https://github.com/archestra-ai/terraform-provider-archestra/issues/220)) ([a9d6d57](https://github.com/archestra-ai/terraform-provider-archestra/commit/a9d6d576310a8619120a6bc296d7d0c41743ccdf))
+
+
+### Dependencies
+
+* bump the github-actions-dependencies group across 1 directory with 2 updates ([#225](https://github.com/archestra-ai/terraform-provider-archestra/issues/225)) ([dcc1730](https://github.com/archestra-ai/terraform-provider-archestra/commit/dcc1730b500a137e05fd72353ad1f884d59bc615))
+
 ## [3.1.2](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.1...v3.1.2) (2026-10-30)
 
 
