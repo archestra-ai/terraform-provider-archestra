@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.4](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.3...v3.1.4) (2026-11-08)
+
+
+### Bug Fixes
+
+* **release:** pin the rotated provider signing key ([#237](https://github.com/archestra-ai/terraform-provider-archestra/issues/237)) ([61b284f](https://github.com/archestra-ai/terraform-provider-archestra/commit/61b284f37df081650ca504a07be72443221e3260))
+
 ## [3.1.3](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.2...v3.1.3) (2026-11-07)
 
 
