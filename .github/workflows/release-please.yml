@@ -6,10 +6,16 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      marketplace_version:
-        description: 'Repair Marketplace assets for an existing release (e.g. v3.0.3); leave empty for release-please'
+      publisher_smoke:
+        description: Dry-run the publisher (main only) - build, sign and upload to a draft release; writes no release, tag or package
+        required: false
+        type: boolean
+        default: false
+      release_tag:
+        description: Publish an existing release tag (vX.Y.Z on main) whose release has no assets yet (main only)
         required: false
         type: string
+        default: ''
 
 # Default to read-only; jobs request extra scopes as needed.
 permissions:
@@ -20,11 +26,13 @@ concurrency:
   # We group both by ref_name (available when CI is triggered by a push to a branch/tag)
   # and head_ref (available when CI is triggered by a PR).
   group: "release-please-${{ github.ref_name }}-${{ github.head_ref }}"
-  cancel-in-progress: true
+  # A release run waits for its approval in the publisher; a later push must
+  # not cancel it between the publish and the asset upload. Later pushes queue.
+  cancel-in-progress: false
 
 jobs:
   release-please:
-    if: inputs.marketplace_version == ''
+    if: ${{ !inputs.publisher_smoke && !inputs.release_tag }}
     name: Release Please
     # Single-package manifest mode -> release outputs are flat (no `<path>--` prefix).
     permissions: {} # The shared workflow writes with the archestra-releaser App token only.
@@ -37,77 +45,110 @@ jobs:
       APP_ID: ${{ secrets.APP_ID }}
       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
 
-  publish-terraform-provider:
-    name: Publish Terraform Provider
-    runs-on: ubuntu-latest
+  # Builds the release without any secret: the goreleaser zips, registry
+  # manifest and SHA256SUMS (unsigned), and the Crossplane package made from
+  # those same zips, staged in ghcr.io/archestra-ai/ci. Only the publisher
+  # (archestra-ai/release-publisher) holds the signing key and the Upbound
+  # token.
+  build-release:
+    name: Build release
     needs: release-please
-    if: needs.release-please.outputs.release_created == 'true'
-    # Holds GPG_PRIVATE_KEY and GPG_PASSPHRASE; deployable from main only.
-    environment:
-      name: release
-      deployment: false # A secrets and branch gate; nothing is deployed.
+    if: >-
+      ${{ always() && !cancelled() &&
+      (needs.release-please.outputs.release_created == 'true' ||
+       ((inputs.publisher_smoke || inputs.release_tag != '') && github.ref == 'refs/heads/main')) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
     permissions:
-      contents: write # publish release assets
+      contents: read # check out the release commit
+      packages: write # stage the Crossplane package in ghcr.io/archestra-ai/ci
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+      package_digest: ${{ steps.package.outputs.digest }}
     steps:
+      - name: Version
+        id: version
+        env:
+          RELEASED_TAG: ${{ needs.release-please.outputs.tag_name }}
+          EXISTING_TAG: ${{ inputs.release_tag }}
+          SMOKE: ${{ inputs.publisher_smoke }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          if [ "$SMOKE" = true ]; then
+            [ -z "$EXISTING_TAG" ] || { echo "::error::publisher_smoke and release_tag are exclusive"; exit 1; }
+            version="0.0.0-smoke.$RUN_ID"
+          else
+            tag="${EXISTING_TAG:-$RELEASED_TAG}"
+            version="${tag#v}"
+          fi
+          python3 -c 'import re, sys; assert re.fullmatch(r"\d+\.\d+\.\d+(-smoke\.\d+)?", sys.argv[1])' "$version"
+          { echo "version=$version"; echo "tag=v$version"; } >> "$GITHUB_OUTPUT"
+
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0 # Allow goreleaser to access older tag information.
-          # zizmor: ignore[artipacked] goreleaser needs git credentials to push release tags
-          persist-credentials: true
+          submodules: true # crossplane/build makelib
+          fetch-depth: 0 # goreleaser and makelib read tags
+          persist-credentials: false
+
+      # Publishing an existing tag: build the tag's provider and Crossplane
+      # sources with this run's (main's) build tooling, so the package uses
+      # the release's own zips. The tag must be on main; the publisher checks
+      # that too.
+      - name: Check out the existing tag
+        if: ${{ inputs.release_tag != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "refs/tags/$TAG" "$GITHUB_SHA" || { echo "::error::$TAG is not on main"; exit 1; }
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets | length' | grep -qx 0 \
+            || { echo "::error::$TAG's release is missing or already has assets"; exit 1; }
+          git checkout --quiet "refs/tags/$TAG"
+          git submodule update --init --quiet
+          git checkout "$GITHUB_SHA" -- .goreleaser.yml crossplane/cluster/images/provider-archestra/Makefile
 
       - name: Setup go
         uses: $/.github/actions/setup-go
 
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@2dc316deee8e90f13e1a351ab510b4d5bc0c82cd # v7.0.0
-        id: import_gpg
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE }}
-
-      - name: Run GoReleaser
+      # Release: the tag release-please just made is at HEAD. Dry run: no tag,
+      # so goreleaser takes the smoke version and skips its tag checks.
+      - name: Build the provider (unsigned)
         uses: goreleaser/goreleaser-action@a4f02ab5355a589de60d917a659ce617ed19b3de # v7.3.0
         with:
-          args: release --clean
+          # validate checks the tag is at a clean HEAD: not for a dry run (no
+          # tag) or an existing tag (main's build tooling is laid over it).
+          args: release --clean --skip=publish,sign${{ (inputs.publisher_smoke || inputs.release_tag != '') && ',validate' || '' }}
         env:
-          # GitHub sets the GITHUB_TOKEN secret automatically.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
+          GORELEASER_CURRENT_TAG: ${{ steps.version.outputs.tag }}
 
-  publish-crossplane:
-    name: Publish Crossplane Provider
-    runs-on: ubuntu-latest
-    needs: [release-please, publish-terraform-provider]
-    if: >-
-      always() && !cancelled() &&
-      ((needs.release-please.outputs.release_created == 'true' && needs.publish-terraform-provider.result == 'success') ||
-       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.marketplace_version != ''))
-    # Holds UPBOUND_ACCESS_ID and UPBOUND_TOKEN; deployable from main only.
-    environment:
-      name: release
-      deployment: false # A secrets and branch gate; nothing is deployed.
-    env:
-      VERSION: ${{ inputs.marketplace_version || needs.release-please.outputs.tag_name }}
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          submodules: true              # crossplane/build makelib
-          fetch-depth: 0                # makelib derives VERSION from git
-          persist-credentials: false
-
-      - name: Validate existing release for asset repair
-        if: inputs.marketplace_version != ''
+      # The Terraform Registry's file set: one zip per platform, the manifest
+      # (named as goreleaser lists it in SHA256SUMS) and SHA256SUMS. The
+      # publisher signs SHA256SUMS.
+      - name: Collect the release files
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
-          python3 -c 'import os, re; assert re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", os.environ["VERSION"]), "Expected a stable release tag"'
-          git rev-parse --verify "refs/tags/$VERSION^{commit}" > /dev/null
+          prefix="terraform-provider-archestra_${VERSION}"
+          mkdir -p "$RUNNER_TEMP/release-provider"
+          cp dist/"${prefix}"_*.zip dist/"${prefix}_SHA256SUMS" "$RUNNER_TEMP/release-provider/"
+          cp terraform-registry-manifest.json "$RUNNER_TEMP/release-provider/${prefix}_manifest.json"
+          (cd "$RUNNER_TEMP/release-provider" && sha256sum --check --strict "${prefix}_SHA256SUMS")
+          ls -l "$RUNNER_TEMP/release-provider"
+
+      - name: Keep the release files
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-provider
+          path: ${{ runner.temp }}/release-provider
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Setup QEMU
-        if: inputs.marketplace_version == ''
         uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
         with:
           platforms: all
@@ -117,49 +158,31 @@ jobs:
         with:
           cache-binary: false
 
-      - name: Setup Go
-        if: inputs.marketplace_version == ''
-        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-        with:
-          go-version-file: go.mod
-          cache-dependency-path: |
-            go.sum
-            crossplane/go.sum
-
-      - name: Build Terraform provider
-        if: inputs.marketplace_version == ''
-        run: go build -o terraform-provider-archestra .
-
       - name: Install goimports
-        if: inputs.marketplace_version == ''
         run: go -C crossplane install golang.org/x/tools/cmd/goimports
 
-      - name: Log in to Upbound registry
-        # `make publish` shells out to `crank xpkg push`, which is a Docker
-        # registry push — it reads creds from ~/.docker/config.json, not from
-        # the Upbound CLI's session.
+      - name: Log in to GHCR
         env:
-          UPBOUND_ACCESS_ID: ${{ secrets.UPBOUND_ACCESS_ID }}
-          UPBOUND_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
-        run: |
-          set -euo pipefail
-          echo "$UPBOUND_TOKEN" | docker login xpkg.upbound.io \
-            --username "$UPBOUND_ACCESS_ID" --password-stdin
+          GHCR_TOKEN: ${{ github.token }}
+          GHCR_USER: ${{ github.actor }}
+        run: printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username "$GHCR_USER" --password-stdin
 
-      - name: Build and publish provider package
-        if: inputs.marketplace_version == ''
+      # The package's images unpack the zips built above (provider-zips in the
+      # image build context), not a download from the GitHub release, so it
+      # holds exactly the binaries the publisher verifies and signs.
+      - name: Build and stage the Crossplane package
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
-          # `make build` only builds for the host arch via BUILD_PLATFORMS;
-          # `build.all` honors PLATFORMS so both linux_amd64 and linux_arm64
-          # xpkgs are produced — `crank xpkg push` needs both.
-          provider_version="${VERSION#v}"
-          make -C crossplane generate TERRAFORM_PROVIDER_VERSION="$provider_version"
+          go build -o terraform-provider-archestra .
+          make -C crossplane generate TERRAFORM_PROVIDER_VERSION="$VERSION"
           make -C crossplane build.all publish \
             PLATFORMS="linux_amd64 linux_arm64" \
-            XPKG_REG_ORGS="xpkg.upbound.io/archestra" \
-            TERRAFORM_PROVIDER_VERSION="$provider_version" \
-            VERSION="$VERSION"
+            XPKG_REG_ORGS="ghcr.io/archestra-ai/ci" \
+            TERRAFORM_PROVIDER_VERSION="$VERSION" \
+            TERRAFORM_PROVIDER_ZIP_DIR="$RUNNER_TEMP/release-provider" \
+            VERSION="v$VERSION"
 
       - name: Install Upbound CLI
         run: |
@@ -171,14 +194,15 @@ jobs:
           chmod +x "$RUNNER_TEMP/up"
           echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
 
-      - name: Add Marketplace assets to provider package
+      - name: Add Marketplace assets to the staged package
+        id: package
+        env:
+          PACKAGE: ghcr.io/archestra-ai/ci/provider-archestra:v${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
-          package="xpkg.upbound.io/archestra/provider-archestra:$VERSION"
-          docker buildx imagetools inspect --raw "$package" > "$RUNNER_TEMP/marketplace-source.json"
-          up xpkg append --extensions-root=crossplane/marketplace \
-            --destination="$package" "$package"
-          docker buildx imagetools inspect --raw "$package" > "$RUNNER_TEMP/marketplace-destination.json"
+          docker buildx imagetools inspect --raw "$PACKAGE" > "$RUNNER_TEMP/marketplace-source.json"
+          up xpkg append --extensions-root=crossplane/marketplace --destination="$PACKAGE" "$PACKAGE"
+          docker buildx imagetools inspect --raw "$PACKAGE" > "$RUNNER_TEMP/marketplace-destination.json"
           python3 - <<'PY'
           import json
           import os
@@ -196,16 +220,129 @@ jobs:
           destination = runtimes("marketplace-destination.json")
           for platform in (("linux", "amd64"), ("linux", "arm64")):
               if platform not in source or source[platform] != destination.get(platform):
-                  raise SystemExit(f"Published runtime differs from release for {platform}")
-          print("Verified unchanged linux/amd64 and linux/arm64 release runtimes")
+                  raise SystemExit(f"Marketplace assets changed the {platform} runtime")
+          print("Verified unchanged linux/amd64 and linux/arm64 runtimes")
           PY
-          printf 'Added Marketplace assets to [%s](https://marketplace.upbound.io/providers/archestra/provider-archestra/%s).\n' \
-            "$package" "$VERSION" >> "$GITHUB_STEP_SUMMARY"
+          echo "digest=sha256:$(sha256sum "$RUNNER_TEMP/marketplace-destination.json" | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
 
-      - name: Verify public Marketplace listing and logo
+  # Attests what build-release made, asks the publisher to verify, sign and
+  # publish it, then uploads the signed files to this repository's release.
+  # Retry with "Re-run failed jobs": this job attests the same files and
+  # package again in the new attempt.
+  publish-release:
+    name: Publish release
+    needs: [release-please, build-release]
+    if: ${{ always() && !cancelled() && needs.build-release.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360 # a stable release waits for its approval
+    # Holds the archestra-releaser App's key; main only.
+    environment:
+      name: releaser
+      deployment: false # A secrets and branch gate; nothing is deployed.
+    permissions:
+      actions: read # download the release files
+      attestations: write # store the build provenance attestation
+      contents: write # upload the release assets (a dry run: create a draft release)
+      id-token: write # sign the build provenance attestation
+    env:
+      VERSION: ${{ needs.build-release.outputs.version }}
+      SMOKE: ${{ inputs.publisher_smoke && 'true' || 'false' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Download the release files
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-provider
+          path: release-provider
+
+      # Each file under its own name, and the package digest under its public
+      # name: the publisher accepts nothing else from this run attempt.
+      - name: Collect release subjects
+        id: subjects
+        env:
+          PACKAGE_DIGEST: ${{ needs.build-release.outputs.package_digest }}
         run: |
           set -euo pipefail
-          digest="sha256:$(sha256sum "$RUNNER_TEMP/marketplace-destination.json" | cut -d ' ' -f 1)"
-          python3 scripts/verify-marketplace.py "$VERSION" --digest="$digest"
+          python3 -c 'import re, sys; assert re.fullmatch(r"sha256:[0-9a-f]{64}", sys.argv[1])' "$PACKAGE_DIGEST"
+          (cd release-provider && sha256sum -- *) > release-subjects.txt
+          echo "${PACKAGE_DIGEST#sha256:}  xpkg.upbound.io/archestra/provider-archestra" >> release-subjects.txt
+          jq -n --arg digest "$PACKAGE_DIGEST" '{"xpkg.upbound.io/archestra/provider-archestra": $digest}' > release-images.json
+          { echo "files<<EOF"; ls release-provider/*; echo "EOF"; } >> "$GITHUB_OUTPUT"
+          cat release-subjects.txt
+
+      - name: Attest the release files and package
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-checksums: release-subjects.txt
+
+      - name: Generate a publisher token
+        id: publisher-token
+        uses: archestra-ai/.github/actions/github-app-token@3a014e2fa0a740f1ec68f6379b602470a418cd6e # v1.13.0
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: archestra-ai
+          repositories: release-publisher
+          # Send the repository_dispatch, watch the run and download its artifact.
+          permission-contents: write
+          permission-actions: read
+
+      - name: Publish through the publisher
+        id: publish
+        uses: archestra-ai/.github/actions/release-images-publish@db8b38c6b49f581689d15b9406d1fa58c7c15e5e # v1.19.0
+        with:
+          token: ${{ steps.publisher-token.outputs.token }}
+          project: terraform-provider-archestra
+          version: ${{ env.VERSION }}
+          images-file: release-images.json
+          assets: ${{ steps.subjects.outputs.files }}
+          smoke: ${{ env.SMOKE }}
+
+      - name: Download the signed release assets
+        env:
+          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
+          RUN_ID: ${{ steps.publish.outputs.run-id }}
+        run: gh run download "$RUN_ID" --repo archestra-ai/release-publisher --name release-assets --dir release-assets
+
+      # Checks the signature against the registry's public key and that every
+      # returned file is what build-release made, then uploads.
+      - name: Upload to the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.build-release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          if [ "$SMOKE" = true ]; then
+            python3 -I scripts/upload-release-assets.py release-assets "publisher-smoke-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
+              --built release-provider --draft-for-smoke "$GITHUB_SHA"
+          else
+            python3 -I scripts/upload-release-assets.py release-assets "$TAG" --built release-provider
+          fi
+
+  verify-marketplace:
+    name: Verify Marketplace listing
+    needs: [build-release, publish-release]
+    if: ${{ !inputs.publisher_smoke && needs.publish-release.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Verify public Marketplace listing and logo
+        env:
+          VERSION: v${{ needs.build-release.outputs.version }}
+          DIGEST: ${{ needs.build-release.outputs.package_digest }}
+        run: |
+          set -euo pipefail
+          python3 scripts/verify-marketplace.py "$VERSION" --digest="$DIGEST"
           printf 'Verified public [%s](https://marketplace.upbound.io/providers/archestra/provider-archestra/%s), release digest, and Archestra SVG logo.\n' \
             "$VERSION" "$VERSION" >> "$GITHUB_STEP_SUMMARY"
