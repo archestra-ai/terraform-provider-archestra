@@ -81,7 +81,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup go
-        uses: ./.github/actions/setup-go
+        uses: $/.github/actions/setup-go
 
       # Release: the tag release-please just made is at HEAD. Dry run: no tag,
       # so goreleaser takes the smoke version and skips its tag checks.
