@@ -293,7 +293,7 @@ jobs:
 
       - name: Publish through the publisher
         id: publish
-        uses: archestra-ai/.github/actions/release-images-publish@c72028e01881a92f427e02e90f806b0afaaf7642 # feat/release-publish-assets
+        uses: archestra-ai/.github/actions/release-images-publish@db8b38c6b49f581689d15b9406d1fa58c7c15e5e # v1.19.0
         with:
           token: ${{ steps.publisher-token.outputs.token }}
           project: terraform-provider-archestra
@@ -301,7 +301,6 @@ jobs:
           images-file: release-images.json
           assets: ${{ steps.subjects.outputs.files }}
           smoke: ${{ env.SMOKE }}
-          publisher-repository: archestra-ai/release-publisher
 
       - name: Download the signed release assets
         env:
