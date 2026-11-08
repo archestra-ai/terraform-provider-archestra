@@ -43,9 +43,10 @@ jobs:
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'
     # Holds GPG_PRIVATE_KEY and GPG_PASSPHRASE; deployable from main only.
-    environment:
-      name: release
-      deployment: false # A secrets and branch gate; nothing is deployed.
+    # Records a deployment on purpose: the Release Gate App's custom
+    # protection rule (which keeps whoever merged or started the release from
+    # approving it) only runs for jobs that record one.
+    environment: release
     permissions:
       contents: write # publish release assets
     steps:
@@ -84,9 +85,8 @@ jobs:
       ((needs.release-please.outputs.release_created == 'true' && needs.publish-terraform-provider.result == 'success') ||
        (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.marketplace_version != ''))
     # Holds UPBOUND_ACCESS_ID and UPBOUND_TOKEN; deployable from main only.
-    environment:
-      name: release
-      deployment: false # A secrets and branch gate; nothing is deployed.
+    # Records a deployment for the Release Gate rule, as above.
+    environment: release
     env:
       VERSION: ${{ inputs.marketplace_version || needs.release-please.outputs.tag_name }}
     permissions:
