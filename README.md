@@ -194,8 +194,11 @@ tag vX.Y.Z  ──▶  build-release (no secrets)
                      ──▶  ghcr.io/archestra-ai/ci/provider-archestra (staging)
                      │
                      ▼
-                 publish-release: attest every file and the package digest,
-                   then ask archestra-ai/release-publisher to publish
+                 attest-release: attest every file and the package digest
+                     │
+                     ▼
+                 publish-release (archestra-ai/.github release-publish.yml):
+                   ask archestra-ai/release-publisher to publish, wait ≤360 min
                      │
                      ▼
                  release-publisher (after an Engineering approval):
@@ -203,7 +206,7 @@ tag vX.Y.Z  ──▶  build-release (no secrets)
                    copies the package to xpkg.upbound.io/archestra
                      │
                      ▼
-                 publish-release uploads the signed files ──▶  GitHub release ──▶  Terraform Registry
+                 upload-release uploads the signed files ──▶  GitHub release ──▶  Terraform Registry
                      │
                      ▼
                  verify-marketplace: public listing, digest and logo
@@ -212,8 +215,10 @@ tag vX.Y.Z  ──▶  build-release (no secrets)
 This repository holds no signing key or registry token: the GPG key and the
 Upbound robot token live only in the publisher. A stable release waits in the
 publisher's `stable-release` environment for an Engineering member who did not
-merge or start it. Retry a failed publication with **Re-run failed jobs** on
-the Release Please run. To prove the path without a release, run **Release
+merge or start it; `publish-release` waits for it up to 360 minutes, then
+fails while the publisher keeps waiting. Retry a failed or expired publication
+with **Re-run failed jobs** on the Release Please run: it sends a new request
+(a new approval) without attesting again, and the publisher is idempotent. To prove the path without a release, run **Release
 Please** on `main` with `publisher_smoke`: it signs and uploads to a draft
 release and writes no tag or package. Repository visibility is managed by the
 Upbound organization owner.
