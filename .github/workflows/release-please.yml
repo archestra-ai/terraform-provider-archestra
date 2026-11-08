@@ -11,6 +11,11 @@ on:
         required: false
         type: boolean
         default: false
+      release_tag:
+        description: Publish an existing release tag (vX.Y.Z on main) whose release has no assets yet (main only)
+        required: false
+        type: string
+        default: ''
 
 # Default to read-only; jobs request extra scopes as needed.
 permissions:
@@ -27,7 +32,7 @@ concurrency:
 
 jobs:
   release-please:
-    if: ${{ !inputs.publisher_smoke }}
+    if: ${{ !inputs.publisher_smoke && !inputs.release_tag }}
     name: Release Please
     # Single-package manifest mode -> release outputs are flat (no `<path>--` prefix).
     permissions: {} # The shared workflow writes with the archestra-releaser App token only.
@@ -51,7 +56,7 @@ jobs:
     if: >-
       ${{ always() && !cancelled() &&
       (needs.release-please.outputs.release_created == 'true' ||
-       (inputs.publisher_smoke && github.ref == 'refs/heads/main')) }}
+       ((inputs.publisher_smoke || inputs.release_tag != '') && github.ref == 'refs/heads/main')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     permissions:
@@ -59,19 +64,27 @@ jobs:
       packages: write # stage the Crossplane package in ghcr.io/archestra-ai/ci
     outputs:
       version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
       package_digest: ${{ steps.package.outputs.digest }}
     steps:
       - name: Version
         id: version
         env:
-          TAG: ${{ needs.release-please.outputs.tag_name }}
+          RELEASED_TAG: ${{ needs.release-please.outputs.tag_name }}
+          EXISTING_TAG: ${{ inputs.release_tag }}
           SMOKE: ${{ inputs.publisher_smoke }}
           RUN_ID: ${{ github.run_id }}
         run: |
           set -euo pipefail
-          if [ "$SMOKE" = true ]; then version="0.0.0-smoke.$RUN_ID"; else version="${TAG#v}"; fi
+          if [ "$SMOKE" = true ]; then
+            [ -z "$EXISTING_TAG" ] || { echo "::error::publisher_smoke and release_tag are exclusive"; exit 1; }
+            version="0.0.0-smoke.$RUN_ID"
+          else
+            tag="${EXISTING_TAG:-$RELEASED_TAG}"
+            version="${tag#v}"
+          fi
           python3 -c 'import re, sys; assert re.fullmatch(r"\d+\.\d+\.\d+(-smoke\.\d+)?", sys.argv[1])' "$version"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          { echo "version=$version"; echo "tag=v$version"; } >> "$GITHUB_OUTPUT"
 
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -79,6 +92,24 @@ jobs:
           submodules: true # crossplane/build makelib
           fetch-depth: 0 # goreleaser and makelib read tags
           persist-credentials: false
+
+      # Publishing an existing tag: build the tag's provider and Crossplane
+      # sources with this run's (main's) build tooling, so the package uses
+      # the release's own zips. The tag must be on main; the publisher checks
+      # that too.
+      - name: Check out the existing tag
+        if: ${{ inputs.release_tag != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "refs/tags/$TAG" "$GITHUB_SHA" || { echo "::error::$TAG is not on main"; exit 1; }
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets | length' | grep -qx 0 \
+            || { echo "::error::$TAG's release is missing or already has assets"; exit 1; }
+          git checkout --quiet "refs/tags/$TAG"
+          git submodule update --init --quiet
+          git checkout "$GITHUB_SHA" -- .goreleaser.yml crossplane/cluster/images/provider-archestra/Makefile
 
       - name: Setup go
         uses: $/.github/actions/setup-go
@@ -88,9 +119,11 @@ jobs:
       - name: Build the provider (unsigned)
         uses: goreleaser/goreleaser-action@a4f02ab5355a589de60d917a659ce617ed19b3de # v7.3.0
         with:
-          args: release --clean --skip=publish,sign${{ inputs.publisher_smoke && ',validate' || '' }}
+          # validate checks the tag is at a clean HEAD: not for a dry run (no
+          # tag) or an existing tag (main's build tooling is laid over it).
+          args: release --clean --skip=publish,sign${{ (inputs.publisher_smoke || inputs.release_tag != '') && ',validate' || '' }}
         env:
-          GORELEASER_CURRENT_TAG: v${{ steps.version.outputs.version }}
+          GORELEASER_CURRENT_TAG: ${{ steps.version.outputs.tag }}
 
       # The Terraform Registry's file set: one zip per platform, the manifest
       # (named as goreleaser lists it in SHA256SUMS) and SHA256SUMS. The
@@ -281,7 +314,7 @@ jobs:
       - name: Upload to the GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ needs.release-please.outputs.tag_name }}
+          TAG: ${{ needs.build-release.outputs.tag }}
         run: |
           set -euo pipefail
           if [ "$SMOKE" = true ]; then
