@@ -276,6 +276,8 @@ jobs:
           RUN_ID: ${{ steps.publish.outputs.run-id }}
         run: gh run download "$RUN_ID" --repo archestra-ai/release-publisher --name release-assets --dir release-assets
 
+      # Checks the signature against the registry's public key and that every
+      # returned file is what build-release made, then uploads.
       - name: Upload to the GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -284,9 +286,9 @@ jobs:
           set -euo pipefail
           if [ "$SMOKE" = true ]; then
             python3 -I scripts/upload-release-assets.py release-assets "publisher-smoke-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
-              --draft-for-smoke "$GITHUB_SHA"
+              --built release-provider --draft-for-smoke "$GITHUB_SHA"
           else
-            python3 -I scripts/upload-release-assets.py release-assets "$TAG"
+            python3 -I scripts/upload-release-assets.py release-assets "$TAG" --built release-provider
           fi
 
   verify-marketplace:

@@ -21,6 +21,24 @@ def digest(body):
     return "sha256:" + hashlib.sha256(body).hexdigest()
 
 
+class Gpg:
+    """A fake gpg: the signature is valid, by SIGNER, when it holds the sums' sha256."""
+
+    signer = upload.SIGNING_KEY
+
+    def run(self, args, **kwargs):
+        if "--import" in args:
+            return subprocess.CompletedProcess(args, 0, "", "")
+        signature, sums = Path(args[-2]), Path(args[-1])
+        if signature.read_bytes() != hashlib.sha256(sums.read_bytes()).hexdigest().encode():
+            return subprocess.CompletedProcess(args, 1, "[GNUPG:] BADSIG x\n", "")
+        status = f"[GNUPG:] VALIDSIG {self.signer} 2026-11-08 1 0 4 0 1 10 00 {self.signer}\n"
+        return subprocess.CompletedProcess(args, 0, status, "")
+
+
+GPG = Gpg()
+
+
 class Gh:
     """A fake gh holding one release."""
 
@@ -31,6 +49,8 @@ class Gh:
         self.calls = []
 
     def run(self, args, **kwargs):
+        if args[0] == "gpg":
+            return GPG.run(args, **kwargs)
         self.calls.append(args)
         if args[1:3] == ["release", "create"]:
             self.exists, self.draft = True, "--draft" in args
@@ -52,15 +72,21 @@ class Gh:
 
 class UploadTests(unittest.TestCase):
     def setUp(self):
+        GPG.signer = upload.SIGNING_KEY
         self.directory = Path(tempfile.mkdtemp())
-        self.files = {f"{PREFIX}_linux_amd64.zip": b"zip", f"{PREFIX}_manifest.json": b"manifest",
-                      f"{PREFIX}_SHA256SUMS": b"sums", f"{PREFIX}_SHA256SUMS.sig": b"signature"}
+        self.built = Path(tempfile.mkdtemp())
+        self.files = {f"{PREFIX}_linux_amd64.zip": b"zip", f"{PREFIX}_manifest.json": b"manifest"}
+        sums = "".join(f"{hashlib.sha256(body).hexdigest()}  {name}\n" for name, body in sorted(self.files.items()))
+        self.files[f"{PREFIX}_SHA256SUMS"] = sums.encode()
         for name, body in self.files.items():
             (self.directory / name).write_bytes(body)
+            (self.built / name).write_bytes(body)
+        self.files[f"{PREFIX}_SHA256SUMS.sig"] = hashlib.sha256(sums.encode()).hexdigest().encode()
+        (self.directory / f"{PREFIX}_SHA256SUMS.sig").write_bytes(self.files[f"{PREFIX}_SHA256SUMS.sig"])
 
     def upload(self, gh, *extra):
         with mock.patch.object(upload.subprocess, "run", side_effect=gh.run):
-            upload.main([str(self.directory), "v3.1.3", *extra], ENVIRONMENT)
+            upload.main([str(self.directory), "v3.1.3", "--built", str(self.built), *extra], ENVIRONMENT)
 
     def test_uploads_every_file_with_the_signature_last(self):
         gh = Gh()
@@ -95,6 +121,31 @@ class UploadTests(unittest.TestCase):
         # A release run never uploads to a draft, and a dry run never to a published release.
         with self.assertRaisesRegex(ValueError, "must not be a draft"):
             self.upload(Gh(draft=True))
+
+    def test_altered_or_badly_signed_assets_upload_nothing(self):
+        zip_name = f"{PREFIX}_linux_amd64.zip"
+        cases = {
+            "zip changed after signing": lambda: (self.directory / zip_name).write_bytes(b"tampered"),
+            "zip and sums changed, old signature": lambda: self.rewrite_sums(zip_name, b"tampered"),
+            "signed by another key": lambda: setattr(GPG, "signer", "A" * 40),
+            "not the file this run built": lambda: (self.built / zip_name).write_bytes(b"other build"),
+            "a file this run did not build": lambda: (self.directory / f"{PREFIX}_extra.zip").write_bytes(b"x"),
+        }
+        for name, alter in cases.items():
+            with self.subTest(name):
+                self.setUp()
+                alter()
+                gh = Gh()
+                with self.assertRaises(ValueError):
+                    self.upload(gh)
+                self.assertEqual(gh.calls, [])
+
+    def rewrite_sums(self, name, body):
+        (self.directory / name).write_bytes(body)
+        files = {path.name: path.read_bytes() for path in self.directory.iterdir()
+                 if not path.name.endswith(("SHA256SUMS", ".sig"))}
+        (self.directory / f"{PREFIX}_SHA256SUMS").write_text(
+            "".join(f"{hashlib.sha256(b).hexdigest()}  {n}\n" for n, b in sorted(files.items())))
 
     def test_assets_without_a_signature_are_refused(self):
         (self.directory / f"{PREFIX}_SHA256SUMS.sig").unlink()
