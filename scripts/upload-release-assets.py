@@ -36,7 +36,7 @@ import tempfile
 from pathlib import Path
 
 # The key the Terraform Registry has for archestra-ai/archestra.
-SIGNING_KEY = "CCE387A707580753ABCF277526C79790CF3461EB"
+SIGNING_KEY = "F30310CA835EF144AF9E2AB49BEEA612935F4267"
 PUBLIC_KEY = Path(__file__).resolve().parents[1] / ".github/release/signing-key.asc"
 
 
