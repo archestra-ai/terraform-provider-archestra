@@ -42,23 +42,14 @@ jobs:
           python3 scripts/ci_integration_scope.py --suite native \
             --event "$EVENT" --head-ref "$HEAD_REF" --base "$BASE_SHA" --head "$HEAD_SHA" >> "$GITHUB_OUTPUT"
 
+  # The rules live in archestra-ai/.github (actions/lint-pr-title/commitlint.config.js).
   lint-pr-title:
     name: PR Title Linter
     runs-on: ubuntu-24.04
-    permissions:
-      contents: read
+    permissions: {}
     steps:
-      - name: Checkout project
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
       - name: Lint PR title
-        uses: grafana/shared-workflows/actions/lint-pr-title@70c40e5b6522c854a55334124545261cae3d4c73 # lint-pr-title/v1.2.4
-        with:
-          config-path: "${{ github.workspace }}/.github/commitlint.config.js"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: archestra-ai/.github/actions/lint-pr-title@87c9cba6c2a072e2e66016c39cc601d4efad5415 # TODO: repin to the merged archestra-ai/.github commit
 
   linting-and-tests:
     name: Linting and Tests
