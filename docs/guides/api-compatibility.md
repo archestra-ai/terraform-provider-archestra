@@ -26,6 +26,26 @@ Two features need 1.5.0-rc.1 or later:
   created, on import or refresh. Older releases return 403, so `value` stays
   null. Users can recover keys they created on every supported release.
 
+Two settings need a later release. Leave them unset on older releases:
+
+- `entra_agent_identity_id` on `archestra_agent` and `archestra_mcp_gateway`
+  needs 1.5.0-rc.29 or later.
+- `connection_page_hidden` on `archestra_organization_settings` needs
+  1.5.0-rc.31 or later.
+
+Newer resources and nested settings need these releases. Acceptance tests skip
+them on older releases:
+
+| Resource or setting | Needs |
+|---|---|
+| `archestra_knowledge_connector` | The floor (1.4.0-rc.51) |
+| `archestra_openappa_battery_install` | 1.5.0-rc.1 |
+| `network_policy` on `archestra_agent` | 1.5.0-rc.20 |
+| `subagent_load_balancing` on `archestra_mcp_gateway` | 1.5.0-rc.23 |
+| `archestra_auto_router` (ALPHA) and the `auto_router_id` / `auto_router_ids` / `default_auto_router_id` settings | 1.5.0-rc.29, with `ARCHESTRA_AUTO_ROUTING_ENABLED=true` (or `ARCHESTRA_BETA=true`) |
+| `archestra_blob_provider` and `archestra_cost_export` | 1.5.0-rc.30 |
+| `desktop_config` on `archestra_mcp_registry_entry` | 1.5.0-rc.32, with `ARCHESTRA_BETA=true` |
+
 `archestra_model_pool` additionally requires the model-pools CRUD API introduced
 in [Archestra PR #9681](https://github.com/archestra-ai/archestra/pull/9681), with
 `ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` or `ARCHESTRA_BETA=true`. It additionally

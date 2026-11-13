@@ -1,7 +1,7 @@
 # Archestra Provider
 
 
-Provider 3.0.0 has **32 Terraform resources and four Terraform data sources**. Every resource is generated as a Crossplane managed resource in both the cluster and namespaced scopes. Relationships, team bindings, sharing and organization defaults are configured on their parent resource. Retired resource names have no aliases; the [migration guide](MIGRATION-v3.md) maps each one to its replacement.
+The provider has **37 Terraform resources and six Terraform data sources**. Every resource is generated as a Crossplane managed resource in both the cluster and namespaced scopes. Relationships, team bindings, sharing and organization defaults are configured on their parent resource. Retired resource names have no aliases; the [migration guide](MIGRATION-v3.md) maps each one to its replacement.
 
 [![Crossplane mappings](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
 
@@ -28,12 +28,16 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 |---|---|
 | `archestra_agent` | `agent` / `Agent` |
 | `archestra_api_key` | `credential` / `APIKey` |
+| `archestra_auto_router` | `llm` / `AutoRouter` |
+| `archestra_blob_provider` | `storage` / `BlobProvider` |
+| `archestra_cost_export` | `llm` / `CostExport` |
 | `archestra_credential` | `credential` / `Credential` |
 | `archestra_environment` | `environment` / `Environment` |
 | `archestra_github_app` | `credential` / `GitHubApp` |
 | `archestra_github_pat` | `credential` / `GitHubPAT` |
 | `archestra_identity_provider` | `identity` / `Provider` |
 | `archestra_knowledge_base` | `knowledge` / `KnowledgeBase` |
+| `archestra_knowledge_connector` | `knowledge` / `Connector` |
 | `archestra_knowledge_directory` | `knowledge` / `Directory` |
 | `archestra_knowledge_file` | `knowledge` / `File` |
 | `archestra_limit` | `limit` / `Limit` |
@@ -44,6 +48,7 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_model` | `llm` / `Model` |
 | `archestra_model_provider` | `llm` / `ModelProvider` |
 | `archestra_oauth_client` | `credential` / `OAuthClient` |
+| `archestra_openappa_battery_install` | `security` / `BatteryInstall` |
 | `archestra_organization_settings` | `organization` / `Settings` |
 | `archestra_plugin` | `plugin` / `Plugin` |
 | `archestra_project` | `project` / `Project` |
@@ -58,8 +63,9 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_team` | `team` / `Team` |
 | `archestra_virtual_key` | `llm` / `VirtualKey` |
 
-The four data sources are `archestra_agent`, `archestra_team`, `archestra_tool`
-and `archestra_mcp_tool_calls`. Tool lookup accepts an optional MCP server filter;
+The six data sources are `archestra_agent`, `archestra_team`, `archestra_tool`,
+`archestra_mcp_tool_calls`, `archestra_blob_provider` and `archestra_auto_router`
+(both looked up by name). Tool lookup accepts an optional MCP server filter;
 agent lookup includes its relationships. Data sources read existing state.
 
 Crossplane resources use `<group>.archestra.crossplane.io` in cluster scope and
