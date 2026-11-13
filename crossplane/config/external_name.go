@@ -41,6 +41,8 @@ var ExternalNameConfigs = map[string]ujconfig.ExternalName{
 	"archestra_identity_provider":       ujconfig.IdentifierFromProvider,
 	"archestra_limit":                   ujconfig.IdentifierFromProvider,
 	"archestra_model_pool":              ujconfig.IdentifierFromProvider,
+	"archestra_blob_provider":           ujconfig.IdentifierFromProvider,
+	"archestra_cost_export":             ujconfig.IdentifierFromProvider,
 	"archestra_model":                   ujconfig.IdentifierFromProvider,
 	"archestra_model_provider":          ujconfig.IdentifierFromProvider,
 	"archestra_mcp_gateway":             ujconfig.IdentifierFromProvider,

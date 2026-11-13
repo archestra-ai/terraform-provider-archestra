@@ -178,6 +178,17 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.ShortGroup = "organization"
 		r.Kind = "Settings"
 	})
+	p.AddResourceConfigurator("archestra_blob_provider", func(r *ujconfig.Resource) {
+		// A leaf group: llm/CostExport references it, and organization/Settings
+		// already references llm, so placing it in organization would cycle.
+		r.ShortGroup = "storage"
+		r.Kind = "BlobProvider"
+	})
+	p.AddResourceConfigurator("archestra_cost_export", func(r *ujconfig.Resource) {
+		r.ShortGroup = "llm"
+		r.Kind = "CostExport"
+		r.References["blob_provider_id"] = ujconfig.Reference{TerraformName: "archestra_blob_provider"}
+	})
 
 	p.AddResourceConfigurator("archestra_credential", func(r *ujconfig.Resource) {
 		r.ShortGroup = credentialGroup

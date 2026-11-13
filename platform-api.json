@@ -4,7 +4,7 @@
   "spec_sha256": "53c272c5c03403044d1f843b4f233e204fa0f226c0c0425a85defc579b75188e",
   "generator_commit": "5bc9c4c0c68d49ef628f1387535f6bff2daa9896",
   "files": {
-    "internal/client/archestra_client.go": "5491724d6b769b9e94ca1f267ed54bd86b2dabae93cf1dc6b3bc979b7428b554",
+    "internal/client/archestra_client.go": "41feccb8edf1f25791087fbd60a6c5a66d227cab6fb6119213c662d7e3bbb7b2",
     "platform-version.txt": "8526f9a7eb49cf2f910c613a29018471f936f2864008450166075027c8516294"
   }
 }

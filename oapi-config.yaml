@@ -61,6 +61,14 @@ output-options:
     - getMcpServerTools
     - getMcpToolCalls
     - getModelsWithApiKeys
+    - listBlobProviders
+    - createBlobProvider
+    - updateBlobProvider
+    - deleteBlobProvider
+    - listCostExports
+    - createCostExport
+    - updateCostExport
+    - deleteCostExport
     - getOrganization
     - getResourcePermissions
     - getTeam

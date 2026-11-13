@@ -210,6 +210,8 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewTeamResource,
 		NewLlmModelResource,
 		NewModelPoolResource,
+		NewBlobProviderResource,
+		NewCostExportResource,
 		NewLimitResource,
 		NewOrganizationSettingsResource,
 		NewLLMProviderApiKeyResource,
@@ -222,6 +224,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewTeamDataSource,
+		NewBlobProviderDataSource,
 		NewAgentDataSource,
 		NewToolDataSource,
 		NewMcpToolCallsDataSource,
