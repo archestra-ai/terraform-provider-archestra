@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.5](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.4...v3.1.5) (2026-11-13)
+
+
+### Bug Fixes
+
+* align provider with platform rc.32 contracts ([#222](https://github.com/archestra-ai/terraform-provider-archestra/issues/222)) ([319faa9](https://github.com/archestra-ai/terraform-provider-archestra/commit/319faa930975d60a6bab798b0841474a8a6f3893))
+
 ## [3.1.4](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.3...v3.1.4) (2026-11-08)
 
 
