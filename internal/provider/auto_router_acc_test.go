@@ -169,6 +169,9 @@ resource "archestra_virtual_key" "routed" {
 			resource.TestCheckResourceAttrPair("archestra_agent.routed", "auto_router_id", "archestra_auto_router.test", "id"),
 			resource.TestCheckResourceAttr("archestra_virtual_key.routed", "auto_router_ids.#", "1"),
 		)},
+		// virtual_api_key_ids comes from the virtual key's own grant, written
+		// after the router was created, so state catches up on the next refresh.
+		{RefreshState: true, Check: resource.TestCheckResourceAttr("archestra_auto_router.test", "virtual_api_key_ids.#", "1")},
 		{ResourceName: "archestra_auto_router.test", ImportState: true, ImportStateVerify: true},
 		{Config: initial, PlanOnly: true},
 		{Config: updated, Check: resource.ComposeAggregateTestCheckFunc(
