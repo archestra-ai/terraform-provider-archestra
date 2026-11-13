@@ -32,6 +32,7 @@ var ExternalNameConfigs = map[string]ujconfig.ExternalName{
 	"archestra_knowledge_directory":     ujconfig.IdentifierFromProvider,
 	"archestra_project":                 ujconfig.IdentifierFromProvider,
 	"archestra_knowledge_base":          ujconfig.IdentifierFromProvider,
+	"archestra_knowledge_connector":     ujconfig.IdentifierFromProvider,
 	"archestra_role":                    ujconfig.IdentifierFromProvider,
 	"archestra_api_key":                 ujconfig.IdentifierFromProvider,
 	"archestra_schedule":                ujconfig.IdentifierFromProvider,
