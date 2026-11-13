@@ -249,6 +249,7 @@ resource "archestra_mcp_registry_entry" "private_registry" {
 - `cloned_from` (String) Source catalog item copied when this item is created.
 - `deployment_spec_yaml` (String) Custom Kubernetes deployment YAML for the MCP server
 - `description` (String) Description of the MCP server
+- `desktop_config` (Attributes) Makes this a desktop MCP server that runs on each user's device; set exactly one of `command` or `url`. Conflicts with `local_config` and `remote_config`; adding or removing it replaces the entry. Desktop MCP servers are alpha: they need API 1.5.0-rc.32 or later with `ARCHESTRA_BETA=true`. (see [below for nested schema](#nestedatt--desktop_config))
 - `docs_url` (String) URL to the MCP server documentation
 - `dynamic_connection_mcp_server_id` (String) Default non-personal server connection for dynamic credential resolution.
 - `enterprise_managed_config` (Attributes) Enterprise-managed credential configuration. Binds this catalog item to an identity provider that issues credentials at runtime rather than using static secrets. (see [below for nested schema](#nestedatt--enterprise_managed_config))
@@ -293,6 +294,15 @@ Required:
 Optional:
 
 - `description` (String) Description of the field
+
+
+<a id="nestedatt--desktop_config"></a>
+### Nested Schema for `desktop_config`
+
+Optional:
+
+- `command` (String) Command each device runs to start the server, such as `npx -y @acme/mcp-server`.
+- `url` (String) Address where the server already listens on each device, starting with `http://` or `https://`.
 
 
 <a id="nestedatt--enterprise_managed_config"></a>

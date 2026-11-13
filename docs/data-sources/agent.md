@@ -74,6 +74,7 @@ output "support_tools" {
 - `missing_credential_behavior` (String) What happens when a caller lacks a connection the agent's tools need: `allow` (fail only at invocation, default), `warn` (surface missing connections up front), or `block` (agent unusable until connected)
 - `model_id` (String) Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`
 - `model_pool_id` (String) Model pool used for the agent; the API resolves its model and provider key.
+- `network_policy` (Attributes) Current egress override; null when the agent inherits its environment's policy. (see [below for nested schema](#nestedatt--network_policy))
 - `permissions` (Attributes Set) Current additional direct sharing grants; owner and inherited access are excluded. (see [below for nested schema](#nestedatt--permissions))
 - `remote_agent_ids` (Set of String) UUIDs of assigned remote-agent registrations.
 - `resolved_llm_model_name` (String) Server-reported resolved llm model name.
@@ -110,6 +111,17 @@ Read-Only:
 
 - `key` (String)
 - `value` (String)
+
+
+<a id="nestedatt--network_policy"></a>
+### Nested Schema for `network_policy`
+
+Read-Only:
+
+- `allowed_cidrs` (Set of String) CIDR ranges such as `203.0.113.0/24` or `2001:db8::/32`, allowed unless `egress_mode` is `off`.
+- `allowed_domains` (Set of String) Lowercase domains such as `api.example.com` or `*.example.com`, allowed in `restricted` mode.
+- `domain_preset` (String) Extra domains allowed in `restricted` mode: `none` (default), `common_dependencies` or `package_managers`.
+- `egress_mode` (String) `off` (no egress), `restricted` (allowlists only, the default) or `unrestricted`.
 
 
 <a id="nestedatt--permissions"></a>

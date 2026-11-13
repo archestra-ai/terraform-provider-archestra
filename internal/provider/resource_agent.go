@@ -36,6 +36,7 @@ type AgentResource struct {
 // with prompts, knowledge sources, optional email triggers, etc.).
 type AgentResourceModel struct {
 	ModelPoolID                    types.String `tfsdk:"model_pool_id"`
+	NetworkPolicy                  types.Object `tfsdk:"network_policy"`
 	Tools                          types.Set    `tfsdk:"tools"`
 	ExcludedToolIDs                types.Set    `tfsdk:"excluded_tool_ids"`
 	Hooks                          types.Set    `tfsdk:"hooks"`
@@ -225,6 +226,7 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 	for name, attribute := range currentAgentAttributes() {
 		resp.Schema.Attributes[name] = attribute
 	}
+	resp.Schema.Attributes["network_policy"] = agentNetworkPolicyAttribute()
 }
 
 func (r *AgentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -500,6 +502,7 @@ func (r *AgentResource) ValidateConfig(ctx context.Context, req resource.Validat
 	validateInlineSkillPolicy(ctx, req.Config, &resp.Diagnostics)
 	validateInlineHooks(ctx, req.Config, &resp.Diagnostics)
 	validateInlineTools(ctx, req.Config, &resp.Diagnostics)
+	validateAgentNetworkPolicy(ctx, req.Config, &resp.Diagnostics)
 	var data AgentResourceModel
 	// Decode only the fields this validator uses. Runtime objects can be
 	// unknown during validation (for example, a conditional inside for_each).
@@ -534,6 +537,7 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 	if diags.HasError() {
 		return
 	}
+	data.NetworkPolicy = networkPolicyFromResponse(body, diags)
 	data.ID = types.StringValue(resp.Id.String())
 	data.Name = types.StringValue(resp.Name)
 	optionalStringFromAPI(&data.Description, resp.Description)
@@ -612,10 +616,6 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 		"autoRouterId",
 		// Subagent load balancing applies only to MCP gateways.
 		"subagentLoadBalancing",
-		// Not modeled yet: the API normalizes the policy (fills defaults, normalizes
-		// domains), so it needs a nested schema rather than a JSON string to avoid
-		// phantom diffs. Configure it in the UI until then.
-		"networkPolicy",
 	}
 }
 
@@ -636,6 +636,7 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 var agentAttrSpec = append(append(agentRelationshipAttrSpecs(), AttrSpec{TFName: "hooks", Kind: Synthetic}, AttrSpec{TFName: "tools", Kind: Synthetic}, AttrSpec{TFName: "excluded_tool_ids", Kind: Synthetic}), []AttrSpec{
 	initialGrantsAttrSpec,
 	{TFName: "model_pool_id", JSONName: "modelPoolId", Kind: Scalar},
+	agentNetworkPolicyAttrSpec,
 	{TFName: "entra_agent_identity_id", JSONName: "entraAgentIdentityId", Kind: Scalar},
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar, OmitOnNull: true},

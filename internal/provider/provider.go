@@ -210,6 +210,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewTeamResource,
 		NewLlmModelResource,
 		NewModelPoolResource,
+		NewOpenappaBatteryInstallResource,
 		NewLimitResource,
 		NewOrganizationSettingsResource,
 		NewLLMProviderApiKeyResource,

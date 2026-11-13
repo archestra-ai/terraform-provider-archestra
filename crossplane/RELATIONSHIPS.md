@@ -61,6 +61,7 @@ Terraform resource exposed by Crossplane. The added links are:
 | Gateway | Environment → Environment; knowledge bases → KnowledgeBase |
 | RegistryEntry | Environment → Environment; default dynamic connection → MCP Server; enterprise credential issuer → identity Provider |
 | MCP Server | Owning team → Team |
+| BatteryInstall | Governed catalog → RegistryEntry |
 | OAuthClient | Model pool grants → ModelPool |
 | Organization Settings | Default agent → Agent; primary/embedding/OCR/reranker provider keys → ModelProvider; default/fast/smart models → Model; default connection gateway → Gateway |
 

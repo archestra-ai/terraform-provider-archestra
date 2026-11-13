@@ -197,3 +197,8 @@ output-options:
     - getAppTools
     - assignToolToApp
     - unassignToolFromApp
+    - getOpenappaBatteries
+    - createOpenappaBatteryInstall
+    - getOpenappaBatteryInstall
+    - updateOpenappaBatteryInstall
+    - deleteOpenappaBatteryInstall

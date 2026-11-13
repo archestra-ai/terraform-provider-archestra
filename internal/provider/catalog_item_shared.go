@@ -34,6 +34,7 @@ import (
 //     finalizeCatalogItemPatch normalizes each entry to the wire shape.
 var catalogItemAttrSpec = []AttrSpec{
 	initialGrantsAttrSpec,
+	catalogDesktopConfigAttrSpec,
 	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar},
 	{TFName: "multitenant", JSONName: "multitenant", Kind: Scalar, OmitOnNull: true},
 	{TFName: "cloned_from", JSONName: "clonedFrom", Kind: Scalar, OmitOnNull: true, CreateOnly: true},

@@ -143,6 +143,11 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.Kind = "ModelPool"
 		r.References["members.provider_api_key_id"] = ujconfig.Reference{TerraformName: "archestra_model_provider"}
 	})
+	p.AddResourceConfigurator("archestra_openappa_battery_install", func(r *ujconfig.Resource) {
+		r.ShortGroup = "security"
+		r.Kind = "BatteryInstall"
+		r.References["catalog_id"] = ujconfig.Reference{TerraformName: "archestra_mcp_registry_entry"}
+	})
 	p.AddResourceConfigurator("archestra_model", func(r *ujconfig.Resource) {
 		r.ShortGroup = "llm"
 		r.Kind = "Model"
