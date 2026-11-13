@@ -69,7 +69,7 @@ func ConfigureResources(p *ujconfig.Provider) {
 	})
 	p.AddResourceConfigurator("archestra_remote_agent", func(r *ujconfig.Resource) { r.ShortGroup = "a2a"; r.Kind = "RemoteAgent" })
 
-	for _, name := range []string{"archestra_environment", "archestra_model", "archestra_plugin", "archestra_virtual_key", "archestra_oauth_client", "archestra_remote_agent", "archestra_service_account", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_mcp_registry_entry", "archestra_skill", "archestra_credential", "archestra_model_provider"} {
+	for _, name := range []string{"archestra_environment", "archestra_model", "archestra_plugin", "archestra_virtual_key", "archestra_oauth_client", "archestra_remote_agent", "archestra_service_account", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_knowledge_connector", "archestra_mcp_registry_entry", "archestra_skill", "archestra_credential", "archestra_model_provider"} {
 		p.AddResourceConfigurator(name, func(r *ujconfig.Resource) {
 			// Leave sharing unmanaged when omitted; forProvider manages ongoing sharing.
 			r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "permissions")
@@ -93,6 +93,12 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "app_ids")
 	})
 	p.AddResourceConfigurator("archestra_knowledge_base", func(r *ujconfig.Resource) { r.ShortGroup = "knowledge"; r.Kind = "KnowledgeBase" })
+	p.AddResourceConfigurator("archestra_knowledge_connector", func(r *ujconfig.Resource) {
+		r.ShortGroup = "knowledge"
+		r.Kind = "Connector"
+		r.References["knowledge_base_ids"] = ujconfig.Reference{TerraformName: "archestra_knowledge_base"}
+		r.References["environment_id"] = ujconfig.Reference{TerraformName: "archestra_environment"}
+	})
 	p.AddResourceConfigurator("archestra_role", func(r *ujconfig.Resource) { r.ShortGroup = "identity"; r.Kind = "Role" })
 	p.AddResourceConfigurator("archestra_api_key", func(r *ujconfig.Resource) { r.ShortGroup = credentialGroup; r.Kind = "APIKey" })
 	p.AddResourceConfigurator("archestra_schedule", func(r *ujconfig.Resource) {
