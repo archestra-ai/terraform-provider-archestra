@@ -121,7 +121,7 @@ func (r *VirtualAPIKeyResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("Creation Failed", fmt.Sprintf("API returned status %d", result.StatusCode()))
 		return
 	}
-	data.Value = types.StringValue(result.JSON200.Value)
+	data.Value = types.StringPointerValue(result.JSON200.Value) // null when the token is withheld (team lead creating for a member)
 	r.flatten(ctx, &data, result.Body, &resp.Diagnostics)
 	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
