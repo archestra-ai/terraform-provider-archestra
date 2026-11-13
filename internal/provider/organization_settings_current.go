@@ -49,6 +49,8 @@ func currentOrganizationAttributes() map[string]schema.Attribute {
 		"connection_skills_enabled":                    schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether connection setup offers skills."},
 		"connection_llm_proxy_enabled":                 schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether connection setup offers the LLM proxy."},
 		"connection_plugins_enabled":                   schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether connection setup offers plugins."},
+		"connection_page_hidden":                       schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the connection page is hidden from members (API 1.5.0-rc.31 or later; leave unset on older releases)."},
+		"auto_routing_enabled":                         schema.BoolAttribute{Computed: true, MarkdownDescription: "Whether auto routers route sessions (ALPHA; toggled from the auto-routing settings, API 1.5.0-rc.29 or later)."},
 		"connection_runtime_handoff_enabled":           schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether clients can hand work to an agent runtime."},
 		"connection_runtime_handoff_instructions":      schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Instructions shown during runtime handoff."},
 		"model_provider_overrides":                     schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "JSON configuration for model provider overrides."},
@@ -130,6 +132,7 @@ func currentOrganizationSpecs(domain string) []AttrSpec {
 			{TFName: "connection_skills_enabled", JSONName: "connectionSkillsEnabled", Kind: Scalar},
 			{TFName: "connection_llm_proxy_enabled", JSONName: "connectionLlmProxyEnabled", Kind: Scalar},
 			{TFName: "connection_plugins_enabled", JSONName: "connectionPluginsEnabled", Kind: Scalar},
+			{TFName: "connection_page_hidden", JSONName: "connectionPageHidden", Kind: Scalar, OmitOnNull: true},
 			{TFName: "connection_runtime_handoff_enabled", JSONName: "connectionRuntimeHandoffEnabled", Kind: Scalar},
 			{TFName: "connection_runtime_handoff_instructions", JSONName: "connectionRuntimeHandoffInstructions", Kind: Scalar},
 		}
@@ -474,6 +477,26 @@ func flattenCurrentOrganizationSettings(data *OrganizationSettingsResourceModel,
 			}
 		}
 		data.ConnectionPluginsEnabled = types.BoolPointerValue(value)
+	}
+	{
+		var value *bool
+		if raw := values["connectionPageHidden"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Organization Response", "Unexpected type for connectionPageHidden.")
+				return
+			}
+		}
+		data.ConnectionPageHidden = types.BoolPointerValue(value)
+	}
+	{
+		var value *bool
+		if raw := values["autoRoutingEnabled"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Organization Response", "Unexpected type for autoRoutingEnabled.")
+				return
+			}
+		}
+		data.AutoRoutingEnabled = types.BoolPointerValue(value)
 	}
 	{
 		var value *bool

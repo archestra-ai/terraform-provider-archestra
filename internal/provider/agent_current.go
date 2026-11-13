@@ -14,6 +14,7 @@ import (
 func currentAgentAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
 		"model_pool_id":                             schema.StringAttribute{Optional: true, MarkdownDescription: "Model pool used for the agent; the API resolves its model and provider key.", Validators: []validator.String{stringvalidator.ConflictsWith(path.MatchRoot("model_id"), path.MatchRoot("llm_api_key_id"), path.MatchRoot("llm_model"))}},
+		"entra_agent_identity_id":                   schema.StringAttribute{Optional: true, MarkdownDescription: "Application (client) ID of the Microsoft Entra agent identity this record calls tools as, a GUID. Requires an identity provider with an Entra Agent ID blueprint (API 1.5.0-rc.29 or later; leave unset on older releases)."},
 		"author_email":                              schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported author email."},
 		"created_by":                                schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
 		"created_by_service_account_id":             schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported created by service account id."},
@@ -93,6 +94,16 @@ func flattenCurrentAgentFields(data *AgentResourceModel, body []byte, diags *dia
 			}
 		}
 		data.LastUsedAt = types.StringPointerValue(value)
+	}
+	{
+		var value *string
+		if raw := values["entraAgentIdentityId"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Agent Response", "Unexpected entraAgentIdentityId value.")
+				return
+			}
+		}
+		optionalStringFromAPI(&data.EntraAgentIdentityId, value)
 	}
 	{
 		var value *int64
@@ -209,6 +220,7 @@ func currentGatewayAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
 		"model_pool_id":                 schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported model pool identifier on the shared agent record."},
 		"github_actions_access":         githubActionsAccessSchema(),
+		"entra_agent_identity_id":       schema.StringAttribute{Optional: true, MarkdownDescription: "Application (client) ID of the Microsoft Entra agent identity this record calls tools as, a GUID. Requires an identity provider with an Entra Agent ID blueprint (API 1.5.0-rc.29 or later; leave unset on older releases)."},
 		"author_email":                  schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported author email."},
 		"created_by":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
 		"created_by_service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported created by service account id."},
@@ -290,6 +302,16 @@ func flattenCurrentGatewayFields(data *McpGatewayResourceModel, body []byte, dia
 			}
 		}
 		data.LastUsedAt = types.StringPointerValue(value)
+	}
+	{
+		var value *string
+		if raw := values["entraAgentIdentityId"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Agent Response", "Unexpected entraAgentIdentityId value.")
+				return
+			}
+		}
+		optionalStringFromAPI(&data.EntraAgentIdentityId, value)
 	}
 	{
 		var value *int64

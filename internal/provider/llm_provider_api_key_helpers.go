@@ -53,6 +53,9 @@ func (r *LLMProviderApiKeyResource) KnownIntentionallySkipped() []string {
 		"createdAt", "updatedAt", "organizationId", "userId", "userName",
 		"teamName", "secretId", "secretStorageType", "bestModelId",
 		"isSystem",
+		// Display name fetched live from GitHub and null when GitHub is slow, so it
+		// would churn state; github_organization already identifies the org.
+		"githubOrganizationName",
 	}
 }
 

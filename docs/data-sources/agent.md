@@ -52,6 +52,7 @@ output "support_tools" {
 - `created_by_service_account_id` (String) Server-reported created by service account id.
 - `deleted_at` (String) Server-reported deleted at.
 - `description` (String) Human-readable description
+- `entra_agent_identity_id` (String) Application (client) ID of the Microsoft Entra agent identity this record calls tools as, a GUID. Requires an identity provider with an Entra Agent ID blueprint (API 1.5.0-rc.29 or later; leave unset on older releases).
 - `environment_id` (String) Environment UUID scoping which MCP servers and connections the agent resolves against; omit for the default environment
 - `excluded_connector_ids` (Set of String) Knowledge connectors excluded from automatic access.
 - `excluded_subagent_ids` (Set of String) Local agents excluded from automatic access.

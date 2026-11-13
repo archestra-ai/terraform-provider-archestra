@@ -33,21 +33,22 @@ type ServiceAccountResource struct {
 }
 
 type ServiceAccountResourceModel struct {
-	TeamID           types.String      `tfsdk:"team_id"`
-	InitialGrants    types.Set         `tfsdk:"permissions"`
-	Labels           []AgentLabelModel `tfsdk:"labels"`
-	CreatedBy        types.String      `tfsdk:"created_by"`
-	ID               types.String      `tfsdk:"id"`
-	Name             types.String      `tfsdk:"name"`
-	Icon             types.String      `tfsdk:"icon"`
-	Role             types.String      `tfsdk:"role"`
-	Disabled         types.Bool        `tfsdk:"disabled"`
-	TokenCount       types.Int64       `tfsdk:"token_count"`
-	ActiveTokenCount types.Int64       `tfsdk:"active_token_count"`
-	LastUsedAt       types.String      `tfsdk:"last_used_at"`
-	SoonestExpiryAt  types.String      `tfsdk:"soonest_expiry_at"`
-	CreatedAt        types.String      `tfsdk:"created_at"`
-	UpdatedAt        types.String      `tfsdk:"updated_at"`
+	TeamID                   types.String      `tfsdk:"team_id"`
+	InitialGrants            types.Set         `tfsdk:"permissions"`
+	Labels                   []AgentLabelModel `tfsdk:"labels"`
+	CreatedBy                types.String      `tfsdk:"created_by"`
+	ID                       types.String      `tfsdk:"id"`
+	Name                     types.String      `tfsdk:"name"`
+	Icon                     types.String      `tfsdk:"icon"`
+	Role                     types.String      `tfsdk:"role"`
+	Disabled                 types.Bool        `tfsdk:"disabled"`
+	TokenCount               types.Int64       `tfsdk:"token_count"`
+	ActiveTokenCount         types.Int64       `tfsdk:"active_token_count"`
+	FederatedCredentialCount types.Int64       `tfsdk:"federated_credential_count"`
+	LastUsedAt               types.String      `tfsdk:"last_used_at"`
+	SoonestExpiryAt          types.String      `tfsdk:"soonest_expiry_at"`
+	CreatedAt                types.String      `tfsdk:"created_at"`
+	UpdatedAt                types.String      `tfsdk:"updated_at"`
 }
 
 func (r *ServiceAccountResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -79,12 +80,13 @@ func (r *ServiceAccountResource) Schema(_ context.Context, _ resource.SchemaRequ
 				Optional:            true,
 				MarkdownDescription: "Emoji or image icon.",
 			},
-			"role":               schema.StringAttribute{Required: true, MarkdownDescription: "Organization role assigned to the service account.", Validators: []validator.String{stringvalidator.LengthBetween(1, 256)}},
-			"disabled":           schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether the identity is disabled."},
-			"token_count":        schema.Int64Attribute{Computed: true, MarkdownDescription: "Total issued tokens."},
-			"active_token_count": schema.Int64Attribute{Computed: true, MarkdownDescription: "Tokens currently able to authenticate."},
-			"last_used_at":       schema.StringAttribute{Computed: true, MarkdownDescription: "Most recent use across the account's tokens."},
-			"soonest_expiry_at":  schema.StringAttribute{Computed: true, MarkdownDescription: "Earliest expiry among active tokens."},
+			"role":                       schema.StringAttribute{Required: true, MarkdownDescription: "Organization role assigned to the service account.", Validators: []validator.String{stringvalidator.LengthBetween(1, 256)}},
+			"disabled":                   schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether the identity is disabled."},
+			"token_count":                schema.Int64Attribute{Computed: true, MarkdownDescription: "Total issued tokens."},
+			"active_token_count":         schema.Int64Attribute{Computed: true, MarkdownDescription: "Tokens currently able to authenticate."},
+			"federated_credential_count": schema.Int64Attribute{Computed: true, MarkdownDescription: "Federated (workload identity) credentials bound to the account. Null on API releases before 1.5.0-rc.26."},
+			"last_used_at":               schema.StringAttribute{Computed: true, MarkdownDescription: "Most recent use across the account's tokens."},
+			"soonest_expiry_at":          schema.StringAttribute{Computed: true, MarkdownDescription: "Earliest expiry among active tokens."},
 			"created_at": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Creation timestamp (RFC 3339).",
@@ -353,19 +355,20 @@ func mapServiceAccountResponse(data *ServiceAccountResourceModel, body []byte) e
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		TeamID           *string        `json:"teamId"`
-		CreatedBy        map[string]any `json:"createdBy"`
-		CreatedAt        time.Time      `json:"createdAt"`
-		Icon             *string        `json:"icon"`
-		Role             string         `json:"role"`
-		Id               uuid.UUID      `json:"id"`
-		Name             string         `json:"name"`
-		Disabled         bool           `json:"disabled"`
-		TokenCount       int64          `json:"tokenCount"`
-		ActiveTokenCount int64          `json:"activeTokenCount"`
-		LastUsedAt       *string        `json:"lastUsedAt"`
-		SoonestExpiryAt  *string        `json:"soonestExpiryAt"`
-		UpdatedAt        time.Time      `json:"updatedAt"`
+		TeamID                   *string        `json:"teamId"`
+		CreatedBy                map[string]any `json:"createdBy"`
+		CreatedAt                time.Time      `json:"createdAt"`
+		Icon                     *string        `json:"icon"`
+		Role                     string         `json:"role"`
+		Id                       uuid.UUID      `json:"id"`
+		Name                     string         `json:"name"`
+		Disabled                 bool           `json:"disabled"`
+		TokenCount               int64          `json:"tokenCount"`
+		ActiveTokenCount         int64          `json:"activeTokenCount"`
+		FederatedCredentialCount *int64         `json:"federatedCredentialCount"`
+		LastUsedAt               *string        `json:"lastUsedAt"`
+		SoonestExpiryAt          *string        `json:"soonestExpiryAt"`
+		UpdatedAt                time.Time      `json:"updatedAt"`
 	}
 	if err := json.Unmarshal(body, &src); err != nil {
 		return err
@@ -387,6 +390,7 @@ func mapServiceAccountResponse(data *ServiceAccountResourceModel, body []byte) e
 	data.Disabled = types.BoolValue(src.Disabled)
 	data.TokenCount = types.Int64Value(src.TokenCount)
 	data.ActiveTokenCount = types.Int64Value(src.ActiveTokenCount)
+	data.FederatedCredentialCount = types.Int64PointerValue(src.FederatedCredentialCount)
 	data.LastUsedAt = types.StringPointerValue(src.LastUsedAt)
 	data.SoonestExpiryAt = types.StringPointerValue(src.SoonestExpiryAt)
 	data.CreatedAt = types.StringValue(src.CreatedAt.Format(time.RFC3339))

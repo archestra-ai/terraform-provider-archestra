@@ -92,6 +92,9 @@ func (r *OrganizationSettingsResource) KnownIntentionallySkipped() []string {
 	return []string{
 		// Telemetry instance identity is not declarative organization configuration.
 		"analyticsInstanceId",
+		// Auto routing is ALPHA and has no Terraform resource yet, so its router IDs
+		// could not be referenced; model it with an archestra_auto_router resource.
+		"defaultAutoRouterId",
 		// Retired proxy singleton projection has no corresponding writable setting.
 		"connectionDefaultLlmProxyId",
 		// The API explicitly rejects this retired connection input.

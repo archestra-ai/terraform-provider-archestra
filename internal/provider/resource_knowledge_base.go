@@ -33,17 +33,18 @@ type KnowledgeBaseResource struct {
 }
 
 type KnowledgeBaseResourceModel struct {
-	InitialGrants             types.Set         `tfsdk:"permissions"`
-	Labels                    []AgentLabelModel `tfsdk:"labels"`
-	CreatedBy                 types.String      `tfsdk:"created_by"`
-	CreatedByServiceAccountID types.String      `tfsdk:"created_by_service_account_id"`
-	DeletedAt                 types.String      `tfsdk:"deleted_at"`
-	ID                        types.String      `tfsdk:"id"`
-	Name                      types.String      `tfsdk:"name"`
-	Description               types.String      `tfsdk:"description"`
-	Status                    types.String      `tfsdk:"status"`
-	CreatedAt                 types.String      `tfsdk:"created_at"`
-	UpdatedAt                 types.String      `tfsdk:"updated_at"`
+	InitialGrants              types.Set         `tfsdk:"permissions"`
+	Labels                     []AgentLabelModel `tfsdk:"labels"`
+	CreatedBy                  types.String      `tfsdk:"created_by"`
+	CreatedByServiceAccountID  types.String      `tfsdk:"created_by_service_account_id"`
+	DeletedAt                  types.String      `tfsdk:"deleted_at"`
+	UploadedFilesEnvironmentID types.String      `tfsdk:"uploaded_files_environment_id"`
+	ID                         types.String      `tfsdk:"id"`
+	Name                       types.String      `tfsdk:"name"`
+	Description                types.String      `tfsdk:"description"`
+	Status                     types.String      `tfsdk:"status"`
+	CreatedAt                  types.String      `tfsdk:"created_at"`
+	UpdatedAt                  types.String      `tfsdk:"updated_at"`
 }
 
 func (r *KnowledgeBaseResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,6 +60,7 @@ func (r *KnowledgeBaseResource) Schema(_ context.Context, _ resource.SchemaReque
 			"created_by":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
 			"created_by_service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Service account that created the knowledge base."},
 			"deleted_at":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Soft-deletion timestamp, when applicable."},
+			"uploaded_files_environment_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Environment that indexes this knowledge base's uploaded files. Null until files are uploaded, and on API releases before 1.5.0-rc.21. Change it in the UI: the API accepts it only once files are indexed."},
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Knowledge base identifier.",
@@ -328,15 +330,16 @@ func mapKnowledgeBaseResponse(data *KnowledgeBaseResourceModel, body []byte) err
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		CreatedBy                 map[string]any `json:"createdBy"`
-		CreatedByServiceAccountID *string        `json:"createdByServiceAccountId"`
-		DeletedAt                 *string        `json:"deletedAt"`
-		CreatedAt                 time.Time      `json:"createdAt"`
-		Description               *string        `json:"description"`
-		Id                        uuid.UUID      `json:"id"`
-		Name                      string         `json:"name"`
-		Status                    string         `json:"status"`
-		UpdatedAt                 time.Time      `json:"updatedAt"`
+		CreatedBy                  map[string]any `json:"createdBy"`
+		CreatedByServiceAccountID  *string        `json:"createdByServiceAccountId"`
+		DeletedAt                  *string        `json:"deletedAt"`
+		UploadedFilesEnvironmentID *string        `json:"uploadedFilesEnvironmentId"`
+		CreatedAt                  time.Time      `json:"createdAt"`
+		Description                *string        `json:"description"`
+		Id                         uuid.UUID      `json:"id"`
+		Name                       string         `json:"name"`
+		Status                     string         `json:"status"`
+		UpdatedAt                  time.Time      `json:"updatedAt"`
 	}
 	if err := json.Unmarshal(body, &src); err != nil {
 		return err
@@ -352,6 +355,7 @@ func mapKnowledgeBaseResponse(data *KnowledgeBaseResourceModel, body []byte) err
 	}
 	data.CreatedByServiceAccountID = types.StringPointerValue(src.CreatedByServiceAccountID)
 	data.DeletedAt = types.StringPointerValue(src.DeletedAt)
+	data.UploadedFilesEnvironmentID = types.StringPointerValue(src.UploadedFilesEnvironmentID)
 	data.ID = types.StringValue(src.Id.String())
 	data.Name = types.StringValue(src.Name)
 	optionalStringFromAPI(&data.Description, src.Description)
