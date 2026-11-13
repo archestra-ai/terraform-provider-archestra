@@ -28,6 +28,7 @@ func NewOauthClientResource() resource.Resource { return &OauthClientResource{} 
 type OauthClientResource struct{ client *client.ClientWithResponses }
 type OauthClientResourceModel struct {
 	ModelPoolIDs           types.Set    `tfsdk:"model_pool_ids"`
+	AutoRouterIDs          types.Set    `tfsdk:"auto_router_ids"`
 	ID                     types.String `tfsdk:"id"`
 	Name                   types.String `tfsdk:"name"`
 	ClientID               types.String `tfsdk:"client_id"`
@@ -57,6 +58,7 @@ type OauthClientResourceModel struct {
 var oauthClientAttrSpec = []AttrSpec{
 	{TFName: "client_secret", Kind: Synthetic, Sensitive: true},
 	{TFName: "model_pool_ids", JSONName: "modelPoolIds", Kind: Set, OmitOnNull: true},
+	{TFName: "auto_router_ids", JSONName: "autoRouterIds", Kind: Set, OmitOnNull: true},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "grant_type", JSONName: "grantType", Kind: Scalar},
 	{TFName: "scopes", JSONName: "scopes", Kind: Set},
@@ -76,9 +78,6 @@ func (r *OauthClientResource) APIShape() any         { return client.GetOauthCli
 func (r *OauthClientResource) KnownIntentionallySkipped() []string {
 	return []string{
 		"billingTeam",
-		// Auto routing is ALPHA and has no Terraform resource yet, so its router IDs
-		// could not be referenced; model it with an archestra_auto_router resource.
-		"autoRouterIds",
 	}
 }
 func (r *OauthClientResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -93,6 +92,7 @@ func (r *OauthClientResource) Schema(_ context.Context, _ resource.SchemaRequest
 		"grant_type":          schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString("client_credentials"), Validators: []validator.String{stringvalidator.OneOf("client_credentials", "authorization_code")}, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Immutable OAuth grant type."},
 		"scopes":              schema.SetAttribute{Required: true, ElementType: types.StringType, Validators: []validator.Set{setvalidator.SizeBetween(1, 3), setvalidator.ValueStringsAre(stringvalidator.OneOf("mcp", "a2a", "llm:proxy"))}, MarkdownDescription: "Enabled API capabilities: mcp, a2a and llm:proxy."},
 		"model_pool_ids":      schema.SetAttribute{Optional: true, Computed: true, ElementType: types.StringType, MarkdownDescription: "Model pools allowed for a client-credentials client; an empty set clears grants."},
+		"auto_router_ids":     schema.SetAttribute{Optional: true, Computed: true, ElementType: types.StringType, MarkdownDescription: "ALPHA. `archestra_auto_router` IDs a client-credentials client may call by name; an empty set clears grants. Requires API 1.5.0-rc.29 or later with auto routing enabled."},
 		"allowed_gateway_ids": schema.SetAttribute{Optional: true, Computed: true, ElementType: types.StringType, MarkdownDescription: "Allowed MCP gateway and A2A agent UUIDs; an empty set clears bindings."},
 		"redirect_uris":       schema.SetAttribute{Optional: true, Computed: true, ElementType: types.StringType, MarkdownDescription: "Authorization-code redirect URIs; an empty set clears them when the selected mode permits it."},
 		"provider_api_keys":   credentialProviderKeysAttribute(), "labels": credentialLabelsAttribute(), "spend_cap": credentialSpendCapAttribute(),
@@ -316,6 +316,7 @@ func (r *OauthClientResource) flatten(ctx context.Context, data *OauthClientReso
 		GrantType              string          `json:"grantType"`
 		Scopes                 []string        `json:"scopes"`
 		ModelPoolIDs           []string        `json:"modelPoolIds"`
+		AutoRouterIDs          []string        `json:"autoRouterIds"`
 		AllowedGatewayIDs      []string        `json:"allowedGatewayIds"`
 		RedirectURIs           []string        `json:"redirectUris"`
 		IncludeFutureProviders bool            `json:"includeFutureProviders"`
@@ -341,6 +342,11 @@ func (r *OauthClientResource) flatten(ctx context.Context, data *OauthClientReso
 	data.Scopes, d = types.SetValueFrom(ctx, types.StringType, raw.Scopes)
 	diags.Append(d...)
 	data.ModelPoolIDs, d = types.SetValueFrom(ctx, types.StringType, raw.ModelPoolIDs)
+	diags.Append(d...)
+	if raw.AutoRouterIDs == nil {
+		raw.AutoRouterIDs = []string{} // releases before 1.5.0-rc.29 do not report router grants
+	}
+	data.AutoRouterIDs, d = types.SetValueFrom(ctx, types.StringType, raw.AutoRouterIDs)
 	diags.Append(d...)
 	data.AllowedGatewayIDs, d = types.SetValueFrom(ctx, types.StringType, raw.AllowedGatewayIDs)
 	diags.Append(d...)

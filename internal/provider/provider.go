@@ -213,6 +213,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewModelPoolResource,
 		NewBlobProviderResource,
 		NewCostExportResource,
+		NewAutoRouterResource,
 		NewLimitResource,
 		NewOrganizationSettingsResource,
 		NewLLMProviderApiKeyResource,
@@ -229,6 +230,7 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewAgentDataSource,
 		NewToolDataSource,
 		NewMcpToolCallsDataSource,
+		NewAutoRouterDataSource,
 	}
 }
 

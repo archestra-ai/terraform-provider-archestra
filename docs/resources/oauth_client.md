@@ -37,6 +37,7 @@ resource "archestra_oauth_client" "example" {
 ### Optional
 
 - `allowed_gateway_ids` (Set of String) Allowed MCP gateway and A2A agent UUIDs; an empty set clears bindings.
+- `auto_router_ids` (Set of String) ALPHA. `archestra_auto_router` IDs a client-credentials client may call by name; an empty set clears grants. Requires API 1.5.0-rc.29 or later with auto routing enabled.
 - `billing_team_id` (String) Team billed for client-credentials usage; removing the value clears billing.
 - `grant_type` (String) Immutable OAuth grant type.
 - `include_future_providers` (Boolean) Use current and future shared primary provider keys with explicit mappings as overrides.

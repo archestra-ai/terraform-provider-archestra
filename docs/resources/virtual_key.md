@@ -39,6 +39,7 @@ resource "archestra_virtual_key" "example" {
 
 ### Optional
 
+- `auto_router_ids` (Set of String) ALPHA. `archestra_auto_router` IDs the key may call by name; an empty set clears them, and removing the attribute leaves them unmanaged. Standard keys only. Requires API 1.5.0-rc.29 or later with auto routing enabled; read back from each router's `virtual_api_key_ids`.
 - `billing_team_id` (String) Team billed for this key; removing the value clears team billing.
 - `expires_at` (String) Absolute RFC 3339 expiry; omission removes expiry.
 - `include_future_providers` (Boolean) Use current and future shared primary provider keys, with explicit mappings as overrides.

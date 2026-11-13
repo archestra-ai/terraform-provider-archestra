@@ -33,6 +33,7 @@ func currentOrganizationAttributes() map[string]schema.Attribute {
 		"default_model_id":                             schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Database ID of the default discovered LLM model."},
 		"default_fast_model_id":                        schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Database ID of the faster model on `default_llm_api_key_id` used when an agent without its own `fast_model_id` forks a subagent on the `fast` tier."},
 		"default_smart_model_id":                       schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Database ID of the stronger model on `default_llm_api_key_id` used when an agent without its own `smart_model_id` forks a subagent on the `smart` tier."},
+		"default_auto_router_id":                       schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "ALPHA. `archestra_auto_router` ID that agents without their own model, key, pool or router run on; set null to clear. Requires API 1.5.0-rc.29 or later with auto routing enabled; older releases ignore it."},
 		"default_member_role":                          schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Role assigned to new organization members."},
 		"onboarding_wizard":                            schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "JSON configuration for onboarding wizard."},
 		"icon_logo_dark":                               schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Icon logo displayed in dark mode."},
@@ -107,6 +108,7 @@ func currentOrganizationSpecs(domain string) []AttrSpec {
 			{TFName: "default_model_id", JSONName: "defaultModelId", Kind: Scalar},
 			{TFName: "default_fast_model_id", JSONName: "defaultFastModelId", Kind: Scalar},
 			{TFName: "default_smart_model_id", JSONName: "defaultSmartModelId", Kind: Scalar},
+			{TFName: "default_auto_router_id", JSONName: "defaultAutoRouterId", Kind: Scalar},
 		}
 	case "auth-settings":
 		return []AttrSpec{
@@ -323,6 +325,16 @@ func flattenCurrentOrganizationSettings(data *OrganizationSettingsResourceModel,
 			}
 		}
 		data.DefaultSmartModelId = types.StringPointerValue(value)
+	}
+	{
+		var value *string
+		if raw := values["defaultAutoRouterId"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Organization Response", "Unexpected type for defaultAutoRouterId.")
+				return
+			}
+		}
+		data.DefaultAutoRouterId = types.StringPointerValue(value)
 	}
 	{
 		var value *string
