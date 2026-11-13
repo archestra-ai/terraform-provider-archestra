@@ -1,0 +1,11 @@
+apiVersion: security.archestra.crossplane.io/v1alpha1
+kind: BatteryInstall
+metadata:
+  name: github-guardrails
+spec:
+  forProvider:
+    batteryName: github
+    catalogIdRef:
+      name: github
+  providerConfigRef:
+    name: default

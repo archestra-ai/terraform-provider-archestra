@@ -1,0 +1,15 @@
+apiVersion: storage.archestra.m.crossplane.io/v1alpha1
+kind: BlobProvider
+metadata:
+  name: finops-exports
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: FinOps exports
+    s3:
+      bucket: acme-finops
+      region: us-east-1
+      keyPrefix: archestra
+      authMethod: default_chain
+  providerConfigRef:
+    name: default

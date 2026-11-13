@@ -1,0 +1,26 @@
+apiVersion: llm.archestra.crossplane.io/v1alpha1
+kind: AutoRouter
+metadata:
+  name: engineering
+spec:
+  forProvider:
+    name: auto:engineering
+    budgetPreset: balanced
+    tiers:
+      fast:
+        modelIdRef:
+          name: fast-model
+        providerApiKeyIdRef:
+          name: primary-provider
+      normal:
+        modelIdRef:
+          name: normal-model
+        providerApiKeyIdRef:
+          name: primary-provider
+      smart:
+        modelIdRef:
+          name: smart-model
+        providerApiKeyIdRef:
+          name: primary-provider
+  providerConfigRef:
+    name: default

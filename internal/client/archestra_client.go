@@ -9291,6 +9291,1548 @@ func (e GetAppVersion500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for ListBlobProviders200JSONResponseBodyConfig0AuthMethod.
+const (
+	ListBlobProviders200JSONResponseBodyConfig0AuthMethodAccessKey    ListBlobProviders200JSONResponseBodyConfig0AuthMethod = "access_key"
+	ListBlobProviders200JSONResponseBodyConfig0AuthMethodAssumeRole   ListBlobProviders200JSONResponseBodyConfig0AuthMethod = "assume_role"
+	ListBlobProviders200JSONResponseBodyConfig0AuthMethodDefaultChain ListBlobProviders200JSONResponseBodyConfig0AuthMethod = "default_chain"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders200JSONResponseBodyConfig0AuthMethod enum.
+func (e ListBlobProviders200JSONResponseBodyConfig0AuthMethod) Valid() bool {
+	switch e {
+	case ListBlobProviders200JSONResponseBodyConfig0AuthMethodAccessKey:
+		return true
+	case ListBlobProviders200JSONResponseBodyConfig0AuthMethodAssumeRole:
+		return true
+	case ListBlobProviders200JSONResponseBodyConfig0AuthMethodDefaultChain:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders200JSONResponseBodyConfig0Type.
+const (
+	ListBlobProviders200JSONResponseBodyConfig0TypeS3 ListBlobProviders200JSONResponseBodyConfig0Type = "s3"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders200JSONResponseBodyConfig0Type enum.
+func (e ListBlobProviders200JSONResponseBodyConfig0Type) Valid() bool {
+	switch e {
+	case ListBlobProviders200JSONResponseBodyConfig0TypeS3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders200JSONResponseBodyConfig1AuthMethod.
+const (
+	ListBlobProviders200JSONResponseBodyConfig1AuthMethodApplicationDefault ListBlobProviders200JSONResponseBodyConfig1AuthMethod = "application_default"
+	ListBlobProviders200JSONResponseBodyConfig1AuthMethodServiceAccountKey  ListBlobProviders200JSONResponseBodyConfig1AuthMethod = "service_account_key"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders200JSONResponseBodyConfig1AuthMethod enum.
+func (e ListBlobProviders200JSONResponseBodyConfig1AuthMethod) Valid() bool {
+	switch e {
+	case ListBlobProviders200JSONResponseBodyConfig1AuthMethodApplicationDefault:
+		return true
+	case ListBlobProviders200JSONResponseBodyConfig1AuthMethodServiceAccountKey:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders200JSONResponseBodyConfig1Type.
+const (
+	ListBlobProviders200JSONResponseBodyConfig1TypeGcs ListBlobProviders200JSONResponseBodyConfig1Type = "gcs"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders200JSONResponseBodyConfig1Type enum.
+func (e ListBlobProviders200JSONResponseBodyConfig1Type) Valid() bool {
+	switch e {
+	case ListBlobProviders200JSONResponseBodyConfig1TypeGcs:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders200JSONResponseBodyConfig2AuthMethod.
+const (
+	ListBlobProviders200JSONResponseBodyConfig2AuthMethodAccountKey        ListBlobProviders200JSONResponseBodyConfig2AuthMethod = "account_key"
+	ListBlobProviders200JSONResponseBodyConfig2AuthMethodDefaultCredential ListBlobProviders200JSONResponseBodyConfig2AuthMethod = "default_credential"
+	ListBlobProviders200JSONResponseBodyConfig2AuthMethodSasToken          ListBlobProviders200JSONResponseBodyConfig2AuthMethod = "sas_token"
+	ListBlobProviders200JSONResponseBodyConfig2AuthMethodServicePrincipal  ListBlobProviders200JSONResponseBodyConfig2AuthMethod = "service_principal"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders200JSONResponseBodyConfig2AuthMethod enum.
+func (e ListBlobProviders200JSONResponseBodyConfig2AuthMethod) Valid() bool {
+	switch e {
+	case ListBlobProviders200JSONResponseBodyConfig2AuthMethodAccountKey:
+		return true
+	case ListBlobProviders200JSONResponseBodyConfig2AuthMethodDefaultCredential:
+		return true
+	case ListBlobProviders200JSONResponseBodyConfig2AuthMethodSasToken:
+		return true
+	case ListBlobProviders200JSONResponseBodyConfig2AuthMethodServicePrincipal:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders200JSONResponseBodyConfig2Type.
+const (
+	ListBlobProviders200JSONResponseBodyConfig2TypeAzureBlob ListBlobProviders200JSONResponseBodyConfig2Type = "azure_blob"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders200JSONResponseBodyConfig2Type enum.
+func (e ListBlobProviders200JSONResponseBodyConfig2Type) Valid() bool {
+	switch e {
+	case ListBlobProviders200JSONResponseBodyConfig2TypeAzureBlob:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders200JSONResponseBodyType.
+const (
+	ListBlobProviders200JSONResponseBodyTypeAzureBlob ListBlobProviders200JSONResponseBodyType = "azure_blob"
+	ListBlobProviders200JSONResponseBodyTypeGcs       ListBlobProviders200JSONResponseBodyType = "gcs"
+	ListBlobProviders200JSONResponseBodyTypeS3        ListBlobProviders200JSONResponseBodyType = "s3"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders200JSONResponseBodyType enum.
+func (e ListBlobProviders200JSONResponseBodyType) Valid() bool {
+	switch e {
+	case ListBlobProviders200JSONResponseBodyTypeAzureBlob:
+		return true
+	case ListBlobProviders200JSONResponseBodyTypeGcs:
+		return true
+	case ListBlobProviders200JSONResponseBodyTypeS3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders400JSONResponseBodyErrorType.
+const (
+	ListBlobProviders400JSONResponseBodyErrorTypeApiValidationError ListBlobProviders400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders400JSONResponseBodyErrorType enum.
+func (e ListBlobProviders400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListBlobProviders400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders401JSONResponseBodyErrorType.
+const (
+	ListBlobProviders401JSONResponseBodyErrorTypeApiAuthenticationError ListBlobProviders401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders401JSONResponseBodyErrorType enum.
+func (e ListBlobProviders401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListBlobProviders401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders403JSONResponseBodyErrorType.
+const (
+	ListBlobProviders403JSONResponseBodyErrorTypeApiAuthorizationError ListBlobProviders403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders403JSONResponseBodyErrorType enum.
+func (e ListBlobProviders403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListBlobProviders403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders404JSONResponseBodyErrorType.
+const (
+	ListBlobProviders404JSONResponseBodyErrorTypeApiNotFoundError ListBlobProviders404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders404JSONResponseBodyErrorType enum.
+func (e ListBlobProviders404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListBlobProviders404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders409JSONResponseBodyErrorType.
+const (
+	ListBlobProviders409JSONResponseBodyErrorTypeApiConflictError ListBlobProviders409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders409JSONResponseBodyErrorType enum.
+func (e ListBlobProviders409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListBlobProviders409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListBlobProviders500JSONResponseBodyErrorType.
+const (
+	ListBlobProviders500JSONResponseBodyErrorTypeApiInternalServerError ListBlobProviders500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the ListBlobProviders500JSONResponseBodyErrorType enum.
+func (e ListBlobProviders500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListBlobProviders500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProviderJSONBodyConfig0AuthMethod.
+const (
+	CreateBlobProviderJSONBodyConfig0AuthMethodAccessKey    CreateBlobProviderJSONBodyConfig0AuthMethod = "access_key"
+	CreateBlobProviderJSONBodyConfig0AuthMethodAssumeRole   CreateBlobProviderJSONBodyConfig0AuthMethod = "assume_role"
+	CreateBlobProviderJSONBodyConfig0AuthMethodDefaultChain CreateBlobProviderJSONBodyConfig0AuthMethod = "default_chain"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProviderJSONBodyConfig0AuthMethod enum.
+func (e CreateBlobProviderJSONBodyConfig0AuthMethod) Valid() bool {
+	switch e {
+	case CreateBlobProviderJSONBodyConfig0AuthMethodAccessKey:
+		return true
+	case CreateBlobProviderJSONBodyConfig0AuthMethodAssumeRole:
+		return true
+	case CreateBlobProviderJSONBodyConfig0AuthMethodDefaultChain:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProviderJSONBodyConfig0Type.
+const (
+	CreateBlobProviderJSONBodyConfig0TypeS3 CreateBlobProviderJSONBodyConfig0Type = "s3"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProviderJSONBodyConfig0Type enum.
+func (e CreateBlobProviderJSONBodyConfig0Type) Valid() bool {
+	switch e {
+	case CreateBlobProviderJSONBodyConfig0TypeS3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProviderJSONBodyConfig1AuthMethod.
+const (
+	CreateBlobProviderJSONBodyConfig1AuthMethodApplicationDefault CreateBlobProviderJSONBodyConfig1AuthMethod = "application_default"
+	CreateBlobProviderJSONBodyConfig1AuthMethodServiceAccountKey  CreateBlobProviderJSONBodyConfig1AuthMethod = "service_account_key"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProviderJSONBodyConfig1AuthMethod enum.
+func (e CreateBlobProviderJSONBodyConfig1AuthMethod) Valid() bool {
+	switch e {
+	case CreateBlobProviderJSONBodyConfig1AuthMethodApplicationDefault:
+		return true
+	case CreateBlobProviderJSONBodyConfig1AuthMethodServiceAccountKey:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProviderJSONBodyConfig1Type.
+const (
+	CreateBlobProviderJSONBodyConfig1TypeGcs CreateBlobProviderJSONBodyConfig1Type = "gcs"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProviderJSONBodyConfig1Type enum.
+func (e CreateBlobProviderJSONBodyConfig1Type) Valid() bool {
+	switch e {
+	case CreateBlobProviderJSONBodyConfig1TypeGcs:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProviderJSONBodyConfig2AuthMethod.
+const (
+	CreateBlobProviderJSONBodyConfig2AuthMethodAccountKey        CreateBlobProviderJSONBodyConfig2AuthMethod = "account_key"
+	CreateBlobProviderJSONBodyConfig2AuthMethodDefaultCredential CreateBlobProviderJSONBodyConfig2AuthMethod = "default_credential"
+	CreateBlobProviderJSONBodyConfig2AuthMethodSasToken          CreateBlobProviderJSONBodyConfig2AuthMethod = "sas_token"
+	CreateBlobProviderJSONBodyConfig2AuthMethodServicePrincipal  CreateBlobProviderJSONBodyConfig2AuthMethod = "service_principal"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProviderJSONBodyConfig2AuthMethod enum.
+func (e CreateBlobProviderJSONBodyConfig2AuthMethod) Valid() bool {
+	switch e {
+	case CreateBlobProviderJSONBodyConfig2AuthMethodAccountKey:
+		return true
+	case CreateBlobProviderJSONBodyConfig2AuthMethodDefaultCredential:
+		return true
+	case CreateBlobProviderJSONBodyConfig2AuthMethodSasToken:
+		return true
+	case CreateBlobProviderJSONBodyConfig2AuthMethodServicePrincipal:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProviderJSONBodyConfig2Type.
+const (
+	CreateBlobProviderJSONBodyConfig2TypeAzureBlob CreateBlobProviderJSONBodyConfig2Type = "azure_blob"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProviderJSONBodyConfig2Type enum.
+func (e CreateBlobProviderJSONBodyConfig2Type) Valid() bool {
+	switch e {
+	case CreateBlobProviderJSONBodyConfig2TypeAzureBlob:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider200JSONResponseBodyConfig0AuthMethod.
+const (
+	CreateBlobProvider200JSONResponseBodyConfig0AuthMethodAccessKey    CreateBlobProvider200JSONResponseBodyConfig0AuthMethod = "access_key"
+	CreateBlobProvider200JSONResponseBodyConfig0AuthMethodAssumeRole   CreateBlobProvider200JSONResponseBodyConfig0AuthMethod = "assume_role"
+	CreateBlobProvider200JSONResponseBodyConfig0AuthMethodDefaultChain CreateBlobProvider200JSONResponseBodyConfig0AuthMethod = "default_chain"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider200JSONResponseBodyConfig0AuthMethod enum.
+func (e CreateBlobProvider200JSONResponseBodyConfig0AuthMethod) Valid() bool {
+	switch e {
+	case CreateBlobProvider200JSONResponseBodyConfig0AuthMethodAccessKey:
+		return true
+	case CreateBlobProvider200JSONResponseBodyConfig0AuthMethodAssumeRole:
+		return true
+	case CreateBlobProvider200JSONResponseBodyConfig0AuthMethodDefaultChain:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider200JSONResponseBodyConfig0Type.
+const (
+	CreateBlobProvider200JSONResponseBodyConfig0TypeS3 CreateBlobProvider200JSONResponseBodyConfig0Type = "s3"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider200JSONResponseBodyConfig0Type enum.
+func (e CreateBlobProvider200JSONResponseBodyConfig0Type) Valid() bool {
+	switch e {
+	case CreateBlobProvider200JSONResponseBodyConfig0TypeS3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider200JSONResponseBodyConfig1AuthMethod.
+const (
+	CreateBlobProvider200JSONResponseBodyConfig1AuthMethodApplicationDefault CreateBlobProvider200JSONResponseBodyConfig1AuthMethod = "application_default"
+	CreateBlobProvider200JSONResponseBodyConfig1AuthMethodServiceAccountKey  CreateBlobProvider200JSONResponseBodyConfig1AuthMethod = "service_account_key"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider200JSONResponseBodyConfig1AuthMethod enum.
+func (e CreateBlobProvider200JSONResponseBodyConfig1AuthMethod) Valid() bool {
+	switch e {
+	case CreateBlobProvider200JSONResponseBodyConfig1AuthMethodApplicationDefault:
+		return true
+	case CreateBlobProvider200JSONResponseBodyConfig1AuthMethodServiceAccountKey:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider200JSONResponseBodyConfig1Type.
+const (
+	CreateBlobProvider200JSONResponseBodyConfig1TypeGcs CreateBlobProvider200JSONResponseBodyConfig1Type = "gcs"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider200JSONResponseBodyConfig1Type enum.
+func (e CreateBlobProvider200JSONResponseBodyConfig1Type) Valid() bool {
+	switch e {
+	case CreateBlobProvider200JSONResponseBodyConfig1TypeGcs:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider200JSONResponseBodyConfig2AuthMethod.
+const (
+	CreateBlobProvider200JSONResponseBodyConfig2AuthMethodAccountKey        CreateBlobProvider200JSONResponseBodyConfig2AuthMethod = "account_key"
+	CreateBlobProvider200JSONResponseBodyConfig2AuthMethodDefaultCredential CreateBlobProvider200JSONResponseBodyConfig2AuthMethod = "default_credential"
+	CreateBlobProvider200JSONResponseBodyConfig2AuthMethodSasToken          CreateBlobProvider200JSONResponseBodyConfig2AuthMethod = "sas_token"
+	CreateBlobProvider200JSONResponseBodyConfig2AuthMethodServicePrincipal  CreateBlobProvider200JSONResponseBodyConfig2AuthMethod = "service_principal"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider200JSONResponseBodyConfig2AuthMethod enum.
+func (e CreateBlobProvider200JSONResponseBodyConfig2AuthMethod) Valid() bool {
+	switch e {
+	case CreateBlobProvider200JSONResponseBodyConfig2AuthMethodAccountKey:
+		return true
+	case CreateBlobProvider200JSONResponseBodyConfig2AuthMethodDefaultCredential:
+		return true
+	case CreateBlobProvider200JSONResponseBodyConfig2AuthMethodSasToken:
+		return true
+	case CreateBlobProvider200JSONResponseBodyConfig2AuthMethodServicePrincipal:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider200JSONResponseBodyConfig2Type.
+const (
+	CreateBlobProvider200JSONResponseBodyConfig2TypeAzureBlob CreateBlobProvider200JSONResponseBodyConfig2Type = "azure_blob"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider200JSONResponseBodyConfig2Type enum.
+func (e CreateBlobProvider200JSONResponseBodyConfig2Type) Valid() bool {
+	switch e {
+	case CreateBlobProvider200JSONResponseBodyConfig2TypeAzureBlob:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider200JSONResponseBodyType.
+const (
+	CreateBlobProvider200JSONResponseBodyTypeAzureBlob CreateBlobProvider200JSONResponseBodyType = "azure_blob"
+	CreateBlobProvider200JSONResponseBodyTypeGcs       CreateBlobProvider200JSONResponseBodyType = "gcs"
+	CreateBlobProvider200JSONResponseBodyTypeS3        CreateBlobProvider200JSONResponseBodyType = "s3"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider200JSONResponseBodyType enum.
+func (e CreateBlobProvider200JSONResponseBodyType) Valid() bool {
+	switch e {
+	case CreateBlobProvider200JSONResponseBodyTypeAzureBlob:
+		return true
+	case CreateBlobProvider200JSONResponseBodyTypeGcs:
+		return true
+	case CreateBlobProvider200JSONResponseBodyTypeS3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider400JSONResponseBodyErrorType.
+const (
+	CreateBlobProvider400JSONResponseBodyErrorTypeApiValidationError CreateBlobProvider400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider400JSONResponseBodyErrorType enum.
+func (e CreateBlobProvider400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateBlobProvider400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider401JSONResponseBodyErrorType.
+const (
+	CreateBlobProvider401JSONResponseBodyErrorTypeApiAuthenticationError CreateBlobProvider401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider401JSONResponseBodyErrorType enum.
+func (e CreateBlobProvider401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateBlobProvider401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider403JSONResponseBodyErrorType.
+const (
+	CreateBlobProvider403JSONResponseBodyErrorTypeApiAuthorizationError CreateBlobProvider403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider403JSONResponseBodyErrorType enum.
+func (e CreateBlobProvider403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateBlobProvider403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider404JSONResponseBodyErrorType.
+const (
+	CreateBlobProvider404JSONResponseBodyErrorTypeApiNotFoundError CreateBlobProvider404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider404JSONResponseBodyErrorType enum.
+func (e CreateBlobProvider404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateBlobProvider404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider409JSONResponseBodyErrorType.
+const (
+	CreateBlobProvider409JSONResponseBodyErrorTypeApiConflictError CreateBlobProvider409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider409JSONResponseBodyErrorType enum.
+func (e CreateBlobProvider409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateBlobProvider409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateBlobProvider500JSONResponseBodyErrorType.
+const (
+	CreateBlobProvider500JSONResponseBodyErrorTypeApiInternalServerError CreateBlobProvider500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateBlobProvider500JSONResponseBodyErrorType enum.
+func (e CreateBlobProvider500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateBlobProvider500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteBlobProvider400JSONResponseBodyErrorType.
+const (
+	DeleteBlobProvider400JSONResponseBodyErrorTypeApiValidationError DeleteBlobProvider400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteBlobProvider400JSONResponseBodyErrorType enum.
+func (e DeleteBlobProvider400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteBlobProvider400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteBlobProvider401JSONResponseBodyErrorType.
+const (
+	DeleteBlobProvider401JSONResponseBodyErrorTypeApiAuthenticationError DeleteBlobProvider401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteBlobProvider401JSONResponseBodyErrorType enum.
+func (e DeleteBlobProvider401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteBlobProvider401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteBlobProvider403JSONResponseBodyErrorType.
+const (
+	DeleteBlobProvider403JSONResponseBodyErrorTypeApiAuthorizationError DeleteBlobProvider403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteBlobProvider403JSONResponseBodyErrorType enum.
+func (e DeleteBlobProvider403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteBlobProvider403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteBlobProvider404JSONResponseBodyErrorType.
+const (
+	DeleteBlobProvider404JSONResponseBodyErrorTypeApiNotFoundError DeleteBlobProvider404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteBlobProvider404JSONResponseBodyErrorType enum.
+func (e DeleteBlobProvider404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteBlobProvider404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteBlobProvider409JSONResponseBodyErrorType.
+const (
+	DeleteBlobProvider409JSONResponseBodyErrorTypeApiConflictError DeleteBlobProvider409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteBlobProvider409JSONResponseBodyErrorType enum.
+func (e DeleteBlobProvider409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteBlobProvider409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteBlobProvider500JSONResponseBodyErrorType.
+const (
+	DeleteBlobProvider500JSONResponseBodyErrorTypeApiInternalServerError DeleteBlobProvider500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteBlobProvider500JSONResponseBodyErrorType enum.
+func (e DeleteBlobProvider500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteBlobProvider500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProviderJSONBodyConfig0AuthMethod.
+const (
+	UpdateBlobProviderJSONBodyConfig0AuthMethodAccessKey    UpdateBlobProviderJSONBodyConfig0AuthMethod = "access_key"
+	UpdateBlobProviderJSONBodyConfig0AuthMethodAssumeRole   UpdateBlobProviderJSONBodyConfig0AuthMethod = "assume_role"
+	UpdateBlobProviderJSONBodyConfig0AuthMethodDefaultChain UpdateBlobProviderJSONBodyConfig0AuthMethod = "default_chain"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProviderJSONBodyConfig0AuthMethod enum.
+func (e UpdateBlobProviderJSONBodyConfig0AuthMethod) Valid() bool {
+	switch e {
+	case UpdateBlobProviderJSONBodyConfig0AuthMethodAccessKey:
+		return true
+	case UpdateBlobProviderJSONBodyConfig0AuthMethodAssumeRole:
+		return true
+	case UpdateBlobProviderJSONBodyConfig0AuthMethodDefaultChain:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProviderJSONBodyConfig0Type.
+const (
+	UpdateBlobProviderJSONBodyConfig0TypeS3 UpdateBlobProviderJSONBodyConfig0Type = "s3"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProviderJSONBodyConfig0Type enum.
+func (e UpdateBlobProviderJSONBodyConfig0Type) Valid() bool {
+	switch e {
+	case UpdateBlobProviderJSONBodyConfig0TypeS3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProviderJSONBodyConfig1AuthMethod.
+const (
+	UpdateBlobProviderJSONBodyConfig1AuthMethodApplicationDefault UpdateBlobProviderJSONBodyConfig1AuthMethod = "application_default"
+	UpdateBlobProviderJSONBodyConfig1AuthMethodServiceAccountKey  UpdateBlobProviderJSONBodyConfig1AuthMethod = "service_account_key"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProviderJSONBodyConfig1AuthMethod enum.
+func (e UpdateBlobProviderJSONBodyConfig1AuthMethod) Valid() bool {
+	switch e {
+	case UpdateBlobProviderJSONBodyConfig1AuthMethodApplicationDefault:
+		return true
+	case UpdateBlobProviderJSONBodyConfig1AuthMethodServiceAccountKey:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProviderJSONBodyConfig1Type.
+const (
+	UpdateBlobProviderJSONBodyConfig1TypeGcs UpdateBlobProviderJSONBodyConfig1Type = "gcs"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProviderJSONBodyConfig1Type enum.
+func (e UpdateBlobProviderJSONBodyConfig1Type) Valid() bool {
+	switch e {
+	case UpdateBlobProviderJSONBodyConfig1TypeGcs:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProviderJSONBodyConfig2AuthMethod.
+const (
+	UpdateBlobProviderJSONBodyConfig2AuthMethodAccountKey        UpdateBlobProviderJSONBodyConfig2AuthMethod = "account_key"
+	UpdateBlobProviderJSONBodyConfig2AuthMethodDefaultCredential UpdateBlobProviderJSONBodyConfig2AuthMethod = "default_credential"
+	UpdateBlobProviderJSONBodyConfig2AuthMethodSasToken          UpdateBlobProviderJSONBodyConfig2AuthMethod = "sas_token"
+	UpdateBlobProviderJSONBodyConfig2AuthMethodServicePrincipal  UpdateBlobProviderJSONBodyConfig2AuthMethod = "service_principal"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProviderJSONBodyConfig2AuthMethod enum.
+func (e UpdateBlobProviderJSONBodyConfig2AuthMethod) Valid() bool {
+	switch e {
+	case UpdateBlobProviderJSONBodyConfig2AuthMethodAccountKey:
+		return true
+	case UpdateBlobProviderJSONBodyConfig2AuthMethodDefaultCredential:
+		return true
+	case UpdateBlobProviderJSONBodyConfig2AuthMethodSasToken:
+		return true
+	case UpdateBlobProviderJSONBodyConfig2AuthMethodServicePrincipal:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProviderJSONBodyConfig2Type.
+const (
+	UpdateBlobProviderJSONBodyConfig2TypeAzureBlob UpdateBlobProviderJSONBodyConfig2Type = "azure_blob"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProviderJSONBodyConfig2Type enum.
+func (e UpdateBlobProviderJSONBodyConfig2Type) Valid() bool {
+	switch e {
+	case UpdateBlobProviderJSONBodyConfig2TypeAzureBlob:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider200JSONResponseBodyConfig0AuthMethod.
+const (
+	AccessKey    UpdateBlobProvider200JSONResponseBodyConfig0AuthMethod = "access_key"
+	AssumeRole   UpdateBlobProvider200JSONResponseBodyConfig0AuthMethod = "assume_role"
+	DefaultChain UpdateBlobProvider200JSONResponseBodyConfig0AuthMethod = "default_chain"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider200JSONResponseBodyConfig0AuthMethod enum.
+func (e UpdateBlobProvider200JSONResponseBodyConfig0AuthMethod) Valid() bool {
+	switch e {
+	case AccessKey:
+		return true
+	case AssumeRole:
+		return true
+	case DefaultChain:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider200JSONResponseBodyConfig0Type.
+const (
+	UpdateBlobProvider200JSONResponseBodyConfig0TypeS3 UpdateBlobProvider200JSONResponseBodyConfig0Type = "s3"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider200JSONResponseBodyConfig0Type enum.
+func (e UpdateBlobProvider200JSONResponseBodyConfig0Type) Valid() bool {
+	switch e {
+	case UpdateBlobProvider200JSONResponseBodyConfig0TypeS3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider200JSONResponseBodyConfig1AuthMethod.
+const (
+	ApplicationDefault UpdateBlobProvider200JSONResponseBodyConfig1AuthMethod = "application_default"
+	ServiceAccountKey  UpdateBlobProvider200JSONResponseBodyConfig1AuthMethod = "service_account_key"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider200JSONResponseBodyConfig1AuthMethod enum.
+func (e UpdateBlobProvider200JSONResponseBodyConfig1AuthMethod) Valid() bool {
+	switch e {
+	case ApplicationDefault:
+		return true
+	case ServiceAccountKey:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider200JSONResponseBodyConfig1Type.
+const (
+	UpdateBlobProvider200JSONResponseBodyConfig1TypeGcs UpdateBlobProvider200JSONResponseBodyConfig1Type = "gcs"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider200JSONResponseBodyConfig1Type enum.
+func (e UpdateBlobProvider200JSONResponseBodyConfig1Type) Valid() bool {
+	switch e {
+	case UpdateBlobProvider200JSONResponseBodyConfig1TypeGcs:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider200JSONResponseBodyConfig2AuthMethod.
+const (
+	AccountKey        UpdateBlobProvider200JSONResponseBodyConfig2AuthMethod = "account_key"
+	DefaultCredential UpdateBlobProvider200JSONResponseBodyConfig2AuthMethod = "default_credential"
+	SasToken          UpdateBlobProvider200JSONResponseBodyConfig2AuthMethod = "sas_token"
+	ServicePrincipal  UpdateBlobProvider200JSONResponseBodyConfig2AuthMethod = "service_principal"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider200JSONResponseBodyConfig2AuthMethod enum.
+func (e UpdateBlobProvider200JSONResponseBodyConfig2AuthMethod) Valid() bool {
+	switch e {
+	case AccountKey:
+		return true
+	case DefaultCredential:
+		return true
+	case SasToken:
+		return true
+	case ServicePrincipal:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider200JSONResponseBodyConfig2Type.
+const (
+	UpdateBlobProvider200JSONResponseBodyConfig2TypeAzureBlob UpdateBlobProvider200JSONResponseBodyConfig2Type = "azure_blob"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider200JSONResponseBodyConfig2Type enum.
+func (e UpdateBlobProvider200JSONResponseBodyConfig2Type) Valid() bool {
+	switch e {
+	case UpdateBlobProvider200JSONResponseBodyConfig2TypeAzureBlob:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider200JSONResponseBodyType.
+const (
+	UpdateBlobProvider200JSONResponseBodyTypeAzureBlob UpdateBlobProvider200JSONResponseBodyType = "azure_blob"
+	UpdateBlobProvider200JSONResponseBodyTypeGcs       UpdateBlobProvider200JSONResponseBodyType = "gcs"
+	UpdateBlobProvider200JSONResponseBodyTypeS3        UpdateBlobProvider200JSONResponseBodyType = "s3"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider200JSONResponseBodyType enum.
+func (e UpdateBlobProvider200JSONResponseBodyType) Valid() bool {
+	switch e {
+	case UpdateBlobProvider200JSONResponseBodyTypeAzureBlob:
+		return true
+	case UpdateBlobProvider200JSONResponseBodyTypeGcs:
+		return true
+	case UpdateBlobProvider200JSONResponseBodyTypeS3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider400JSONResponseBodyErrorType.
+const (
+	UpdateBlobProvider400JSONResponseBodyErrorTypeApiValidationError UpdateBlobProvider400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider400JSONResponseBodyErrorType enum.
+func (e UpdateBlobProvider400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateBlobProvider400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider401JSONResponseBodyErrorType.
+const (
+	UpdateBlobProvider401JSONResponseBodyErrorTypeApiAuthenticationError UpdateBlobProvider401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider401JSONResponseBodyErrorType enum.
+func (e UpdateBlobProvider401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateBlobProvider401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider403JSONResponseBodyErrorType.
+const (
+	UpdateBlobProvider403JSONResponseBodyErrorTypeApiAuthorizationError UpdateBlobProvider403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider403JSONResponseBodyErrorType enum.
+func (e UpdateBlobProvider403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateBlobProvider403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider404JSONResponseBodyErrorType.
+const (
+	UpdateBlobProvider404JSONResponseBodyErrorTypeApiNotFoundError UpdateBlobProvider404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider404JSONResponseBodyErrorType enum.
+func (e UpdateBlobProvider404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateBlobProvider404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider409JSONResponseBodyErrorType.
+const (
+	UpdateBlobProvider409JSONResponseBodyErrorTypeApiConflictError UpdateBlobProvider409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider409JSONResponseBodyErrorType enum.
+func (e UpdateBlobProvider409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateBlobProvider409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateBlobProvider500JSONResponseBodyErrorType.
+const (
+	UpdateBlobProvider500JSONResponseBodyErrorTypeApiInternalServerError UpdateBlobProvider500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateBlobProvider500JSONResponseBodyErrorType enum.
+func (e UpdateBlobProvider500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateBlobProvider500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListCostExports200JSONResponseBodyFormat.
+const (
+	ListCostExports200JSONResponseBodyFormatFocusCsv ListCostExports200JSONResponseBodyFormat = "focus_csv"
+)
+
+// Valid indicates whether the value is a known member of the ListCostExports200JSONResponseBodyFormat enum.
+func (e ListCostExports200JSONResponseBodyFormat) Valid() bool {
+	switch e {
+	case ListCostExports200JSONResponseBodyFormatFocusCsv:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListCostExports200JSONResponseBodyLastRunStatus.
+const (
+	ListCostExports200JSONResponseBodyLastRunStatusFailed  ListCostExports200JSONResponseBodyLastRunStatus = "failed"
+	ListCostExports200JSONResponseBodyLastRunStatusSuccess ListCostExports200JSONResponseBodyLastRunStatus = "success"
+)
+
+// Valid indicates whether the value is a known member of the ListCostExports200JSONResponseBodyLastRunStatus enum.
+func (e ListCostExports200JSONResponseBodyLastRunStatus) Valid() bool {
+	switch e {
+	case ListCostExports200JSONResponseBodyLastRunStatusFailed:
+		return true
+	case ListCostExports200JSONResponseBodyLastRunStatusSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListCostExports200JSONResponseBodySchedule.
+const (
+	ListCostExports200JSONResponseBodyScheduleDaily  ListCostExports200JSONResponseBodySchedule = "daily"
+	ListCostExports200JSONResponseBodyScheduleHourly ListCostExports200JSONResponseBodySchedule = "hourly"
+)
+
+// Valid indicates whether the value is a known member of the ListCostExports200JSONResponseBodySchedule enum.
+func (e ListCostExports200JSONResponseBodySchedule) Valid() bool {
+	switch e {
+	case ListCostExports200JSONResponseBodyScheduleDaily:
+		return true
+	case ListCostExports200JSONResponseBodyScheduleHourly:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListCostExports400JSONResponseBodyErrorType.
+const (
+	ListCostExports400JSONResponseBodyErrorTypeApiValidationError ListCostExports400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the ListCostExports400JSONResponseBodyErrorType enum.
+func (e ListCostExports400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListCostExports400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListCostExports401JSONResponseBodyErrorType.
+const (
+	ListCostExports401JSONResponseBodyErrorTypeApiAuthenticationError ListCostExports401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the ListCostExports401JSONResponseBodyErrorType enum.
+func (e ListCostExports401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListCostExports401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListCostExports403JSONResponseBodyErrorType.
+const (
+	ListCostExports403JSONResponseBodyErrorTypeApiAuthorizationError ListCostExports403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the ListCostExports403JSONResponseBodyErrorType enum.
+func (e ListCostExports403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListCostExports403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListCostExports404JSONResponseBodyErrorType.
+const (
+	ListCostExports404JSONResponseBodyErrorTypeApiNotFoundError ListCostExports404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the ListCostExports404JSONResponseBodyErrorType enum.
+func (e ListCostExports404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListCostExports404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListCostExports409JSONResponseBodyErrorType.
+const (
+	ListCostExports409JSONResponseBodyErrorTypeApiConflictError ListCostExports409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the ListCostExports409JSONResponseBodyErrorType enum.
+func (e ListCostExports409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListCostExports409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListCostExports500JSONResponseBodyErrorType.
+const (
+	ListCostExports500JSONResponseBodyErrorTypeApiInternalServerError ListCostExports500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the ListCostExports500JSONResponseBodyErrorType enum.
+func (e ListCostExports500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListCostExports500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateCostExportJSONBodyFormat.
+const (
+	CreateCostExportJSONBodyFormatFocusCsv CreateCostExportJSONBodyFormat = "focus_csv"
+)
+
+// Valid indicates whether the value is a known member of the CreateCostExportJSONBodyFormat enum.
+func (e CreateCostExportJSONBodyFormat) Valid() bool {
+	switch e {
+	case CreateCostExportJSONBodyFormatFocusCsv:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateCostExportJSONBodySchedule.
+const (
+	CreateCostExportJSONBodyScheduleDaily  CreateCostExportJSONBodySchedule = "daily"
+	CreateCostExportJSONBodyScheduleHourly CreateCostExportJSONBodySchedule = "hourly"
+)
+
+// Valid indicates whether the value is a known member of the CreateCostExportJSONBodySchedule enum.
+func (e CreateCostExportJSONBodySchedule) Valid() bool {
+	switch e {
+	case CreateCostExportJSONBodyScheduleDaily:
+		return true
+	case CreateCostExportJSONBodyScheduleHourly:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateCostExport200JSONResponseBodyFormat.
+const (
+	CreateCostExport200JSONResponseBodyFormatFocusCsv CreateCostExport200JSONResponseBodyFormat = "focus_csv"
+)
+
+// Valid indicates whether the value is a known member of the CreateCostExport200JSONResponseBodyFormat enum.
+func (e CreateCostExport200JSONResponseBodyFormat) Valid() bool {
+	switch e {
+	case CreateCostExport200JSONResponseBodyFormatFocusCsv:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateCostExport200JSONResponseBodyLastRunStatus.
+const (
+	CreateCostExport200JSONResponseBodyLastRunStatusFailed  CreateCostExport200JSONResponseBodyLastRunStatus = "failed"
+	CreateCostExport200JSONResponseBodyLastRunStatusSuccess CreateCostExport200JSONResponseBodyLastRunStatus = "success"
+)
+
+// Valid indicates whether the value is a known member of the CreateCostExport200JSONResponseBodyLastRunStatus enum.
+func (e CreateCostExport200JSONResponseBodyLastRunStatus) Valid() bool {
+	switch e {
+	case CreateCostExport200JSONResponseBodyLastRunStatusFailed:
+		return true
+	case CreateCostExport200JSONResponseBodyLastRunStatusSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateCostExport200JSONResponseBodySchedule.
+const (
+	CreateCostExport200JSONResponseBodyScheduleDaily  CreateCostExport200JSONResponseBodySchedule = "daily"
+	CreateCostExport200JSONResponseBodyScheduleHourly CreateCostExport200JSONResponseBodySchedule = "hourly"
+)
+
+// Valid indicates whether the value is a known member of the CreateCostExport200JSONResponseBodySchedule enum.
+func (e CreateCostExport200JSONResponseBodySchedule) Valid() bool {
+	switch e {
+	case CreateCostExport200JSONResponseBodyScheduleDaily:
+		return true
+	case CreateCostExport200JSONResponseBodyScheduleHourly:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateCostExport400JSONResponseBodyErrorType.
+const (
+	CreateCostExport400JSONResponseBodyErrorTypeApiValidationError CreateCostExport400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateCostExport400JSONResponseBodyErrorType enum.
+func (e CreateCostExport400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateCostExport400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateCostExport401JSONResponseBodyErrorType.
+const (
+	CreateCostExport401JSONResponseBodyErrorTypeApiAuthenticationError CreateCostExport401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateCostExport401JSONResponseBodyErrorType enum.
+func (e CreateCostExport401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateCostExport401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateCostExport403JSONResponseBodyErrorType.
+const (
+	CreateCostExport403JSONResponseBodyErrorTypeApiAuthorizationError CreateCostExport403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateCostExport403JSONResponseBodyErrorType enum.
+func (e CreateCostExport403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateCostExport403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateCostExport404JSONResponseBodyErrorType.
+const (
+	CreateCostExport404JSONResponseBodyErrorTypeApiNotFoundError CreateCostExport404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateCostExport404JSONResponseBodyErrorType enum.
+func (e CreateCostExport404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateCostExport404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateCostExport409JSONResponseBodyErrorType.
+const (
+	CreateCostExport409JSONResponseBodyErrorTypeApiConflictError CreateCostExport409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateCostExport409JSONResponseBodyErrorType enum.
+func (e CreateCostExport409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateCostExport409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateCostExport500JSONResponseBodyErrorType.
+const (
+	CreateCostExport500JSONResponseBodyErrorTypeApiInternalServerError CreateCostExport500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateCostExport500JSONResponseBodyErrorType enum.
+func (e CreateCostExport500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateCostExport500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteCostExport400JSONResponseBodyErrorType.
+const (
+	DeleteCostExport400JSONResponseBodyErrorTypeApiValidationError DeleteCostExport400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteCostExport400JSONResponseBodyErrorType enum.
+func (e DeleteCostExport400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteCostExport400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteCostExport401JSONResponseBodyErrorType.
+const (
+	DeleteCostExport401JSONResponseBodyErrorTypeApiAuthenticationError DeleteCostExport401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteCostExport401JSONResponseBodyErrorType enum.
+func (e DeleteCostExport401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteCostExport401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteCostExport403JSONResponseBodyErrorType.
+const (
+	DeleteCostExport403JSONResponseBodyErrorTypeApiAuthorizationError DeleteCostExport403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteCostExport403JSONResponseBodyErrorType enum.
+func (e DeleteCostExport403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteCostExport403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteCostExport404JSONResponseBodyErrorType.
+const (
+	DeleteCostExport404JSONResponseBodyErrorTypeApiNotFoundError DeleteCostExport404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteCostExport404JSONResponseBodyErrorType enum.
+func (e DeleteCostExport404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteCostExport404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteCostExport409JSONResponseBodyErrorType.
+const (
+	DeleteCostExport409JSONResponseBodyErrorTypeApiConflictError DeleteCostExport409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteCostExport409JSONResponseBodyErrorType enum.
+func (e DeleteCostExport409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteCostExport409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteCostExport500JSONResponseBodyErrorType.
+const (
+	DeleteCostExport500JSONResponseBodyErrorTypeApiInternalServerError DeleteCostExport500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteCostExport500JSONResponseBodyErrorType enum.
+func (e DeleteCostExport500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteCostExport500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateCostExportJSONBodyFormat.
+const (
+	UpdateCostExportJSONBodyFormatFocusCsv UpdateCostExportJSONBodyFormat = "focus_csv"
+)
+
+// Valid indicates whether the value is a known member of the UpdateCostExportJSONBodyFormat enum.
+func (e UpdateCostExportJSONBodyFormat) Valid() bool {
+	switch e {
+	case UpdateCostExportJSONBodyFormatFocusCsv:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateCostExportJSONBodySchedule.
+const (
+	UpdateCostExportJSONBodyScheduleDaily  UpdateCostExportJSONBodySchedule = "daily"
+	UpdateCostExportJSONBodyScheduleHourly UpdateCostExportJSONBodySchedule = "hourly"
+)
+
+// Valid indicates whether the value is a known member of the UpdateCostExportJSONBodySchedule enum.
+func (e UpdateCostExportJSONBodySchedule) Valid() bool {
+	switch e {
+	case UpdateCostExportJSONBodyScheduleDaily:
+		return true
+	case UpdateCostExportJSONBodyScheduleHourly:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateCostExport200JSONResponseBodyFormat.
+const (
+	FocusCsv UpdateCostExport200JSONResponseBodyFormat = "focus_csv"
+)
+
+// Valid indicates whether the value is a known member of the UpdateCostExport200JSONResponseBodyFormat enum.
+func (e UpdateCostExport200JSONResponseBodyFormat) Valid() bool {
+	switch e {
+	case FocusCsv:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateCostExport200JSONResponseBodyLastRunStatus.
+const (
+	UpdateCostExport200JSONResponseBodyLastRunStatusFailed  UpdateCostExport200JSONResponseBodyLastRunStatus = "failed"
+	UpdateCostExport200JSONResponseBodyLastRunStatusSuccess UpdateCostExport200JSONResponseBodyLastRunStatus = "success"
+)
+
+// Valid indicates whether the value is a known member of the UpdateCostExport200JSONResponseBodyLastRunStatus enum.
+func (e UpdateCostExport200JSONResponseBodyLastRunStatus) Valid() bool {
+	switch e {
+	case UpdateCostExport200JSONResponseBodyLastRunStatusFailed:
+		return true
+	case UpdateCostExport200JSONResponseBodyLastRunStatusSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateCostExport200JSONResponseBodySchedule.
+const (
+	Daily  UpdateCostExport200JSONResponseBodySchedule = "daily"
+	Hourly UpdateCostExport200JSONResponseBodySchedule = "hourly"
+)
+
+// Valid indicates whether the value is a known member of the UpdateCostExport200JSONResponseBodySchedule enum.
+func (e UpdateCostExport200JSONResponseBodySchedule) Valid() bool {
+	switch e {
+	case Daily:
+		return true
+	case Hourly:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateCostExport400JSONResponseBodyErrorType.
+const (
+	UpdateCostExport400JSONResponseBodyErrorTypeApiValidationError UpdateCostExport400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateCostExport400JSONResponseBodyErrorType enum.
+func (e UpdateCostExport400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateCostExport400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateCostExport401JSONResponseBodyErrorType.
+const (
+	UpdateCostExport401JSONResponseBodyErrorTypeApiAuthenticationError UpdateCostExport401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateCostExport401JSONResponseBodyErrorType enum.
+func (e UpdateCostExport401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateCostExport401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateCostExport403JSONResponseBodyErrorType.
+const (
+	UpdateCostExport403JSONResponseBodyErrorTypeApiAuthorizationError UpdateCostExport403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateCostExport403JSONResponseBodyErrorType enum.
+func (e UpdateCostExport403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateCostExport403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateCostExport404JSONResponseBodyErrorType.
+const (
+	UpdateCostExport404JSONResponseBodyErrorTypeApiNotFoundError UpdateCostExport404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateCostExport404JSONResponseBodyErrorType enum.
+func (e UpdateCostExport404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateCostExport404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateCostExport409JSONResponseBodyErrorType.
+const (
+	UpdateCostExport409JSONResponseBodyErrorTypeApiConflictError UpdateCostExport409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateCostExport409JSONResponseBodyErrorType enum.
+func (e UpdateCostExport409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateCostExport409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateCostExport500JSONResponseBodyErrorType.
+const (
+	UpdateCostExport500JSONResponseBodyErrorTypeApiInternalServerError UpdateCostExport500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateCostExport500JSONResponseBodyErrorType enum.
+func (e UpdateCostExport500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateCostExport500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ListRuntimeCredentialsParamsAccess.
 const (
 	ListRuntimeCredentialsParamsAccessMine   ListRuntimeCredentialsParamsAccess = "mine"
@@ -22679,25 +24221,25 @@ func (e ReinstallMcpServer200JSONResponseBodyHibernationMode) Valid() bool {
 
 // Defines values for ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus.
 const (
-	DiscoveringTools ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "discovering-tools"
-	Error            ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "error"
-	Idle             ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "idle"
-	Pending          ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "pending"
-	Success          ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "success"
+	ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusDiscoveringTools ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "discovering-tools"
+	ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusError            ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "error"
+	ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusIdle             ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "idle"
+	ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusPending          ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "pending"
+	ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusSuccess          ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "success"
 )
 
 // Valid indicates whether the value is a known member of the ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus enum.
 func (e ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus) Valid() bool {
 	switch e {
-	case DiscoveringTools:
+	case ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusDiscoveringTools:
 		return true
-	case Error:
+	case ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusError:
 		return true
-	case Idle:
+	case ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusIdle:
 		return true
-	case Pending:
+	case ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusPending:
 		return true
-	case Success:
+	case ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusSuccess:
 		return true
 	default:
 		return false
@@ -24693,6 +26235,789 @@ const (
 func (e RotateOauthClientSecret500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
 	case RotateOauthClientSecret500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries200JSONResponseBodyInstallsStatus.
+const (
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusActive             GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "active"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusMissingCredentials GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "missing_credentials"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusNamingConflict     GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "naming_conflict"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusRefused            GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "refused"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusServerMissing      GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "server_missing"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusUnavailable        GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "unavailable"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusUnrouted           GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "unrouted"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries200JSONResponseBodyInstallsStatus enum.
+func (e GetOpenappaBatteries200JSONResponseBodyInstallsStatus) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusActive:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusMissingCredentials:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusNamingConflict:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusRefused:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusServerMissing:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusUnavailable:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusUnrouted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries200JSONResponseBodyInstallsTarget.
+const (
+	GetOpenappaBatteries200JSONResponseBodyInstallsTargetLessThannil GetOpenappaBatteries200JSONResponseBodyInstallsTarget = "<nil>"
+	GetOpenappaBatteries200JSONResponseBodyInstallsTargetMultiUser   GetOpenappaBatteries200JSONResponseBodyInstallsTarget = "multi-user"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries200JSONResponseBodyInstallsTarget enum.
+func (e GetOpenappaBatteries200JSONResponseBodyInstallsTarget) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries200JSONResponseBodyInstallsTargetLessThannil:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsTargetMultiUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries200JSONResponseBodyScope.
+const (
+	GetOpenappaBatteries200JSONResponseBodyScopeCatalogs     GetOpenappaBatteries200JSONResponseBodyScope = "catalogs"
+	GetOpenappaBatteries200JSONResponseBodyScopeOrganization GetOpenappaBatteries200JSONResponseBodyScope = "organization"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries200JSONResponseBodyScope enum.
+func (e GetOpenappaBatteries200JSONResponseBodyScope) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries200JSONResponseBodyScopeCatalogs:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyScopeOrganization:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries200JSONResponseBodySource.
+const (
+	GetOpenappaBatteries200JSONResponseBodySourceBundled GetOpenappaBatteries200JSONResponseBodySource = "bundled"
+	GetOpenappaBatteries200JSONResponseBodySourceUpload  GetOpenappaBatteries200JSONResponseBodySource = "upload"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries200JSONResponseBodySource enum.
+func (e GetOpenappaBatteries200JSONResponseBodySource) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries200JSONResponseBodySourceBundled:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodySourceUpload:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries400JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries400JSONResponseBodyErrorTypeApiValidationError GetOpenappaBatteries400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries400JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries401JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries401JSONResponseBodyErrorTypeApiAuthenticationError GetOpenappaBatteries401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries401JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries403JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries403JSONResponseBodyErrorTypeApiAuthorizationError GetOpenappaBatteries403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries403JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries404JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries404JSONResponseBodyErrorTypeApiNotFoundError GetOpenappaBatteries404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries404JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries409JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries409JSONResponseBodyErrorTypeApiConflictError GetOpenappaBatteries409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries409JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries500JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries500JSONResponseBodyErrorTypeApiInternalServerError GetOpenappaBatteries500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries500JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource.
+const (
+	CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceBinding     CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "binding"
+	CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceLessThannil CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "<nil>"
+	CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourcePolicy      CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "policy"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource enum.
+func (e CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceBinding:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceLessThannil:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourcePolicy:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall200JSONResponseBodyScope.
+const (
+	CreateOpenappaBatteryInstall200JSONResponseBodyScopeCatalogs     CreateOpenappaBatteryInstall200JSONResponseBodyScope = "catalogs"
+	CreateOpenappaBatteryInstall200JSONResponseBodyScopeOrganization CreateOpenappaBatteryInstall200JSONResponseBodyScope = "organization"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall200JSONResponseBodyScope enum.
+func (e CreateOpenappaBatteryInstall200JSONResponseBodyScope) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall200JSONResponseBodyScopeCatalogs:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyScopeOrganization:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall200JSONResponseBodySource.
+const (
+	CreateOpenappaBatteryInstall200JSONResponseBodySourceBundled CreateOpenappaBatteryInstall200JSONResponseBodySource = "bundled"
+	CreateOpenappaBatteryInstall200JSONResponseBodySourceUpload  CreateOpenappaBatteryInstall200JSONResponseBodySource = "upload"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall200JSONResponseBodySource enum.
+func (e CreateOpenappaBatteryInstall200JSONResponseBodySource) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall200JSONResponseBodySourceBundled:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodySourceUpload:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall200JSONResponseBodyStatus.
+const (
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusActive             CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "active"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "missing_credentials"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict     CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "naming_conflict"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusRefused            CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "refused"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing      CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "server_missing"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable        CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "unavailable"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted           CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "unrouted"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall200JSONResponseBodyStatus enum.
+func (e CreateOpenappaBatteryInstall200JSONResponseBodyStatus) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusActive:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusRefused:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall400JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError CreateOpenappaBatteryInstall400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall400JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall401JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError CreateOpenappaBatteryInstall401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall401JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall403JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError CreateOpenappaBatteryInstall403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall403JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall404JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError CreateOpenappaBatteryInstall404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall404JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall409JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError CreateOpenappaBatteryInstall409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall409JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall500JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError CreateOpenappaBatteryInstall500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall500JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall200JSONResponseBodySuccess.
+const (
+	DeleteOpenappaBatteryInstall200JSONResponseBodySuccessTrue DeleteOpenappaBatteryInstall200JSONResponseBodySuccess = true
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall200JSONResponseBodySuccess enum.
+func (e DeleteOpenappaBatteryInstall200JSONResponseBodySuccess) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall200JSONResponseBodySuccessTrue:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall200JSONResponseBodyStatus.
+const (
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusActive             GetOpenappaBatteryInstall200JSONResponseBodyStatus = "active"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials GetOpenappaBatteryInstall200JSONResponseBodyStatus = "missing_credentials"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict     GetOpenappaBatteryInstall200JSONResponseBodyStatus = "naming_conflict"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusRefused            GetOpenappaBatteryInstall200JSONResponseBodyStatus = "refused"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing      GetOpenappaBatteryInstall200JSONResponseBodyStatus = "server_missing"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable        GetOpenappaBatteryInstall200JSONResponseBodyStatus = "unavailable"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted           GetOpenappaBatteryInstall200JSONResponseBodyStatus = "unrouted"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall200JSONResponseBodyStatus enum.
+func (e GetOpenappaBatteryInstall200JSONResponseBodyStatus) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusActive:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusRefused:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall200JSONResponseBodyTarget.
+const (
+	GetOpenappaBatteryInstall200JSONResponseBodyTargetLessThannil GetOpenappaBatteryInstall200JSONResponseBodyTarget = "<nil>"
+	GetOpenappaBatteryInstall200JSONResponseBodyTargetMultiUser   GetOpenappaBatteryInstall200JSONResponseBodyTarget = "multi-user"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall200JSONResponseBodyTarget enum.
+func (e GetOpenappaBatteryInstall200JSONResponseBodyTarget) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall200JSONResponseBodyTargetLessThannil:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyTargetMultiUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall400JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError GetOpenappaBatteryInstall400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall400JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall401JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError GetOpenappaBatteryInstall401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall401JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall403JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError GetOpenappaBatteryInstall403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall403JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall404JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError GetOpenappaBatteryInstall404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall404JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall409JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError GetOpenappaBatteryInstall409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall409JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall500JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError GetOpenappaBatteryInstall500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall500JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource.
+const (
+	UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceBinding     UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "binding"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceLessThannil UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "<nil>"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourcePolicy      UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "policy"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource enum.
+func (e UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceBinding:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceLessThannil:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourcePolicy:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall200JSONResponseBodyScope.
+const (
+	UpdateOpenappaBatteryInstall200JSONResponseBodyScopeCatalogs     UpdateOpenappaBatteryInstall200JSONResponseBodyScope = "catalogs"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyScopeOrganization UpdateOpenappaBatteryInstall200JSONResponseBodyScope = "organization"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall200JSONResponseBodyScope enum.
+func (e UpdateOpenappaBatteryInstall200JSONResponseBodyScope) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyScopeCatalogs:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyScopeOrganization:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall200JSONResponseBodySource.
+const (
+	Bundled UpdateOpenappaBatteryInstall200JSONResponseBodySource = "bundled"
+	Upload  UpdateOpenappaBatteryInstall200JSONResponseBodySource = "upload"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall200JSONResponseBodySource enum.
+func (e UpdateOpenappaBatteryInstall200JSONResponseBodySource) Valid() bool {
+	switch e {
+	case Bundled:
+		return true
+	case Upload:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall200JSONResponseBodyStatus.
+const (
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusActive             UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "active"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "missing_credentials"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict     UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "naming_conflict"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusRefused            UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "refused"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing      UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "server_missing"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable        UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "unavailable"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted           UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "unrouted"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall200JSONResponseBodyStatus enum.
+func (e UpdateOpenappaBatteryInstall200JSONResponseBodyStatus) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusActive:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusRefused:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError:
 		return true
 	default:
 		return false
@@ -38531,13 +40856,13 @@ func (e UpdateSkillGithubSyncJSONBodySourceProvider) Valid() bool {
 
 // Defines values for UpdateSkillGithubSyncJSONBodySyncNow.
 const (
-	UpdateSkillGithubSyncJSONBodySyncNowTrue UpdateSkillGithubSyncJSONBodySyncNow = true
+	True UpdateSkillGithubSyncJSONBodySyncNow = true
 )
 
 // Valid indicates whether the value is a known member of the UpdateSkillGithubSyncJSONBodySyncNow enum.
 func (e UpdateSkillGithubSyncJSONBodySyncNow) Valid() bool {
 	switch e {
-	case UpdateSkillGithubSyncJSONBodySyncNowTrue:
+	case True:
 		return true
 	default:
 		return false
@@ -38546,16 +40871,16 @@ func (e UpdateSkillGithubSyncJSONBodySyncNow) Valid() bool {
 
 // Defines values for UpdateSkillGithubSync200JSONResponseBodyCreatedByType.
 const (
-	UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeServiceAccount UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "service_account"
-	UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeUser           UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "user"
+	ServiceAccount UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "service_account"
+	User           UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "user"
 )
 
 // Valid indicates whether the value is a known member of the UpdateSkillGithubSync200JSONResponseBodyCreatedByType enum.
 func (e UpdateSkillGithubSync200JSONResponseBodyCreatedByType) Valid() bool {
 	switch e {
-	case UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeServiceAccount:
+	case ServiceAccount:
 		return true
-	case UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeUser:
+	case User:
 		return true
 	default:
 		return false
@@ -40043,13 +42368,13 @@ func (e GetToolsWithAssignments200JSONResponseBodyDataDelegateToAgentScope) Vali
 
 // Defines values for GetToolsWithAssignments400JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
+	ApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments400JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError:
+	case ApiValidationError:
 		return true
 	default:
 		return false
@@ -40058,13 +42383,13 @@ func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments401JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
+	ApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments401JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError:
+	case ApiAuthenticationError:
 		return true
 	default:
 		return false
@@ -40073,13 +42398,13 @@ func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments403JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
+	ApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments403JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError:
+	case ApiAuthorizationError:
 		return true
 	default:
 		return false
@@ -40088,13 +42413,13 @@ func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments404JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
+	ApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments404JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError:
+	case ApiNotFoundError:
 		return true
 	default:
 		return false
@@ -40103,13 +42428,13 @@ func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments409JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
+	ApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments409JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError:
+	case ApiConflictError:
 		return true
 	default:
 		return false
@@ -40118,13 +42443,13 @@ func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments500JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
+	ApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments500JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError:
+	case ApiInternalServerError:
 		return true
 	default:
 		return false
@@ -43072,6 +45397,531 @@ type GetAppVersion409JSONResponseBodyErrorType string
 
 // GetAppVersion500JSONResponseBodyErrorType defines parameters for GetAppVersion.
 type GetAppVersion500JSONResponseBodyErrorType string
+
+// ListBlobProviders200JSONResponseBodyConfig0 defines parameters for ListBlobProviders.
+type ListBlobProviders200JSONResponseBodyConfig0 struct {
+	AuthMethod     ListBlobProviders200JSONResponseBodyConfig0AuthMethod `json:"authMethod"`
+	Bucket         string                                                `json:"bucket"`
+	Endpoint       *string                                               `json:"endpoint"`
+	ExternalId     *string                                               `json:"externalId"`
+	ForcePathStyle bool                                                  `json:"forcePathStyle"`
+	KeyPrefix      string                                                `json:"keyPrefix"`
+	Region         string                                                `json:"region"`
+	RoleArn        *string                                               `json:"roleArn"`
+	Type           ListBlobProviders200JSONResponseBodyConfig0Type       `json:"type"`
+}
+
+// ListBlobProviders200JSONResponseBodyConfig0AuthMethod defines parameters for ListBlobProviders.
+type ListBlobProviders200JSONResponseBodyConfig0AuthMethod string
+
+// ListBlobProviders200JSONResponseBodyConfig0Type defines parameters for ListBlobProviders.
+type ListBlobProviders200JSONResponseBodyConfig0Type string
+
+// ListBlobProviders200JSONResponseBodyConfig1 defines parameters for ListBlobProviders.
+type ListBlobProviders200JSONResponseBodyConfig1 struct {
+	AuthMethod ListBlobProviders200JSONResponseBodyConfig1AuthMethod `json:"authMethod"`
+	Bucket     string                                                `json:"bucket"`
+	KeyPrefix  string                                                `json:"keyPrefix"`
+	Type       ListBlobProviders200JSONResponseBodyConfig1Type       `json:"type"`
+}
+
+// ListBlobProviders200JSONResponseBodyConfig1AuthMethod defines parameters for ListBlobProviders.
+type ListBlobProviders200JSONResponseBodyConfig1AuthMethod string
+
+// ListBlobProviders200JSONResponseBodyConfig1Type defines parameters for ListBlobProviders.
+type ListBlobProviders200JSONResponseBodyConfig1Type string
+
+// ListBlobProviders200JSONResponseBodyConfig2 defines parameters for ListBlobProviders.
+type ListBlobProviders200JSONResponseBodyConfig2 struct {
+	AccountName string                                                `json:"accountName"`
+	AuthMethod  ListBlobProviders200JSONResponseBodyConfig2AuthMethod `json:"authMethod"`
+	ClientId    *string                                               `json:"clientId"`
+	Container   string                                                `json:"container"`
+	Endpoint    *string                                               `json:"endpoint"`
+	KeyPrefix   string                                                `json:"keyPrefix"`
+	TenantId    *string                                               `json:"tenantId"`
+	Type        ListBlobProviders200JSONResponseBodyConfig2Type       `json:"type"`
+}
+
+// ListBlobProviders200JSONResponseBodyConfig2AuthMethod defines parameters for ListBlobProviders.
+type ListBlobProviders200JSONResponseBodyConfig2AuthMethod string
+
+// ListBlobProviders200JSONResponseBodyConfig2Type defines parameters for ListBlobProviders.
+type ListBlobProviders200JSONResponseBodyConfig2Type string
+
+// ListBlobProviders200JSONResponseBody_Config defines parameters for ListBlobProviders.
+type ListBlobProviders200JSONResponseBody_Config struct {
+	union json.RawMessage
+}
+
+// ListBlobProviders200JSONResponseBodyType defines parameters for ListBlobProviders.
+type ListBlobProviders200JSONResponseBodyType string
+
+// ListBlobProviders400JSONResponseBodyErrorType defines parameters for ListBlobProviders.
+type ListBlobProviders400JSONResponseBodyErrorType string
+
+// ListBlobProviders401JSONResponseBodyErrorType defines parameters for ListBlobProviders.
+type ListBlobProviders401JSONResponseBodyErrorType string
+
+// ListBlobProviders403JSONResponseBodyErrorType defines parameters for ListBlobProviders.
+type ListBlobProviders403JSONResponseBodyErrorType string
+
+// ListBlobProviders404JSONResponseBodyErrorType defines parameters for ListBlobProviders.
+type ListBlobProviders404JSONResponseBodyErrorType string
+
+// ListBlobProviders409JSONResponseBodyErrorType defines parameters for ListBlobProviders.
+type ListBlobProviders409JSONResponseBodyErrorType string
+
+// ListBlobProviders500JSONResponseBodyErrorType defines parameters for ListBlobProviders.
+type ListBlobProviders500JSONResponseBodyErrorType string
+
+// CreateBlobProviderJSONBody defines parameters for CreateBlobProvider.
+type CreateBlobProviderJSONBody struct {
+	Config CreateBlobProviderJSONBody_Config `json:"config"`
+
+	// Credentials Write-only secrets for the auth method: `accessKeyId`, `secretAccessKey`, `sessionToken` (S3); `serviceAccountKey` (GCS); `clientSecret`, `accountKey` or `sasToken` (Azure).
+	Credentials *map[string]string `json:"credentials,omitempty"`
+	Name        string             `json:"name"`
+
+	// SkipConnectionTest Save without first writing and deleting a test object. By default a failed test rejects the request.
+	SkipConnectionTest *bool `json:"skipConnectionTest,omitempty"`
+}
+
+// CreateBlobProviderJSONBodyConfig0 defines parameters for CreateBlobProvider.
+type CreateBlobProviderJSONBodyConfig0 struct {
+	AuthMethod     CreateBlobProviderJSONBodyConfig0AuthMethod `json:"authMethod"`
+	Bucket         string                                      `json:"bucket"`
+	Endpoint       *string                                     `json:"endpoint,omitempty"`
+	ExternalId     *string                                     `json:"externalId,omitempty"`
+	ForcePathStyle *bool                                       `json:"forcePathStyle,omitempty"`
+	KeyPrefix      *string                                     `json:"keyPrefix,omitempty"`
+	Region         string                                      `json:"region"`
+	RoleArn        *string                                     `json:"roleArn,omitempty"`
+	Type           CreateBlobProviderJSONBodyConfig0Type       `json:"type"`
+}
+
+// CreateBlobProviderJSONBodyConfig0AuthMethod defines parameters for CreateBlobProvider.
+type CreateBlobProviderJSONBodyConfig0AuthMethod string
+
+// CreateBlobProviderJSONBodyConfig0Type defines parameters for CreateBlobProvider.
+type CreateBlobProviderJSONBodyConfig0Type string
+
+// CreateBlobProviderJSONBodyConfig1 defines parameters for CreateBlobProvider.
+type CreateBlobProviderJSONBodyConfig1 struct {
+	AuthMethod CreateBlobProviderJSONBodyConfig1AuthMethod `json:"authMethod"`
+	Bucket     string                                      `json:"bucket"`
+	KeyPrefix  *string                                     `json:"keyPrefix,omitempty"`
+	Type       CreateBlobProviderJSONBodyConfig1Type       `json:"type"`
+}
+
+// CreateBlobProviderJSONBodyConfig1AuthMethod defines parameters for CreateBlobProvider.
+type CreateBlobProviderJSONBodyConfig1AuthMethod string
+
+// CreateBlobProviderJSONBodyConfig1Type defines parameters for CreateBlobProvider.
+type CreateBlobProviderJSONBodyConfig1Type string
+
+// CreateBlobProviderJSONBodyConfig2 defines parameters for CreateBlobProvider.
+type CreateBlobProviderJSONBodyConfig2 struct {
+	AccountName string                                      `json:"accountName"`
+	AuthMethod  CreateBlobProviderJSONBodyConfig2AuthMethod `json:"authMethod"`
+	ClientId    *string                                     `json:"clientId,omitempty"`
+	Container   string                                      `json:"container"`
+	Endpoint    *string                                     `json:"endpoint,omitempty"`
+	KeyPrefix   *string                                     `json:"keyPrefix,omitempty"`
+	TenantId    *string                                     `json:"tenantId,omitempty"`
+	Type        CreateBlobProviderJSONBodyConfig2Type       `json:"type"`
+}
+
+// CreateBlobProviderJSONBodyConfig2AuthMethod defines parameters for CreateBlobProvider.
+type CreateBlobProviderJSONBodyConfig2AuthMethod string
+
+// CreateBlobProviderJSONBodyConfig2Type defines parameters for CreateBlobProvider.
+type CreateBlobProviderJSONBodyConfig2Type string
+
+// CreateBlobProviderJSONBody_Config defines parameters for CreateBlobProvider.
+type CreateBlobProviderJSONBody_Config struct {
+	union json.RawMessage
+}
+
+// CreateBlobProvider200JSONResponseBodyConfig0 defines parameters for CreateBlobProvider.
+type CreateBlobProvider200JSONResponseBodyConfig0 struct {
+	AuthMethod     CreateBlobProvider200JSONResponseBodyConfig0AuthMethod `json:"authMethod"`
+	Bucket         string                                                 `json:"bucket"`
+	Endpoint       *string                                                `json:"endpoint"`
+	ExternalId     *string                                                `json:"externalId"`
+	ForcePathStyle bool                                                   `json:"forcePathStyle"`
+	KeyPrefix      string                                                 `json:"keyPrefix"`
+	Region         string                                                 `json:"region"`
+	RoleArn        *string                                                `json:"roleArn"`
+	Type           CreateBlobProvider200JSONResponseBodyConfig0Type       `json:"type"`
+}
+
+// CreateBlobProvider200JSONResponseBodyConfig0AuthMethod defines parameters for CreateBlobProvider.
+type CreateBlobProvider200JSONResponseBodyConfig0AuthMethod string
+
+// CreateBlobProvider200JSONResponseBodyConfig0Type defines parameters for CreateBlobProvider.
+type CreateBlobProvider200JSONResponseBodyConfig0Type string
+
+// CreateBlobProvider200JSONResponseBodyConfig1 defines parameters for CreateBlobProvider.
+type CreateBlobProvider200JSONResponseBodyConfig1 struct {
+	AuthMethod CreateBlobProvider200JSONResponseBodyConfig1AuthMethod `json:"authMethod"`
+	Bucket     string                                                 `json:"bucket"`
+	KeyPrefix  string                                                 `json:"keyPrefix"`
+	Type       CreateBlobProvider200JSONResponseBodyConfig1Type       `json:"type"`
+}
+
+// CreateBlobProvider200JSONResponseBodyConfig1AuthMethod defines parameters for CreateBlobProvider.
+type CreateBlobProvider200JSONResponseBodyConfig1AuthMethod string
+
+// CreateBlobProvider200JSONResponseBodyConfig1Type defines parameters for CreateBlobProvider.
+type CreateBlobProvider200JSONResponseBodyConfig1Type string
+
+// CreateBlobProvider200JSONResponseBodyConfig2 defines parameters for CreateBlobProvider.
+type CreateBlobProvider200JSONResponseBodyConfig2 struct {
+	AccountName string                                                 `json:"accountName"`
+	AuthMethod  CreateBlobProvider200JSONResponseBodyConfig2AuthMethod `json:"authMethod"`
+	ClientId    *string                                                `json:"clientId"`
+	Container   string                                                 `json:"container"`
+	Endpoint    *string                                                `json:"endpoint"`
+	KeyPrefix   string                                                 `json:"keyPrefix"`
+	TenantId    *string                                                `json:"tenantId"`
+	Type        CreateBlobProvider200JSONResponseBodyConfig2Type       `json:"type"`
+}
+
+// CreateBlobProvider200JSONResponseBodyConfig2AuthMethod defines parameters for CreateBlobProvider.
+type CreateBlobProvider200JSONResponseBodyConfig2AuthMethod string
+
+// CreateBlobProvider200JSONResponseBodyConfig2Type defines parameters for CreateBlobProvider.
+type CreateBlobProvider200JSONResponseBodyConfig2Type string
+
+// CreateBlobProvider200JSONResponseBody_Config defines parameters for CreateBlobProvider.
+type CreateBlobProvider200JSONResponseBody_Config struct {
+	union json.RawMessage
+}
+
+// CreateBlobProvider200JSONResponseBodyType defines parameters for CreateBlobProvider.
+type CreateBlobProvider200JSONResponseBodyType string
+
+// CreateBlobProvider400JSONResponseBodyErrorType defines parameters for CreateBlobProvider.
+type CreateBlobProvider400JSONResponseBodyErrorType string
+
+// CreateBlobProvider401JSONResponseBodyErrorType defines parameters for CreateBlobProvider.
+type CreateBlobProvider401JSONResponseBodyErrorType string
+
+// CreateBlobProvider403JSONResponseBodyErrorType defines parameters for CreateBlobProvider.
+type CreateBlobProvider403JSONResponseBodyErrorType string
+
+// CreateBlobProvider404JSONResponseBodyErrorType defines parameters for CreateBlobProvider.
+type CreateBlobProvider404JSONResponseBodyErrorType string
+
+// CreateBlobProvider409JSONResponseBodyErrorType defines parameters for CreateBlobProvider.
+type CreateBlobProvider409JSONResponseBodyErrorType string
+
+// CreateBlobProvider500JSONResponseBodyErrorType defines parameters for CreateBlobProvider.
+type CreateBlobProvider500JSONResponseBodyErrorType string
+
+// DeleteBlobProvider400JSONResponseBodyErrorType defines parameters for DeleteBlobProvider.
+type DeleteBlobProvider400JSONResponseBodyErrorType string
+
+// DeleteBlobProvider401JSONResponseBodyErrorType defines parameters for DeleteBlobProvider.
+type DeleteBlobProvider401JSONResponseBodyErrorType string
+
+// DeleteBlobProvider403JSONResponseBodyErrorType defines parameters for DeleteBlobProvider.
+type DeleteBlobProvider403JSONResponseBodyErrorType string
+
+// DeleteBlobProvider404JSONResponseBodyErrorType defines parameters for DeleteBlobProvider.
+type DeleteBlobProvider404JSONResponseBodyErrorType string
+
+// DeleteBlobProvider409JSONResponseBodyErrorType defines parameters for DeleteBlobProvider.
+type DeleteBlobProvider409JSONResponseBodyErrorType string
+
+// DeleteBlobProvider500JSONResponseBodyErrorType defines parameters for DeleteBlobProvider.
+type DeleteBlobProvider500JSONResponseBodyErrorType string
+
+// UpdateBlobProviderJSONBody defines parameters for UpdateBlobProvider.
+type UpdateBlobProviderJSONBody struct {
+	// ClearCredentials Remove the stored credentials.
+	ClearCredentials *bool                              `json:"clearCredentials,omitempty"`
+	Config           *UpdateBlobProviderJSONBody_Config `json:"config,omitempty"`
+
+	// Credentials Write-only. Send only to replace the stored credentials.
+	Credentials *map[string]string `json:"credentials,omitempty"`
+	Name        *string            `json:"name,omitempty"`
+
+	// SkipConnectionTest Save without first writing and deleting a test object. By default a failed test rejects the request.
+	SkipConnectionTest *bool `json:"skipConnectionTest,omitempty"`
+}
+
+// UpdateBlobProviderJSONBodyConfig0 defines parameters for UpdateBlobProvider.
+type UpdateBlobProviderJSONBodyConfig0 struct {
+	AuthMethod     UpdateBlobProviderJSONBodyConfig0AuthMethod `json:"authMethod"`
+	Bucket         string                                      `json:"bucket"`
+	Endpoint       *string                                     `json:"endpoint,omitempty"`
+	ExternalId     *string                                     `json:"externalId,omitempty"`
+	ForcePathStyle *bool                                       `json:"forcePathStyle,omitempty"`
+	KeyPrefix      *string                                     `json:"keyPrefix,omitempty"`
+	Region         string                                      `json:"region"`
+	RoleArn        *string                                     `json:"roleArn,omitempty"`
+	Type           UpdateBlobProviderJSONBodyConfig0Type       `json:"type"`
+}
+
+// UpdateBlobProviderJSONBodyConfig0AuthMethod defines parameters for UpdateBlobProvider.
+type UpdateBlobProviderJSONBodyConfig0AuthMethod string
+
+// UpdateBlobProviderJSONBodyConfig0Type defines parameters for UpdateBlobProvider.
+type UpdateBlobProviderJSONBodyConfig0Type string
+
+// UpdateBlobProviderJSONBodyConfig1 defines parameters for UpdateBlobProvider.
+type UpdateBlobProviderJSONBodyConfig1 struct {
+	AuthMethod UpdateBlobProviderJSONBodyConfig1AuthMethod `json:"authMethod"`
+	Bucket     string                                      `json:"bucket"`
+	KeyPrefix  *string                                     `json:"keyPrefix,omitempty"`
+	Type       UpdateBlobProviderJSONBodyConfig1Type       `json:"type"`
+}
+
+// UpdateBlobProviderJSONBodyConfig1AuthMethod defines parameters for UpdateBlobProvider.
+type UpdateBlobProviderJSONBodyConfig1AuthMethod string
+
+// UpdateBlobProviderJSONBodyConfig1Type defines parameters for UpdateBlobProvider.
+type UpdateBlobProviderJSONBodyConfig1Type string
+
+// UpdateBlobProviderJSONBodyConfig2 defines parameters for UpdateBlobProvider.
+type UpdateBlobProviderJSONBodyConfig2 struct {
+	AccountName string                                      `json:"accountName"`
+	AuthMethod  UpdateBlobProviderJSONBodyConfig2AuthMethod `json:"authMethod"`
+	ClientId    *string                                     `json:"clientId,omitempty"`
+	Container   string                                      `json:"container"`
+	Endpoint    *string                                     `json:"endpoint,omitempty"`
+	KeyPrefix   *string                                     `json:"keyPrefix,omitempty"`
+	TenantId    *string                                     `json:"tenantId,omitempty"`
+	Type        UpdateBlobProviderJSONBodyConfig2Type       `json:"type"`
+}
+
+// UpdateBlobProviderJSONBodyConfig2AuthMethod defines parameters for UpdateBlobProvider.
+type UpdateBlobProviderJSONBodyConfig2AuthMethod string
+
+// UpdateBlobProviderJSONBodyConfig2Type defines parameters for UpdateBlobProvider.
+type UpdateBlobProviderJSONBodyConfig2Type string
+
+// UpdateBlobProviderJSONBody_Config defines parameters for UpdateBlobProvider.
+type UpdateBlobProviderJSONBody_Config struct {
+	union json.RawMessage
+}
+
+// UpdateBlobProvider200JSONResponseBodyConfig0 defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider200JSONResponseBodyConfig0 struct {
+	AuthMethod     UpdateBlobProvider200JSONResponseBodyConfig0AuthMethod `json:"authMethod"`
+	Bucket         string                                                 `json:"bucket"`
+	Endpoint       *string                                                `json:"endpoint"`
+	ExternalId     *string                                                `json:"externalId"`
+	ForcePathStyle bool                                                   `json:"forcePathStyle"`
+	KeyPrefix      string                                                 `json:"keyPrefix"`
+	Region         string                                                 `json:"region"`
+	RoleArn        *string                                                `json:"roleArn"`
+	Type           UpdateBlobProvider200JSONResponseBodyConfig0Type       `json:"type"`
+}
+
+// UpdateBlobProvider200JSONResponseBodyConfig0AuthMethod defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider200JSONResponseBodyConfig0AuthMethod string
+
+// UpdateBlobProvider200JSONResponseBodyConfig0Type defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider200JSONResponseBodyConfig0Type string
+
+// UpdateBlobProvider200JSONResponseBodyConfig1 defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider200JSONResponseBodyConfig1 struct {
+	AuthMethod UpdateBlobProvider200JSONResponseBodyConfig1AuthMethod `json:"authMethod"`
+	Bucket     string                                                 `json:"bucket"`
+	KeyPrefix  string                                                 `json:"keyPrefix"`
+	Type       UpdateBlobProvider200JSONResponseBodyConfig1Type       `json:"type"`
+}
+
+// UpdateBlobProvider200JSONResponseBodyConfig1AuthMethod defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider200JSONResponseBodyConfig1AuthMethod string
+
+// UpdateBlobProvider200JSONResponseBodyConfig1Type defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider200JSONResponseBodyConfig1Type string
+
+// UpdateBlobProvider200JSONResponseBodyConfig2 defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider200JSONResponseBodyConfig2 struct {
+	AccountName string                                                 `json:"accountName"`
+	AuthMethod  UpdateBlobProvider200JSONResponseBodyConfig2AuthMethod `json:"authMethod"`
+	ClientId    *string                                                `json:"clientId"`
+	Container   string                                                 `json:"container"`
+	Endpoint    *string                                                `json:"endpoint"`
+	KeyPrefix   string                                                 `json:"keyPrefix"`
+	TenantId    *string                                                `json:"tenantId"`
+	Type        UpdateBlobProvider200JSONResponseBodyConfig2Type       `json:"type"`
+}
+
+// UpdateBlobProvider200JSONResponseBodyConfig2AuthMethod defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider200JSONResponseBodyConfig2AuthMethod string
+
+// UpdateBlobProvider200JSONResponseBodyConfig2Type defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider200JSONResponseBodyConfig2Type string
+
+// UpdateBlobProvider200JSONResponseBody_Config defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider200JSONResponseBody_Config struct {
+	union json.RawMessage
+}
+
+// UpdateBlobProvider200JSONResponseBodyType defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider200JSONResponseBodyType string
+
+// UpdateBlobProvider400JSONResponseBodyErrorType defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider400JSONResponseBodyErrorType string
+
+// UpdateBlobProvider401JSONResponseBodyErrorType defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider401JSONResponseBodyErrorType string
+
+// UpdateBlobProvider403JSONResponseBodyErrorType defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider403JSONResponseBodyErrorType string
+
+// UpdateBlobProvider404JSONResponseBodyErrorType defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider404JSONResponseBodyErrorType string
+
+// UpdateBlobProvider409JSONResponseBodyErrorType defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider409JSONResponseBodyErrorType string
+
+// UpdateBlobProvider500JSONResponseBodyErrorType defines parameters for UpdateBlobProvider.
+type UpdateBlobProvider500JSONResponseBodyErrorType string
+
+// ListCostExports200JSONResponseBodyFormat defines parameters for ListCostExports.
+type ListCostExports200JSONResponseBodyFormat string
+
+// ListCostExports200JSONResponseBodyLastRunStatus defines parameters for ListCostExports.
+type ListCostExports200JSONResponseBodyLastRunStatus string
+
+// ListCostExports200JSONResponseBodySchedule defines parameters for ListCostExports.
+type ListCostExports200JSONResponseBodySchedule string
+
+// ListCostExports400JSONResponseBodyErrorType defines parameters for ListCostExports.
+type ListCostExports400JSONResponseBodyErrorType string
+
+// ListCostExports401JSONResponseBodyErrorType defines parameters for ListCostExports.
+type ListCostExports401JSONResponseBodyErrorType string
+
+// ListCostExports403JSONResponseBodyErrorType defines parameters for ListCostExports.
+type ListCostExports403JSONResponseBodyErrorType string
+
+// ListCostExports404JSONResponseBodyErrorType defines parameters for ListCostExports.
+type ListCostExports404JSONResponseBodyErrorType string
+
+// ListCostExports409JSONResponseBodyErrorType defines parameters for ListCostExports.
+type ListCostExports409JSONResponseBodyErrorType string
+
+// ListCostExports500JSONResponseBodyErrorType defines parameters for ListCostExports.
+type ListCostExports500JSONResponseBodyErrorType string
+
+// CreateCostExportJSONBody defines parameters for CreateCostExport.
+type CreateCostExportJSONBody struct {
+	BlobProviderId openapi_types.UUID              `json:"blobProviderId"`
+	Enabled        *bool                           `json:"enabled,omitempty"`
+	Format         *CreateCostExportJSONBodyFormat `json:"format,omitempty"`
+	Name           string                          `json:"name"`
+
+	// PathPrefix Key prefix for the export's files, under the blob provider's own prefix.
+	PathPrefix *string                           `json:"pathPrefix,omitempty"`
+	Schedule   *CreateCostExportJSONBodySchedule `json:"schedule,omitempty"`
+
+	// StartFrom Export usage from this time on, including the past (a backfill). Defaults to now: the first file is the period in progress.
+	StartFrom *time.Time `json:"startFrom,omitempty"`
+}
+
+// CreateCostExportJSONBodyFormat defines parameters for CreateCostExport.
+type CreateCostExportJSONBodyFormat string
+
+// CreateCostExportJSONBodySchedule defines parameters for CreateCostExport.
+type CreateCostExportJSONBodySchedule string
+
+// CreateCostExport200JSONResponseBodyFormat defines parameters for CreateCostExport.
+type CreateCostExport200JSONResponseBodyFormat string
+
+// CreateCostExport200JSONResponseBodyLastRunStatus defines parameters for CreateCostExport.
+type CreateCostExport200JSONResponseBodyLastRunStatus string
+
+// CreateCostExport200JSONResponseBodySchedule defines parameters for CreateCostExport.
+type CreateCostExport200JSONResponseBodySchedule string
+
+// CreateCostExport400JSONResponseBodyErrorType defines parameters for CreateCostExport.
+type CreateCostExport400JSONResponseBodyErrorType string
+
+// CreateCostExport401JSONResponseBodyErrorType defines parameters for CreateCostExport.
+type CreateCostExport401JSONResponseBodyErrorType string
+
+// CreateCostExport403JSONResponseBodyErrorType defines parameters for CreateCostExport.
+type CreateCostExport403JSONResponseBodyErrorType string
+
+// CreateCostExport404JSONResponseBodyErrorType defines parameters for CreateCostExport.
+type CreateCostExport404JSONResponseBodyErrorType string
+
+// CreateCostExport409JSONResponseBodyErrorType defines parameters for CreateCostExport.
+type CreateCostExport409JSONResponseBodyErrorType string
+
+// CreateCostExport500JSONResponseBodyErrorType defines parameters for CreateCostExport.
+type CreateCostExport500JSONResponseBodyErrorType string
+
+// DeleteCostExport400JSONResponseBodyErrorType defines parameters for DeleteCostExport.
+type DeleteCostExport400JSONResponseBodyErrorType string
+
+// DeleteCostExport401JSONResponseBodyErrorType defines parameters for DeleteCostExport.
+type DeleteCostExport401JSONResponseBodyErrorType string
+
+// DeleteCostExport403JSONResponseBodyErrorType defines parameters for DeleteCostExport.
+type DeleteCostExport403JSONResponseBodyErrorType string
+
+// DeleteCostExport404JSONResponseBodyErrorType defines parameters for DeleteCostExport.
+type DeleteCostExport404JSONResponseBodyErrorType string
+
+// DeleteCostExport409JSONResponseBodyErrorType defines parameters for DeleteCostExport.
+type DeleteCostExport409JSONResponseBodyErrorType string
+
+// DeleteCostExport500JSONResponseBodyErrorType defines parameters for DeleteCostExport.
+type DeleteCostExport500JSONResponseBodyErrorType string
+
+// UpdateCostExportJSONBody defines parameters for UpdateCostExport.
+type UpdateCostExportJSONBody struct {
+	BlobProviderId *openapi_types.UUID             `json:"blobProviderId,omitempty"`
+	Enabled        *bool                           `json:"enabled,omitempty"`
+	Format         *UpdateCostExportJSONBodyFormat `json:"format,omitempty"`
+	Name           *string                         `json:"name,omitempty"`
+
+	// PathPrefix Key prefix for the export's files, under the blob provider's own prefix.
+	PathPrefix *string                           `json:"pathPrefix,omitempty"`
+	Schedule   *UpdateCostExportJSONBodySchedule `json:"schedule,omitempty"`
+}
+
+// UpdateCostExportJSONBodyFormat defines parameters for UpdateCostExport.
+type UpdateCostExportJSONBodyFormat string
+
+// UpdateCostExportJSONBodySchedule defines parameters for UpdateCostExport.
+type UpdateCostExportJSONBodySchedule string
+
+// UpdateCostExport200JSONResponseBodyFormat defines parameters for UpdateCostExport.
+type UpdateCostExport200JSONResponseBodyFormat string
+
+// UpdateCostExport200JSONResponseBodyLastRunStatus defines parameters for UpdateCostExport.
+type UpdateCostExport200JSONResponseBodyLastRunStatus string
+
+// UpdateCostExport200JSONResponseBodySchedule defines parameters for UpdateCostExport.
+type UpdateCostExport200JSONResponseBodySchedule string
+
+// UpdateCostExport400JSONResponseBodyErrorType defines parameters for UpdateCostExport.
+type UpdateCostExport400JSONResponseBodyErrorType string
+
+// UpdateCostExport401JSONResponseBodyErrorType defines parameters for UpdateCostExport.
+type UpdateCostExport401JSONResponseBodyErrorType string
+
+// UpdateCostExport403JSONResponseBodyErrorType defines parameters for UpdateCostExport.
+type UpdateCostExport403JSONResponseBodyErrorType string
+
+// UpdateCostExport404JSONResponseBodyErrorType defines parameters for UpdateCostExport.
+type UpdateCostExport404JSONResponseBodyErrorType string
+
+// UpdateCostExport409JSONResponseBodyErrorType defines parameters for UpdateCostExport.
+type UpdateCostExport409JSONResponseBodyErrorType string
+
+// UpdateCostExport500JSONResponseBodyErrorType defines parameters for UpdateCostExport.
+type UpdateCostExport500JSONResponseBodyErrorType string
 
 // ListRuntimeCredentialsParams defines parameters for ListRuntimeCredentials.
 type ListRuntimeCredentialsParams struct {
@@ -46980,6 +49830,153 @@ type RotateOauthClientSecret409JSONResponseBodyErrorType string
 // RotateOauthClientSecret500JSONResponseBodyErrorType defines parameters for RotateOauthClientSecret.
 type RotateOauthClientSecret500JSONResponseBodyErrorType string
 
+// GetOpenappaBatteries200JSONResponseBodyInstallsStatus defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries200JSONResponseBodyInstallsStatus string
+
+// GetOpenappaBatteries200JSONResponseBodyInstallsTarget defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries200JSONResponseBodyInstallsTarget string
+
+// GetOpenappaBatteries200JSONResponseBodyScope defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries200JSONResponseBodyScope string
+
+// GetOpenappaBatteries200JSONResponseBodySource defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries200JSONResponseBodySource string
+
+// GetOpenappaBatteries400JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries400JSONResponseBodyErrorType string
+
+// GetOpenappaBatteries401JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries401JSONResponseBodyErrorType string
+
+// GetOpenappaBatteries403JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries403JSONResponseBodyErrorType string
+
+// GetOpenappaBatteries404JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries404JSONResponseBodyErrorType string
+
+// GetOpenappaBatteries409JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries409JSONResponseBodyErrorType string
+
+// GetOpenappaBatteries500JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries500JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstallJSONBody defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstallJSONBody struct {
+	BatteryName string              `json:"batteryName"`
+	CatalogId   *openapi_types.UUID `json:"catalogId,omitempty"`
+	PackageHash *string             `json:"packageHash,omitempty"`
+}
+
+// CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource string
+
+// CreateOpenappaBatteryInstall200JSONResponseBodyScope defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall200JSONResponseBodyScope string
+
+// CreateOpenappaBatteryInstall200JSONResponseBodySource defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall200JSONResponseBodySource string
+
+// CreateOpenappaBatteryInstall200JSONResponseBodyStatus defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall200JSONResponseBodyStatus string
+
+// CreateOpenappaBatteryInstall400JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall400JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstall401JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall401JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstall403JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall403JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstall404JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall404JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstall409JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall409JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstall500JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall500JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall200JSONResponseBodySuccess defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall200JSONResponseBodySuccess bool
+
+// DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall200JSONResponseBodyStatus defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall200JSONResponseBodyStatus string
+
+// GetOpenappaBatteryInstall200JSONResponseBodyTarget defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall200JSONResponseBodyTarget string
+
+// GetOpenappaBatteryInstall400JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall400JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall401JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall401JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall403JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall403JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall404JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall404JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall409JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall409JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall500JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall500JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstallJSONBody defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstallJSONBody struct {
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource string
+
+// UpdateOpenappaBatteryInstall200JSONResponseBodyScope defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall200JSONResponseBodyScope string
+
+// UpdateOpenappaBatteryInstall200JSONResponseBodySource defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall200JSONResponseBodySource string
+
+// UpdateOpenappaBatteryInstall200JSONResponseBodyStatus defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall200JSONResponseBodyStatus string
+
+// UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType string
+
 // GetOrganization200JSONResponseBodyConnectionClientProviderKeysProvider defines parameters for GetOrganization.
 type GetOrganization200JSONResponseBodyConnectionClientProviderKeysProvider string
 
@@ -50403,6 +53400,18 @@ type UpdateAppJSONRequestBody UpdateAppJSONBody
 // AssignToolToAppJSONRequestBody defines body for AssignToolToApp for application/json ContentType.
 type AssignToolToAppJSONRequestBody AssignToolToAppJSONBody
 
+// CreateBlobProviderJSONRequestBody defines body for CreateBlobProvider for application/json ContentType.
+type CreateBlobProviderJSONRequestBody CreateBlobProviderJSONBody
+
+// UpdateBlobProviderJSONRequestBody defines body for UpdateBlobProvider for application/json ContentType.
+type UpdateBlobProviderJSONRequestBody UpdateBlobProviderJSONBody
+
+// CreateCostExportJSONRequestBody defines body for CreateCostExport for application/json ContentType.
+type CreateCostExportJSONRequestBody CreateCostExportJSONBody
+
+// UpdateCostExportJSONRequestBody defines body for UpdateCostExport for application/json ContentType.
+type UpdateCostExportJSONRequestBody UpdateCostExportJSONBody
+
 // CreateRuntimeCredentialJSONRequestBody defines body for CreateRuntimeCredential for application/json ContentType.
 type CreateRuntimeCredentialJSONRequestBody CreateRuntimeCredentialJSONBody
 
@@ -50507,6 +53516,12 @@ type CreateOauthClientJSONRequestBody CreateOauthClientJSONBody
 
 // UpdateOauthClientJSONRequestBody defines body for UpdateOauthClient for application/json ContentType.
 type UpdateOauthClientJSONRequestBody UpdateOauthClientJSONBody
+
+// CreateOpenappaBatteryInstallJSONRequestBody defines body for CreateOpenappaBatteryInstall for application/json ContentType.
+type CreateOpenappaBatteryInstallJSONRequestBody CreateOpenappaBatteryInstallJSONBody
+
+// UpdateOpenappaBatteryInstallJSONRequestBody defines body for UpdateOpenappaBatteryInstall for application/json ContentType.
+type UpdateOpenappaBatteryInstallJSONRequestBody UpdateOpenappaBatteryInstallJSONBody
 
 // UpdateAgentSettingsJSONRequestBody defines body for UpdateAgentSettings for application/json ContentType.
 type UpdateAgentSettingsJSONRequestBody UpdateAgentSettingsJSONBody
@@ -53276,6 +56291,446 @@ func (t CreateAppJSONBody_InitialGrants_Subject) MarshalJSON() ([]byte, error) {
 }
 
 func (t *CreateAppJSONBody_InitialGrants_Subject) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsListBlobProviders200JSONResponseBodyConfig0 returns the union data inside the ListBlobProviders200JSONResponseBody_Config as a ListBlobProviders200JSONResponseBodyConfig0
+func (t ListBlobProviders200JSONResponseBody_Config) AsListBlobProviders200JSONResponseBodyConfig0() (ListBlobProviders200JSONResponseBodyConfig0, error) {
+	var body ListBlobProviders200JSONResponseBodyConfig0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromListBlobProviders200JSONResponseBodyConfig0 overwrites any union data inside the ListBlobProviders200JSONResponseBody_Config as the provided ListBlobProviders200JSONResponseBodyConfig0
+func (t *ListBlobProviders200JSONResponseBody_Config) FromListBlobProviders200JSONResponseBodyConfig0(v ListBlobProviders200JSONResponseBodyConfig0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeListBlobProviders200JSONResponseBodyConfig0 performs a merge with any union data inside the ListBlobProviders200JSONResponseBody_Config, using the provided ListBlobProviders200JSONResponseBodyConfig0
+func (t *ListBlobProviders200JSONResponseBody_Config) MergeListBlobProviders200JSONResponseBodyConfig0(v ListBlobProviders200JSONResponseBodyConfig0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsListBlobProviders200JSONResponseBodyConfig1 returns the union data inside the ListBlobProviders200JSONResponseBody_Config as a ListBlobProviders200JSONResponseBodyConfig1
+func (t ListBlobProviders200JSONResponseBody_Config) AsListBlobProviders200JSONResponseBodyConfig1() (ListBlobProviders200JSONResponseBodyConfig1, error) {
+	var body ListBlobProviders200JSONResponseBodyConfig1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromListBlobProviders200JSONResponseBodyConfig1 overwrites any union data inside the ListBlobProviders200JSONResponseBody_Config as the provided ListBlobProviders200JSONResponseBodyConfig1
+func (t *ListBlobProviders200JSONResponseBody_Config) FromListBlobProviders200JSONResponseBodyConfig1(v ListBlobProviders200JSONResponseBodyConfig1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeListBlobProviders200JSONResponseBodyConfig1 performs a merge with any union data inside the ListBlobProviders200JSONResponseBody_Config, using the provided ListBlobProviders200JSONResponseBodyConfig1
+func (t *ListBlobProviders200JSONResponseBody_Config) MergeListBlobProviders200JSONResponseBodyConfig1(v ListBlobProviders200JSONResponseBodyConfig1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsListBlobProviders200JSONResponseBodyConfig2 returns the union data inside the ListBlobProviders200JSONResponseBody_Config as a ListBlobProviders200JSONResponseBodyConfig2
+func (t ListBlobProviders200JSONResponseBody_Config) AsListBlobProviders200JSONResponseBodyConfig2() (ListBlobProviders200JSONResponseBodyConfig2, error) {
+	var body ListBlobProviders200JSONResponseBodyConfig2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromListBlobProviders200JSONResponseBodyConfig2 overwrites any union data inside the ListBlobProviders200JSONResponseBody_Config as the provided ListBlobProviders200JSONResponseBodyConfig2
+func (t *ListBlobProviders200JSONResponseBody_Config) FromListBlobProviders200JSONResponseBodyConfig2(v ListBlobProviders200JSONResponseBodyConfig2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeListBlobProviders200JSONResponseBodyConfig2 performs a merge with any union data inside the ListBlobProviders200JSONResponseBody_Config, using the provided ListBlobProviders200JSONResponseBodyConfig2
+func (t *ListBlobProviders200JSONResponseBody_Config) MergeListBlobProviders200JSONResponseBodyConfig2(v ListBlobProviders200JSONResponseBodyConfig2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ListBlobProviders200JSONResponseBody_Config) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ListBlobProviders200JSONResponseBody_Config) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsCreateBlobProviderJSONBodyConfig0 returns the union data inside the CreateBlobProviderJSONBody_Config as a CreateBlobProviderJSONBodyConfig0
+func (t CreateBlobProviderJSONBody_Config) AsCreateBlobProviderJSONBodyConfig0() (CreateBlobProviderJSONBodyConfig0, error) {
+	var body CreateBlobProviderJSONBodyConfig0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateBlobProviderJSONBodyConfig0 overwrites any union data inside the CreateBlobProviderJSONBody_Config as the provided CreateBlobProviderJSONBodyConfig0
+func (t *CreateBlobProviderJSONBody_Config) FromCreateBlobProviderJSONBodyConfig0(v CreateBlobProviderJSONBodyConfig0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateBlobProviderJSONBodyConfig0 performs a merge with any union data inside the CreateBlobProviderJSONBody_Config, using the provided CreateBlobProviderJSONBodyConfig0
+func (t *CreateBlobProviderJSONBody_Config) MergeCreateBlobProviderJSONBodyConfig0(v CreateBlobProviderJSONBodyConfig0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateBlobProviderJSONBodyConfig1 returns the union data inside the CreateBlobProviderJSONBody_Config as a CreateBlobProviderJSONBodyConfig1
+func (t CreateBlobProviderJSONBody_Config) AsCreateBlobProviderJSONBodyConfig1() (CreateBlobProviderJSONBodyConfig1, error) {
+	var body CreateBlobProviderJSONBodyConfig1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateBlobProviderJSONBodyConfig1 overwrites any union data inside the CreateBlobProviderJSONBody_Config as the provided CreateBlobProviderJSONBodyConfig1
+func (t *CreateBlobProviderJSONBody_Config) FromCreateBlobProviderJSONBodyConfig1(v CreateBlobProviderJSONBodyConfig1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateBlobProviderJSONBodyConfig1 performs a merge with any union data inside the CreateBlobProviderJSONBody_Config, using the provided CreateBlobProviderJSONBodyConfig1
+func (t *CreateBlobProviderJSONBody_Config) MergeCreateBlobProviderJSONBodyConfig1(v CreateBlobProviderJSONBodyConfig1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateBlobProviderJSONBodyConfig2 returns the union data inside the CreateBlobProviderJSONBody_Config as a CreateBlobProviderJSONBodyConfig2
+func (t CreateBlobProviderJSONBody_Config) AsCreateBlobProviderJSONBodyConfig2() (CreateBlobProviderJSONBodyConfig2, error) {
+	var body CreateBlobProviderJSONBodyConfig2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateBlobProviderJSONBodyConfig2 overwrites any union data inside the CreateBlobProviderJSONBody_Config as the provided CreateBlobProviderJSONBodyConfig2
+func (t *CreateBlobProviderJSONBody_Config) FromCreateBlobProviderJSONBodyConfig2(v CreateBlobProviderJSONBodyConfig2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateBlobProviderJSONBodyConfig2 performs a merge with any union data inside the CreateBlobProviderJSONBody_Config, using the provided CreateBlobProviderJSONBodyConfig2
+func (t *CreateBlobProviderJSONBody_Config) MergeCreateBlobProviderJSONBodyConfig2(v CreateBlobProviderJSONBodyConfig2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CreateBlobProviderJSONBody_Config) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CreateBlobProviderJSONBody_Config) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsCreateBlobProvider200JSONResponseBodyConfig0 returns the union data inside the CreateBlobProvider200JSONResponseBody_Config as a CreateBlobProvider200JSONResponseBodyConfig0
+func (t CreateBlobProvider200JSONResponseBody_Config) AsCreateBlobProvider200JSONResponseBodyConfig0() (CreateBlobProvider200JSONResponseBodyConfig0, error) {
+	var body CreateBlobProvider200JSONResponseBodyConfig0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateBlobProvider200JSONResponseBodyConfig0 overwrites any union data inside the CreateBlobProvider200JSONResponseBody_Config as the provided CreateBlobProvider200JSONResponseBodyConfig0
+func (t *CreateBlobProvider200JSONResponseBody_Config) FromCreateBlobProvider200JSONResponseBodyConfig0(v CreateBlobProvider200JSONResponseBodyConfig0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateBlobProvider200JSONResponseBodyConfig0 performs a merge with any union data inside the CreateBlobProvider200JSONResponseBody_Config, using the provided CreateBlobProvider200JSONResponseBodyConfig0
+func (t *CreateBlobProvider200JSONResponseBody_Config) MergeCreateBlobProvider200JSONResponseBodyConfig0(v CreateBlobProvider200JSONResponseBodyConfig0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateBlobProvider200JSONResponseBodyConfig1 returns the union data inside the CreateBlobProvider200JSONResponseBody_Config as a CreateBlobProvider200JSONResponseBodyConfig1
+func (t CreateBlobProvider200JSONResponseBody_Config) AsCreateBlobProvider200JSONResponseBodyConfig1() (CreateBlobProvider200JSONResponseBodyConfig1, error) {
+	var body CreateBlobProvider200JSONResponseBodyConfig1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateBlobProvider200JSONResponseBodyConfig1 overwrites any union data inside the CreateBlobProvider200JSONResponseBody_Config as the provided CreateBlobProvider200JSONResponseBodyConfig1
+func (t *CreateBlobProvider200JSONResponseBody_Config) FromCreateBlobProvider200JSONResponseBodyConfig1(v CreateBlobProvider200JSONResponseBodyConfig1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateBlobProvider200JSONResponseBodyConfig1 performs a merge with any union data inside the CreateBlobProvider200JSONResponseBody_Config, using the provided CreateBlobProvider200JSONResponseBodyConfig1
+func (t *CreateBlobProvider200JSONResponseBody_Config) MergeCreateBlobProvider200JSONResponseBodyConfig1(v CreateBlobProvider200JSONResponseBodyConfig1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateBlobProvider200JSONResponseBodyConfig2 returns the union data inside the CreateBlobProvider200JSONResponseBody_Config as a CreateBlobProvider200JSONResponseBodyConfig2
+func (t CreateBlobProvider200JSONResponseBody_Config) AsCreateBlobProvider200JSONResponseBodyConfig2() (CreateBlobProvider200JSONResponseBodyConfig2, error) {
+	var body CreateBlobProvider200JSONResponseBodyConfig2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateBlobProvider200JSONResponseBodyConfig2 overwrites any union data inside the CreateBlobProvider200JSONResponseBody_Config as the provided CreateBlobProvider200JSONResponseBodyConfig2
+func (t *CreateBlobProvider200JSONResponseBody_Config) FromCreateBlobProvider200JSONResponseBodyConfig2(v CreateBlobProvider200JSONResponseBodyConfig2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateBlobProvider200JSONResponseBodyConfig2 performs a merge with any union data inside the CreateBlobProvider200JSONResponseBody_Config, using the provided CreateBlobProvider200JSONResponseBodyConfig2
+func (t *CreateBlobProvider200JSONResponseBody_Config) MergeCreateBlobProvider200JSONResponseBodyConfig2(v CreateBlobProvider200JSONResponseBodyConfig2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CreateBlobProvider200JSONResponseBody_Config) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CreateBlobProvider200JSONResponseBody_Config) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsUpdateBlobProviderJSONBodyConfig0 returns the union data inside the UpdateBlobProviderJSONBody_Config as a UpdateBlobProviderJSONBodyConfig0
+func (t UpdateBlobProviderJSONBody_Config) AsUpdateBlobProviderJSONBodyConfig0() (UpdateBlobProviderJSONBodyConfig0, error) {
+	var body UpdateBlobProviderJSONBodyConfig0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUpdateBlobProviderJSONBodyConfig0 overwrites any union data inside the UpdateBlobProviderJSONBody_Config as the provided UpdateBlobProviderJSONBodyConfig0
+func (t *UpdateBlobProviderJSONBody_Config) FromUpdateBlobProviderJSONBodyConfig0(v UpdateBlobProviderJSONBodyConfig0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUpdateBlobProviderJSONBodyConfig0 performs a merge with any union data inside the UpdateBlobProviderJSONBody_Config, using the provided UpdateBlobProviderJSONBodyConfig0
+func (t *UpdateBlobProviderJSONBody_Config) MergeUpdateBlobProviderJSONBodyConfig0(v UpdateBlobProviderJSONBodyConfig0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsUpdateBlobProviderJSONBodyConfig1 returns the union data inside the UpdateBlobProviderJSONBody_Config as a UpdateBlobProviderJSONBodyConfig1
+func (t UpdateBlobProviderJSONBody_Config) AsUpdateBlobProviderJSONBodyConfig1() (UpdateBlobProviderJSONBodyConfig1, error) {
+	var body UpdateBlobProviderJSONBodyConfig1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUpdateBlobProviderJSONBodyConfig1 overwrites any union data inside the UpdateBlobProviderJSONBody_Config as the provided UpdateBlobProviderJSONBodyConfig1
+func (t *UpdateBlobProviderJSONBody_Config) FromUpdateBlobProviderJSONBodyConfig1(v UpdateBlobProviderJSONBodyConfig1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUpdateBlobProviderJSONBodyConfig1 performs a merge with any union data inside the UpdateBlobProviderJSONBody_Config, using the provided UpdateBlobProviderJSONBodyConfig1
+func (t *UpdateBlobProviderJSONBody_Config) MergeUpdateBlobProviderJSONBodyConfig1(v UpdateBlobProviderJSONBodyConfig1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsUpdateBlobProviderJSONBodyConfig2 returns the union data inside the UpdateBlobProviderJSONBody_Config as a UpdateBlobProviderJSONBodyConfig2
+func (t UpdateBlobProviderJSONBody_Config) AsUpdateBlobProviderJSONBodyConfig2() (UpdateBlobProviderJSONBodyConfig2, error) {
+	var body UpdateBlobProviderJSONBodyConfig2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUpdateBlobProviderJSONBodyConfig2 overwrites any union data inside the UpdateBlobProviderJSONBody_Config as the provided UpdateBlobProviderJSONBodyConfig2
+func (t *UpdateBlobProviderJSONBody_Config) FromUpdateBlobProviderJSONBodyConfig2(v UpdateBlobProviderJSONBodyConfig2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUpdateBlobProviderJSONBodyConfig2 performs a merge with any union data inside the UpdateBlobProviderJSONBody_Config, using the provided UpdateBlobProviderJSONBodyConfig2
+func (t *UpdateBlobProviderJSONBody_Config) MergeUpdateBlobProviderJSONBodyConfig2(v UpdateBlobProviderJSONBodyConfig2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t UpdateBlobProviderJSONBody_Config) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *UpdateBlobProviderJSONBody_Config) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsUpdateBlobProvider200JSONResponseBodyConfig0 returns the union data inside the UpdateBlobProvider200JSONResponseBody_Config as a UpdateBlobProvider200JSONResponseBodyConfig0
+func (t UpdateBlobProvider200JSONResponseBody_Config) AsUpdateBlobProvider200JSONResponseBodyConfig0() (UpdateBlobProvider200JSONResponseBodyConfig0, error) {
+	var body UpdateBlobProvider200JSONResponseBodyConfig0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUpdateBlobProvider200JSONResponseBodyConfig0 overwrites any union data inside the UpdateBlobProvider200JSONResponseBody_Config as the provided UpdateBlobProvider200JSONResponseBodyConfig0
+func (t *UpdateBlobProvider200JSONResponseBody_Config) FromUpdateBlobProvider200JSONResponseBodyConfig0(v UpdateBlobProvider200JSONResponseBodyConfig0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUpdateBlobProvider200JSONResponseBodyConfig0 performs a merge with any union data inside the UpdateBlobProvider200JSONResponseBody_Config, using the provided UpdateBlobProvider200JSONResponseBodyConfig0
+func (t *UpdateBlobProvider200JSONResponseBody_Config) MergeUpdateBlobProvider200JSONResponseBodyConfig0(v UpdateBlobProvider200JSONResponseBodyConfig0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsUpdateBlobProvider200JSONResponseBodyConfig1 returns the union data inside the UpdateBlobProvider200JSONResponseBody_Config as a UpdateBlobProvider200JSONResponseBodyConfig1
+func (t UpdateBlobProvider200JSONResponseBody_Config) AsUpdateBlobProvider200JSONResponseBodyConfig1() (UpdateBlobProvider200JSONResponseBodyConfig1, error) {
+	var body UpdateBlobProvider200JSONResponseBodyConfig1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUpdateBlobProvider200JSONResponseBodyConfig1 overwrites any union data inside the UpdateBlobProvider200JSONResponseBody_Config as the provided UpdateBlobProvider200JSONResponseBodyConfig1
+func (t *UpdateBlobProvider200JSONResponseBody_Config) FromUpdateBlobProvider200JSONResponseBodyConfig1(v UpdateBlobProvider200JSONResponseBodyConfig1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUpdateBlobProvider200JSONResponseBodyConfig1 performs a merge with any union data inside the UpdateBlobProvider200JSONResponseBody_Config, using the provided UpdateBlobProvider200JSONResponseBodyConfig1
+func (t *UpdateBlobProvider200JSONResponseBody_Config) MergeUpdateBlobProvider200JSONResponseBodyConfig1(v UpdateBlobProvider200JSONResponseBodyConfig1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsUpdateBlobProvider200JSONResponseBodyConfig2 returns the union data inside the UpdateBlobProvider200JSONResponseBody_Config as a UpdateBlobProvider200JSONResponseBodyConfig2
+func (t UpdateBlobProvider200JSONResponseBody_Config) AsUpdateBlobProvider200JSONResponseBodyConfig2() (UpdateBlobProvider200JSONResponseBodyConfig2, error) {
+	var body UpdateBlobProvider200JSONResponseBodyConfig2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUpdateBlobProvider200JSONResponseBodyConfig2 overwrites any union data inside the UpdateBlobProvider200JSONResponseBody_Config as the provided UpdateBlobProvider200JSONResponseBodyConfig2
+func (t *UpdateBlobProvider200JSONResponseBody_Config) FromUpdateBlobProvider200JSONResponseBodyConfig2(v UpdateBlobProvider200JSONResponseBodyConfig2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUpdateBlobProvider200JSONResponseBodyConfig2 performs a merge with any union data inside the UpdateBlobProvider200JSONResponseBody_Config, using the provided UpdateBlobProvider200JSONResponseBodyConfig2
+func (t *UpdateBlobProvider200JSONResponseBody_Config) MergeUpdateBlobProvider200JSONResponseBodyConfig2(v UpdateBlobProvider200JSONResponseBodyConfig2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t UpdateBlobProvider200JSONResponseBody_Config) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *UpdateBlobProvider200JSONResponseBody_Config) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -57162,6 +60617,38 @@ type ClientInterface interface {
 	// GetAppVersion request
 	GetAppVersion(ctx context.Context, appId openapi_types.UUID, version int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListBlobProviders request
+	ListBlobProviders(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateBlobProviderWithBody request with any body
+	CreateBlobProviderWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateBlobProvider(ctx context.Context, body CreateBlobProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteBlobProvider request
+	DeleteBlobProvider(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateBlobProviderWithBody request with any body
+	UpdateBlobProviderWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateBlobProvider(ctx context.Context, id openapi_types.UUID, body UpdateBlobProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListCostExports request
+	ListCostExports(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateCostExportWithBody request with any body
+	CreateCostExportWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateCostExport(ctx context.Context, body CreateCostExportJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteCostExport request
+	DeleteCostExport(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateCostExportWithBody request with any body
+	UpdateCostExportWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateCostExport(ctx context.Context, id openapi_types.UUID, body UpdateCostExportJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListRuntimeCredentials request
 	ListRuntimeCredentials(ctx context.Context, params *ListRuntimeCredentialsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -57459,6 +60946,25 @@ type ClientInterface interface {
 
 	// RotateOauthClientSecret request
 	RotateOauthClientSecret(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetOpenappaBatteries request
+	GetOpenappaBatteries(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateOpenappaBatteryInstallWithBody request with any body
+	CreateOpenappaBatteryInstallWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateOpenappaBatteryInstall(ctx context.Context, body CreateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteOpenappaBatteryInstall request
+	DeleteOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetOpenappaBatteryInstall request
+	GetOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateOpenappaBatteryInstallWithBody request with any body
+	UpdateOpenappaBatteryInstallWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, body UpdateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetOrganization request
 	GetOrganization(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -58526,6 +62032,150 @@ func (c *Client) UnlockApp(ctx context.Context, appId openapi_types.UUID, reqEdi
 
 func (c *Client) GetAppVersion(ctx context.Context, appId openapi_types.UUID, version int, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetAppVersionRequest(c.Server, appId, version)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListBlobProviders(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListBlobProvidersRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateBlobProviderWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateBlobProviderRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateBlobProvider(ctx context.Context, body CreateBlobProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateBlobProviderRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteBlobProvider(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteBlobProviderRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateBlobProviderWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateBlobProviderRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateBlobProvider(ctx context.Context, id openapi_types.UUID, body UpdateBlobProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateBlobProviderRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListCostExports(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListCostExportsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateCostExportWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateCostExportRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateCostExport(ctx context.Context, body CreateCostExportJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateCostExportRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteCostExport(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteCostExportRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateCostExportWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateCostExportRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateCostExport(ctx context.Context, id openapi_types.UUID, body UpdateCostExportJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateCostExportRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -59858,6 +63508,90 @@ func (c *Client) UpdateOauthClient(ctx context.Context, id string, body UpdateOa
 
 func (c *Client) RotateOauthClientSecret(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRotateOauthClientSecretRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetOpenappaBatteries(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOpenappaBatteriesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOpenappaBatteryInstallWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOpenappaBatteryInstallRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOpenappaBatteryInstall(ctx context.Context, body CreateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOpenappaBatteryInstallRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteOpenappaBatteryInstallRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOpenappaBatteryInstallRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOpenappaBatteryInstallWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOpenappaBatteryInstallRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, body UpdateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOpenappaBatteryInstallRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -63471,6 +67205,302 @@ func NewGetAppVersionRequest(server string, appId openapi_types.UUID, version in
 	return req, nil
 }
 
+// NewListBlobProvidersRequest generates requests for ListBlobProviders
+func NewListBlobProvidersRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/blob-providers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateBlobProviderRequest calls the generic CreateBlobProvider builder with application/json body
+func NewCreateBlobProviderRequest(server string, body CreateBlobProviderJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateBlobProviderRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateBlobProviderRequestWithBody generates requests for CreateBlobProvider with any type of body
+func NewCreateBlobProviderRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/blob-providers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteBlobProviderRequest generates requests for DeleteBlobProvider
+func NewDeleteBlobProviderRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/blob-providers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateBlobProviderRequest calls the generic UpdateBlobProvider builder with application/json body
+func NewUpdateBlobProviderRequest(server string, id openapi_types.UUID, body UpdateBlobProviderJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateBlobProviderRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateBlobProviderRequestWithBody generates requests for UpdateBlobProvider with any type of body
+func NewUpdateBlobProviderRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/blob-providers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListCostExportsRequest generates requests for ListCostExports
+func NewListCostExportsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cost-exports")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateCostExportRequest calls the generic CreateCostExport builder with application/json body
+func NewCreateCostExportRequest(server string, body CreateCostExportJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateCostExportRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateCostExportRequestWithBody generates requests for CreateCostExport with any type of body
+func NewCreateCostExportRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cost-exports")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteCostExportRequest generates requests for DeleteCostExport
+func NewDeleteCostExportRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cost-exports/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateCostExportRequest calls the generic UpdateCostExport builder with application/json body
+func NewUpdateCostExportRequest(server string, id openapi_types.UUID, body UpdateCostExportJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateCostExportRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateCostExportRequestWithBody generates requests for UpdateCostExport with any type of body
+func NewUpdateCostExportRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cost-exports/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewListRuntimeCredentialsRequest generates requests for ListRuntimeCredentials
 func NewListRuntimeCredentialsRequest(server string, params *ListRuntimeCredentialsParams) (*http.Request, error) {
 	var err error
@@ -66893,6 +70923,188 @@ func NewRotateOauthClientSecretRequest(server string, id string) (*http.Request,
 	return req, nil
 }
 
+// NewGetOpenappaBatteriesRequest generates requests for GetOpenappaBatteries
+func NewGetOpenappaBatteriesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/openappa/batteries")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateOpenappaBatteryInstallRequest calls the generic CreateOpenappaBatteryInstall builder with application/json body
+func NewCreateOpenappaBatteryInstallRequest(server string, body CreateOpenappaBatteryInstallJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateOpenappaBatteryInstallRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateOpenappaBatteryInstallRequestWithBody generates requests for CreateOpenappaBatteryInstall with any type of body
+func NewCreateOpenappaBatteryInstallRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/openappa/battery-installs")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteOpenappaBatteryInstallRequest generates requests for DeleteOpenappaBatteryInstall
+func NewDeleteOpenappaBatteryInstallRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/openappa/battery-installs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetOpenappaBatteryInstallRequest generates requests for GetOpenappaBatteryInstall
+func NewGetOpenappaBatteryInstallRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/openappa/battery-installs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateOpenappaBatteryInstallRequest calls the generic UpdateOpenappaBatteryInstall builder with application/json body
+func NewUpdateOpenappaBatteryInstallRequest(server string, id openapi_types.UUID, body UpdateOpenappaBatteryInstallJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateOpenappaBatteryInstallRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateOpenappaBatteryInstallRequestWithBody generates requests for UpdateOpenappaBatteryInstall with any type of body
+func NewUpdateOpenappaBatteryInstallRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/openappa/battery-installs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetOrganizationRequest generates requests for GetOrganization
 func NewGetOrganizationRequest(server string) (*http.Request, error) {
 	var err error
@@ -70039,6 +74251,38 @@ type ClientWithResponsesInterface interface {
 	// GetAppVersionWithResponse request
 	GetAppVersionWithResponse(ctx context.Context, appId openapi_types.UUID, version int, reqEditors ...RequestEditorFn) (*GetAppVersionResponse, error)
 
+	// ListBlobProvidersWithResponse request
+	ListBlobProvidersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListBlobProvidersResponse, error)
+
+	// CreateBlobProviderWithBodyWithResponse request with any body
+	CreateBlobProviderWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBlobProviderResponse, error)
+
+	CreateBlobProviderWithResponse(ctx context.Context, body CreateBlobProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBlobProviderResponse, error)
+
+	// DeleteBlobProviderWithResponse request
+	DeleteBlobProviderWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteBlobProviderResponse, error)
+
+	// UpdateBlobProviderWithBodyWithResponse request with any body
+	UpdateBlobProviderWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateBlobProviderResponse, error)
+
+	UpdateBlobProviderWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateBlobProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateBlobProviderResponse, error)
+
+	// ListCostExportsWithResponse request
+	ListCostExportsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListCostExportsResponse, error)
+
+	// CreateCostExportWithBodyWithResponse request with any body
+	CreateCostExportWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCostExportResponse, error)
+
+	CreateCostExportWithResponse(ctx context.Context, body CreateCostExportJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCostExportResponse, error)
+
+	// DeleteCostExportWithResponse request
+	DeleteCostExportWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteCostExportResponse, error)
+
+	// UpdateCostExportWithBodyWithResponse request with any body
+	UpdateCostExportWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCostExportResponse, error)
+
+	UpdateCostExportWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateCostExportJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCostExportResponse, error)
+
 	// ListRuntimeCredentialsWithResponse request
 	ListRuntimeCredentialsWithResponse(ctx context.Context, params *ListRuntimeCredentialsParams, reqEditors ...RequestEditorFn) (*ListRuntimeCredentialsResponse, error)
 
@@ -70336,6 +74580,25 @@ type ClientWithResponsesInterface interface {
 
 	// RotateOauthClientSecretWithResponse request
 	RotateOauthClientSecretWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*RotateOauthClientSecretResponse, error)
+
+	// GetOpenappaBatteriesWithResponse request
+	GetOpenappaBatteriesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOpenappaBatteriesResponse, error)
+
+	// CreateOpenappaBatteryInstallWithBodyWithResponse request with any body
+	CreateOpenappaBatteryInstallWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOpenappaBatteryInstallResponse, error)
+
+	CreateOpenappaBatteryInstallWithResponse(ctx context.Context, body CreateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOpenappaBatteryInstallResponse, error)
+
+	// DeleteOpenappaBatteryInstallWithResponse request
+	DeleteOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteOpenappaBatteryInstallResponse, error)
+
+	// GetOpenappaBatteryInstallWithResponse request
+	GetOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetOpenappaBatteryInstallResponse, error)
+
+	// UpdateOpenappaBatteryInstallWithBodyWithResponse request with any body
+	UpdateOpenappaBatteryInstallWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOpenappaBatteryInstallResponse, error)
+
+	UpdateOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOpenappaBatteryInstallResponse, error)
 
 	// GetOrganizationWithResponse request
 	GetOrganizationWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOrganizationResponse, error)
@@ -75495,6 +79758,714 @@ func (r GetAppVersionResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetAppVersionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ListBlobProvidersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		Config    ListBlobProviders200JSONResponseBody_Config `json:"config"`
+		CreatedAt time.Time                                   `json:"createdAt"`
+
+		// HasCredentials Whether static credentials are stored for this provider.
+		HasCredentials bool                                     `json:"hasCredentials"`
+		Id             openapi_types.UUID                       `json:"id"`
+		Name           string                                   `json:"name"`
+		OrganizationId string                                   `json:"organizationId"`
+		Type           ListBlobProviders200JSONResponseBodyType `json:"type"`
+		UpdatedAt      time.Time                                `json:"updatedAt"`
+
+		// UsedBy What writes to this provider. A provider in use cannot be deleted.
+		UsedBy struct {
+			// CostExports Names of the cost exports that write to this provider.
+			CostExports []string `json:"costExports"`
+		} `json:"usedBy"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         ListBlobProviders400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         ListBlobProviders401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                       `json:"details,omitempty"`
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         ListBlobProviders403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         ListBlobProviders404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         ListBlobProviders409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         ListBlobProviders500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r ListBlobProvidersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListBlobProvidersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListBlobProvidersResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CreateBlobProviderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Config    CreateBlobProvider200JSONResponseBody_Config `json:"config"`
+		CreatedAt time.Time                                    `json:"createdAt"`
+
+		// HasCredentials Whether static credentials are stored for this provider.
+		HasCredentials bool                                      `json:"hasCredentials"`
+		Id             openapi_types.UUID                        `json:"id"`
+		Name           string                                    `json:"name"`
+		OrganizationId string                                    `json:"organizationId"`
+		Type           CreateBlobProvider200JSONResponseBodyType `json:"type"`
+		UpdatedAt      time.Time                                 `json:"updatedAt"`
+
+		// UsedBy What writes to this provider. A provider in use cannot be deleted.
+		UsedBy struct {
+			// CostExports Names of the cost exports that write to this provider.
+			CostExports []string `json:"costExports"`
+		} `json:"usedBy"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         CreateBlobProvider400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         CreateBlobProvider401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                        `json:"details,omitempty"`
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         CreateBlobProvider403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         CreateBlobProvider404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         CreateBlobProvider409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         CreateBlobProvider500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateBlobProviderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateBlobProviderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateBlobProviderResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteBlobProviderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         DeleteBlobProvider400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         DeleteBlobProvider401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                        `json:"details,omitempty"`
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         DeleteBlobProvider403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         DeleteBlobProvider404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         DeleteBlobProvider409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         DeleteBlobProvider500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteBlobProviderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteBlobProviderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteBlobProviderResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateBlobProviderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Config    UpdateBlobProvider200JSONResponseBody_Config `json:"config"`
+		CreatedAt time.Time                                    `json:"createdAt"`
+
+		// HasCredentials Whether static credentials are stored for this provider.
+		HasCredentials bool                                      `json:"hasCredentials"`
+		Id             openapi_types.UUID                        `json:"id"`
+		Name           string                                    `json:"name"`
+		OrganizationId string                                    `json:"organizationId"`
+		Type           UpdateBlobProvider200JSONResponseBodyType `json:"type"`
+		UpdatedAt      time.Time                                 `json:"updatedAt"`
+
+		// UsedBy What writes to this provider. A provider in use cannot be deleted.
+		UsedBy struct {
+			// CostExports Names of the cost exports that write to this provider.
+			CostExports []string `json:"costExports"`
+		} `json:"usedBy"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         UpdateBlobProvider400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         UpdateBlobProvider401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                        `json:"details,omitempty"`
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         UpdateBlobProvider403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         UpdateBlobProvider404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         UpdateBlobProvider409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         UpdateBlobProvider500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateBlobProviderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateBlobProviderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateBlobProviderResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ListCostExportsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		BlobProviderId   openapi_types.UUID                               `json:"blobProviderId"`
+		BlobProviderName string                                           `json:"blobProviderName"`
+		CreatedAt        time.Time                                        `json:"createdAt"`
+		Enabled          bool                                             `json:"enabled"`
+		ExportedThrough  time.Time                                        `json:"exportedThrough"`
+		Format           ListCostExports200JSONResponseBodyFormat         `json:"format"`
+		Id               openapi_types.UUID                               `json:"id"`
+		LastObjectKey    *string                                          `json:"lastObjectKey"`
+		LastRunAt        *time.Time                                       `json:"lastRunAt"`
+		LastRunError     *string                                          `json:"lastRunError"`
+		LastRunStatus    *ListCostExports200JSONResponseBodyLastRunStatus `json:"lastRunStatus"`
+		Name             string                                           `json:"name"`
+
+		// NextRetryAt When a failing export is next retried; retries back off from 5 minutes to an hour. Null unless the last run failed.
+		NextRetryAt    *time.Time `json:"nextRetryAt"`
+		OrganizationId string     `json:"organizationId"`
+		PathPrefix     string     `json:"pathPrefix"`
+
+		// Running Whether a run is queued or in progress right now.
+		Running   bool                                       `json:"running"`
+		Schedule  ListCostExports200JSONResponseBodySchedule `json:"schedule"`
+		UpdatedAt time.Time                                  `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         ListCostExports400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         ListCostExports401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                     `json:"details,omitempty"`
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         ListCostExports403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         ListCostExports404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         ListCostExports409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         ListCostExports500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r ListCostExportsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListCostExportsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListCostExportsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CreateCostExportResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		BlobProviderId   openapi_types.UUID                                `json:"blobProviderId"`
+		BlobProviderName string                                            `json:"blobProviderName"`
+		CreatedAt        time.Time                                         `json:"createdAt"`
+		Enabled          bool                                              `json:"enabled"`
+		ExportedThrough  time.Time                                         `json:"exportedThrough"`
+		Format           CreateCostExport200JSONResponseBodyFormat         `json:"format"`
+		Id               openapi_types.UUID                                `json:"id"`
+		LastObjectKey    *string                                           `json:"lastObjectKey"`
+		LastRunAt        *time.Time                                        `json:"lastRunAt"`
+		LastRunError     *string                                           `json:"lastRunError"`
+		LastRunStatus    *CreateCostExport200JSONResponseBodyLastRunStatus `json:"lastRunStatus"`
+		Name             string                                            `json:"name"`
+
+		// NextRetryAt When a failing export is next retried; retries back off from 5 minutes to an hour. Null unless the last run failed.
+		NextRetryAt    *time.Time `json:"nextRetryAt"`
+		OrganizationId string     `json:"organizationId"`
+		PathPrefix     string     `json:"pathPrefix"`
+
+		// Running Whether a run is queued or in progress right now.
+		Running   bool                                        `json:"running"`
+		Schedule  CreateCostExport200JSONResponseBodySchedule `json:"schedule"`
+		UpdatedAt time.Time                                   `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         CreateCostExport400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         CreateCostExport401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                      `json:"details,omitempty"`
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         CreateCostExport403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         CreateCostExport404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         CreateCostExport409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         CreateCostExport500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateCostExportResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateCostExportResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateCostExportResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteCostExportResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         DeleteCostExport400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         DeleteCostExport401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                      `json:"details,omitempty"`
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         DeleteCostExport403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         DeleteCostExport404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         DeleteCostExport409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         DeleteCostExport500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteCostExportResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteCostExportResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteCostExportResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateCostExportResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		BlobProviderId   openapi_types.UUID                                `json:"blobProviderId"`
+		BlobProviderName string                                            `json:"blobProviderName"`
+		CreatedAt        time.Time                                         `json:"createdAt"`
+		Enabled          bool                                              `json:"enabled"`
+		ExportedThrough  time.Time                                         `json:"exportedThrough"`
+		Format           UpdateCostExport200JSONResponseBodyFormat         `json:"format"`
+		Id               openapi_types.UUID                                `json:"id"`
+		LastObjectKey    *string                                           `json:"lastObjectKey"`
+		LastRunAt        *time.Time                                        `json:"lastRunAt"`
+		LastRunError     *string                                           `json:"lastRunError"`
+		LastRunStatus    *UpdateCostExport200JSONResponseBodyLastRunStatus `json:"lastRunStatus"`
+		Name             string                                            `json:"name"`
+
+		// NextRetryAt When a failing export is next retried; retries back off from 5 minutes to an hour. Null unless the last run failed.
+		NextRetryAt    *time.Time `json:"nextRetryAt"`
+		OrganizationId string     `json:"organizationId"`
+		PathPrefix     string     `json:"pathPrefix"`
+
+		// Running Whether a run is queued or in progress right now.
+		Running   bool                                        `json:"running"`
+		Schedule  UpdateCostExport200JSONResponseBodySchedule `json:"schedule"`
+		UpdatedAt time.Time                                   `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         UpdateCostExport400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         UpdateCostExport401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                      `json:"details,omitempty"`
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         UpdateCostExport403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         UpdateCostExport404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         UpdateCostExport409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                      `json:"internal_code,omitempty"`
+			Message      string                                       `json:"message"`
+			Type         UpdateCostExport500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateCostExportResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateCostExportResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateCostExportResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -83180,6 +88151,451 @@ func (r RotateOauthClientSecretResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r RotateOauthClientSecretResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetOpenappaBatteriesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		Annotators  []string `json:"annotators"`
+		ContentHash *string  `json:"contentHash"`
+		Credentials []string `json:"credentials"`
+		Description string   `json:"description"`
+		Helpers     []string `json:"helpers"`
+		Installs    []struct {
+			BatteryName        string                                                `json:"batteryName"`
+			CatalogId          *openapi_types.UUID                                   `json:"catalogId"`
+			CreatedAt          time.Time                                             `json:"createdAt"`
+			CredentialBindings map[string]string                                     `json:"credentialBindings"`
+			Enabled            bool                                                  `json:"enabled"`
+			Id                 openapi_types.UUID                                    `json:"id"`
+			LastError          *string                                               `json:"lastError"`
+			OrganizationId     string                                                `json:"organizationId"`
+			PackageHash        *string                                               `json:"packageHash"`
+			Status             GetOpenappaBatteries200JSONResponseBodyInstallsStatus `json:"status"`
+			Target             GetOpenappaBatteries200JSONResponseBodyInstallsTarget `json:"target"`
+			UpdatedAt          time.Time                                             `json:"updatedAt"`
+		} `json:"installs"`
+		Name       string                                        `json:"name"`
+		Namespaces []string                                      `json:"namespaces"`
+		Scope      GetOpenappaBatteries200JSONResponseBodyScope  `json:"scope"`
+		Setup      *string                                       `json:"setup"`
+		Source     GetOpenappaBatteries200JSONResponseBodySource `json:"source"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                          `json:"details,omitempty"`
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOpenappaBatteriesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOpenappaBatteriesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetOpenappaBatteriesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CreateOpenappaBatteryInstallResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Composed    bool `json:"composed"`
+		Credentials []struct {
+			Key      *string                                                          `json:"key"`
+			Readers  []string                                                         `json:"readers"`
+			Source   CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource `json:"source"`
+			Variable string                                                           `json:"variable"`
+		} `json:"credentials"`
+		Entry       string                                               `json:"entry"`
+		Helpers     []string                                             `json:"helpers"`
+		Line        float32                                              `json:"line"`
+		Name        string                                               `json:"name"`
+		PackageHash *string                                              `json:"packageHash"`
+		Scope       CreateOpenappaBatteryInstall200JSONResponseBodyScope `json:"scope"`
+		Servers     []struct {
+			CatalogId *string `json:"catalogId"`
+			Target    string  `json:"target"`
+		} `json:"servers"`
+		Source CreateOpenappaBatteryInstall200JSONResponseBodySource `json:"source"`
+		Status CreateOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                  `json:"details,omitempty"`
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateOpenappaBatteryInstallResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateOpenappaBatteryInstallResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateOpenappaBatteryInstallResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteOpenappaBatteryInstallResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success DeleteOpenappaBatteryInstall200JSONResponseBodySuccess `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                  `json:"details,omitempty"`
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteOpenappaBatteryInstallResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteOpenappaBatteryInstallResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteOpenappaBatteryInstallResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetOpenappaBatteryInstallResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		BatteryName        string                                             `json:"batteryName"`
+		CatalogId          *openapi_types.UUID                                `json:"catalogId"`
+		CreatedAt          time.Time                                          `json:"createdAt"`
+		CredentialBindings map[string]string                                  `json:"credentialBindings"`
+		Enabled            bool                                               `json:"enabled"`
+		Id                 openapi_types.UUID                                 `json:"id"`
+		LastError          *string                                            `json:"lastError"`
+		OrganizationId     string                                             `json:"organizationId"`
+		PackageHash        *string                                            `json:"packageHash"`
+		Status             GetOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+		Target             GetOpenappaBatteryInstall200JSONResponseBodyTarget `json:"target"`
+		UpdatedAt          time.Time                                          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                               `json:"details,omitempty"`
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOpenappaBatteryInstallResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOpenappaBatteryInstallResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetOpenappaBatteryInstallResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateOpenappaBatteryInstallResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Composed    bool `json:"composed"`
+		Credentials []struct {
+			Key      *string                                                          `json:"key"`
+			Readers  []string                                                         `json:"readers"`
+			Source   UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource `json:"source"`
+			Variable string                                                           `json:"variable"`
+		} `json:"credentials"`
+		Entry       string                                               `json:"entry"`
+		Helpers     []string                                             `json:"helpers"`
+		Line        float32                                              `json:"line"`
+		Name        string                                               `json:"name"`
+		PackageHash *string                                              `json:"packageHash"`
+		Scope       UpdateOpenappaBatteryInstall200JSONResponseBodyScope `json:"scope"`
+		Servers     []struct {
+			CatalogId *string `json:"catalogId"`
+			Target    string  `json:"target"`
+		} `json:"servers"`
+		Source UpdateOpenappaBatteryInstall200JSONResponseBodySource `json:"source"`
+		Status UpdateOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                  `json:"details,omitempty"`
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateOpenappaBatteryInstallResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateOpenappaBatteryInstallResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateOpenappaBatteryInstallResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -91565,6 +96981,110 @@ func (c *ClientWithResponses) GetAppVersionWithResponse(ctx context.Context, app
 	return ParseGetAppVersionResponse(rsp)
 }
 
+// ListBlobProvidersWithResponse request returning *ListBlobProvidersResponse
+func (c *ClientWithResponses) ListBlobProvidersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListBlobProvidersResponse, error) {
+	rsp, err := c.ListBlobProviders(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListBlobProvidersResponse(rsp)
+}
+
+// CreateBlobProviderWithBodyWithResponse request with arbitrary body returning *CreateBlobProviderResponse
+func (c *ClientWithResponses) CreateBlobProviderWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBlobProviderResponse, error) {
+	rsp, err := c.CreateBlobProviderWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateBlobProviderResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateBlobProviderWithResponse(ctx context.Context, body CreateBlobProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBlobProviderResponse, error) {
+	rsp, err := c.CreateBlobProvider(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateBlobProviderResponse(rsp)
+}
+
+// DeleteBlobProviderWithResponse request returning *DeleteBlobProviderResponse
+func (c *ClientWithResponses) DeleteBlobProviderWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteBlobProviderResponse, error) {
+	rsp, err := c.DeleteBlobProvider(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteBlobProviderResponse(rsp)
+}
+
+// UpdateBlobProviderWithBodyWithResponse request with arbitrary body returning *UpdateBlobProviderResponse
+func (c *ClientWithResponses) UpdateBlobProviderWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateBlobProviderResponse, error) {
+	rsp, err := c.UpdateBlobProviderWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateBlobProviderResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateBlobProviderWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateBlobProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateBlobProviderResponse, error) {
+	rsp, err := c.UpdateBlobProvider(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateBlobProviderResponse(rsp)
+}
+
+// ListCostExportsWithResponse request returning *ListCostExportsResponse
+func (c *ClientWithResponses) ListCostExportsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListCostExportsResponse, error) {
+	rsp, err := c.ListCostExports(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListCostExportsResponse(rsp)
+}
+
+// CreateCostExportWithBodyWithResponse request with arbitrary body returning *CreateCostExportResponse
+func (c *ClientWithResponses) CreateCostExportWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCostExportResponse, error) {
+	rsp, err := c.CreateCostExportWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateCostExportResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateCostExportWithResponse(ctx context.Context, body CreateCostExportJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCostExportResponse, error) {
+	rsp, err := c.CreateCostExport(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateCostExportResponse(rsp)
+}
+
+// DeleteCostExportWithResponse request returning *DeleteCostExportResponse
+func (c *ClientWithResponses) DeleteCostExportWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteCostExportResponse, error) {
+	rsp, err := c.DeleteCostExport(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteCostExportResponse(rsp)
+}
+
+// UpdateCostExportWithBodyWithResponse request with arbitrary body returning *UpdateCostExportResponse
+func (c *ClientWithResponses) UpdateCostExportWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCostExportResponse, error) {
+	rsp, err := c.UpdateCostExportWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateCostExportResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateCostExportWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateCostExportJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCostExportResponse, error) {
+	rsp, err := c.UpdateCostExport(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateCostExportResponse(rsp)
+}
+
 // ListRuntimeCredentialsWithResponse request returning *ListRuntimeCredentialsResponse
 func (c *ClientWithResponses) ListRuntimeCredentialsWithResponse(ctx context.Context, params *ListRuntimeCredentialsParams, reqEditors ...RequestEditorFn) (*ListRuntimeCredentialsResponse, error) {
 	rsp, err := c.ListRuntimeCredentials(ctx, params, reqEditors...)
@@ -92527,6 +98047,67 @@ func (c *ClientWithResponses) RotateOauthClientSecretWithResponse(ctx context.Co
 		return nil, err
 	}
 	return ParseRotateOauthClientSecretResponse(rsp)
+}
+
+// GetOpenappaBatteriesWithResponse request returning *GetOpenappaBatteriesResponse
+func (c *ClientWithResponses) GetOpenappaBatteriesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOpenappaBatteriesResponse, error) {
+	rsp, err := c.GetOpenappaBatteries(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOpenappaBatteriesResponse(rsp)
+}
+
+// CreateOpenappaBatteryInstallWithBodyWithResponse request with arbitrary body returning *CreateOpenappaBatteryInstallResponse
+func (c *ClientWithResponses) CreateOpenappaBatteryInstallWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.CreateOpenappaBatteryInstallWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOpenappaBatteryInstallResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateOpenappaBatteryInstallWithResponse(ctx context.Context, body CreateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.CreateOpenappaBatteryInstall(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOpenappaBatteryInstallResponse(rsp)
+}
+
+// DeleteOpenappaBatteryInstallWithResponse request returning *DeleteOpenappaBatteryInstallResponse
+func (c *ClientWithResponses) DeleteOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.DeleteOpenappaBatteryInstall(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteOpenappaBatteryInstallResponse(rsp)
+}
+
+// GetOpenappaBatteryInstallWithResponse request returning *GetOpenappaBatteryInstallResponse
+func (c *ClientWithResponses) GetOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.GetOpenappaBatteryInstall(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOpenappaBatteryInstallResponse(rsp)
+}
+
+// UpdateOpenappaBatteryInstallWithBodyWithResponse request with arbitrary body returning *UpdateOpenappaBatteryInstallResponse
+func (c *ClientWithResponses) UpdateOpenappaBatteryInstallWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.UpdateOpenappaBatteryInstallWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOpenappaBatteryInstallResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.UpdateOpenappaBatteryInstall(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOpenappaBatteryInstallResponse(rsp)
 }
 
 // GetOrganizationWithResponse request returning *GetOrganizationResponse
@@ -99826,6 +105407,970 @@ func ParseGetAppVersionResponse(rsp *http.Response) (*GetAppVersionResponse, err
 				InternalCode *string                                   `json:"internal_code,omitempty"`
 				Message      string                                    `json:"message"`
 				Type         GetAppVersion500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListBlobProvidersResponse parses an HTTP response from a ListBlobProvidersWithResponse call
+func ParseListBlobProvidersResponse(rsp *http.Response) (*ListBlobProvidersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListBlobProvidersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			Config    ListBlobProviders200JSONResponseBody_Config `json:"config"`
+			CreatedAt time.Time                                   `json:"createdAt"`
+
+			// HasCredentials Whether static credentials are stored for this provider.
+			HasCredentials bool                                     `json:"hasCredentials"`
+			Id             openapi_types.UUID                       `json:"id"`
+			Name           string                                   `json:"name"`
+			OrganizationId string                                   `json:"organizationId"`
+			Type           ListBlobProviders200JSONResponseBodyType `json:"type"`
+			UpdatedAt      time.Time                                `json:"updatedAt"`
+
+			// UsedBy What writes to this provider. A provider in use cannot be deleted.
+			UsedBy struct {
+				// CostExports Names of the cost exports that write to this provider.
+				CostExports []string `json:"costExports"`
+			} `json:"usedBy"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         ListBlobProviders400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         ListBlobProviders401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                       `json:"details,omitempty"`
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         ListBlobProviders403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         ListBlobProviders404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         ListBlobProviders409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         ListBlobProviders500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateBlobProviderResponse parses an HTTP response from a CreateBlobProviderWithResponse call
+func ParseCreateBlobProviderResponse(rsp *http.Response) (*CreateBlobProviderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateBlobProviderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Config    CreateBlobProvider200JSONResponseBody_Config `json:"config"`
+			CreatedAt time.Time                                    `json:"createdAt"`
+
+			// HasCredentials Whether static credentials are stored for this provider.
+			HasCredentials bool                                      `json:"hasCredentials"`
+			Id             openapi_types.UUID                        `json:"id"`
+			Name           string                                    `json:"name"`
+			OrganizationId string                                    `json:"organizationId"`
+			Type           CreateBlobProvider200JSONResponseBodyType `json:"type"`
+			UpdatedAt      time.Time                                 `json:"updatedAt"`
+
+			// UsedBy What writes to this provider. A provider in use cannot be deleted.
+			UsedBy struct {
+				// CostExports Names of the cost exports that write to this provider.
+				CostExports []string `json:"costExports"`
+			} `json:"usedBy"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         CreateBlobProvider400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         CreateBlobProvider401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                        `json:"details,omitempty"`
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         CreateBlobProvider403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         CreateBlobProvider404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         CreateBlobProvider409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         CreateBlobProvider500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteBlobProviderResponse parses an HTTP response from a DeleteBlobProviderWithResponse call
+func ParseDeleteBlobProviderResponse(rsp *http.Response) (*DeleteBlobProviderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteBlobProviderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         DeleteBlobProvider400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         DeleteBlobProvider401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                        `json:"details,omitempty"`
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         DeleteBlobProvider403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         DeleteBlobProvider404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         DeleteBlobProvider409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         DeleteBlobProvider500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateBlobProviderResponse parses an HTTP response from a UpdateBlobProviderWithResponse call
+func ParseUpdateBlobProviderResponse(rsp *http.Response) (*UpdateBlobProviderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateBlobProviderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Config    UpdateBlobProvider200JSONResponseBody_Config `json:"config"`
+			CreatedAt time.Time                                    `json:"createdAt"`
+
+			// HasCredentials Whether static credentials are stored for this provider.
+			HasCredentials bool                                      `json:"hasCredentials"`
+			Id             openapi_types.UUID                        `json:"id"`
+			Name           string                                    `json:"name"`
+			OrganizationId string                                    `json:"organizationId"`
+			Type           UpdateBlobProvider200JSONResponseBodyType `json:"type"`
+			UpdatedAt      time.Time                                 `json:"updatedAt"`
+
+			// UsedBy What writes to this provider. A provider in use cannot be deleted.
+			UsedBy struct {
+				// CostExports Names of the cost exports that write to this provider.
+				CostExports []string `json:"costExports"`
+			} `json:"usedBy"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         UpdateBlobProvider400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         UpdateBlobProvider401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                        `json:"details,omitempty"`
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         UpdateBlobProvider403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         UpdateBlobProvider404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         UpdateBlobProvider409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         UpdateBlobProvider500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListCostExportsResponse parses an HTTP response from a ListCostExportsWithResponse call
+func ParseListCostExportsResponse(rsp *http.Response) (*ListCostExportsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListCostExportsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			BlobProviderId   openapi_types.UUID                               `json:"blobProviderId"`
+			BlobProviderName string                                           `json:"blobProviderName"`
+			CreatedAt        time.Time                                        `json:"createdAt"`
+			Enabled          bool                                             `json:"enabled"`
+			ExportedThrough  time.Time                                        `json:"exportedThrough"`
+			Format           ListCostExports200JSONResponseBodyFormat         `json:"format"`
+			Id               openapi_types.UUID                               `json:"id"`
+			LastObjectKey    *string                                          `json:"lastObjectKey"`
+			LastRunAt        *time.Time                                       `json:"lastRunAt"`
+			LastRunError     *string                                          `json:"lastRunError"`
+			LastRunStatus    *ListCostExports200JSONResponseBodyLastRunStatus `json:"lastRunStatus"`
+			Name             string                                           `json:"name"`
+
+			// NextRetryAt When a failing export is next retried; retries back off from 5 minutes to an hour. Null unless the last run failed.
+			NextRetryAt    *time.Time `json:"nextRetryAt"`
+			OrganizationId string     `json:"organizationId"`
+			PathPrefix     string     `json:"pathPrefix"`
+
+			// Running Whether a run is queued or in progress right now.
+			Running   bool                                       `json:"running"`
+			Schedule  ListCostExports200JSONResponseBodySchedule `json:"schedule"`
+			UpdatedAt time.Time                                  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         ListCostExports400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         ListCostExports401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                     `json:"details,omitempty"`
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         ListCostExports403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         ListCostExports404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         ListCostExports409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         ListCostExports500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateCostExportResponse parses an HTTP response from a CreateCostExportWithResponse call
+func ParseCreateCostExportResponse(rsp *http.Response) (*CreateCostExportResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateCostExportResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			BlobProviderId   openapi_types.UUID                                `json:"blobProviderId"`
+			BlobProviderName string                                            `json:"blobProviderName"`
+			CreatedAt        time.Time                                         `json:"createdAt"`
+			Enabled          bool                                              `json:"enabled"`
+			ExportedThrough  time.Time                                         `json:"exportedThrough"`
+			Format           CreateCostExport200JSONResponseBodyFormat         `json:"format"`
+			Id               openapi_types.UUID                                `json:"id"`
+			LastObjectKey    *string                                           `json:"lastObjectKey"`
+			LastRunAt        *time.Time                                        `json:"lastRunAt"`
+			LastRunError     *string                                           `json:"lastRunError"`
+			LastRunStatus    *CreateCostExport200JSONResponseBodyLastRunStatus `json:"lastRunStatus"`
+			Name             string                                            `json:"name"`
+
+			// NextRetryAt When a failing export is next retried; retries back off from 5 minutes to an hour. Null unless the last run failed.
+			NextRetryAt    *time.Time `json:"nextRetryAt"`
+			OrganizationId string     `json:"organizationId"`
+			PathPrefix     string     `json:"pathPrefix"`
+
+			// Running Whether a run is queued or in progress right now.
+			Running   bool                                        `json:"running"`
+			Schedule  CreateCostExport200JSONResponseBodySchedule `json:"schedule"`
+			UpdatedAt time.Time                                   `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         CreateCostExport400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         CreateCostExport401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                      `json:"details,omitempty"`
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         CreateCostExport403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         CreateCostExport404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         CreateCostExport409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         CreateCostExport500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteCostExportResponse parses an HTTP response from a DeleteCostExportWithResponse call
+func ParseDeleteCostExportResponse(rsp *http.Response) (*DeleteCostExportResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteCostExportResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         DeleteCostExport400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         DeleteCostExport401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                      `json:"details,omitempty"`
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         DeleteCostExport403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         DeleteCostExport404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         DeleteCostExport409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         DeleteCostExport500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateCostExportResponse parses an HTTP response from a UpdateCostExportWithResponse call
+func ParseUpdateCostExportResponse(rsp *http.Response) (*UpdateCostExportResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateCostExportResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			BlobProviderId   openapi_types.UUID                                `json:"blobProviderId"`
+			BlobProviderName string                                            `json:"blobProviderName"`
+			CreatedAt        time.Time                                         `json:"createdAt"`
+			Enabled          bool                                              `json:"enabled"`
+			ExportedThrough  time.Time                                         `json:"exportedThrough"`
+			Format           UpdateCostExport200JSONResponseBodyFormat         `json:"format"`
+			Id               openapi_types.UUID                                `json:"id"`
+			LastObjectKey    *string                                           `json:"lastObjectKey"`
+			LastRunAt        *time.Time                                        `json:"lastRunAt"`
+			LastRunError     *string                                           `json:"lastRunError"`
+			LastRunStatus    *UpdateCostExport200JSONResponseBodyLastRunStatus `json:"lastRunStatus"`
+			Name             string                                            `json:"name"`
+
+			// NextRetryAt When a failing export is next retried; retries back off from 5 minutes to an hour. Null unless the last run failed.
+			NextRetryAt    *time.Time `json:"nextRetryAt"`
+			OrganizationId string     `json:"organizationId"`
+			PathPrefix     string     `json:"pathPrefix"`
+
+			// Running Whether a run is queued or in progress right now.
+			Running   bool                                        `json:"running"`
+			Schedule  UpdateCostExport200JSONResponseBodySchedule `json:"schedule"`
+			UpdatedAt time.Time                                   `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         UpdateCostExport400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         UpdateCostExport401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                      `json:"details,omitempty"`
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         UpdateCostExport403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         UpdateCostExport404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         UpdateCostExport409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                      `json:"internal_code,omitempty"`
+				Message      string                                       `json:"message"`
+				Type         UpdateCostExport500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -109898,6 +116443,611 @@ func ParseRotateOauthClientSecretResponse(rsp *http.Response) (*RotateOauthClien
 				InternalCode *string                                             `json:"internal_code,omitempty"`
 				Message      string                                              `json:"message"`
 				Type         RotateOauthClientSecret500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetOpenappaBatteriesResponse parses an HTTP response from a GetOpenappaBatteriesWithResponse call
+func ParseGetOpenappaBatteriesResponse(rsp *http.Response) (*GetOpenappaBatteriesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOpenappaBatteriesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			Annotators  []string `json:"annotators"`
+			ContentHash *string  `json:"contentHash"`
+			Credentials []string `json:"credentials"`
+			Description string   `json:"description"`
+			Helpers     []string `json:"helpers"`
+			Installs    []struct {
+				BatteryName        string                                                `json:"batteryName"`
+				CatalogId          *openapi_types.UUID                                   `json:"catalogId"`
+				CreatedAt          time.Time                                             `json:"createdAt"`
+				CredentialBindings map[string]string                                     `json:"credentialBindings"`
+				Enabled            bool                                                  `json:"enabled"`
+				Id                 openapi_types.UUID                                    `json:"id"`
+				LastError          *string                                               `json:"lastError"`
+				OrganizationId     string                                                `json:"organizationId"`
+				PackageHash        *string                                               `json:"packageHash"`
+				Status             GetOpenappaBatteries200JSONResponseBodyInstallsStatus `json:"status"`
+				Target             GetOpenappaBatteries200JSONResponseBodyInstallsTarget `json:"target"`
+				UpdatedAt          time.Time                                             `json:"updatedAt"`
+			} `json:"installs"`
+			Name       string                                        `json:"name"`
+			Namespaces []string                                      `json:"namespaces"`
+			Scope      GetOpenappaBatteries200JSONResponseBodyScope  `json:"scope"`
+			Setup      *string                                       `json:"setup"`
+			Source     GetOpenappaBatteries200JSONResponseBodySource `json:"source"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                          `json:"details,omitempty"`
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateOpenappaBatteryInstallResponse parses an HTTP response from a CreateOpenappaBatteryInstallWithResponse call
+func ParseCreateOpenappaBatteryInstallResponse(rsp *http.Response) (*CreateOpenappaBatteryInstallResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateOpenappaBatteryInstallResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Composed    bool `json:"composed"`
+			Credentials []struct {
+				Key      *string                                                          `json:"key"`
+				Readers  []string                                                         `json:"readers"`
+				Source   CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource `json:"source"`
+				Variable string                                                           `json:"variable"`
+			} `json:"credentials"`
+			Entry       string                                               `json:"entry"`
+			Helpers     []string                                             `json:"helpers"`
+			Line        float32                                              `json:"line"`
+			Name        string                                               `json:"name"`
+			PackageHash *string                                              `json:"packageHash"`
+			Scope       CreateOpenappaBatteryInstall200JSONResponseBodyScope `json:"scope"`
+			Servers     []struct {
+				CatalogId *string `json:"catalogId"`
+				Target    string  `json:"target"`
+			} `json:"servers"`
+			Source CreateOpenappaBatteryInstall200JSONResponseBodySource `json:"source"`
+			Status CreateOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                  `json:"details,omitempty"`
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteOpenappaBatteryInstallResponse parses an HTTP response from a DeleteOpenappaBatteryInstallWithResponse call
+func ParseDeleteOpenappaBatteryInstallResponse(rsp *http.Response) (*DeleteOpenappaBatteryInstallResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteOpenappaBatteryInstallResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success DeleteOpenappaBatteryInstall200JSONResponseBodySuccess `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                  `json:"details,omitempty"`
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetOpenappaBatteryInstallResponse parses an HTTP response from a GetOpenappaBatteryInstallWithResponse call
+func ParseGetOpenappaBatteryInstallResponse(rsp *http.Response) (*GetOpenappaBatteryInstallResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOpenappaBatteryInstallResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			BatteryName        string                                             `json:"batteryName"`
+			CatalogId          *openapi_types.UUID                                `json:"catalogId"`
+			CreatedAt          time.Time                                          `json:"createdAt"`
+			CredentialBindings map[string]string                                  `json:"credentialBindings"`
+			Enabled            bool                                               `json:"enabled"`
+			Id                 openapi_types.UUID                                 `json:"id"`
+			LastError          *string                                            `json:"lastError"`
+			OrganizationId     string                                             `json:"organizationId"`
+			PackageHash        *string                                            `json:"packageHash"`
+			Status             GetOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+			Target             GetOpenappaBatteryInstall200JSONResponseBodyTarget `json:"target"`
+			UpdatedAt          time.Time                                          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                               `json:"details,omitempty"`
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateOpenappaBatteryInstallResponse parses an HTTP response from a UpdateOpenappaBatteryInstallWithResponse call
+func ParseUpdateOpenappaBatteryInstallResponse(rsp *http.Response) (*UpdateOpenappaBatteryInstallResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateOpenappaBatteryInstallResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Composed    bool `json:"composed"`
+			Credentials []struct {
+				Key      *string                                                          `json:"key"`
+				Readers  []string                                                         `json:"readers"`
+				Source   UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource `json:"source"`
+				Variable string                                                           `json:"variable"`
+			} `json:"credentials"`
+			Entry       string                                               `json:"entry"`
+			Helpers     []string                                             `json:"helpers"`
+			Line        float32                                              `json:"line"`
+			Name        string                                               `json:"name"`
+			PackageHash *string                                              `json:"packageHash"`
+			Scope       UpdateOpenappaBatteryInstall200JSONResponseBodyScope `json:"scope"`
+			Servers     []struct {
+				CatalogId *string `json:"catalogId"`
+				Target    string  `json:"target"`
+			} `json:"servers"`
+			Source UpdateOpenappaBatteryInstall200JSONResponseBodySource `json:"source"`
+			Status UpdateOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                  `json:"details,omitempty"`
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

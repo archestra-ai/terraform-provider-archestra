@@ -1,0 +1,13 @@
+apiVersion: llm.archestra.crossplane.io/v1alpha1
+kind: CostExport
+metadata:
+  name: daily-llm-spend
+spec:
+  forProvider:
+    name: Daily LLM spend
+    blobProviderIdRef:
+      name: finops-exports
+    schedule: daily
+    pathPrefix: llm-costs
+  providerConfigRef:
+    name: default

@@ -150,6 +150,7 @@ resource "archestra_agent" "worker" {
 
 - `access_all_subagents` (Boolean) Whether all accessible subagents can be delegated to.
 - `access_all_tools` (Boolean) Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Use excluded_tool_ids to exclude tools. Defaults to `false`.
+- `auto_router_id` (String) ALPHA. `archestra_auto_router` the agent runs on instead of a fixed model, key or pool. Requires API 1.5.0-rc.29 or later with auto routing enabled; Agent Runtime and built-in agents cannot use one.
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
 - `description` (String) Human-readable description
 - `entra_agent_identity_id` (String) Application (client) ID of the Microsoft Entra agent identity this record calls tools as, a GUID. Requires an identity provider with an Entra Agent ID blueprint (API 1.5.0-rc.29 or later; leave unset on older releases).
@@ -171,6 +172,7 @@ resource "archestra_agent" "worker" {
 - `missing_credential_behavior` (String) What happens when a caller lacks a connection the agent's tools need: `allow` (fail only at invocation, default), `warn` (surface missing connections up front), or `block` (agent unusable until connected)
 - `model_id` (String) Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`
 - `model_pool_id` (String) Model pool used for the agent; the API resolves its model and provider key.
+- `network_policy` (Attributes) Egress override for this agent's Agent Runtime and Code Sandbox. Omit to inherit the environment's policy; removing it later returns the agent to that policy. Requires API 1.5.0-rc.20 or later. (see [below for nested schema](#nestedatt--network_policy))
 - `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `runtime` (Attributes) Dedicated runtime used for interactive, delegated, and long-running work. Requires an Agent Runtime backend on the platform (e.g. the Kubernetes orchestrator). (see [below for nested schema](#nestedatt--runtime))
@@ -222,6 +224,17 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+
+<a id="nestedatt--network_policy"></a>
+### Nested Schema for `network_policy`
+
+Optional:
+
+- `allowed_cidrs` (Set of String) CIDR ranges such as `203.0.113.0/24` or `2001:db8::/32`, allowed unless `egress_mode` is `off`.
+- `allowed_domains` (Set of String) Lowercase domains such as `api.example.com` or `*.example.com`, allowed in `restricted` mode.
+- `domain_preset` (String) Extra domains allowed in `restricted` mode: `none` (default), `common_dependencies` or `package_managers`.
+- `egress_mode` (String) `off` (no egress), `restricted` (allowlists only, the default) or `unrestricted`.
 
 
 <a id="nestedatt--permissions"></a>

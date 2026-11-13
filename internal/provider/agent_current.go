@@ -14,6 +14,7 @@ import (
 func currentAgentAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
 		"model_pool_id":                             schema.StringAttribute{Optional: true, MarkdownDescription: "Model pool used for the agent; the API resolves its model and provider key.", Validators: []validator.String{stringvalidator.ConflictsWith(path.MatchRoot("model_id"), path.MatchRoot("llm_api_key_id"), path.MatchRoot("llm_model"))}},
+		"auto_router_id":                            schema.StringAttribute{Optional: true, MarkdownDescription: "ALPHA. `archestra_auto_router` the agent runs on instead of a fixed model, key or pool. Requires API 1.5.0-rc.29 or later with auto routing enabled; Agent Runtime and built-in agents cannot use one.", Validators: []validator.String{stringvalidator.ConflictsWith(path.MatchRoot("model_id"), path.MatchRoot("llm_api_key_id"), path.MatchRoot("llm_model"), path.MatchRoot("model_pool_id"))}},
 		"entra_agent_identity_id":                   schema.StringAttribute{Optional: true, MarkdownDescription: "Application (client) ID of the Microsoft Entra agent identity this record calls tools as, a GUID. Requires an identity provider with an Entra Agent ID blueprint (API 1.5.0-rc.29 or later; leave unset on older releases)."},
 		"author_email":                              schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported author email."},
 		"created_by":                                schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
@@ -38,6 +39,16 @@ func flattenCurrentAgentFields(data *AgentResourceModel, body []byte, diags *dia
 	if err := json.Unmarshal(body, &values); err != nil {
 		diags.AddError("Invalid Agent Response", "Unable to decode agent metadata.")
 		return
+	}
+	{
+		var value *string
+		if raw := values["autoRouterId"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Agent Response", "Unexpected autoRouterId value.")
+				return
+			}
+		}
+		data.AutoRouterID = types.StringPointerValue(value)
 	}
 	{
 		var value *string
@@ -219,6 +230,7 @@ func flattenCurrentAgentFields(data *AgentResourceModel, body []byte, diags *dia
 func currentGatewayAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
 		"model_pool_id":                 schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported model pool identifier on the shared agent record."},
+		"auto_router_id":                schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported auto router identifier on the shared agent record (API 1.5.0-rc.29 or later)."},
 		"github_actions_access":         githubActionsAccessSchema(),
 		"entra_agent_identity_id":       schema.StringAttribute{Optional: true, MarkdownDescription: "Application (client) ID of the Microsoft Entra agent identity this record calls tools as, a GUID. Requires an identity provider with an Entra Agent ID blueprint (API 1.5.0-rc.29 or later; leave unset on older releases)."},
 		"author_email":                  schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported author email."},
@@ -234,13 +246,15 @@ func currentGatewayAttributes() map[string]schema.Attribute {
 }
 func flattenCurrentGatewayFields(data *McpGatewayResourceModel, body []byte, diags *diag.Diagnostics) {
 	var pool struct {
-		ID *string `json:"modelPoolId"`
+		ID           *string `json:"modelPoolId"`
+		AutoRouterID *string `json:"autoRouterId"`
 	}
 	if err := json.Unmarshal(body, &pool); err != nil {
 		diags.AddError("Invalid Gateway Response", err.Error())
 		return
 	}
 	data.ModelPoolID = types.StringPointerValue(pool.ID)
+	data.AutoRouterID = types.StringPointerValue(pool.AutoRouterID)
 	data.GithubActionsAccess = githubActionsAccessFromResponse(body, diags)
 	var values map[string]json.RawMessage
 	if err := json.Unmarshal(body, &values); err != nil {

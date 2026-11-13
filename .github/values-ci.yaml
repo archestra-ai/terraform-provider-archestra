@@ -29,6 +29,8 @@ archestra:
 
     ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
     ARCHESTRA_LLM_MODEL_POOLS_ENABLED: "true"
+    # ALPHA auto routing; archestra_auto_router acceptance skips without it.
+    ARCHESTRA_AUTO_ROUTING_ENABLED: "true"
     # Leave CPU headroom for Kind system pods and the Helm probe hooks.
     ARCHESTRA_DAGGER_RUNTIME_ENGINE_CPU_REQUEST: "250m"
     # Each Dagger engine reserves 6Gi by default. Two of them and the MCP server

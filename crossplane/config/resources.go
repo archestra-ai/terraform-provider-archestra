@@ -69,7 +69,7 @@ func ConfigureResources(p *ujconfig.Provider) {
 	})
 	p.AddResourceConfigurator("archestra_remote_agent", func(r *ujconfig.Resource) { r.ShortGroup = "a2a"; r.Kind = "RemoteAgent" })
 
-	for _, name := range []string{"archestra_environment", "archestra_model", "archestra_plugin", "archestra_virtual_key", "archestra_oauth_client", "archestra_remote_agent", "archestra_service_account", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_mcp_registry_entry", "archestra_skill", "archestra_credential", "archestra_model_provider"} {
+	for _, name := range []string{"archestra_environment", "archestra_model", "archestra_plugin", "archestra_virtual_key", "archestra_oauth_client", "archestra_remote_agent", "archestra_service_account", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_knowledge_connector", "archestra_mcp_registry_entry", "archestra_skill", "archestra_credential", "archestra_model_provider"} {
 		p.AddResourceConfigurator(name, func(r *ujconfig.Resource) {
 			// Leave sharing unmanaged when omitted; forProvider manages ongoing sharing.
 			r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "permissions")
@@ -93,6 +93,12 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "app_ids")
 	})
 	p.AddResourceConfigurator("archestra_knowledge_base", func(r *ujconfig.Resource) { r.ShortGroup = "knowledge"; r.Kind = "KnowledgeBase" })
+	p.AddResourceConfigurator("archestra_knowledge_connector", func(r *ujconfig.Resource) {
+		r.ShortGroup = "knowledge"
+		r.Kind = "Connector"
+		r.References["knowledge_base_ids"] = ujconfig.Reference{TerraformName: "archestra_knowledge_base"}
+		r.References["environment_id"] = ujconfig.Reference{TerraformName: "archestra_environment"}
+	})
 	p.AddResourceConfigurator("archestra_role", func(r *ujconfig.Resource) { r.ShortGroup = "identity"; r.Kind = "Role" })
 	p.AddResourceConfigurator("archestra_api_key", func(r *ujconfig.Resource) { r.ShortGroup = credentialGroup; r.Kind = "APIKey" })
 	p.AddResourceConfigurator("archestra_schedule", func(r *ujconfig.Resource) {
@@ -143,6 +149,20 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.Kind = "ModelPool"
 		r.References["members.provider_api_key_id"] = ujconfig.Reference{TerraformName: "archestra_model_provider"}
 	})
+	p.AddResourceConfigurator("archestra_auto_router", func(r *ujconfig.Resource) {
+		r.ShortGroup = "llm"
+		r.Kind = "AutoRouter"
+		for _, tier := range []string{"fast", "normal", "smart"} {
+			r.References["tiers."+tier+".model_id"] = ujconfig.Reference{TerraformName: "archestra_model"}
+			r.References["tiers."+tier+".provider_api_key_id"] = ujconfig.Reference{TerraformName: "archestra_model_provider"}
+		}
+		r.References["decision_model.api_key_id"] = ujconfig.Reference{TerraformName: "archestra_model_provider"}
+	})
+	p.AddResourceConfigurator("archestra_openappa_battery_install", func(r *ujconfig.Resource) {
+		r.ShortGroup = "security"
+		r.Kind = "BatteryInstall"
+		r.References["catalog_id"] = ujconfig.Reference{TerraformName: "archestra_mcp_registry_entry"}
+	})
 	p.AddResourceConfigurator("archestra_model", func(r *ujconfig.Resource) {
 		r.ShortGroup = "llm"
 		r.Kind = "Model"
@@ -178,6 +198,17 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.ShortGroup = "organization"
 		r.Kind = "Settings"
 	})
+	p.AddResourceConfigurator("archestra_blob_provider", func(r *ujconfig.Resource) {
+		// A leaf group: llm/CostExport references it, and organization/Settings
+		// already references llm, so placing it in organization would cycle.
+		r.ShortGroup = "storage"
+		r.Kind = "BlobProvider"
+	})
+	p.AddResourceConfigurator("archestra_cost_export", func(r *ujconfig.Resource) {
+		r.ShortGroup = "llm"
+		r.Kind = "CostExport"
+		r.References["blob_provider_id"] = ujconfig.Reference{TerraformName: "archestra_blob_provider"}
+	})
 
 	p.AddResourceConfigurator("archestra_credential", func(r *ujconfig.Resource) {
 		r.ShortGroup = credentialGroup
@@ -198,7 +229,7 @@ const roleSlugExtractor = `github.com/crossplane/upjet/v2/pkg/resource.ExtractPa
 func configureAdditionalRelationships(p *ujconfig.Provider) {
 	for owner, targets := range map[string]map[string]string{
 		"archestra_agent": {
-			"model_pool_id": "archestra_model_pool", "model_id": "archestra_model",
+			"model_pool_id": "archestra_model_pool", "auto_router_id": "archestra_auto_router", "model_id": "archestra_model",
 			"fast_model_id": "archestra_model", "smart_model_id": "archestra_model",
 			"skills.allowed.mcp_server_id": "archestra_mcp_server", "skills.excluded.mcp_server_id": "archestra_mcp_server",
 			"skills.allowed.plugin_id": "archestra_plugin", "skills.excluded.plugin_id": "archestra_plugin",
@@ -211,10 +242,12 @@ func configureAdditionalRelationships(p *ujconfig.Provider) {
 			"enterprise_managed_config.identity_provider_id": "archestra_identity_provider",
 		},
 		"archestra_mcp_server":   {"team_id": "archestra_team"},
-		"archestra_oauth_client": {"model_pool_ids": "archestra_model_pool"},
+		"archestra_oauth_client": {"model_pool_ids": "archestra_model_pool", "auto_router_ids": "archestra_auto_router"},
+		"archestra_virtual_key":  {"auto_router_ids": "archestra_auto_router"},
 		"archestra_organization_settings": {
 			"default_agent_id": "archestra_agent", "default_llm_api_key_id": "archestra_model_provider",
 			"default_model_id": "archestra_model", "default_fast_model_id": "archestra_model", "default_smart_model_id": "archestra_model",
+			"default_auto_router_id":    "archestra_auto_router",
 			"embedding_chat_api_key_id": "archestra_model_provider", "ocr_chat_api_key_id": "archestra_model_provider", "reranker_chat_api_key_id": "archestra_model_provider",
 			"connection_default_mcp_gateway_id": "archestra_mcp_gateway",
 		},

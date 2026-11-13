@@ -956,14 +956,14 @@ resource "archestra_mcp_registry_entry" "test" {
   }
 }
 `,
-				ExpectError: regexp.MustCompile(`only one of local_config or remote_config`),
+				ExpectError: regexp.MustCompile(`only one of local_config,\s+remote_config\s+or\s+desktop_config`),
 			},
 		},
 	})
 }
 
 // TestAccMcpRegistryCatalogItemResource_NeitherConfigSet pins the other
-// arm — at least one of local_config or remote_config must be present.
+// arm — exactly one of local_config, remote_config or desktop_config must be present.
 func TestAccMcpRegistryCatalogItemResource_NeitherConfigSet(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -976,7 +976,7 @@ resource "archestra_mcp_registry_entry" "test" {
   description = "x"
 }
 `,
-				ExpectError: regexp.MustCompile(`exactly one of local_config or remote_config`),
+				ExpectError: regexp.MustCompile(`exactly one of local_config,\s+remote_config\s+or\s+desktop_config`),
 			},
 		},
 	})

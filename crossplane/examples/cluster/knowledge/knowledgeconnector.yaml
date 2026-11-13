@@ -1,0 +1,14 @@
+apiVersion: knowledge.archestra.crossplane.io/v1alpha1
+kind: Connector
+metadata:
+  name: docs-site
+spec:
+  forProvider:
+    name: Docs site
+    connectorType: web_crawler
+    config: '{"startUrl":"https://docs.example.com","maxPages":200}'
+    schedule: "0 3 * * *"
+    knowledgeBaseIdsRefs:
+      - name: product-docs
+  providerConfigRef:
+    name: default

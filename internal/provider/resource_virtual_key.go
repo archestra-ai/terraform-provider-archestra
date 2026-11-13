@@ -40,6 +40,7 @@ type VirtualAPIKeyResourceModel struct {
 	ExpiresAt              types.String `tfsdk:"expires_at"`
 	OwnerID                types.String `tfsdk:"owner_id"`
 	InitialGrants          types.Set    `tfsdk:"permissions"`
+	AutoRouterIDs          types.Set    `tfsdk:"auto_router_ids"`
 	RotationNonce          types.String `tfsdk:"rotation_nonce"`
 	Value                  types.String `tfsdk:"value"`
 }
@@ -53,6 +54,8 @@ var virtualAPIKeyAttrSpec = []AttrSpec{
 	{TFName: "billing_team_id", JSONName: "billingTeamId", Kind: Scalar},
 	{TFName: "expires_at", JSONName: "expiresAt", Kind: Scalar},
 	{TFName: "owner_id", JSONName: "ownerId", Kind: Scalar, OmitOnNull: true}, initialGrantsAttrSpec,
+	// Write-only on the key: the API reports grants on each router, not on the key.
+	{TFName: "auto_router_ids", JSONName: "autoRouterIds", Kind: Set, OmitOnNull: true},
 	{TFName: "rotation_nonce", Kind: Synthetic},
 }
 
@@ -79,6 +82,7 @@ func (r *VirtualAPIKeyResource) Schema(_ context.Context, _ resource.SchemaReque
 		"expires_at":               schema.StringAttribute{Optional: true, MarkdownDescription: "Absolute RFC 3339 expiry; omission removes expiry."},
 		"owner_id":                 schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Creation-only owner selector, defaulting to the creator."},
 		"permissions":              initialGrantsAttribute(),
+		"auto_router_ids":          virtualKeyAutoRouterIDsAttribute(),
 		"rotation_nonce":           schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{rotationNonceRequiresReplace()}, MarkdownDescription: "Change this value to replace the key and revoke its old credential; a first value set after import is recorded without rotation."},
 		"value":                    schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Bearer credential returned on creation or revealed to its creator on import and refresh, retained in sensitive state; service-account creators need API 1.5.0-rc.1 or later."},
 	}}
@@ -159,6 +163,7 @@ func (r *VirtualAPIKeyResource) Read(ctx context.Context, req resource.ReadReque
 		data.Value = r.revealValue(ctx, id, &resp.Diagnostics)
 	}
 	readParentPermissions(ctx, r.client, "llmVirtualKey", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+	readVirtualKeyAutoRouters(ctx, r.client, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
