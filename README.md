@@ -188,21 +188,40 @@ commit on main
 release-please opens "chore(main): release vX.Y.Z"
         │  merge
         ▼
-tag vX.Y.Z  ──▶  goreleaser       ──▶  GitHub release zips ──▶  Terraform Registry
-                     │  then
+tag vX.Y.Z  ──▶  build-release (no secrets)
+                   goreleaser --skip=publish,sign: zips, manifest, SHA256SUMS
+                   Crossplane package from those zips + Marketplace assets
+                     ──▶  ghcr.io/archestra-ai/ci/provider-archestra (staging)
+                     │
                      ▼
-                 crank xpkg push  ──▶  xpkg.upbound.io/archestra
-                     │  then
+                 attest-release: attest every file and the package digest
+                     │
                      ▼
-                 up xpkg append   ──▶  Marketplace assets on the same package
+                 publish-release (archestra-ai/.github release-publish.yml):
+                   ask archestra-ai/release-publisher to publish, wait ≤360 min
+                     │
+                     ▼
+                 release-publisher (after an Engineering approval):
+                   verifies, signs SHA256SUMS with the registry key,
+                   copies the package to xpkg.upbound.io/archestra
+                     │
+                     ▼
+                 upload-release uploads the signed files ──▶  GitHub release ──▶  Terraform Registry
+                     │
+                     ▼
+                 verify-marketplace: public listing, digest and logo
 ```
 
-The publish jobs run one after the other: `publish-crossplane` needs
-`publish-terraform-provider`, because the runtime image downloads the
-release zips. The same `publish-crossplane` job then adds the logo to that package
-and verifies that both runtime manifests are unchanged, then waits for the
-existing public Marketplace listing, digest and logo. Repository visibility is
-managed by the Upbound organization owner.
+This repository holds no signing key or registry token: the GPG key and the
+Upbound robot token live only in the publisher. A stable release waits in the
+publisher's `stable-release` environment for an Engineering member who did not
+merge or start it; `publish-release` waits for it up to 360 minutes, then
+fails while the publisher keeps waiting. Retry a failed or expired publication
+with **Re-run failed jobs** on the Release Please run: it sends a new request
+(a new approval) without attesting again, and the publisher is idempotent. To prove the path without a release, run **Release
+Please** on `main` with `publisher_smoke`: it signs and uploads to a draft
+release and writes no tag or package. Repository visibility is managed by the
+Upbound organization owner.
 A publication failure does not roll back earlier publication steps.
 
 See [the audit](audit/README.md) for the release evidence.

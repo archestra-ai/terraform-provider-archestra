@@ -136,21 +136,17 @@ xpkg is published to `xpkg.upbound.io/archestra/provider-archestra` alongside
 each Terraform provider release. The release workflow then adds the
 [Marketplace assets](marketplace/README.md) to that same package.
 
-The existing [Crossplane release job](../.github/workflows/release-please.yml)
-uses the existing `UPBOUND_ACCESS_ID` and `UPBOUND_TOKEN` GitHub Actions secrets
-for the `archestra/provider-archestra` repository. No second namespace or
-publisher credentials are needed.
+The [release workflow](../.github/workflows/release-please.yml) builds the
+package from the release's own zips, appends the logo, verifies that the Linux
+amd64 and arm64 runtime manifests are unchanged, and stages it in
+`ghcr.io/archestra-ai/ci/provider-archestra`. archestra-ai/release-publisher
+copies that exact digest to `xpkg.upbound.io/archestra/provider-archestra`; it
+holds the Upbound robot token, so this repository has none. Retry a failed
+publication with **Re-run failed jobs** on the Release Please run.
 
-After the Crossplane package push succeeds, that same job appends the logo and
-verifies that the Linux amd64 and arm64 runtime manifests are unchanged.
-Retry a failed publication by re-running **Publish Crossplane Provider** for
-that release in GitHub Actions.
-
-Registry publication and Marketplace listing are separate. After adding the
-assets, the workflow uses `up repository update --private=false --publish=true`
-to enable the public listing for the existing `archestra/provider-archestra`
-repository. If its current robot credential cannot update repository settings,
-an administrator must enable **Publish to Marketplace** once. Valid release
+Registry publication and Marketplace listing are separate. **Publish to
+Marketplace** is enabled once on the `archestra/provider-archestra` Upbound
+repository by an organization owner. Valid release
 versions and their assets are then listed at
 [Upbound Marketplace](https://marketplace.upbound.io/providers/archestra/provider-archestra).
 

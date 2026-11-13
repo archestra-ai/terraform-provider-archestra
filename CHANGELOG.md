@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.1.4](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.3...v3.1.4) (2026-11-08)
+
+
+### Bug Fixes
+
+* **release:** pin the rotated provider signing key ([#237](https://github.com/archestra-ai/terraform-provider-archestra/issues/237)) ([61b284f](https://github.com/archestra-ai/terraform-provider-archestra/commit/61b284f37df081650ca504a07be72443221e3260))
+
+## [3.1.3](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.2...v3.1.3) (2026-11-07)
+
+
+### Bug Fixes
+
+* align provider with platform rc.19 contracts ([#220](https://github.com/archestra-ai/terraform-provider-archestra/issues/220)) ([a9d6d57](https://github.com/archestra-ai/terraform-provider-archestra/commit/a9d6d576310a8619120a6bc296d7d0c41743ccdf))
+
+
+### Dependencies
+
+* bump kin-openapi, oapi-codegen, grpc and x/crypto for security alerts ([#232](https://github.com/archestra-ai/terraform-provider-archestra/issues/232)) ([a997187](https://github.com/archestra-ai/terraform-provider-archestra/commit/a997187ab8bd946fa43c4f3bdf67062ab50f3145))
+* bump the github-actions-dependencies group across 1 directory with 2 updates ([#225](https://github.com/archestra-ai/terraform-provider-archestra/issues/225)) ([dcc1730](https://github.com/archestra-ai/terraform-provider-archestra/commit/dcc1730b500a137e05fd72353ad1f884d59bc615))
+* **terraform:** bump github.com/oapi-codegen/runtime from 1.7.0 to 1.8.0 in the terraform-go-dependencies group across 1 directory ([#218](https://github.com/archestra-ai/terraform-provider-archestra/issues/218)) ([f8eaa3d](https://github.com/archestra-ai/terraform-provider-archestra/commit/f8eaa3de29f45995fe05296279e72518bca0ee5e))
+* **terraform:** bump google.golang.org/grpc from 1.79.3 to 1.83.2 ([#231](https://github.com/archestra-ai/terraform-provider-archestra/issues/231)) ([0eed74a](https://github.com/archestra-ai/terraform-provider-archestra/commit/0eed74a39b7736a5a5b986b27f25963c7534bfb5))
+
 ## [3.1.2](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.1...v3.1.2) (2026-10-30)
 
 

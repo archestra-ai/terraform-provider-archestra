@@ -454,23 +454,23 @@ var runtimeCredentialKeyRegexp = regexp.MustCompile(`^[a-z][a-z0-9._-]*$`)
 // runtimeCredentialView is a named copy of the list endpoint's element
 // shape so findByKey can return it (struct conversion ignores field tags).
 type runtimeCredentialView struct {
-	AllowOrganization      bool                                 `json:"allowOrganization"`
-	AllowPersonal          bool                                 `json:"allowPersonal"`
-	AppId                  *string                              `json:"appId"`
-	BuiltIn                bool                                 `json:"builtIn"`
-	Description            string                               `json:"description"`
-	GithubAppCredentialKey *string                              `json:"githubAppCredentialKey"`
-	GithubClientId         *string                              `json:"githubClientId"`
-	GithubUrl              *string                              `json:"githubUrl"`
-	GitlabUrl              *string                              `json:"gitlabUrl"`
-	Icon                   *string                              `json:"icon"`
-	Id                     openapi_types.UUID                   `json:"id"`
-	InstallationId         *string                              `json:"installationId"`
-	Key                    string                               `json:"key"`
-	Kind                   client.ListRuntimeCredentials200Kind `json:"kind"`
-	Name                   string                               `json:"name"`
-	OrganizationConfigured bool                                 `json:"organizationConfigured"`
-	PersonalConfigured     bool                                 `json:"personalConfigured"`
+	AllowOrganization      bool                                                 `json:"allowOrganization"`
+	AllowPersonal          bool                                                 `json:"allowPersonal"`
+	AppId                  *string                                              `json:"appId"`
+	BuiltIn                bool                                                 `json:"builtIn"`
+	Description            string                                               `json:"description"`
+	GithubAppCredentialKey *string                                              `json:"githubAppCredentialKey"`
+	GithubClientId         *string                                              `json:"githubClientId"`
+	GithubUrl              *string                                              `json:"githubUrl"`
+	GitlabUrl              *string                                              `json:"gitlabUrl"`
+	Icon                   *string                                              `json:"icon"`
+	Id                     openapi_types.UUID                                   `json:"id"`
+	InstallationId         *string                                              `json:"installationId"`
+	Key                    string                                               `json:"key"`
+	Kind                   client.ListRuntimeCredentials200JSONResponseBodyKind `json:"kind"`
+	Name                   string                                               `json:"name"`
+	OrganizationConfigured bool                                                 `json:"organizationConfigured"`
+	PersonalConfigured     bool                                                 `json:"personalConfigured"`
 }
 
 // findByKey resolves a definition and its configured-value flags from the list.
