@@ -150,6 +150,7 @@ resource "archestra_agent" "worker" {
 
 - `access_all_subagents` (Boolean) Whether all accessible subagents can be delegated to.
 - `access_all_tools` (Boolean) Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Use excluded_tool_ids to exclude tools. Defaults to `false`.
+- `auto_router_id` (String) ALPHA. `archestra_auto_router` the agent runs on instead of a fixed model, key or pool. Requires API 1.5.0-rc.29 or later with auto routing enabled; Agent Runtime and built-in agents cannot use one.
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
 - `description` (String) Human-readable description
 - `entra_agent_identity_id` (String) Application (client) ID of the Microsoft Entra agent identity this record calls tools as, a GUID. Requires an identity provider with an Entra Agent ID blueprint (API 1.5.0-rc.29 or later; leave unset on older releases).

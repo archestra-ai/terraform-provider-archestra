@@ -93,6 +93,7 @@ resource "archestra_mcp_gateway" "engineering" {
 ### Read-Only
 
 - `author_email` (String) Server-reported author email.
+- `auto_router_id` (String) Server-reported auto router identifier on the shared agent record (API 1.5.0-rc.29 or later).
 - `created_by` (String) Creator identity metadata as JSON.
 - `created_by_service_account_id` (String) Server-reported created by service account id.
 - `deleted_at` (String) Server-reported deleted at.

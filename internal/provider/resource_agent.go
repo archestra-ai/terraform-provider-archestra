@@ -36,6 +36,7 @@ type AgentResource struct {
 // with prompts, knowledge sources, optional email triggers, etc.).
 type AgentResourceModel struct {
 	ModelPoolID                    types.String `tfsdk:"model_pool_id"`
+	AutoRouterID                   types.String `tfsdk:"auto_router_id"`
 	Tools                          types.Set    `tfsdk:"tools"`
 	ExcludedToolIDs                types.Set    `tfsdk:"excluded_tool_ids"`
 	Hooks                          types.Set    `tfsdk:"hooks"`
@@ -607,9 +608,6 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "suggestedPrompts", "passthroughHeaders",
 		"identityProviderId", "slug", "scope", "teams", "users",
-		// Auto routing is ALPHA and has no Terraform resource yet, so its router IDs
-		// could not be referenced; model it with an archestra_auto_router resource.
-		"autoRouterId",
 		// Subagent load balancing applies only to MCP gateways.
 		"subagentLoadBalancing",
 		// Not modeled yet: the API normalizes the policy (fills defaults, normalizes
@@ -636,6 +634,7 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 var agentAttrSpec = append(append(agentRelationshipAttrSpecs(), AttrSpec{TFName: "hooks", Kind: Synthetic}, AttrSpec{TFName: "tools", Kind: Synthetic}, AttrSpec{TFName: "excluded_tool_ids", Kind: Synthetic}), []AttrSpec{
 	initialGrantsAttrSpec,
 	{TFName: "model_pool_id", JSONName: "modelPoolId", Kind: Scalar},
+	{TFName: "auto_router_id", JSONName: "autoRouterId", Kind: Scalar},
 	{TFName: "entra_agent_identity_id", JSONName: "entraAgentIdentityId", Kind: Scalar},
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar, OmitOnNull: true},

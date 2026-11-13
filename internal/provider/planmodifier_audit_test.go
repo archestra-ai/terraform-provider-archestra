@@ -40,6 +40,7 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 	"archestra_skill":             {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
 
 	"archestra_project":        {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership.", "instructions": "The separate instructions file is unmanaged when omitted; only explicit empty content clears it.", "app_ids": "Project app links are unmanaged when omitted; an explicit empty set unlinks all, verified by project app acceptance."},
+	"archestra_auto_router":    {"budget_usd_per_day": "The update API cannot clear a custom budget; omission keeps the stored value, which applies again when budget_preset is unset.", "decision_model": "Omission keeps the server-chosen or previously set decision model; configure it to change the model."},
 	"archestra_model_provider": {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership.", "shared": "Creation-only ownership selector; importing or omitting this field must preserve the existing owner without replacement."},
 	"archestra_model": {"permissions": "Omission preserves additional sharing; explicit empty clears it without changing ownership.",
 		"llm_provider": "immutable adoption selector; omitting it retains the already adopted model and its provider rather than selecting another provider with the same model name.",
@@ -85,6 +86,7 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 		"default_model_id",
 		"default_fast_model_id",
 		"default_smart_model_id",
+		"default_auto_router_id",
 		"default_member_role",
 		"onboarding_wizard",
 		"icon_logo_dark",

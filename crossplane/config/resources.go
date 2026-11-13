@@ -143,6 +143,15 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.Kind = "ModelPool"
 		r.References["members.provider_api_key_id"] = ujconfig.Reference{TerraformName: "archestra_model_provider"}
 	})
+	p.AddResourceConfigurator("archestra_auto_router", func(r *ujconfig.Resource) {
+		r.ShortGroup = "llm"
+		r.Kind = "AutoRouter"
+		for _, tier := range []string{"fast", "normal", "smart"} {
+			r.References["tiers."+tier+".model_id"] = ujconfig.Reference{TerraformName: "archestra_model"}
+			r.References["tiers."+tier+".provider_api_key_id"] = ujconfig.Reference{TerraformName: "archestra_model_provider"}
+		}
+		r.References["decision_model.api_key_id"] = ujconfig.Reference{TerraformName: "archestra_model_provider"}
+	})
 	p.AddResourceConfigurator("archestra_model", func(r *ujconfig.Resource) {
 		r.ShortGroup = "llm"
 		r.Kind = "Model"
@@ -198,7 +207,7 @@ const roleSlugExtractor = `github.com/crossplane/upjet/v2/pkg/resource.ExtractPa
 func configureAdditionalRelationships(p *ujconfig.Provider) {
 	for owner, targets := range map[string]map[string]string{
 		"archestra_agent": {
-			"model_pool_id": "archestra_model_pool", "model_id": "archestra_model",
+			"model_pool_id": "archestra_model_pool", "auto_router_id": "archestra_auto_router", "model_id": "archestra_model",
 			"fast_model_id": "archestra_model", "smart_model_id": "archestra_model",
 			"skills.allowed.mcp_server_id": "archestra_mcp_server", "skills.excluded.mcp_server_id": "archestra_mcp_server",
 			"skills.allowed.plugin_id": "archestra_plugin", "skills.excluded.plugin_id": "archestra_plugin",
@@ -211,10 +220,12 @@ func configureAdditionalRelationships(p *ujconfig.Provider) {
 			"enterprise_managed_config.identity_provider_id": "archestra_identity_provider",
 		},
 		"archestra_mcp_server":   {"team_id": "archestra_team"},
-		"archestra_oauth_client": {"model_pool_ids": "archestra_model_pool"},
+		"archestra_oauth_client": {"model_pool_ids": "archestra_model_pool", "auto_router_ids": "archestra_auto_router"},
+		"archestra_virtual_key":  {"auto_router_ids": "archestra_auto_router"},
 		"archestra_organization_settings": {
 			"default_agent_id": "archestra_agent", "default_llm_api_key_id": "archestra_model_provider",
 			"default_model_id": "archestra_model", "default_fast_model_id": "archestra_model", "default_smart_model_id": "archestra_model",
+			"default_auto_router_id":    "archestra_auto_router",
 			"embedding_chat_api_key_id": "archestra_model_provider", "ocr_chat_api_key_id": "archestra_model_provider", "reranker_chat_api_key_id": "archestra_model_provider",
 			"connection_default_mcp_gateway_id": "archestra_mcp_gateway",
 		},

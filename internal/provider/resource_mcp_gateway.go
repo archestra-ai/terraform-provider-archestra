@@ -35,6 +35,7 @@ type McpGatewayResource struct {
 // optional knowledge sources.
 type McpGatewayResourceModel struct {
 	ModelPoolID          types.String `tfsdk:"model_pool_id"`
+	AutoRouterID         types.String `tfsdk:"auto_router_id"`
 	GithubActionsAccess  types.Object `tfsdk:"github_actions_access"`
 	SubagentIDs          types.Set    `tfsdk:"subagent_ids"`
 	RemoteAgentIDs       types.Set    `tfsdk:"remote_agent_ids"`
@@ -440,9 +441,6 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 		"teams", "incomingEmailEnabled",
 		"incomingEmailAllowedDomain", "incomingEmailSecurityMode", "icon",
 		"slug", "tools", "users",
-		// Auto routing is ALPHA and has no Terraform resource yet, so its router IDs
-		// could not be referenced; model it with an archestra_auto_router resource.
-		"autoRouterId",
 		// Egress policy governs Agent Runtimes and Code Sandboxes; gateways run neither.
 		"networkPolicy",
 		// Not modeled yet: needs a nested schema for its algorithm, weights and

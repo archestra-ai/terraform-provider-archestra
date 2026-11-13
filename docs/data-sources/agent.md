@@ -46,6 +46,7 @@ output "support_tools" {
 - `activation_skill_policy_revision` (Number) Server-reported activation skill policy revision.
 - `activation_skills_count` (Number) Server-reported activation skills count.
 - `author_email` (String) Server-reported author email.
+- `auto_router_id` (String) ALPHA. `archestra_auto_router` the agent runs on instead of a fixed model, key or pool. Requires API 1.5.0-rc.29 or later with auto routing enabled; Agent Runtime and built-in agents cannot use one.
 - `built_in_agent_config` (String) Server-owned built-in agent metadata as JSON.
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
 - `created_by` (String) Creator identity metadata as JSON.

@@ -142,6 +142,7 @@ resource "archestra_organization_settings" "main" {
 - `connection_shown_client_ids` (String) JSON configuration for connection shown client ids.
 - `connection_skills_enabled` (Boolean) Whether connection setup offers skills.
 - `default_agent_id` (String) Default agent (profile) ID for the organization
+- `default_auto_router_id` (String) ALPHA. `archestra_auto_router` ID that agents without their own model, key, pool or router run on; set null to clear. Requires API 1.5.0-rc.29 or later with auto routing enabled; older releases ignore it.
 - `default_environment_description` (String) Description of the default deployment environment.
 - `default_environment_name` (String) Name of the default deployment environment.
 - `default_environment_namespace` (String) Kubernetes namespace of the default deployment environment.
