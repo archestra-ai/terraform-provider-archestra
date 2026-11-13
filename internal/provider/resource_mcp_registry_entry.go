@@ -63,6 +63,7 @@ type MCPServerRegistryResourceModel struct {
 	AuthDescription     types.String `tfsdk:"auth_description"`
 	LocalConfig         types.Object `tfsdk:"local_config"`
 	RemoteConfig        types.Object `tfsdk:"remote_config"`
+	DesktopConfig       types.Object `tfsdk:"desktop_config"`
 	AuthFields          types.List   `tfsdk:"auth_fields"`
 	Version             types.String `tfsdk:"version"`
 	Repository          types.String `tfsdk:"repository"`
@@ -768,6 +769,7 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 	for name, attribute := range currentCatalogAttributes() {
 		resp.Schema.Attributes[name] = attribute
 	}
+	resp.Schema.Attributes["desktop_config"] = catalogDesktopConfigAttribute()
 
 }
 
@@ -818,8 +820,6 @@ func (r *MCPServerRegistryResource) APIShape() any {
 //     derived from the deployed image and discovered tools; read-only.
 func (r *MCPServerRegistryResource) KnownIntentionallySkipped() []string {
 	return []string{
-		// Not modeled yet: the Claude Desktop install config (command or URL).
-		"desktopConfig",
 		"createdAt", "updatedAt", "publishedAt", "authorId", "authorName",
 		"verified", "reviews", "installations", "installCount",
 		"authDescription", "authFields", "approvalStatus", "approvedAt",
@@ -851,9 +851,12 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	if !data.RemoteConfig.IsNull() {
+	switch {
+	case !data.DesktopConfig.IsNull():
+		patch["serverType"] = "desktop_mcp"
+	case !data.RemoteConfig.IsNull():
 		patch["serverType"] = "remote"
-	} else {
+	default:
 		patch["serverType"] = "local"
 	}
 
@@ -943,6 +946,7 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 	data.Labels = mapCatalogLabels(apiResp)
 	data.LocalConfig = mapCatalogLocalConfig(ctx, apiResp, data.LocalConfig)
 	data.RemoteConfig = mapCatalogRemoteConfig(apiResp)
+	data.DesktopConfig = desktopConfigFromResponse(apiResp)
 	data.AuthFields = mapCatalogAuthFields(apiResp)
 }
 
@@ -1361,9 +1365,12 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 
 	// serverType is mode-derived and the backend treats it as required on
 	// Update; always send so the backend's Zod schema accepts the body.
-	if !data.RemoteConfig.IsNull() {
+	switch {
+	case !data.DesktopConfig.IsNull():
+		patch["serverType"] = "desktop_mcp"
+	case !data.RemoteConfig.IsNull():
 		patch["serverType"] = "remote"
-	} else {
+	default:
 		patch["serverType"] = "local"
 	}
 
@@ -1457,22 +1464,33 @@ func (r *MCPServerRegistryResource) ValidateConfig(ctx context.Context, req reso
 
 	localKnown := !data.LocalConfig.IsUnknown()
 	remoteKnown := !data.RemoteConfig.IsUnknown()
+	desktopKnown := !data.DesktopConfig.IsUnknown()
 	localSet := localKnown && !data.LocalConfig.IsNull()
 	remoteSet := remoteKnown && !data.RemoteConfig.IsNull()
+	desktopSet := desktopKnown && !data.DesktopConfig.IsNull()
 
-	if localSet && remoteSet {
+	set := 0
+	for _, isSet := range []bool{localSet, remoteSet, desktopSet} {
+		if isSet {
+			set++
+		}
+	}
+	if set > 1 {
 		resp.Diagnostics.AddError(
 			"Conflicting Configuration",
-			"only one of local_config or remote_config can be set at a time",
+			"only one of local_config, remote_config or desktop_config can be set at a time",
 		)
 		return
 	}
-	if localKnown && remoteKnown && !localSet && !remoteSet {
+	if localKnown && remoteKnown && desktopKnown && set == 0 {
 		resp.Diagnostics.AddError(
 			"Missing Required Configuration",
-			"exactly one of local_config or remote_config must be set",
+			"exactly one of local_config, remote_config or desktop_config must be set",
 		)
 		return
+	}
+	if message, ok := validateDesktopConfig(data.DesktopConfig); !ok {
+		resp.Diagnostics.AddAttributeError(desktopConfigPath, "Invalid Desktop Configuration", message)
 	}
 
 	if localSet {

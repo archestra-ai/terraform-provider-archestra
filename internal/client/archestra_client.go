@@ -26241,6 +26241,789 @@ func (e RotateOauthClientSecret500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetOpenappaBatteries200JSONResponseBodyInstallsStatus.
+const (
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusActive             GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "active"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusMissingCredentials GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "missing_credentials"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusNamingConflict     GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "naming_conflict"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusRefused            GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "refused"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusServerMissing      GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "server_missing"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusUnavailable        GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "unavailable"
+	GetOpenappaBatteries200JSONResponseBodyInstallsStatusUnrouted           GetOpenappaBatteries200JSONResponseBodyInstallsStatus = "unrouted"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries200JSONResponseBodyInstallsStatus enum.
+func (e GetOpenappaBatteries200JSONResponseBodyInstallsStatus) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusActive:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusMissingCredentials:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusNamingConflict:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusRefused:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusServerMissing:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusUnavailable:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsStatusUnrouted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries200JSONResponseBodyInstallsTarget.
+const (
+	GetOpenappaBatteries200JSONResponseBodyInstallsTargetLessThannil GetOpenappaBatteries200JSONResponseBodyInstallsTarget = "<nil>"
+	GetOpenappaBatteries200JSONResponseBodyInstallsTargetMultiUser   GetOpenappaBatteries200JSONResponseBodyInstallsTarget = "multi-user"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries200JSONResponseBodyInstallsTarget enum.
+func (e GetOpenappaBatteries200JSONResponseBodyInstallsTarget) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries200JSONResponseBodyInstallsTargetLessThannil:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyInstallsTargetMultiUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries200JSONResponseBodyScope.
+const (
+	GetOpenappaBatteries200JSONResponseBodyScopeCatalogs     GetOpenappaBatteries200JSONResponseBodyScope = "catalogs"
+	GetOpenappaBatteries200JSONResponseBodyScopeOrganization GetOpenappaBatteries200JSONResponseBodyScope = "organization"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries200JSONResponseBodyScope enum.
+func (e GetOpenappaBatteries200JSONResponseBodyScope) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries200JSONResponseBodyScopeCatalogs:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodyScopeOrganization:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries200JSONResponseBodySource.
+const (
+	GetOpenappaBatteries200JSONResponseBodySourceBundled GetOpenappaBatteries200JSONResponseBodySource = "bundled"
+	GetOpenappaBatteries200JSONResponseBodySourceUpload  GetOpenappaBatteries200JSONResponseBodySource = "upload"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries200JSONResponseBodySource enum.
+func (e GetOpenappaBatteries200JSONResponseBodySource) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries200JSONResponseBodySourceBundled:
+		return true
+	case GetOpenappaBatteries200JSONResponseBodySourceUpload:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries400JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries400JSONResponseBodyErrorTypeApiValidationError GetOpenappaBatteries400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries400JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries401JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries401JSONResponseBodyErrorTypeApiAuthenticationError GetOpenappaBatteries401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries401JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries403JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries403JSONResponseBodyErrorTypeApiAuthorizationError GetOpenappaBatteries403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries403JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries404JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries404JSONResponseBodyErrorTypeApiNotFoundError GetOpenappaBatteries404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries404JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries409JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries409JSONResponseBodyErrorTypeApiConflictError GetOpenappaBatteries409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries409JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteries500JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteries500JSONResponseBodyErrorTypeApiInternalServerError GetOpenappaBatteries500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteries500JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteries500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteries500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource.
+const (
+	CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceBinding     CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "binding"
+	CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceLessThannil CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "<nil>"
+	CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourcePolicy      CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "policy"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource enum.
+func (e CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceBinding:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceLessThannil:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourcePolicy:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall200JSONResponseBodyScope.
+const (
+	CreateOpenappaBatteryInstall200JSONResponseBodyScopeCatalogs     CreateOpenappaBatteryInstall200JSONResponseBodyScope = "catalogs"
+	CreateOpenappaBatteryInstall200JSONResponseBodyScopeOrganization CreateOpenappaBatteryInstall200JSONResponseBodyScope = "organization"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall200JSONResponseBodyScope enum.
+func (e CreateOpenappaBatteryInstall200JSONResponseBodyScope) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall200JSONResponseBodyScopeCatalogs:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyScopeOrganization:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall200JSONResponseBodySource.
+const (
+	CreateOpenappaBatteryInstall200JSONResponseBodySourceBundled CreateOpenappaBatteryInstall200JSONResponseBodySource = "bundled"
+	CreateOpenappaBatteryInstall200JSONResponseBodySourceUpload  CreateOpenappaBatteryInstall200JSONResponseBodySource = "upload"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall200JSONResponseBodySource enum.
+func (e CreateOpenappaBatteryInstall200JSONResponseBodySource) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall200JSONResponseBodySourceBundled:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodySourceUpload:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall200JSONResponseBodyStatus.
+const (
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusActive             CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "active"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "missing_credentials"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict     CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "naming_conflict"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusRefused            CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "refused"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing      CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "server_missing"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable        CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "unavailable"
+	CreateOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted           CreateOpenappaBatteryInstall200JSONResponseBodyStatus = "unrouted"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall200JSONResponseBodyStatus enum.
+func (e CreateOpenappaBatteryInstall200JSONResponseBodyStatus) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusActive:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusRefused:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable:
+		return true
+	case CreateOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall400JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError CreateOpenappaBatteryInstall400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall400JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall401JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError CreateOpenappaBatteryInstall401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall401JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall403JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError CreateOpenappaBatteryInstall403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall403JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall404JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError CreateOpenappaBatteryInstall404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall404JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall409JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError CreateOpenappaBatteryInstall409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall409JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOpenappaBatteryInstall500JSONResponseBodyErrorType.
+const (
+	CreateOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError CreateOpenappaBatteryInstall500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOpenappaBatteryInstall500JSONResponseBodyErrorType enum.
+func (e CreateOpenappaBatteryInstall500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall200JSONResponseBodySuccess.
+const (
+	DeleteOpenappaBatteryInstall200JSONResponseBodySuccessTrue DeleteOpenappaBatteryInstall200JSONResponseBodySuccess = true
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall200JSONResponseBodySuccess enum.
+func (e DeleteOpenappaBatteryInstall200JSONResponseBodySuccess) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall200JSONResponseBodySuccessTrue:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType.
+const (
+	DeleteOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType enum.
+func (e DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall200JSONResponseBodyStatus.
+const (
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusActive             GetOpenappaBatteryInstall200JSONResponseBodyStatus = "active"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials GetOpenappaBatteryInstall200JSONResponseBodyStatus = "missing_credentials"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict     GetOpenappaBatteryInstall200JSONResponseBodyStatus = "naming_conflict"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusRefused            GetOpenappaBatteryInstall200JSONResponseBodyStatus = "refused"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing      GetOpenappaBatteryInstall200JSONResponseBodyStatus = "server_missing"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable        GetOpenappaBatteryInstall200JSONResponseBodyStatus = "unavailable"
+	GetOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted           GetOpenappaBatteryInstall200JSONResponseBodyStatus = "unrouted"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall200JSONResponseBodyStatus enum.
+func (e GetOpenappaBatteryInstall200JSONResponseBodyStatus) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusActive:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusRefused:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall200JSONResponseBodyTarget.
+const (
+	GetOpenappaBatteryInstall200JSONResponseBodyTargetLessThannil GetOpenappaBatteryInstall200JSONResponseBodyTarget = "<nil>"
+	GetOpenappaBatteryInstall200JSONResponseBodyTargetMultiUser   GetOpenappaBatteryInstall200JSONResponseBodyTarget = "multi-user"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall200JSONResponseBodyTarget enum.
+func (e GetOpenappaBatteryInstall200JSONResponseBodyTarget) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall200JSONResponseBodyTargetLessThannil:
+		return true
+	case GetOpenappaBatteryInstall200JSONResponseBodyTargetMultiUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall400JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError GetOpenappaBatteryInstall400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall400JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall401JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError GetOpenappaBatteryInstall401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall401JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall403JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError GetOpenappaBatteryInstall403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall403JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall404JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError GetOpenappaBatteryInstall404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall404JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall409JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError GetOpenappaBatteryInstall409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall409JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOpenappaBatteryInstall500JSONResponseBodyErrorType.
+const (
+	GetOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError GetOpenappaBatteryInstall500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOpenappaBatteryInstall500JSONResponseBodyErrorType enum.
+func (e GetOpenappaBatteryInstall500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource.
+const (
+	UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceBinding     UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "binding"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceLessThannil UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "<nil>"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourcePolicy      UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource = "policy"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource enum.
+func (e UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceBinding:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourceLessThannil:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSourcePolicy:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall200JSONResponseBodyScope.
+const (
+	UpdateOpenappaBatteryInstall200JSONResponseBodyScopeCatalogs     UpdateOpenappaBatteryInstall200JSONResponseBodyScope = "catalogs"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyScopeOrganization UpdateOpenappaBatteryInstall200JSONResponseBodyScope = "organization"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall200JSONResponseBodyScope enum.
+func (e UpdateOpenappaBatteryInstall200JSONResponseBodyScope) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyScopeCatalogs:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyScopeOrganization:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall200JSONResponseBodySource.
+const (
+	Bundled UpdateOpenappaBatteryInstall200JSONResponseBodySource = "bundled"
+	Upload  UpdateOpenappaBatteryInstall200JSONResponseBodySource = "upload"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall200JSONResponseBodySource enum.
+func (e UpdateOpenappaBatteryInstall200JSONResponseBodySource) Valid() bool {
+	switch e {
+	case Bundled:
+		return true
+	case Upload:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall200JSONResponseBodyStatus.
+const (
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusActive             UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "active"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "missing_credentials"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict     UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "naming_conflict"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusRefused            UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "refused"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing      UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "server_missing"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable        UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "unavailable"
+	UpdateOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted           UpdateOpenappaBatteryInstall200JSONResponseBodyStatus = "unrouted"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall200JSONResponseBodyStatus enum.
+func (e UpdateOpenappaBatteryInstall200JSONResponseBodyStatus) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusActive:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusMissingCredentials:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusNamingConflict:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusRefused:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusServerMissing:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusUnavailable:
+		return true
+	case UpdateOpenappaBatteryInstall200JSONResponseBodyStatusUnrouted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType.
+const (
+	UpdateOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType enum.
+func (e UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOpenappaBatteryInstall500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetOrganization200JSONResponseBodyConnectionClientProviderKeysProvider.
 const (
 	GetOrganization200JSONResponseBodyConnectionClientProviderKeysProviderAnthropic           GetOrganization200JSONResponseBodyConnectionClientProviderKeysProvider = "anthropic"
@@ -40073,13 +40856,13 @@ func (e UpdateSkillGithubSyncJSONBodySourceProvider) Valid() bool {
 
 // Defines values for UpdateSkillGithubSyncJSONBodySyncNow.
 const (
-	UpdateSkillGithubSyncJSONBodySyncNowTrue UpdateSkillGithubSyncJSONBodySyncNow = true
+	True UpdateSkillGithubSyncJSONBodySyncNow = true
 )
 
 // Valid indicates whether the value is a known member of the UpdateSkillGithubSyncJSONBodySyncNow enum.
 func (e UpdateSkillGithubSyncJSONBodySyncNow) Valid() bool {
 	switch e {
-	case UpdateSkillGithubSyncJSONBodySyncNowTrue:
+	case True:
 		return true
 	default:
 		return false
@@ -40088,16 +40871,16 @@ func (e UpdateSkillGithubSyncJSONBodySyncNow) Valid() bool {
 
 // Defines values for UpdateSkillGithubSync200JSONResponseBodyCreatedByType.
 const (
-	UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeServiceAccount UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "service_account"
-	UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeUser           UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "user"
+	ServiceAccount UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "service_account"
+	User           UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "user"
 )
 
 // Valid indicates whether the value is a known member of the UpdateSkillGithubSync200JSONResponseBodyCreatedByType enum.
 func (e UpdateSkillGithubSync200JSONResponseBodyCreatedByType) Valid() bool {
 	switch e {
-	case UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeServiceAccount:
+	case ServiceAccount:
 		return true
-	case UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeUser:
+	case User:
 		return true
 	default:
 		return false
@@ -41585,13 +42368,13 @@ func (e GetToolsWithAssignments200JSONResponseBodyDataDelegateToAgentScope) Vali
 
 // Defines values for GetToolsWithAssignments400JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
+	ApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments400JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError:
+	case ApiValidationError:
 		return true
 	default:
 		return false
@@ -41600,13 +42383,13 @@ func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments401JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
+	ApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments401JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError:
+	case ApiAuthenticationError:
 		return true
 	default:
 		return false
@@ -41615,13 +42398,13 @@ func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments403JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
+	ApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments403JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError:
+	case ApiAuthorizationError:
 		return true
 	default:
 		return false
@@ -41630,13 +42413,13 @@ func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments404JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
+	ApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments404JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError:
+	case ApiNotFoundError:
 		return true
 	default:
 		return false
@@ -41645,13 +42428,13 @@ func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments409JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
+	ApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments409JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError:
+	case ApiConflictError:
 		return true
 	default:
 		return false
@@ -41660,13 +42443,13 @@ func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments500JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
+	ApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments500JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError:
+	case ApiInternalServerError:
 		return true
 	default:
 		return false
@@ -49047,6 +49830,153 @@ type RotateOauthClientSecret409JSONResponseBodyErrorType string
 // RotateOauthClientSecret500JSONResponseBodyErrorType defines parameters for RotateOauthClientSecret.
 type RotateOauthClientSecret500JSONResponseBodyErrorType string
 
+// GetOpenappaBatteries200JSONResponseBodyInstallsStatus defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries200JSONResponseBodyInstallsStatus string
+
+// GetOpenappaBatteries200JSONResponseBodyInstallsTarget defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries200JSONResponseBodyInstallsTarget string
+
+// GetOpenappaBatteries200JSONResponseBodyScope defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries200JSONResponseBodyScope string
+
+// GetOpenappaBatteries200JSONResponseBodySource defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries200JSONResponseBodySource string
+
+// GetOpenappaBatteries400JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries400JSONResponseBodyErrorType string
+
+// GetOpenappaBatteries401JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries401JSONResponseBodyErrorType string
+
+// GetOpenappaBatteries403JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries403JSONResponseBodyErrorType string
+
+// GetOpenappaBatteries404JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries404JSONResponseBodyErrorType string
+
+// GetOpenappaBatteries409JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries409JSONResponseBodyErrorType string
+
+// GetOpenappaBatteries500JSONResponseBodyErrorType defines parameters for GetOpenappaBatteries.
+type GetOpenappaBatteries500JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstallJSONBody defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstallJSONBody struct {
+	BatteryName string              `json:"batteryName"`
+	CatalogId   *openapi_types.UUID `json:"catalogId,omitempty"`
+	PackageHash *string             `json:"packageHash,omitempty"`
+}
+
+// CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource string
+
+// CreateOpenappaBatteryInstall200JSONResponseBodyScope defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall200JSONResponseBodyScope string
+
+// CreateOpenappaBatteryInstall200JSONResponseBodySource defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall200JSONResponseBodySource string
+
+// CreateOpenappaBatteryInstall200JSONResponseBodyStatus defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall200JSONResponseBodyStatus string
+
+// CreateOpenappaBatteryInstall400JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall400JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstall401JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall401JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstall403JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall403JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstall404JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall404JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstall409JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall409JSONResponseBodyErrorType string
+
+// CreateOpenappaBatteryInstall500JSONResponseBodyErrorType defines parameters for CreateOpenappaBatteryInstall.
+type CreateOpenappaBatteryInstall500JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall200JSONResponseBodySuccess defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall200JSONResponseBodySuccess bool
+
+// DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType string
+
+// DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType defines parameters for DeleteOpenappaBatteryInstall.
+type DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall200JSONResponseBodyStatus defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall200JSONResponseBodyStatus string
+
+// GetOpenappaBatteryInstall200JSONResponseBodyTarget defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall200JSONResponseBodyTarget string
+
+// GetOpenappaBatteryInstall400JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall400JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall401JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall401JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall403JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall403JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall404JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall404JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall409JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall409JSONResponseBodyErrorType string
+
+// GetOpenappaBatteryInstall500JSONResponseBodyErrorType defines parameters for GetOpenappaBatteryInstall.
+type GetOpenappaBatteryInstall500JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstallJSONBody defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstallJSONBody struct {
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource string
+
+// UpdateOpenappaBatteryInstall200JSONResponseBodyScope defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall200JSONResponseBodyScope string
+
+// UpdateOpenappaBatteryInstall200JSONResponseBodySource defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall200JSONResponseBodySource string
+
+// UpdateOpenappaBatteryInstall200JSONResponseBodyStatus defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall200JSONResponseBodyStatus string
+
+// UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType string
+
+// UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType defines parameters for UpdateOpenappaBatteryInstall.
+type UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType string
+
 // GetOrganization200JSONResponseBodyConnectionClientProviderKeysProvider defines parameters for GetOrganization.
 type GetOrganization200JSONResponseBodyConnectionClientProviderKeysProvider string
 
@@ -52586,6 +53516,12 @@ type CreateOauthClientJSONRequestBody CreateOauthClientJSONBody
 
 // UpdateOauthClientJSONRequestBody defines body for UpdateOauthClient for application/json ContentType.
 type UpdateOauthClientJSONRequestBody UpdateOauthClientJSONBody
+
+// CreateOpenappaBatteryInstallJSONRequestBody defines body for CreateOpenappaBatteryInstall for application/json ContentType.
+type CreateOpenappaBatteryInstallJSONRequestBody CreateOpenappaBatteryInstallJSONBody
+
+// UpdateOpenappaBatteryInstallJSONRequestBody defines body for UpdateOpenappaBatteryInstall for application/json ContentType.
+type UpdateOpenappaBatteryInstallJSONRequestBody UpdateOpenappaBatteryInstallJSONBody
 
 // UpdateAgentSettingsJSONRequestBody defines body for UpdateAgentSettings for application/json ContentType.
 type UpdateAgentSettingsJSONRequestBody UpdateAgentSettingsJSONBody
@@ -60011,6 +60947,25 @@ type ClientInterface interface {
 	// RotateOauthClientSecret request
 	RotateOauthClientSecret(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetOpenappaBatteries request
+	GetOpenappaBatteries(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateOpenappaBatteryInstallWithBody request with any body
+	CreateOpenappaBatteryInstallWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateOpenappaBatteryInstall(ctx context.Context, body CreateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteOpenappaBatteryInstall request
+	DeleteOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetOpenappaBatteryInstall request
+	GetOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateOpenappaBatteryInstallWithBody request with any body
+	UpdateOpenappaBatteryInstallWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, body UpdateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetOrganization request
 	GetOrganization(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -62553,6 +63508,90 @@ func (c *Client) UpdateOauthClient(ctx context.Context, id string, body UpdateOa
 
 func (c *Client) RotateOauthClientSecret(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRotateOauthClientSecretRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetOpenappaBatteries(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOpenappaBatteriesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOpenappaBatteryInstallWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOpenappaBatteryInstallRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOpenappaBatteryInstall(ctx context.Context, body CreateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOpenappaBatteryInstallRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteOpenappaBatteryInstallRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOpenappaBatteryInstallRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOpenappaBatteryInstallWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOpenappaBatteryInstallRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOpenappaBatteryInstall(ctx context.Context, id openapi_types.UUID, body UpdateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOpenappaBatteryInstallRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -69884,6 +70923,188 @@ func NewRotateOauthClientSecretRequest(server string, id string) (*http.Request,
 	return req, nil
 }
 
+// NewGetOpenappaBatteriesRequest generates requests for GetOpenappaBatteries
+func NewGetOpenappaBatteriesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/openappa/batteries")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateOpenappaBatteryInstallRequest calls the generic CreateOpenappaBatteryInstall builder with application/json body
+func NewCreateOpenappaBatteryInstallRequest(server string, body CreateOpenappaBatteryInstallJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateOpenappaBatteryInstallRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateOpenappaBatteryInstallRequestWithBody generates requests for CreateOpenappaBatteryInstall with any type of body
+func NewCreateOpenappaBatteryInstallRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/openappa/battery-installs")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteOpenappaBatteryInstallRequest generates requests for DeleteOpenappaBatteryInstall
+func NewDeleteOpenappaBatteryInstallRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/openappa/battery-installs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetOpenappaBatteryInstallRequest generates requests for GetOpenappaBatteryInstall
+func NewGetOpenappaBatteryInstallRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/openappa/battery-installs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateOpenappaBatteryInstallRequest calls the generic UpdateOpenappaBatteryInstall builder with application/json body
+func NewUpdateOpenappaBatteryInstallRequest(server string, id openapi_types.UUID, body UpdateOpenappaBatteryInstallJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateOpenappaBatteryInstallRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateOpenappaBatteryInstallRequestWithBody generates requests for UpdateOpenappaBatteryInstall with any type of body
+func NewUpdateOpenappaBatteryInstallRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/openappa/battery-installs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetOrganizationRequest generates requests for GetOrganization
 func NewGetOrganizationRequest(server string) (*http.Request, error) {
 	var err error
@@ -73359,6 +74580,25 @@ type ClientWithResponsesInterface interface {
 
 	// RotateOauthClientSecretWithResponse request
 	RotateOauthClientSecretWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*RotateOauthClientSecretResponse, error)
+
+	// GetOpenappaBatteriesWithResponse request
+	GetOpenappaBatteriesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOpenappaBatteriesResponse, error)
+
+	// CreateOpenappaBatteryInstallWithBodyWithResponse request with any body
+	CreateOpenappaBatteryInstallWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOpenappaBatteryInstallResponse, error)
+
+	CreateOpenappaBatteryInstallWithResponse(ctx context.Context, body CreateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOpenappaBatteryInstallResponse, error)
+
+	// DeleteOpenappaBatteryInstallWithResponse request
+	DeleteOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteOpenappaBatteryInstallResponse, error)
+
+	// GetOpenappaBatteryInstallWithResponse request
+	GetOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetOpenappaBatteryInstallResponse, error)
+
+	// UpdateOpenappaBatteryInstallWithBodyWithResponse request with any body
+	UpdateOpenappaBatteryInstallWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOpenappaBatteryInstallResponse, error)
+
+	UpdateOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOpenappaBatteryInstallResponse, error)
 
 	// GetOrganizationWithResponse request
 	GetOrganizationWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOrganizationResponse, error)
@@ -86917,6 +88157,451 @@ func (r RotateOauthClientSecretResponse) ContentType() string {
 	return ""
 }
 
+type GetOpenappaBatteriesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		Annotators  []string `json:"annotators"`
+		ContentHash *string  `json:"contentHash"`
+		Credentials []string `json:"credentials"`
+		Description string   `json:"description"`
+		Helpers     []string `json:"helpers"`
+		Installs    []struct {
+			BatteryName        string                                                `json:"batteryName"`
+			CatalogId          *openapi_types.UUID                                   `json:"catalogId"`
+			CreatedAt          time.Time                                             `json:"createdAt"`
+			CredentialBindings map[string]string                                     `json:"credentialBindings"`
+			Enabled            bool                                                  `json:"enabled"`
+			Id                 openapi_types.UUID                                    `json:"id"`
+			LastError          *string                                               `json:"lastError"`
+			OrganizationId     string                                                `json:"organizationId"`
+			PackageHash        *string                                               `json:"packageHash"`
+			Status             GetOpenappaBatteries200JSONResponseBodyInstallsStatus `json:"status"`
+			Target             GetOpenappaBatteries200JSONResponseBodyInstallsTarget `json:"target"`
+			UpdatedAt          time.Time                                             `json:"updatedAt"`
+		} `json:"installs"`
+		Name       string                                        `json:"name"`
+		Namespaces []string                                      `json:"namespaces"`
+		Scope      GetOpenappaBatteries200JSONResponseBodyScope  `json:"scope"`
+		Setup      *string                                       `json:"setup"`
+		Source     GetOpenappaBatteries200JSONResponseBodySource `json:"source"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                          `json:"details,omitempty"`
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetOpenappaBatteries500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOpenappaBatteriesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOpenappaBatteriesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetOpenappaBatteriesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CreateOpenappaBatteryInstallResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Composed    bool `json:"composed"`
+		Credentials []struct {
+			Key      *string                                                          `json:"key"`
+			Readers  []string                                                         `json:"readers"`
+			Source   CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource `json:"source"`
+			Variable string                                                           `json:"variable"`
+		} `json:"credentials"`
+		Entry       string                                               `json:"entry"`
+		Helpers     []string                                             `json:"helpers"`
+		Line        float32                                              `json:"line"`
+		Name        string                                               `json:"name"`
+		PackageHash *string                                              `json:"packageHash"`
+		Scope       CreateOpenappaBatteryInstall200JSONResponseBodyScope `json:"scope"`
+		Servers     []struct {
+			CatalogId *string `json:"catalogId"`
+			Target    string  `json:"target"`
+		} `json:"servers"`
+		Source CreateOpenappaBatteryInstall200JSONResponseBodySource `json:"source"`
+		Status CreateOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                  `json:"details,omitempty"`
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         CreateOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateOpenappaBatteryInstallResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateOpenappaBatteryInstallResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateOpenappaBatteryInstallResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteOpenappaBatteryInstallResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success DeleteOpenappaBatteryInstall200JSONResponseBodySuccess `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                  `json:"details,omitempty"`
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteOpenappaBatteryInstallResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteOpenappaBatteryInstallResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteOpenappaBatteryInstallResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetOpenappaBatteryInstallResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		BatteryName        string                                             `json:"batteryName"`
+		CatalogId          *openapi_types.UUID                                `json:"catalogId"`
+		CreatedAt          time.Time                                          `json:"createdAt"`
+		CredentialBindings map[string]string                                  `json:"credentialBindings"`
+		Enabled            bool                                               `json:"enabled"`
+		Id                 openapi_types.UUID                                 `json:"id"`
+		LastError          *string                                            `json:"lastError"`
+		OrganizationId     string                                             `json:"organizationId"`
+		PackageHash        *string                                            `json:"packageHash"`
+		Status             GetOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+		Target             GetOpenappaBatteryInstall200JSONResponseBodyTarget `json:"target"`
+		UpdatedAt          time.Time                                          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                               `json:"details,omitempty"`
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                               `json:"internal_code,omitempty"`
+			Message      string                                                `json:"message"`
+			Type         GetOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOpenappaBatteryInstallResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOpenappaBatteryInstallResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetOpenappaBatteryInstallResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateOpenappaBatteryInstallResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Composed    bool `json:"composed"`
+		Credentials []struct {
+			Key      *string                                                          `json:"key"`
+			Readers  []string                                                         `json:"readers"`
+			Source   UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource `json:"source"`
+			Variable string                                                           `json:"variable"`
+		} `json:"credentials"`
+		Entry       string                                               `json:"entry"`
+		Helpers     []string                                             `json:"helpers"`
+		Line        float32                                              `json:"line"`
+		Name        string                                               `json:"name"`
+		PackageHash *string                                              `json:"packageHash"`
+		Scope       UpdateOpenappaBatteryInstall200JSONResponseBodyScope `json:"scope"`
+		Servers     []struct {
+			CatalogId *string `json:"catalogId"`
+			Target    string  `json:"target"`
+		} `json:"servers"`
+		Source UpdateOpenappaBatteryInstall200JSONResponseBodySource `json:"source"`
+		Status UpdateOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                  `json:"details,omitempty"`
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateOpenappaBatteryInstallResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateOpenappaBatteryInstallResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateOpenappaBatteryInstallResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type GetOrganizationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -96362,6 +98047,67 @@ func (c *ClientWithResponses) RotateOauthClientSecretWithResponse(ctx context.Co
 		return nil, err
 	}
 	return ParseRotateOauthClientSecretResponse(rsp)
+}
+
+// GetOpenappaBatteriesWithResponse request returning *GetOpenappaBatteriesResponse
+func (c *ClientWithResponses) GetOpenappaBatteriesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOpenappaBatteriesResponse, error) {
+	rsp, err := c.GetOpenappaBatteries(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOpenappaBatteriesResponse(rsp)
+}
+
+// CreateOpenappaBatteryInstallWithBodyWithResponse request with arbitrary body returning *CreateOpenappaBatteryInstallResponse
+func (c *ClientWithResponses) CreateOpenappaBatteryInstallWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.CreateOpenappaBatteryInstallWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOpenappaBatteryInstallResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateOpenappaBatteryInstallWithResponse(ctx context.Context, body CreateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.CreateOpenappaBatteryInstall(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOpenappaBatteryInstallResponse(rsp)
+}
+
+// DeleteOpenappaBatteryInstallWithResponse request returning *DeleteOpenappaBatteryInstallResponse
+func (c *ClientWithResponses) DeleteOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.DeleteOpenappaBatteryInstall(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteOpenappaBatteryInstallResponse(rsp)
+}
+
+// GetOpenappaBatteryInstallWithResponse request returning *GetOpenappaBatteryInstallResponse
+func (c *ClientWithResponses) GetOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.GetOpenappaBatteryInstall(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOpenappaBatteryInstallResponse(rsp)
+}
+
+// UpdateOpenappaBatteryInstallWithBodyWithResponse request with arbitrary body returning *UpdateOpenappaBatteryInstallResponse
+func (c *ClientWithResponses) UpdateOpenappaBatteryInstallWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.UpdateOpenappaBatteryInstallWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOpenappaBatteryInstallResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateOpenappaBatteryInstallWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateOpenappaBatteryInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOpenappaBatteryInstallResponse, error) {
+	rsp, err := c.UpdateOpenappaBatteryInstall(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOpenappaBatteryInstallResponse(rsp)
 }
 
 // GetOrganizationWithResponse request returning *GetOrganizationResponse
@@ -114697,6 +116443,611 @@ func ParseRotateOauthClientSecretResponse(rsp *http.Response) (*RotateOauthClien
 				InternalCode *string                                             `json:"internal_code,omitempty"`
 				Message      string                                              `json:"message"`
 				Type         RotateOauthClientSecret500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetOpenappaBatteriesResponse parses an HTTP response from a GetOpenappaBatteriesWithResponse call
+func ParseGetOpenappaBatteriesResponse(rsp *http.Response) (*GetOpenappaBatteriesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOpenappaBatteriesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			Annotators  []string `json:"annotators"`
+			ContentHash *string  `json:"contentHash"`
+			Credentials []string `json:"credentials"`
+			Description string   `json:"description"`
+			Helpers     []string `json:"helpers"`
+			Installs    []struct {
+				BatteryName        string                                                `json:"batteryName"`
+				CatalogId          *openapi_types.UUID                                   `json:"catalogId"`
+				CreatedAt          time.Time                                             `json:"createdAt"`
+				CredentialBindings map[string]string                                     `json:"credentialBindings"`
+				Enabled            bool                                                  `json:"enabled"`
+				Id                 openapi_types.UUID                                    `json:"id"`
+				LastError          *string                                               `json:"lastError"`
+				OrganizationId     string                                                `json:"organizationId"`
+				PackageHash        *string                                               `json:"packageHash"`
+				Status             GetOpenappaBatteries200JSONResponseBodyInstallsStatus `json:"status"`
+				Target             GetOpenappaBatteries200JSONResponseBodyInstallsTarget `json:"target"`
+				UpdatedAt          time.Time                                             `json:"updatedAt"`
+			} `json:"installs"`
+			Name       string                                        `json:"name"`
+			Namespaces []string                                      `json:"namespaces"`
+			Scope      GetOpenappaBatteries200JSONResponseBodyScope  `json:"scope"`
+			Setup      *string                                       `json:"setup"`
+			Source     GetOpenappaBatteries200JSONResponseBodySource `json:"source"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                          `json:"details,omitempty"`
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetOpenappaBatteries500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateOpenappaBatteryInstallResponse parses an HTTP response from a CreateOpenappaBatteryInstallWithResponse call
+func ParseCreateOpenappaBatteryInstallResponse(rsp *http.Response) (*CreateOpenappaBatteryInstallResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateOpenappaBatteryInstallResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Composed    bool `json:"composed"`
+			Credentials []struct {
+				Key      *string                                                          `json:"key"`
+				Readers  []string                                                         `json:"readers"`
+				Source   CreateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource `json:"source"`
+				Variable string                                                           `json:"variable"`
+			} `json:"credentials"`
+			Entry       string                                               `json:"entry"`
+			Helpers     []string                                             `json:"helpers"`
+			Line        float32                                              `json:"line"`
+			Name        string                                               `json:"name"`
+			PackageHash *string                                              `json:"packageHash"`
+			Scope       CreateOpenappaBatteryInstall200JSONResponseBodyScope `json:"scope"`
+			Servers     []struct {
+				CatalogId *string `json:"catalogId"`
+				Target    string  `json:"target"`
+			} `json:"servers"`
+			Source CreateOpenappaBatteryInstall200JSONResponseBodySource `json:"source"`
+			Status CreateOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                  `json:"details,omitempty"`
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         CreateOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteOpenappaBatteryInstallResponse parses an HTTP response from a DeleteOpenappaBatteryInstallWithResponse call
+func ParseDeleteOpenappaBatteryInstallResponse(rsp *http.Response) (*DeleteOpenappaBatteryInstallResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteOpenappaBatteryInstallResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success DeleteOpenappaBatteryInstall200JSONResponseBodySuccess `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                  `json:"details,omitempty"`
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         DeleteOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetOpenappaBatteryInstallResponse parses an HTTP response from a GetOpenappaBatteryInstallWithResponse call
+func ParseGetOpenappaBatteryInstallResponse(rsp *http.Response) (*GetOpenappaBatteryInstallResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOpenappaBatteryInstallResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			BatteryName        string                                             `json:"batteryName"`
+			CatalogId          *openapi_types.UUID                                `json:"catalogId"`
+			CreatedAt          time.Time                                          `json:"createdAt"`
+			CredentialBindings map[string]string                                  `json:"credentialBindings"`
+			Enabled            bool                                               `json:"enabled"`
+			Id                 openapi_types.UUID                                 `json:"id"`
+			LastError          *string                                            `json:"lastError"`
+			OrganizationId     string                                             `json:"organizationId"`
+			PackageHash        *string                                            `json:"packageHash"`
+			Status             GetOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+			Target             GetOpenappaBatteryInstall200JSONResponseBodyTarget `json:"target"`
+			UpdatedAt          time.Time                                          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                               `json:"details,omitempty"`
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                               `json:"internal_code,omitempty"`
+				Message      string                                                `json:"message"`
+				Type         GetOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateOpenappaBatteryInstallResponse parses an HTTP response from a UpdateOpenappaBatteryInstallWithResponse call
+func ParseUpdateOpenappaBatteryInstallResponse(rsp *http.Response) (*UpdateOpenappaBatteryInstallResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateOpenappaBatteryInstallResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Composed    bool `json:"composed"`
+			Credentials []struct {
+				Key      *string                                                          `json:"key"`
+				Readers  []string                                                         `json:"readers"`
+				Source   UpdateOpenappaBatteryInstall200JSONResponseBodyCredentialsSource `json:"source"`
+				Variable string                                                           `json:"variable"`
+			} `json:"credentials"`
+			Entry       string                                               `json:"entry"`
+			Helpers     []string                                             `json:"helpers"`
+			Line        float32                                              `json:"line"`
+			Name        string                                               `json:"name"`
+			PackageHash *string                                              `json:"packageHash"`
+			Scope       UpdateOpenappaBatteryInstall200JSONResponseBodyScope `json:"scope"`
+			Servers     []struct {
+				CatalogId *string `json:"catalogId"`
+				Target    string  `json:"target"`
+			} `json:"servers"`
+			Source UpdateOpenappaBatteryInstall200JSONResponseBodySource `json:"source"`
+			Status UpdateOpenappaBatteryInstall200JSONResponseBodyStatus `json:"status"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                  `json:"details,omitempty"`
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         UpdateOpenappaBatteryInstall500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

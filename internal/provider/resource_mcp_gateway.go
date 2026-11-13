@@ -34,16 +34,17 @@ type McpGatewayResource struct {
 // gateway exposes a unified MCP endpoint backed by tool installations and
 // optional knowledge sources.
 type McpGatewayResourceModel struct {
-	ModelPoolID          types.String `tfsdk:"model_pool_id"`
-	AutoRouterID         types.String `tfsdk:"auto_router_id"`
-	GithubActionsAccess  types.Object `tfsdk:"github_actions_access"`
-	SubagentIDs          types.Set    `tfsdk:"subagent_ids"`
-	RemoteAgentIDs       types.Set    `tfsdk:"remote_agent_ids"`
-	ExcludedSubagentIDs  types.Set    `tfsdk:"excluded_subagent_ids"`
-	ExcludedConnectorIDs types.Set    `tfsdk:"excluded_connector_ids"`
-	Tools                types.Set    `tfsdk:"tools"`
-	ExcludedToolIDs      types.Set    `tfsdk:"excluded_tool_ids"`
-	Skills               types.Object `tfsdk:"skills"`
+	ModelPoolID           types.String `tfsdk:"model_pool_id"`
+	SubagentLoadBalancing types.Object `tfsdk:"subagent_load_balancing"`
+	AutoRouterID          types.String `tfsdk:"auto_router_id"`
+	GithubActionsAccess   types.Object `tfsdk:"github_actions_access"`
+	SubagentIDs           types.Set    `tfsdk:"subagent_ids"`
+	RemoteAgentIDs        types.Set    `tfsdk:"remote_agent_ids"`
+	ExcludedSubagentIDs   types.Set    `tfsdk:"excluded_subagent_ids"`
+	ExcludedConnectorIDs  types.Set    `tfsdk:"excluded_connector_ids"`
+	Tools                 types.Set    `tfsdk:"tools"`
+	ExcludedToolIDs       types.Set    `tfsdk:"excluded_tool_ids"`
+	Skills                types.Object `tfsdk:"skills"`
 
 	InitialGrants             types.Set    `tfsdk:"permissions"`
 	AuthorEmail               types.String `tfsdk:"author_email"`
@@ -140,6 +141,7 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 	for name, attribute := range currentGatewayAttributes() {
 		resp.Schema.Attributes[name] = attribute
 	}
+	resp.Schema.Attributes["subagent_load_balancing"] = gatewaySubagentLoadBalancingAttribute()
 	if r.apiAgentType() == "profile" {
 		resp.Schema.MarkdownDescription = "External LLM API gateway profile for tool routing, policy enforcement and inbound identity; the platform-owned LLM Proxy singleton is managed by Archestra."
 	}
@@ -390,6 +392,7 @@ func (r *McpGatewayResource) flatten(ctx context.Context, data *McpGatewayResour
 	if diags.HasError() {
 		return
 	}
+	data.SubagentLoadBalancing = subagentLoadBalancingFromResponse(body, diags)
 	if resp.AgentType != "" && resp.AgentType != r.apiAgentType() {
 		diags.AddError("Incorrect Agent Type", "The remote object is not the subtype managed by this resource.")
 		return
@@ -443,9 +446,6 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 		"slug", "tools", "users",
 		// Egress policy governs Agent Runtimes and Code Sandboxes; gateways run neither.
 		"networkPolicy",
-		// Not modeled yet: needs a nested schema for its algorithm, weights and
-		// fallback settings. Configure it in the UI until then.
-		"subagentLoadBalancing",
 	}
 }
 
@@ -456,6 +456,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 // atomic on the wire (Kind: List).
 var mcpGatewayAttrSpec = append(gatewayRelationshipAttrSpecs(), []AttrSpec{
 	githubActionsAccessAttrSpec,
+	gatewaySubagentLoadBalancingAttrSpec,
 	initialGrantsAttrSpec,
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},

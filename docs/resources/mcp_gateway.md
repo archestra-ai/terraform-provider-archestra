@@ -87,6 +87,7 @@ resource "archestra_mcp_gateway" "engineering" {
 - `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `skills` (Attributes) Skills published through this gateway; omit to preserve existing publication settings. (see [below for nested schema](#nestedatt--skills))
 - `subagent_ids` (Set of String) Local agents available as subagents; omit to preserve assignments or set an empty set to clear them.
+- `subagent_load_balancing` (Attributes) How the gateway spreads delegated requests across its assigned subagents and retries failures. Omit for the default (no load balancing); removing it later clears the setting. Requires API 1.5.0-rc.23 or later. (see [below for nested schema](#nestedatt--subagent_load_balancing))
 - `tool_exposure_mode` (String) How assigned tools are exposed to clients. `full` lists every assigned tool; `search_and_run_only` (progressive tool loading) lists only `search_tools` and `run_tool` and resolves the rest on demand, which keeps a large tool set out of the client's context window.
 - `tools` (Attributes Set) Complete explicit MCP tool assignments; omit to preserve or set an empty set to clear, preserving local/remote subagents and platform-required recovery tools. (see [below for nested schema](#nestedatt--tools))
 
@@ -144,6 +145,18 @@ Required:
 - `excluded_ids` (Set of String) Skills excluded from automatic publication; an empty set clears exclusions.
 - `ids` (Set of String) Complete explicit skill selection, retained independently of automatic mode.
 - `mode` (String) Publish all eligible skills automatically, or use the explicit manual selection.
+
+
+<a id="nestedatt--subagent_load_balancing"></a>
+### Nested Schema for `subagent_load_balancing`
+
+Optional:
+
+- `algorithm` (String) `round_robin` (default), `weighted` or `random`.
+- `enabled` (Boolean) Whether requests are distributed across the assigned subagents (default `false`).
+- `fallback_enabled` (Boolean) Whether a failed request falls back to another assigned subagent (default `true`).
+- `retries` (Number) Retries on the same subagent after a retriable failure, 0 to 3 (default `1`).
+- `weights` (Map of Number) Weights from 1 to 1000 keyed by subagent UUID, used by `weighted`; unlisted subagents weigh 1.
 
 
 <a id="nestedatt--tools"></a>
