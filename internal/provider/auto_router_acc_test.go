@@ -82,7 +82,7 @@ func testAccAutoRouterFixtures(t *testing.T) (keyID, modelID string) {
 	var key struct {
 		ID string `json:"id"`
 	}
-	payload, _ := json.Marshal(map[string]any{"name": acctest.RandomWithPrefix("tf-auto-router"), "provider": "ollama", "baseUrl": os.Getenv("ARCHESTRA_TEST_LLM_BASE_URL"), "apiKey": "synthetic-router-key", "isPrimary": false, "shared": true, "initialGrants": []map[string]any{{"subject": map[string]any{"type": "role", "id": "admin"}, "actions": []string{"read", "use"}}}})
+	payload, _ := json.Marshal(map[string]any{"name": acctest.RandomWithPrefix("tf-auto-router"), "provider": "ollama", "baseUrl": os.Getenv("ARCHESTRA_TEST_LLM_BASE_URL"), "apiKey": "synthetic-router-key", "isPrimary": false, "shared": true, "initialGrants": []map[string]any{{"subject": map[string]any{"type": "organization", "id": "*"}, "actions": []string{"read", "use"}}}})
 	if status := call(t.Context(), http.MethodPost, "/api/llm-provider-api-keys", string(payload), &key); status != http.StatusOK || key.ID == "" {
 		t.Fatalf("creating the fixture provider key returned HTTP %d", status)
 	}

@@ -52,7 +52,7 @@ func TestAgentNetworkPolicyPartialConfigHasNoDrift(t *testing.T) {
 			if !reflect.DeepEqual(sent, tc.want) {
 				t.Fatalf("sent %v, want %v", sent, tc.want)
 			}
-			stored := normalizeNetworkPolicyLikeAPI(sent.(map[string]any))
+			stored := normalizeNetworkPolicyLikeAPI(mustAs[map[string]any](sent))
 			if !reflect.DeepEqual(stored, sent) {
 				t.Fatalf("API would store %v for %v", stored, sent)
 			}
@@ -147,7 +147,7 @@ func TestGatewaySubagentLoadBalancingPartialConfigHasNoDrift(t *testing.T) {
 			if !reflect.DeepEqual(sent, tc.want) {
 				t.Fatalf("sent %v, want %v", sent, tc.want)
 			}
-			body, _ := json.Marshal(map[string]any{"subagentLoadBalancing": fillLoadBalancingDefaultsLikeAPI(sent.(map[string]any))})
+			body, _ := json.Marshal(map[string]any{"subagentLoadBalancing": fillLoadBalancingDefaultsLikeAPI(mustAs[map[string]any](sent))})
 			read := subagentLoadBalancingFromResponse(body, &diags)
 			assertReadsBackAsPlanned(t, read, planned, "subagent_load_balancing", diags)
 		})
@@ -286,14 +286,14 @@ func schemaObjectType(t *testing.T, r resource.Resource) tftypes.Object {
 	if s.Diagnostics.HasError() {
 		t.Fatal(s.Diagnostics)
 	}
-	return s.Schema.Type().TerraformType(context.Background()).(tftypes.Object)
+	return mustAs[tftypes.Object](s.Schema.Type().TerraformType(context.Background()))
 }
 
 // objectOf builds a nested attribute value with the given children set and
 // every other child null, as an omitted HCL argument would be.
 func objectOf(t *testing.T, r resource.Resource, attribute string, set map[string]tftypes.Value) tftypes.Value {
 	t.Helper()
-	typ := schemaObjectType(t, r).AttributeTypes[attribute].(tftypes.Object)
+	typ := mustAs[tftypes.Object](schemaObjectType(t, r).AttributeTypes[attribute])
 	return nullFilled(typ, set)
 }
 

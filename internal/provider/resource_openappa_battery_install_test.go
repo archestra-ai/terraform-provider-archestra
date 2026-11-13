@@ -77,8 +77,9 @@ func (f *batteryAPIFake) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		f.install = nil
 		fmt.Fprint(w, `{"success":true}`)
 	default:
-		w.WriteHeader(http.StatusTeapot)
-		fmt.Fprintf(w, "unexpected %s %s", req.Method, req.URL.Path)
+		// The test fails on the status; the body stays constant so no request
+		// data is echoed back.
+		http.Error(w, "unexpected request", http.StatusTeapot)
 	}
 }
 

@@ -58,7 +58,7 @@ func (f *fakeConnectorAPI) serve(w http.ResponseWriter, req *http.Request) {
 		f.knowledgeBases = map[string]bool{}
 		if ids, ok := body["knowledgeBaseIds"].([]any); ok {
 			for _, id := range ids {
-				f.knowledgeBases[id.(string)] = true
+				f.knowledgeBases[mustAs[string](id)] = true
 			}
 		}
 		f.write(w, f.connector)
@@ -89,8 +89,8 @@ func (f *fakeConnectorAPI) serve(w http.ResponseWriter, req *http.Request) {
 		}
 	case path == "/api/connectors/"+connectorTestID+"/knowledge-bases":
 		if req.Method == http.MethodPost {
-			for _, id := range f.decode(req)["knowledgeBaseIds"].([]any) {
-				f.knowledgeBases[id.(string)] = true
+			for _, id := range mustAs[[]any](f.decode(req)["knowledgeBaseIds"]) {
+				f.knowledgeBases[mustAs[string](id)] = true
 			}
 			fmt.Fprint(w, `{"success":true}`)
 			return
@@ -131,7 +131,7 @@ func (f *fakeConnectorAPI) lastWrite(t *testing.T, method string) map[string]any
 	defer f.mu.Unlock()
 	for i := len(f.writes) - 1; i >= 0; i-- {
 		if f.writes[i]["method"] == method {
-			return f.writes[i]["body"].(map[string]any)
+			return mustAs[map[string]any](f.writes[i]["body"])
 		}
 	}
 	t.Fatalf("no %s request recorded", method)
@@ -206,7 +206,7 @@ func TestKnowledgeConnectorTerraformFramework(t *testing.T) {
 					tfresource.TestCheckResourceAttr("archestra_knowledge_connector.test", "knowledge_base_ids.#", "1"),
 					func(_ *terraform.State) error {
 						body := fake.lastWrite(t, http.MethodPost)
-						config := body["config"].(map[string]any)
+						config := mustAs[map[string]any](body["config"])
 						if config["type"] != "web_crawler" {
 							return fmt.Errorf("create config.type = %v, want web_crawler", config["type"])
 						}
@@ -234,7 +234,7 @@ func TestKnowledgeConnectorTerraformFramework(t *testing.T) {
 								return fmt.Errorf("update sent %s", key)
 							}
 						}
-						if body["config"].(map[string]any)["type"] != "web_crawler" {
+						if mustAs[map[string]any](body["config"])["type"] != "web_crawler" {
 							return fmt.Errorf("update config lost its type")
 						}
 						return nil

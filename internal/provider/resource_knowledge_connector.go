@@ -291,7 +291,7 @@ func (r *KnowledgeConnectorResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 	plannedKnowledgeBases := data.KnowledgeBaseIDs
-	mapKnowledgeConnector(ctx, &data, connector, &resp.Diagnostics)
+	mapKnowledgeConnector(&data, connector, &resp.Diagnostics)
 	data.KnowledgeBaseIDs = plannedKnowledgeBases
 	r.readKnowledgeBaseIDs(ctx, &data, &resp.Diagnostics)
 	resolveInitialGrants(&data.InitialGrants)
@@ -317,7 +317,7 @@ func (r *KnowledgeConnectorResource) Read(ctx context.Context, req resource.Read
 		resp.Diagnostics.AddError("Knowledge Connector Read Failed", err.Error())
 		return
 	}
-	mapKnowledgeConnector(ctx, &data, connector, &resp.Diagnostics)
+	mapKnowledgeConnector(&data, connector, &resp.Diagnostics)
 	r.readKnowledgeBaseIDs(ctx, &data, &resp.Diagnostics)
 	resolveInitialGrants(&data.InitialGrants)
 	readParentPermissions(ctx, r.api, "knowledgeConnector", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
@@ -383,7 +383,7 @@ func (r *KnowledgeConnectorResource) Update(ctx context.Context, req resource.Up
 	}
 	// Credentials are write-only: state keeps what the plan sent.
 	data.Credentials = planOrPrior(data.Credentials, prior.Credentials)
-	mapKnowledgeConnector(ctx, &data, connector, &resp.Diagnostics)
+	mapKnowledgeConnector(&data, connector, &resp.Diagnostics)
 	r.readKnowledgeBaseIDs(ctx, &data, &resp.Diagnostics)
 	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -484,7 +484,7 @@ func (r *KnowledgeConnectorResource) syncKnowledgeBases(ctx context.Context, id 
 // mapKnowledgeConnector copies the API response into state. Credentials and
 // knowledge_base_ids are left to the caller: the API never returns the first,
 // and the second comes from its own endpoint.
-func mapKnowledgeConnector(ctx context.Context, data *KnowledgeConnectorResourceModel, connector *client.KnowledgeConnector, diags *diag.Diagnostics) {
+func mapKnowledgeConnector(data *KnowledgeConnectorResourceModel, connector *client.KnowledgeConnector, diags *diag.Diagnostics) {
 	data.ID = types.StringValue(connector.ID)
 	data.Name = types.StringValue(connector.Name)
 	data.Description = types.StringPointerValue(connector.Description)

@@ -103,8 +103,8 @@ func (f *fakeAutoRouterAPI) decode(req *http.Request) map[string]any {
 
 func (f *fakeAutoRouterAPI) response() map[string]any {
 	tiers := map[string]any{}
-	for name, raw := range f.router["tiers"].(map[string]any) {
-		tier := raw.(map[string]any)
+	for name, raw := range mustAs[map[string]any](f.router["tiers"]) {
+		tier := mustAs[map[string]any](raw)
 		tiers[name] = map[string]any{"id": tier["modelId"], "provider": "openai", "modelId": "provider-" + name, "apiKey": map[string]any{"id": tier["providerApiKeyId"], "name": "Key"}}
 	}
 	return map[string]any{
@@ -227,7 +227,7 @@ func TestVirtualKeyAutoRouterIDsFromRouters(t *testing.T) {
 	}
 	var ids []string
 	diags.Append(got.ElementsAs(t.Context(), &ids, false)...)
-	if len(ids) != 2 || !((ids[0] == "a" && ids[1] == "c") || (ids[0] == "c" && ids[1] == "a")) {
+	if len(ids) != 2 || ((ids[0] != "a" || ids[1] != "c") && (ids[0] != "c" || ids[1] != "a")) {
 		t.Errorf("got %v, want routers a and c", ids)
 	}
 	empty := virtualKeyAutoRouterIDs(t.Context(), nil, key, &diags)
