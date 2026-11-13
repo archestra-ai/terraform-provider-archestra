@@ -22,6 +22,13 @@ Two features need 1.5.0-rc.1 or later:
   created, on import or refresh. Older releases return 403, so `value` stays
   null. Users can recover keys they created on every supported release.
 
+Two settings need a later release. Leave them unset on older releases:
+
+- `entra_agent_identity_id` on `archestra_agent` and `archestra_mcp_gateway`
+  needs 1.5.0-rc.29 or later.
+- `connection_page_hidden` on `archestra_organization_settings` needs
+  1.5.0-rc.31 or later.
+
 `archestra_model_pool` additionally requires the model-pools CRUD API introduced
 in [Archestra PR #9681](https://github.com/archestra-ai/archestra/pull/9681), with
 `ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` or `ARCHESTRA_BETA=true`. It additionally

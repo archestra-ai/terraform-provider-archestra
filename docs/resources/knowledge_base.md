@@ -59,6 +59,7 @@ resource "archestra_knowledge_base" "internal_wiki" {
 - `id` (String) Knowledge base identifier.
 - `status` (String) Lifecycle status managed by the backend.
 - `updated_at` (String) Last-update timestamp (RFC 3339).
+- `uploaded_files_environment_id` (String) Environment that indexes this knowledge base's uploaded files. Null until files are uploaded, and on API releases before 1.5.0-rc.21. Change it in the UI: the API accepts it only once files are indexed.
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

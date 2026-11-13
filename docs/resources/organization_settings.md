@@ -135,6 +135,7 @@ resource "archestra_organization_settings" "main" {
 - `connection_default_client_id` (String) Default client shown by connection setup.
 - `connection_default_mcp_gateway_id` (String) Default gateway offered to connecting clients.
 - `connection_llm_proxy_enabled` (Boolean) Whether connection setup offers the LLM proxy.
+- `connection_page_hidden` (Boolean) Whether the connection page is hidden from members (API 1.5.0-rc.31 or later; leave unset on older releases).
 - `connection_plugins_enabled` (Boolean) Whether connection setup offers plugins.
 - `connection_runtime_handoff_enabled` (Boolean) Whether clients can hand work to an agent runtime.
 - `connection_runtime_handoff_instructions` (String) Instructions shown during runtime handoff.
@@ -195,6 +196,7 @@ resource "archestra_organization_settings" "main" {
 ### Read-Only
 
 - `agent_runtime_tiers` (String) Stored Agent Runtime tier configuration as JSON.
+- `auto_routing_enabled` (Boolean) Whether auto routers route sessions (ALPHA; toggled from the auto-routing settings, API 1.5.0-rc.29 or later).
 - `created_at` (String) RFC3339 timestamp the organization was created.
 - `embedding_dimensions` (Number, Deprecated) Configured embedding model output dimensions. **Deprecated** — the backend is migrating this to `models.embeddingDimensions` (per-model rather than per-org). Exposed here only so existing organizations whose dimensions are still pinned at the org level can read the value via Terraform.
 - `id` (String) Organization identifier

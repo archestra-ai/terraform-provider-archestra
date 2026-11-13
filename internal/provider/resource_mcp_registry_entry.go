@@ -818,6 +818,8 @@ func (r *MCPServerRegistryResource) APIShape() any {
 //     derived from the deployed image and discovered tools; read-only.
 func (r *MCPServerRegistryResource) KnownIntentionallySkipped() []string {
 	return []string{
+		// Not modeled yet: the Claude Desktop install config (command or URL).
+		"desktopConfig",
 		"createdAt", "updatedAt", "publishedAt", "authorId", "authorName",
 		"verified", "reviews", "installations", "installCount",
 		"authDescription", "authFields", "approvalStatus", "approvedAt",

@@ -74,6 +74,8 @@ type OrganizationSettingsResourceModel struct {
 	ConnectionSkillsEnabled                  types.Bool           `tfsdk:"connection_skills_enabled"`
 	ConnectionLlmProxyEnabled                types.Bool           `tfsdk:"connection_llm_proxy_enabled"`
 	ConnectionPluginsEnabled                 types.Bool           `tfsdk:"connection_plugins_enabled"`
+	ConnectionPageHidden                     types.Bool           `tfsdk:"connection_page_hidden"`
+	AutoRoutingEnabled                       types.Bool           `tfsdk:"auto_routing_enabled"`
 	ConnectionRuntimeHandoffEnabled          types.Bool           `tfsdk:"connection_runtime_handoff_enabled"`
 	ConnectionRuntimeHandoffInstructions     types.String         `tfsdk:"connection_runtime_handoff_instructions"`
 	ModelProviderOverrides                   jsontypes.Normalized `tfsdk:"model_provider_overrides"`

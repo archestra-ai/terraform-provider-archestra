@@ -73,7 +73,14 @@ func (r *OauthClientResource) AttrSpecs() []AttrSpec { return oauthClientAttrSpe
 func (r *OauthClientResource) APIShape() any         { return client.GetOauthClientsResponse{} }
 
 // Billing team details are split into billing_team_id and billing_team_name.
-func (r *OauthClientResource) KnownIntentionallySkipped() []string { return []string{"billingTeam"} }
+func (r *OauthClientResource) KnownIntentionallySkipped() []string {
+	return []string{
+		"billingTeam",
+		// Auto routing is ALPHA and has no Terraform resource yet, so its router IDs
+		// could not be referenced; model it with an archestra_auto_router resource.
+		"autoRouterIds",
+	}
+}
 func (r *OauthClientResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_oauth_client"
 }

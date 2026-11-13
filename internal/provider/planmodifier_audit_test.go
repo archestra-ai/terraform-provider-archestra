@@ -100,6 +100,7 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 		"connection_skills_enabled",
 		"connection_llm_proxy_enabled",
 		"connection_plugins_enabled",
+		"connection_page_hidden",
 		"connection_runtime_handoff_enabled",
 		"connection_runtime_handoff_instructions",
 		"model_provider_overrides",

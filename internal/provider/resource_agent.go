@@ -53,6 +53,7 @@ type AgentResourceModel struct {
 	CreatedByServiceAccountId            types.String `tfsdk:"created_by_service_account_id"`
 	DeletedAt                            types.String `tfsdk:"deleted_at"`
 	LastUsedAt                           types.String `tfsdk:"last_used_at"`
+	EntraAgentIdentityId                 types.String `tfsdk:"entra_agent_identity_id"`
 	LatestVersion                        types.Int64  `tfsdk:"latest_version"`
 	ActivationSkillMode                  types.String `tfsdk:"activation_skill_mode"`
 	ActivationSkillPolicyRevision        types.Int64  `tfsdk:"activation_skill_policy_revision"`
@@ -606,6 +607,15 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "suggestedPrompts", "passthroughHeaders",
 		"identityProviderId", "slug", "scope", "teams", "users",
+		// Auto routing is ALPHA and has no Terraform resource yet, so its router IDs
+		// could not be referenced; model it with an archestra_auto_router resource.
+		"autoRouterId",
+		// Subagent load balancing applies only to MCP gateways.
+		"subagentLoadBalancing",
+		// Not modeled yet: the API normalizes the policy (fills defaults, normalizes
+		// domains), so it needs a nested schema rather than a JSON string to avoid
+		// phantom diffs. Configure it in the UI until then.
+		"networkPolicy",
 	}
 }
 
@@ -626,6 +636,7 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 var agentAttrSpec = append(append(agentRelationshipAttrSpecs(), AttrSpec{TFName: "hooks", Kind: Synthetic}, AttrSpec{TFName: "tools", Kind: Synthetic}, AttrSpec{TFName: "excluded_tool_ids", Kind: Synthetic}), []AttrSpec{
 	initialGrantsAttrSpec,
 	{TFName: "model_pool_id", JSONName: "modelPoolId", Kind: Scalar},
+	{TFName: "entra_agent_identity_id", JSONName: "entraAgentIdentityId", Kind: Scalar},
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar, OmitOnNull: true},
 
