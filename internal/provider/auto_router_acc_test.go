@@ -134,23 +134,33 @@ data "archestra_auto_router" "test" {
 }
 %s`, name, budget, modelID, keyID, modelID, keyID, modelID, keyID, references)
 	}
-	references := `resource "archestra_agent" "routed" {
+	// A standard virtual key needs a provider key or a model pool; a router
+	// grant alone is not enough, so the key also maps the fixture key.
+	references := fmt.Sprintf(`resource "archestra_agent" "routed" {
   name           = "tf-auto-router-agent"
   auto_router_id = archestra_auto_router.test.id
 }
 resource "archestra_virtual_key" "routed" {
   name            = "tf-auto-router-key"
+  provider_api_keys = [{
+    provider            = "ollama"
+    provider_api_key_id = %q
+  }]
   auto_router_ids = [archestra_auto_router.test.id]
-}`
+}`, keyID)
 	initial := config(`budget_preset = "balanced"`, references)
 	updated := config("budget_usd_per_day = 12.5", references)
-	cleared := config("budget_usd_per_day = 12.5", `resource "archestra_agent" "routed" {
+	cleared := config("budget_usd_per_day = 12.5", fmt.Sprintf(`resource "archestra_agent" "routed" {
   name = "tf-auto-router-agent"
 }
 resource "archestra_virtual_key" "routed" {
   name            = "tf-auto-router-key"
+  provider_api_keys = [{
+    provider            = "ollama"
+    provider_api_key_id = %q
+  }]
   auto_router_ids = []
-}`)
+}`, keyID))
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: initial, Check: resource.ComposeAggregateTestCheckFunc(
 			resource.TestCheckResourceAttr("archestra_auto_router.test", "budget_preset", "balanced"),
