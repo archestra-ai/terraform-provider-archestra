@@ -40,9 +40,9 @@ GPG = Gpg()
 
 
 class Gh:
-    """A fake gh holding one release."""
+    """A fake gh holding one release: by default the draft Release Please made."""
 
-    def __init__(self, assets=None, draft=False, exists=True):
+    def __init__(self, assets=None, draft=True, exists=True):
         self.assets = dict(assets or {})
         self.draft = draft
         self.exists = exists
@@ -61,13 +61,21 @@ class Gh:
             assets = [{"name": name, "digest": value} for name, value in self.assets.items()]
             return subprocess.CompletedProcess(args, 0, json.dumps({"isDraft": self.draft, "assets": assets}), "")
         if args[1:3] == ["release", "upload"]:
+            if not self.draft:
+                raise subprocess.CalledProcessError(1, args, "", "release is immutable")
             path = Path(args[4])
             self.assets[path.name] = digest(path.read_bytes())
+            return subprocess.CompletedProcess(args, 0, "", "")
+        if args[1:3] == ["release", "edit"] and "--draft=false" in args:
+            self.draft = False
             return subprocess.CompletedProcess(args, 0, "", "")
         raise AssertionError(f"Unexpected command {args}")
 
     def uploaded(self):
         return [Path(call[4]).name for call in self.calls if call[1:3] == ["release", "upload"]]
+
+    def published(self):
+        return [call for call in self.calls if call[1:3] == ["release", "edit"]] != []
 
 
 class UploadTests(unittest.TestCase):
@@ -88,11 +96,13 @@ class UploadTests(unittest.TestCase):
         with mock.patch.object(upload.subprocess, "run", side_effect=gh.run):
             upload.main([str(self.directory), "v3.1.3", "--built", str(self.built), *extra], ENVIRONMENT)
 
-    def test_uploads_every_file_with_the_signature_last(self):
+    def test_uploads_every_file_with_the_signature_last_then_publishes(self):
         gh = Gh()
         self.upload(gh)
         self.assertEqual(gh.uploaded()[-1], f"{PREFIX}_SHA256SUMS.sig")
         self.assertEqual(set(gh.uploaded()), set(self.files))
+        self.assertEqual(gh.calls[-1][1:3], ["release", "edit"], "published only after the last asset")
+        self.assertFalse(gh.draft)
 
     def test_a_retry_skips_what_the_release_holds_and_keeps_its_signature(self):
         held = {name: digest(body) for name, body in self.files.items() if not name.endswith("manifest.json")}
@@ -100,6 +110,19 @@ class UploadTests(unittest.TestCase):
         gh = Gh(assets=held)
         self.upload(gh)
         self.assertEqual(gh.uploaded(), [f"{PREFIX}_manifest.json"])
+        self.assertFalse(gh.draft)
+
+    def test_a_rerun_after_publication_uploads_nothing(self):
+        gh = Gh(assets={name: digest(body) for name, body in self.files.items()}, draft=False)
+        self.upload(gh)
+        self.assertEqual((gh.uploaded(), gh.published()), ([], False))
+
+    def test_a_published_release_missing_an_asset_writes_nothing(self):
+        held = {name: digest(body) for name, body in self.files.items() if not name.endswith("manifest.json")}
+        gh = Gh(assets=held, draft=False)
+        with self.assertRaisesRegex(ValueError, "already published without"):
+            self.upload(gh)
+        self.assertEqual((gh.uploaded(), gh.published()), ([], False))
 
     def test_another_file_under_the_same_name_writes_nothing(self):
         gh = Gh(assets={f"{PREFIX}_manifest.json": digest(b"other")})
@@ -113,14 +136,12 @@ class UploadTests(unittest.TestCase):
             self.upload(gh)
         self.assertEqual(gh.uploaded(), [])
 
-    def test_a_dry_run_uploads_to_a_new_draft_only(self):
+    def test_a_dry_run_uploads_to_a_new_draft_and_never_publishes_it(self):
         gh = Gh(exists=False)
         self.upload(gh, "--draft-for-smoke", "f" * 40)
         self.assertTrue(gh.draft)
+        self.assertFalse(gh.published())
         self.assertEqual(set(gh.uploaded()), set(self.files))
-        # A release run never uploads to a draft, and a dry run never to a published release.
-        with self.assertRaisesRegex(ValueError, "must not be a draft"):
-            self.upload(Gh(draft=True))
 
     def test_altered_or_badly_signed_assets_upload_nothing(self):
         zip_name = f"{PREFIX}_linux_amd64.zip"

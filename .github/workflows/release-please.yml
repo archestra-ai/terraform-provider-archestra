@@ -226,7 +226,8 @@ jobs:
           echo "digest=sha256:$(sha256sum "$RUNNER_TEMP/marketplace-destination.json" | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
 
   # Attests what build-release made, asks the publisher to verify, sign and
-  # publish it, then uploads the signed files to this repository's release.
+  # publish it, then uploads the signed files to this repository's draft
+  # release and publishes it (immutable releases take no assets once public).
   # Retry with "Re-run failed jobs": this job attests the same files and
   # package again in the new attempt.
   attest-release:
@@ -298,7 +299,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       actions: read # download the release files and the signed assets
-      contents: write # upload the release assets (a dry run: create a draft release)
+      contents: write # upload the release assets and publish the release (a dry run: create a draft release)
     env:
       SMOKE: ${{ inputs.publisher_smoke && 'true' || 'false' }}
     steps:

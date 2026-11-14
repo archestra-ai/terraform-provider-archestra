@@ -6,7 +6,8 @@
   "pull-request-footer": "",
   "include-v-in-tag": true,
   "include-component-in-tag": false,
-  "draft": false,
+  "draft": true,
+  "force-tag-creation": true,
   "changelog-sections": [
     {
       "section": "Features",

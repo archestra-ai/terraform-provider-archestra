@@ -212,7 +212,8 @@ tag vX.Y.Z  ──▶  build-release (no secrets)
                    copies the package to xpkg.upbound.io/archestra
                      │
                      ▼
-                 upload-release uploads the signed files ──▶  GitHub release ──▶  Terraform Registry
+                 upload-release uploads the signed files to the draft
+                 release, then publishes it ──▶  GitHub release ──▶  Terraform Registry
                      │
                      ▼
                  verify-marketplace: public listing, digest and logo
@@ -229,5 +230,10 @@ Please** on `main` with `publisher_smoke`: it signs and uploads to a draft
 release and writes no tag or package. Repository visibility is managed by the
 Upbound organization owner.
 A publication failure does not roll back earlier publication steps.
+
+Release Please creates the release as a draft, with its tag. `upload-release`
+publishes it after its last asset: the repository has immutable releases, so a
+published release takes no more assets, and the Terraform Registry only sees a
+release that has every file.
 
 See [the audit](audit/README.md) for the release evidence.

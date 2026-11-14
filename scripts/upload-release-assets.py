@@ -21,8 +21,14 @@ every file must be byte for byte what this run's build job made.
 
 Usage: upload-release-assets.py <assets directory> <tag> --built <build directory>
        [--draft-for-smoke <commit>]
+A release is a draft until this publishes it, after its last asset: the
+repository has immutable releases, so a published release takes no more
+assets, and the Terraform Registry never sees a release without them. A rerun
+after publication uploads nothing; one that finds the published release
+missing an asset fails.
+
 With --draft-for-smoke, the release is a new draft named after the tag, which
-the Terraform Registry never reads.
+stays a draft and which the Terraform Registry never reads.
 """
 
 import argparse
@@ -59,8 +65,8 @@ def main(argv, environment):
         gh("release", "create", args.tag, "--repo", repository, "--draft", "--target", args.draft_for_smoke,
            "--title", f"Publisher dry run {args.tag}", "--notes", "Publisher dry run. Not a release.")
     release = json.loads(gh("release", "view", args.tag, "--repo", repository, "--json", "isDraft,assets"))
-    if bool(args.draft_for_smoke) != release["isDraft"]:
-        raise ValueError(f"Release {args.tag} must {'' if args.draft_for_smoke else 'not '}be a draft")
+    if args.draft_for_smoke and not release["isDraft"]:
+        raise ValueError(f"Release {args.tag} must be a draft")
     existing = {asset["name"]: asset.get("digest") for asset in release["assets"]}
     uploads = []
     for path in [path for path in files if path != signature]:
@@ -73,11 +79,17 @@ def main(argv, environment):
         uploads.append(signature)
     elif sums in uploads:
         raise ValueError(f"{args.tag} holds a signature but not this {sums.name}")
+    if uploads and not release["isDraft"]:
+        # Immutable releases take no assets once published.
+        raise ValueError(f"{args.tag} is already published without {', '.join(p.name for p in uploads)}")
     for path in uploads:
         gh("release", "upload", args.tag, str(path), "--repo", repository)
         print(f"Uploaded {path.name}")
     if not uploads:
         print(f"{args.tag} already holds every asset")
+    if release["isDraft"] and not args.draft_for_smoke:
+        gh("release", "edit", args.tag, "--repo", repository, "--draft=false")
+        print(f"Published {args.tag}")
 
 
 def check_assets(files, sums, signature, built):
