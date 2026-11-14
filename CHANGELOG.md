@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.5...v3.2.0) (2026-11-14)
+
+
+### Features
+
+* manage blob providers, cost exports, knowledge connectors, auto routers and battery installs ([#243](https://github.com/archestra-ai/terraform-provider-archestra/issues/243)) ([35c7e33](https://github.com/archestra-ai/terraform-provider-archestra/commit/35c7e33e59fa9b0e79f9049d90fc7858f81dd4fa))
+
 ## [3.1.5](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.4...v3.1.5) (2026-11-13)
 
 
