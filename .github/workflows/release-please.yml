@@ -26,8 +26,8 @@ concurrency:
   # We group both by ref_name (available when CI is triggered by a push to a branch/tag)
   # and head_ref (available when CI is triggered by a PR).
   group: "release-please-${{ github.ref_name }}-${{ github.head_ref }}"
-  # A release run waits for its approval in the publisher; a later push must
-  # not cancel it between the publish and the asset upload. Later pushes queue.
+  # A later push must not cancel a run between its attestation and its publish
+  # request (or a dry run before its upload). Later pushes queue.
   cancel-in-progress: false
 
 jobs:
@@ -288,23 +288,26 @@ jobs:
       version: ${{ needs.build-release.outputs.version }}
       images: ${{ needs.attest-release.outputs.images }}
       asset-artifact: release-provider
-      return-artifact: release-assets
+      # A release hands its request off: it waits for its approval in the
+      # publisher, and release-finalize.yml uploads the signed files and
+      # publishes the GitHub release once the publisher run succeeds. A dry run
+      # needs no approval, so it waits and uploads to its draft here.
+      wait: ${{ inputs.publisher_smoke || false }}
+      return-artifact: ${{ inputs.publisher_smoke && 'release-assets' || '' }}
       smoke: ${{ inputs.publisher_smoke || false }}
     secrets:
       APP_ID: ${{ secrets.APP_ID }}
       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
 
   upload-release:
-    name: Upload release assets
+    name: Upload dry-run assets
     needs: [build-release, publish-release]
-    if: ${{ always() && !cancelled() && needs.publish-release.result == 'success' }}
+    if: ${{ always() && !cancelled() && inputs.publisher_smoke && needs.publish-release.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
       actions: read # download the release files and the signed assets
-      contents: write # upload the release assets and publish the release (a dry run: create a draft release)
-    env:
-      SMOKE: ${{ inputs.publisher_smoke && 'true' || 'false' }}
+      contents: write # create the dry run's draft release and upload to it
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -328,36 +331,6 @@ jobs:
       - name: Upload to the GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ needs.build-release.outputs.tag }}
         run: |
-          set -euo pipefail
-          if [ "$SMOKE" = true ]; then
-            python3 -I scripts/upload-release-assets.py release-assets "publisher-smoke-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
-              --built release-provider --draft-for-smoke "$GITHUB_SHA"
-          else
-            python3 -I scripts/upload-release-assets.py release-assets "$TAG" --built release-provider
-          fi
-
-  verify-marketplace:
-    name: Verify Marketplace listing
-    needs: [build-release, upload-release]
-    if: ${{ !inputs.publisher_smoke && needs.upload-release.result == 'success' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Verify public Marketplace listing and logo
-        env:
-          VERSION: v${{ needs.build-release.outputs.version }}
-          DIGEST: ${{ needs.build-release.outputs.package_digest }}
-        run: |
-          set -euo pipefail
-          python3 scripts/verify-marketplace.py "$VERSION" --digest="$DIGEST"
-          printf 'Verified public [%s](https://marketplace.upbound.io/providers/archestra/provider-archestra/%s), release digest, and Archestra SVG logo.\n' \
-            "$VERSION" "$VERSION" >> "$GITHUB_STEP_SUMMARY"
+          python3 -I scripts/upload-release-assets.py release-assets "publisher-smoke-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
+            --built release-provider --draft-for-smoke "$GITHUB_SHA"
