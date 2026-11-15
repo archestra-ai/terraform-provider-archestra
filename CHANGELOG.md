@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.2.0...v3.2.1) (2026-11-15)
+
+
+### Dependencies
+
+* bump the github-actions-dependencies group across 1 directory with 2 updates ([#246](https://github.com/archestra-ai/terraform-provider-archestra/issues/246)) ([69373f5](https://github.com/archestra-ai/terraform-provider-archestra/commit/69373f5fc7a1e20b694bc5eebf1624cfce90946d))
+
 ## [3.2.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.1.5...v3.2.0) (2026-11-14)
 
 
