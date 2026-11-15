@@ -11,6 +11,7 @@ DOCUMENTATION = {
     "README.md", "CHANGELOG.md", "CONTRIBUTING.md", "ARCHITECTURE.md",
     "COMPATIBILITY.md", "MIGRATION-v3.md", "CLAUDE.md", "LICENSE",
     "crossplane/README.md", ".github/workflows/release-please.yml",
+    ".github/workflows/release-finalize.yml",
 }
 CROSSPLANE_INPUT = re.compile(
     r"^(internal/|crossplane/|cmd/|scripts/|[^/]+\.go$|Makefile$|go\.(mod|sum)$|"

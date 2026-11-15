@@ -12,7 +12,8 @@ spec.loader.exec_module(scope)
 class IntegrationScopeTests(unittest.TestCase):
     def test_publication_and_documentation_do_not_change_api_behavior(self):
         paths = ["README.md", "crossplane/README.md", "crossplane/marketplace/icons/icon.png",
-                 "crossplane/marketplace/README.md", ".github/workflows/release-please.yml"]
+                 "crossplane/marketplace/README.md", ".github/workflows/release-please.yml",
+                 ".github/workflows/release-finalize.yml"]
         for suite in ("native", "crossplane"):
             self.assertFalse(scope.should_run(suite, "pull_request", "publication", paths))
 

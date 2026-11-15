@@ -1,0 +1,141 @@
+name: Release Finalize
+run-name: ${{ inputs.request_id && format('Finalize release request {0}', inputs.request_id) || 'Finalize approved releases' }}
+
+# release-please.yml hands each release's request to release-publisher and
+# ends (publish-release, `wait: false`); the release then waits for its
+# approval in the publisher, for up to 30 days. Once the publisher run has
+# succeeded, this checks the publication (archestra-ai/.github
+# release-finalize.yml), uploads the publisher's signed files to the draft
+# release and publishes it (scripts/upload-release-assets.py, which first checks
+# the signature against the registry's key), then checks the Marketplace:
+#
+# - Release Gate (infra gcp/cloud-run/release-gate) dispatches it with
+#   `request_id` when that request's publisher run succeeds.
+# - The schedule sweeps draft releases and dispatches it for each one whose
+#   newest publisher run succeeded, in case Release Gate missed it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      request_id:
+        description: "<Release Please run id>-<attempt> whose publisher run succeeded"
+        type: string
+        required: true
+  schedule:
+    - cron: "17,47 * * * *"
+
+permissions: {}
+
+# One finalize per request at a time (a redelivered dispatch waits and then
+# finds the release already published); one sweep at a time.
+concurrency:
+  group: release-finalize-${{ github.ref }}-${{ inputs.request_id || 'sweep' }}
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    name: Check
+    if: ${{ github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: write # Read draft releases.
+      actions: write # Read the release run; the sweep dispatches this workflow.
+      attestations: read # Verify the published package's attestation.
+    uses: archestra-ai/.github/.github/workflows/release-finalize.yml@664e9596c6ff346277291e65d040515b2dae1c44 # v1.30.0
+    with:
+      # Holds the archestra-releaser App's key; main only.
+      environment: releaser
+      project: terraform-provider-archestra
+      release-workflow: .github/workflows/release-please.yml
+      finalize-workflow: release-finalize.yml
+      request-id: ${{ inputs.request_id || '' }}
+      image-tag: v{version}
+      # upload-release-assets.py uploads and publishes, after checking the signature.
+      upload: false
+    secrets:
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+
+  upload-release:
+    name: Upload release assets
+    needs: finalize
+    if: ${{ needs.finalize.outputs.publish == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Holds the archestra-releaser App's key; main only.
+    environment:
+      name: releaser
+      deployment: false # A secrets and branch gate; nothing is deployed.
+    permissions:
+      actions: read # Download the release run's files.
+      contents: write # Upload the release assets and publish the release.
+    outputs:
+      package_digest: ${{ steps.request.outputs.package_digest }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Generate a publisher token
+        id: publisher-token
+        uses: archestra-ai/.github/actions/github-app-token@664e9596c6ff346277291e65d040515b2dae1c44 # v1.30.0
+        with:
+          owner: archestra-ai
+          repositories: release-publisher
+          permission-actions: read # Download the publisher run's signed files.
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Download the release files and the signed assets
+        id: request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PUBLISHER_TOKEN: ${{ steps.publisher-token.outputs.token }}
+          RUN_ID: ${{ needs.finalize.outputs.run-id }}
+          PUBLISHER_RUN_ID: ${{ needs.finalize.outputs.publisher-run-id }}
+          REQUEST_ID: ${{ inputs.request_id }}
+        run: |
+          set -euo pipefail
+          attempt=${REQUEST_ID#*-}
+          [[ "$REQUEST_ID" == "${RUN_ID}-${attempt}" && "$attempt" =~ ^[0-9]+$ ]] \
+            || { echo "::error::request_id $REQUEST_ID is not run $RUN_ID"; exit 1; }
+          gh run download "$RUN_ID" --name release-provider --dir release-provider
+          gh run download "$RUN_ID" --name "release-request-${attempt}" --dir release-request
+          GH_TOKEN="$PUBLISHER_TOKEN" gh run download "$PUBLISHER_RUN_ID" --repo archestra-ai/release-publisher \
+            --name release-assets --dir release-assets
+          digest=$(jq -er '.images["xpkg.upbound.io/archestra/provider-archestra"]' release-request/request.json)
+          echo "package_digest=$digest" >> "$GITHUB_OUTPUT"
+
+      # Checks the signature against the registry's public key and that every
+      # returned file is what the release run built, then uploads the files
+      # and publishes the release.
+      - name: Upload to the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.finalize.outputs.tag-name }}
+        run: python3 -I scripts/upload-release-assets.py release-assets "$TAG" --built release-provider
+
+  verify-marketplace:
+    name: Verify Marketplace listing
+    needs: [finalize, upload-release]
+    if: ${{ needs.upload-release.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Verify public Marketplace listing and logo
+        env:
+          VERSION: ${{ needs.finalize.outputs.tag-name }}
+          DIGEST: ${{ needs.upload-release.outputs.package_digest }}
+        run: |
+          set -euo pipefail
+          python3 scripts/verify-marketplace.py "$VERSION" --digest="$DIGEST"
+          printf 'Verified public [%s](https://marketplace.upbound.io/providers/archestra/provider-archestra/%s), release digest, and Archestra SVG logo.\n' \
+            "$VERSION" "$VERSION" >> "$GITHUB_STEP_SUMMARY"
