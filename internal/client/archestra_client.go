@@ -221,6 +221,7 @@ func (e CreateA2aRemoteAgentJSONBodyAuth2Type) Valid() bool {
 
 // Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsActions.
 const (
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsConfigure               CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "configure"
 	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDelete                  CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "delete"
 	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsManagePermissions       CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "manage-permissions"
@@ -232,6 +233,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateA2aRemoteAgentJSONBodyInitialGrantsActions enum.
 func (e CreateA2aRemoteAgentJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDelete:
@@ -2336,6 +2339,7 @@ func (e CreateAgentJSONBodyIncomingEmailSecurityMode) Valid() bool {
 
 // Defines values for CreateAgentJSONBodyInitialGrantsActions.
 const (
+	CreateAgentJSONBodyInitialGrantsActionsConfigure               CreateAgentJSONBodyInitialGrantsActions = "configure"
 	CreateAgentJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateAgentJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateAgentJSONBodyInitialGrantsActionsDelete                  CreateAgentJSONBodyInitialGrantsActions = "delete"
 	CreateAgentJSONBodyInitialGrantsActionsManagePermissions       CreateAgentJSONBodyInitialGrantsActions = "manage-permissions"
@@ -2347,6 +2351,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateAgentJSONBodyInitialGrantsActions enum.
 func (e CreateAgentJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateAgentJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateAgentJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateAgentJSONBodyInitialGrantsActionsDelete:
@@ -7658,6 +7664,7 @@ func (e GetApiKey500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for CreateAppJSONBodyInitialGrantsActions.
 const (
+	CreateAppJSONBodyInitialGrantsActionsConfigure               CreateAppJSONBodyInitialGrantsActions = "configure"
 	CreateAppJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateAppJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateAppJSONBodyInitialGrantsActionsDelete                  CreateAppJSONBodyInitialGrantsActions = "delete"
 	CreateAppJSONBodyInitialGrantsActionsManagePermissions       CreateAppJSONBodyInitialGrantsActions = "manage-permissions"
@@ -7669,6 +7676,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateAppJSONBodyInitialGrantsActions enum.
 func (e CreateAppJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateAppJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateAppJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateAppJSONBodyInitialGrantsActionsDelete:
@@ -10973,6 +10982,7 @@ func (e ListRuntimeCredentials500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsActions.
 const (
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsConfigure               CreateRuntimeCredentialJSONBodyInitialGrantsActions = "configure"
 	CreateRuntimeCredentialJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateRuntimeCredentialJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateRuntimeCredentialJSONBodyInitialGrantsActionsDelete                  CreateRuntimeCredentialJSONBodyInitialGrantsActions = "delete"
 	CreateRuntimeCredentialJSONBodyInitialGrantsActionsManagePermissions       CreateRuntimeCredentialJSONBodyInitialGrantsActions = "manage-permissions"
@@ -10984,6 +10994,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateRuntimeCredentialJSONBodyInitialGrantsActions enum.
 func (e CreateRuntimeCredentialJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsDelete:
@@ -14276,27 +14288,30 @@ func (e CreateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication) Val
 
 // Defines values for CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths.
 const (
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigClientSecret                                          CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.clientSecret"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsClientSecret              CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.clientSecret"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret  CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.clientSecret"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.privateKeyPem"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsPrivateKeyPem             CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.privateKeyPem"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigDecryptionPvk                                         CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.decryptionPvk"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKey                              CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKey"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKeyPass                          CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKeyPass"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKey                                 CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKey"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKeyPass                             CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKeyPass"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigPrivateKey                                            CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.privateKey"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKey                               CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKey"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKeyPass                           CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKeyPass"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKey                                  CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKey"
-	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKeyPass                              CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKeyPass"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigClientSecret                                           CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.clientSecret"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.agentIdentity.privateKeyPem"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsClientSecret               CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.clientSecret"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret   CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.clientSecret"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem  CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.privateKeyPem"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsPrivateKeyPem              CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.privateKeyPem"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigDecryptionPvk                                          CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.decryptionPvk"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKey                               CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKey"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKeyPass                           CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKeyPass"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKey                                  CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKey"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKeyPass                              CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKeyPass"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigPrivateKey                                             CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.privateKey"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKey                                CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKey"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKeyPass                            CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKeyPass"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKey                                   CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKey"
+	CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKeyPass                               CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKeyPass"
 )
 
 // Valid indicates whether the value is a known member of the CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths enum.
 func (e CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths) Valid() bool {
 	switch e {
 	case CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigClientSecret:
+		return true
+	case CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem:
 		return true
 	case CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsClientSecret:
 		return true
@@ -14597,27 +14612,30 @@ func (e DeleteIdentityProvider500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths.
 const (
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigClientSecret                                          GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.clientSecret"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsClientSecret              GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.clientSecret"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret  GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.clientSecret"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.privateKeyPem"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsPrivateKeyPem             GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.privateKeyPem"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigDecryptionPvk                                         GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.decryptionPvk"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKey                              GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKey"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKeyPass                          GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKeyPass"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKey                                 GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKey"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKeyPass                             GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKeyPass"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigPrivateKey                                            GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.privateKey"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKey                               GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKey"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKeyPass                           GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKeyPass"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKey                                  GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKey"
-	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKeyPass                              GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKeyPass"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigClientSecret                                           GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.clientSecret"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.agentIdentity.privateKeyPem"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsClientSecret               GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.clientSecret"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret   GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.clientSecret"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem  GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.privateKeyPem"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsPrivateKeyPem              GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.privateKeyPem"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigDecryptionPvk                                          GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.decryptionPvk"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKey                               GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKey"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKeyPass                           GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKeyPass"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKey                                  GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKey"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKeyPass                              GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKeyPass"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigPrivateKey                                             GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.privateKey"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKey                                GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKey"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKeyPass                            GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKeyPass"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKey                                   GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKey"
+	GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKeyPass                               GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKeyPass"
 )
 
 // Valid indicates whether the value is a known member of the GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths enum.
 func (e GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths) Valid() bool {
 	switch e {
 	case GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigClientSecret:
+		return true
+	case GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem:
 		return true
 	case GetIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsClientSecret:
 		return true
@@ -14912,27 +14930,30 @@ func (e UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication) Val
 
 // Defines values for UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths.
 const (
-	OidcConfigClientSecret                                          UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.clientSecret"
-	OidcConfigEnterpriseManagedCredentialsClientSecret              UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.clientSecret"
-	OidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret  UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.clientSecret"
-	OidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.privateKeyPem"
-	OidcConfigEnterpriseManagedCredentialsPrivateKeyPem             UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.privateKeyPem"
-	SamlConfigDecryptionPvk                                         UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.decryptionPvk"
-	SamlConfigIdpMetadataEncPrivateKey                              UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKey"
-	SamlConfigIdpMetadataEncPrivateKeyPass                          UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKeyPass"
-	SamlConfigIdpMetadataPrivateKey                                 UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKey"
-	SamlConfigIdpMetadataPrivateKeyPass                             UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKeyPass"
-	SamlConfigPrivateKey                                            UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.privateKey"
-	SamlConfigSpMetadataEncPrivateKey                               UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKey"
-	SamlConfigSpMetadataEncPrivateKeyPass                           UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKeyPass"
-	SamlConfigSpMetadataPrivateKey                                  UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKey"
-	SamlConfigSpMetadataPrivateKeyPass                              UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKeyPass"
+	OidcConfigClientSecret                                           UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.clientSecret"
+	OidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.agentIdentity.privateKeyPem"
+	OidcConfigEnterpriseManagedCredentialsClientSecret               UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.clientSecret"
+	OidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret   UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.clientSecret"
+	OidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem  UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.privateKeyPem"
+	OidcConfigEnterpriseManagedCredentialsPrivateKeyPem              UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.privateKeyPem"
+	SamlConfigDecryptionPvk                                          UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.decryptionPvk"
+	SamlConfigIdpMetadataEncPrivateKey                               UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKey"
+	SamlConfigIdpMetadataEncPrivateKeyPass                           UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKeyPass"
+	SamlConfigIdpMetadataPrivateKey                                  UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKey"
+	SamlConfigIdpMetadataPrivateKeyPass                              UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKeyPass"
+	SamlConfigPrivateKey                                             UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.privateKey"
+	SamlConfigSpMetadataEncPrivateKey                                UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKey"
+	SamlConfigSpMetadataEncPrivateKeyPass                            UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKeyPass"
+	SamlConfigSpMetadataPrivateKey                                   UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKey"
+	SamlConfigSpMetadataPrivateKeyPass                               UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKeyPass"
 )
 
 // Valid indicates whether the value is a known member of the UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths enum.
 func (e UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths) Valid() bool {
 	switch e {
 	case OidcConfigClientSecret:
+		return true
+	case OidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem:
 		return true
 	case OidcConfigEnterpriseManagedCredentialsClientSecret:
 		return true
@@ -15263,6 +15284,7 @@ func (e CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectio
 
 // Defines values for CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions.
 const (
+	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsConfigure               CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "configure"
 	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDelete                  CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "delete"
 	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsManagePermissions       CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "manage-permissions"
@@ -15274,6 +15296,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions enum.
 func (e CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDelete:
@@ -16121,6 +16145,7 @@ func (e GetInternalMcpCatalogItem200JSONResponseBodyCreatedByType) Valid() bool 
 
 // Defines values for GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions.
 const (
+	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsConfigure               GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "configure"
 	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "configure-deployment-spec"
 	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDelete                  GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "delete"
 	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsManagePermissions       GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "manage-permissions"
@@ -16132,6 +16157,8 @@ const (
 // Valid indicates whether the value is a known member of the GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions enum.
 func (e GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions) Valid() bool {
 	switch e {
+	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsConfigure:
+		return true
 	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec:
 		return true
 	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDelete:
@@ -17330,6 +17357,7 @@ func (e UpdateInternalMcpCatalogItem500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for CreateKnowledgeBaseJSONBodyInitialGrantsActions.
 const (
+	CreateKnowledgeBaseJSONBodyInitialGrantsActionsConfigure               CreateKnowledgeBaseJSONBodyInitialGrantsActions = "configure"
 	CreateKnowledgeBaseJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateKnowledgeBaseJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateKnowledgeBaseJSONBodyInitialGrantsActionsDelete                  CreateKnowledgeBaseJSONBodyInitialGrantsActions = "delete"
 	CreateKnowledgeBaseJSONBodyInitialGrantsActionsManagePermissions       CreateKnowledgeBaseJSONBodyInitialGrantsActions = "manage-permissions"
@@ -17341,6 +17369,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateKnowledgeBaseJSONBodyInitialGrantsActions enum.
 func (e CreateKnowledgeBaseJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsDelete:
@@ -18488,6 +18518,7 @@ func (e GetKnowledgeFiles500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for UploadKnowledgeFileJSONBodyInitialGrantsActions.
 const (
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsConfigure               UploadKnowledgeFileJSONBodyInitialGrantsActions = "configure"
 	UploadKnowledgeFileJSONBodyInitialGrantsActionsConfigureDeploymentSpec UploadKnowledgeFileJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	UploadKnowledgeFileJSONBodyInitialGrantsActionsDelete                  UploadKnowledgeFileJSONBodyInitialGrantsActions = "delete"
 	UploadKnowledgeFileJSONBodyInitialGrantsActionsManagePermissions       UploadKnowledgeFileJSONBodyInitialGrantsActions = "manage-permissions"
@@ -18499,6 +18530,8 @@ const (
 // Valid indicates whether the value is a known member of the UploadKnowledgeFileJSONBodyInitialGrantsActions enum.
 func (e UploadKnowledgeFileJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case UploadKnowledgeFileJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case UploadKnowledgeFileJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case UploadKnowledgeFileJSONBodyInitialGrantsActionsDelete:
@@ -20624,6 +20657,7 @@ func (e UpdateModel500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for CreateLlmProviderApiKeyJSONBodyInitialGrantsActions.
 const (
+	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsConfigure               CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "configure"
 	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDelete                  CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "delete"
 	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsManagePermissions       CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "manage-permissions"
@@ -20635,6 +20669,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateLlmProviderApiKeyJSONBodyInitialGrantsActions enum.
 func (e CreateLlmProviderApiKeyJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDelete:
@@ -21719,6 +21755,7 @@ func (e UpdateLlmProviderApiKey500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsActions.
 const (
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsConfigure               CreateVirtualApiKeyJSONBodyInitialGrantsActions = "configure"
 	CreateVirtualApiKeyJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateVirtualApiKeyJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateVirtualApiKeyJSONBodyInitialGrantsActionsDelete                  CreateVirtualApiKeyJSONBodyInitialGrantsActions = "delete"
 	CreateVirtualApiKeyJSONBodyInitialGrantsActionsManagePermissions       CreateVirtualApiKeyJSONBodyInitialGrantsActions = "manage-permissions"
@@ -21730,6 +21767,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateVirtualApiKeyJSONBodyInitialGrantsActions enum.
 func (e CreateVirtualApiKeyJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsDelete:
@@ -23177,6 +23216,7 @@ const (
 	EntraAgentIdentity GetMcpToolCalls200JSONResponseBodyDataCredentialClientType = "entra_agent_identity"
 	IdentityProvider   GetMcpToolCalls200JSONResponseBodyDataCredentialClientType = "identity_provider"
 	McpServer          GetMcpToolCalls200JSONResponseBodyDataCredentialClientType = "mcp_server"
+	OktaAiAgent        GetMcpToolCalls200JSONResponseBodyDataCredentialClientType = "okta_ai_agent"
 )
 
 // Valid indicates whether the value is a known member of the GetMcpToolCalls200JSONResponseBodyDataCredentialClientType enum.
@@ -23187,6 +23227,8 @@ func (e GetMcpToolCalls200JSONResponseBodyDataCredentialClientType) Valid() bool
 	case IdentityProvider:
 		return true
 	case McpServer:
+		return true
+	case OktaAiAgent:
 		return true
 	default:
 		return false
@@ -24887,6 +24929,7 @@ func (e CreateOauthClientJSONBodyGrantType) Valid() bool {
 
 // Defines values for CreateOauthClientJSONBodyInitialGrantsActions.
 const (
+	CreateOauthClientJSONBodyInitialGrantsActionsConfigure               CreateOauthClientJSONBodyInitialGrantsActions = "configure"
 	CreateOauthClientJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateOauthClientJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateOauthClientJSONBodyInitialGrantsActionsDelete                  CreateOauthClientJSONBodyInitialGrantsActions = "delete"
 	CreateOauthClientJSONBodyInitialGrantsActionsManagePermissions       CreateOauthClientJSONBodyInitialGrantsActions = "manage-permissions"
@@ -24898,6 +24941,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateOauthClientJSONBodyInitialGrantsActions enum.
 func (e CreateOauthClientJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateOauthClientJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateOauthClientJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateOauthClientJSONBodyInitialGrantsActionsDelete:
@@ -32855,6 +32900,7 @@ func (e CreatePluginJSONBodyFilesMode) Valid() bool {
 
 // Defines values for CreatePluginJSONBodyInitialGrantsActions.
 const (
+	CreatePluginJSONBodyInitialGrantsActionsConfigure               CreatePluginJSONBodyInitialGrantsActions = "configure"
 	CreatePluginJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreatePluginJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreatePluginJSONBodyInitialGrantsActionsDelete                  CreatePluginJSONBodyInitialGrantsActions = "delete"
 	CreatePluginJSONBodyInitialGrantsActionsManagePermissions       CreatePluginJSONBodyInitialGrantsActions = "manage-permissions"
@@ -32866,6 +32912,8 @@ const (
 // Valid indicates whether the value is a known member of the CreatePluginJSONBodyInitialGrantsActions enum.
 func (e CreatePluginJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreatePluginJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreatePluginJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreatePluginJSONBodyInitialGrantsActionsDelete:
@@ -33308,6 +33356,7 @@ func (e ImportGithubPluginJSONBodyClientType) Valid() bool {
 
 // Defines values for ImportGithubPluginJSONBodyInitialGrantsActions.
 const (
+	ImportGithubPluginJSONBodyInitialGrantsActionsConfigure               ImportGithubPluginJSONBodyInitialGrantsActions = "configure"
 	ImportGithubPluginJSONBodyInitialGrantsActionsConfigureDeploymentSpec ImportGithubPluginJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	ImportGithubPluginJSONBodyInitialGrantsActionsDelete                  ImportGithubPluginJSONBodyInitialGrantsActions = "delete"
 	ImportGithubPluginJSONBodyInitialGrantsActionsManagePermissions       ImportGithubPluginJSONBodyInitialGrantsActions = "manage-permissions"
@@ -33319,6 +33368,8 @@ const (
 // Valid indicates whether the value is a known member of the ImportGithubPluginJSONBodyInitialGrantsActions enum.
 func (e ImportGithubPluginJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case ImportGithubPluginJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case ImportGithubPluginJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case ImportGithubPluginJSONBodyInitialGrantsActionsDelete:
@@ -34466,6 +34517,7 @@ func (e UpdatePlugin500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for CreateProjectJSONBodyInitialGrantsActions.
 const (
+	CreateProjectJSONBodyInitialGrantsActionsConfigure               CreateProjectJSONBodyInitialGrantsActions = "configure"
 	CreateProjectJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateProjectJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateProjectJSONBodyInitialGrantsActionsDelete                  CreateProjectJSONBodyInitialGrantsActions = "delete"
 	CreateProjectJSONBodyInitialGrantsActionsManagePermissions       CreateProjectJSONBodyInitialGrantsActions = "manage-permissions"
@@ -34477,6 +34529,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateProjectJSONBodyInitialGrantsActions enum.
 func (e CreateProjectJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateProjectJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateProjectJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateProjectJSONBodyInitialGrantsActionsDelete:
@@ -35788,6 +35842,7 @@ func (e SetProjectInstructions500JSONResponseBodyErrorType) Valid() bool {
 const (
 	GetResourcePermissionsParamsResourceAgent              GetResourcePermissionsParamsResource = "agent"
 	GetResourcePermissionsParamsResourceAgentRun           GetResourcePermissionsParamsResource = "agentRun"
+	GetResourcePermissionsParamsResourceAgentRuntime       GetResourcePermissionsParamsResource = "agentRuntime"
 	GetResourcePermissionsParamsResourceApp                GetResourcePermissionsParamsResource = "app"
 	GetResourcePermissionsParamsResourceConversation       GetResourcePermissionsParamsResource = "conversation"
 	GetResourcePermissionsParamsResourceCredential         GetResourcePermissionsParamsResource = "credential"
@@ -35814,6 +35869,8 @@ func (e GetResourcePermissionsParamsResource) Valid() bool {
 	case GetResourcePermissionsParamsResourceAgent:
 		return true
 	case GetResourcePermissionsParamsResourceAgentRun:
+		return true
+	case GetResourcePermissionsParamsResourceAgentRuntime:
 		return true
 	case GetResourcePermissionsParamsResourceApp:
 		return true
@@ -35963,6 +36020,7 @@ func (e GetResourcePermissions200JSONResponseBodyActorSubjects5Type) Valid() boo
 
 // Defines values for GetResourcePermissions200JSONResponseBodyEffectiveActions.
 const (
+	GetResourcePermissions200JSONResponseBodyEffectiveActionsConfigure               GetResourcePermissions200JSONResponseBodyEffectiveActions = "configure"
 	GetResourcePermissions200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec GetResourcePermissions200JSONResponseBodyEffectiveActions = "configure-deployment-spec"
 	GetResourcePermissions200JSONResponseBodyEffectiveActionsDelete                  GetResourcePermissions200JSONResponseBodyEffectiveActions = "delete"
 	GetResourcePermissions200JSONResponseBodyEffectiveActionsManagePermissions       GetResourcePermissions200JSONResponseBodyEffectiveActions = "manage-permissions"
@@ -35974,6 +36032,8 @@ const (
 // Valid indicates whether the value is a known member of the GetResourcePermissions200JSONResponseBodyEffectiveActions enum.
 func (e GetResourcePermissions200JSONResponseBodyEffectiveActions) Valid() bool {
 	switch e {
+	case GetResourcePermissions200JSONResponseBodyEffectiveActionsConfigure:
+		return true
 	case GetResourcePermissions200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec:
 		return true
 	case GetResourcePermissions200JSONResponseBodyEffectiveActionsDelete:
@@ -35993,6 +36053,7 @@ func (e GetResourcePermissions200JSONResponseBodyEffectiveActions) Valid() bool 
 
 // Defines values for GetResourcePermissions200JSONResponseBodyGrantsActions.
 const (
+	GetResourcePermissions200JSONResponseBodyGrantsActionsConfigure               GetResourcePermissions200JSONResponseBodyGrantsActions = "configure"
 	GetResourcePermissions200JSONResponseBodyGrantsActionsConfigureDeploymentSpec GetResourcePermissions200JSONResponseBodyGrantsActions = "configure-deployment-spec"
 	GetResourcePermissions200JSONResponseBodyGrantsActionsDelete                  GetResourcePermissions200JSONResponseBodyGrantsActions = "delete"
 	GetResourcePermissions200JSONResponseBodyGrantsActionsManagePermissions       GetResourcePermissions200JSONResponseBodyGrantsActions = "manage-permissions"
@@ -36004,6 +36065,8 @@ const (
 // Valid indicates whether the value is a known member of the GetResourcePermissions200JSONResponseBodyGrantsActions enum.
 func (e GetResourcePermissions200JSONResponseBodyGrantsActions) Valid() bool {
 	switch e {
+	case GetResourcePermissions200JSONResponseBodyGrantsActionsConfigure:
+		return true
 	case GetResourcePermissions200JSONResponseBodyGrantsActionsConfigureDeploymentSpec:
 		return true
 	case GetResourcePermissions200JSONResponseBodyGrantsActionsDelete:
@@ -36128,6 +36191,7 @@ func (e GetResourcePermissions200JSONResponseBodyGrantsSubject5Type) Valid() boo
 
 // Defines values for GetResourcePermissions200JSONResponseBodyInheritedGrantsActions.
 const (
+	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigure               GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "configure"
 	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigureDeploymentSpec GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "configure-deployment-spec"
 	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDelete                  GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "delete"
 	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsManagePermissions       GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "manage-permissions"
@@ -36139,6 +36203,8 @@ const (
 // Valid indicates whether the value is a known member of the GetResourcePermissions200JSONResponseBodyInheritedGrantsActions enum.
 func (e GetResourcePermissions200JSONResponseBodyInheritedGrantsActions) Valid() bool {
 	switch e {
+	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigure:
+		return true
 	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigureDeploymentSpec:
 		return true
 	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDelete:
@@ -36265,6 +36331,7 @@ func (e GetResourcePermissions200JSONResponseBodyInheritedGrantsSubject5Type) Va
 const (
 	GetResourcePermissions200JSONResponseBodyResourceAgent              GetResourcePermissions200JSONResponseBodyResource = "agent"
 	GetResourcePermissions200JSONResponseBodyResourceAgentRun           GetResourcePermissions200JSONResponseBodyResource = "agentRun"
+	GetResourcePermissions200JSONResponseBodyResourceAgentRuntime       GetResourcePermissions200JSONResponseBodyResource = "agentRuntime"
 	GetResourcePermissions200JSONResponseBodyResourceApp                GetResourcePermissions200JSONResponseBodyResource = "app"
 	GetResourcePermissions200JSONResponseBodyResourceConversation       GetResourcePermissions200JSONResponseBodyResource = "conversation"
 	GetResourcePermissions200JSONResponseBodyResourceCredential         GetResourcePermissions200JSONResponseBodyResource = "credential"
@@ -36291,6 +36358,8 @@ func (e GetResourcePermissions200JSONResponseBodyResource) Valid() bool {
 	case GetResourcePermissions200JSONResponseBodyResourceAgent:
 		return true
 	case GetResourcePermissions200JSONResponseBodyResourceAgentRun:
+		return true
+	case GetResourcePermissions200JSONResponseBodyResourceAgentRuntime:
 		return true
 	case GetResourcePermissions200JSONResponseBodyResourceApp:
 		return true
@@ -36427,6 +36496,7 @@ func (e GetResourcePermissions500JSONResponseBodyErrorType) Valid() bool {
 const (
 	UpdateResourcePermissionsParamsResourceAgent              UpdateResourcePermissionsParamsResource = "agent"
 	UpdateResourcePermissionsParamsResourceAgentRun           UpdateResourcePermissionsParamsResource = "agentRun"
+	UpdateResourcePermissionsParamsResourceAgentRuntime       UpdateResourcePermissionsParamsResource = "agentRuntime"
 	UpdateResourcePermissionsParamsResourceApp                UpdateResourcePermissionsParamsResource = "app"
 	UpdateResourcePermissionsParamsResourceConversation       UpdateResourcePermissionsParamsResource = "conversation"
 	UpdateResourcePermissionsParamsResourceCredential         UpdateResourcePermissionsParamsResource = "credential"
@@ -36453,6 +36523,8 @@ func (e UpdateResourcePermissionsParamsResource) Valid() bool {
 	case UpdateResourcePermissionsParamsResourceAgent:
 		return true
 	case UpdateResourcePermissionsParamsResourceAgentRun:
+		return true
+	case UpdateResourcePermissionsParamsResourceAgentRuntime:
 		return true
 	case UpdateResourcePermissionsParamsResourceApp:
 		return true
@@ -36497,6 +36569,7 @@ func (e UpdateResourcePermissionsParamsResource) Valid() bool {
 
 // Defines values for UpdateResourcePermissionsJSONBodyGrantsActions.
 const (
+	UpdateResourcePermissionsJSONBodyGrantsActionsConfigure               UpdateResourcePermissionsJSONBodyGrantsActions = "configure"
 	UpdateResourcePermissionsJSONBodyGrantsActionsConfigureDeploymentSpec UpdateResourcePermissionsJSONBodyGrantsActions = "configure-deployment-spec"
 	UpdateResourcePermissionsJSONBodyGrantsActionsDelete                  UpdateResourcePermissionsJSONBodyGrantsActions = "delete"
 	UpdateResourcePermissionsJSONBodyGrantsActionsManagePermissions       UpdateResourcePermissionsJSONBodyGrantsActions = "manage-permissions"
@@ -36508,6 +36581,8 @@ const (
 // Valid indicates whether the value is a known member of the UpdateResourcePermissionsJSONBodyGrantsActions enum.
 func (e UpdateResourcePermissionsJSONBodyGrantsActions) Valid() bool {
 	switch e {
+	case UpdateResourcePermissionsJSONBodyGrantsActionsConfigure:
+		return true
 	case UpdateResourcePermissionsJSONBodyGrantsActionsConfigureDeploymentSpec:
 		return true
 	case UpdateResourcePermissionsJSONBodyGrantsActionsDelete:
@@ -36737,6 +36812,7 @@ func (e UpdateResourcePermissions200JSONResponseBodyActorSubjects5Type) Valid() 
 
 // Defines values for UpdateResourcePermissions200JSONResponseBodyEffectiveActions.
 const (
+	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsConfigure               UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "configure"
 	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "configure-deployment-spec"
 	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDelete                  UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "delete"
 	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsManagePermissions       UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "manage-permissions"
@@ -36748,6 +36824,8 @@ const (
 // Valid indicates whether the value is a known member of the UpdateResourcePermissions200JSONResponseBodyEffectiveActions enum.
 func (e UpdateResourcePermissions200JSONResponseBodyEffectiveActions) Valid() bool {
 	switch e {
+	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsConfigure:
+		return true
 	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec:
 		return true
 	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDelete:
@@ -36767,6 +36845,7 @@ func (e UpdateResourcePermissions200JSONResponseBodyEffectiveActions) Valid() bo
 
 // Defines values for UpdateResourcePermissions200JSONResponseBodyGrantsActions.
 const (
+	UpdateResourcePermissions200JSONResponseBodyGrantsActionsConfigure               UpdateResourcePermissions200JSONResponseBodyGrantsActions = "configure"
 	UpdateResourcePermissions200JSONResponseBodyGrantsActionsConfigureDeploymentSpec UpdateResourcePermissions200JSONResponseBodyGrantsActions = "configure-deployment-spec"
 	UpdateResourcePermissions200JSONResponseBodyGrantsActionsDelete                  UpdateResourcePermissions200JSONResponseBodyGrantsActions = "delete"
 	UpdateResourcePermissions200JSONResponseBodyGrantsActionsManagePermissions       UpdateResourcePermissions200JSONResponseBodyGrantsActions = "manage-permissions"
@@ -36778,6 +36857,8 @@ const (
 // Valid indicates whether the value is a known member of the UpdateResourcePermissions200JSONResponseBodyGrantsActions enum.
 func (e UpdateResourcePermissions200JSONResponseBodyGrantsActions) Valid() bool {
 	switch e {
+	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsConfigure:
+		return true
 	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsConfigureDeploymentSpec:
 		return true
 	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsDelete:
@@ -36902,6 +36983,7 @@ func (e UpdateResourcePermissions200JSONResponseBodyGrantsSubject5Type) Valid() 
 
 // Defines values for UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions.
 const (
+	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigure               UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "configure"
 	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigureDeploymentSpec UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "configure-deployment-spec"
 	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDelete                  UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "delete"
 	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsManagePermissions       UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "manage-permissions"
@@ -36913,6 +36995,8 @@ const (
 // Valid indicates whether the value is a known member of the UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions enum.
 func (e UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions) Valid() bool {
 	switch e {
+	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigure:
+		return true
 	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigureDeploymentSpec:
 		return true
 	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDelete:
@@ -37039,6 +37123,7 @@ func (e UpdateResourcePermissions200JSONResponseBodyInheritedGrantsSubject5Type)
 const (
 	UpdateResourcePermissions200JSONResponseBodyResourceAgent              UpdateResourcePermissions200JSONResponseBodyResource = "agent"
 	UpdateResourcePermissions200JSONResponseBodyResourceAgentRun           UpdateResourcePermissions200JSONResponseBodyResource = "agentRun"
+	UpdateResourcePermissions200JSONResponseBodyResourceAgentRuntime       UpdateResourcePermissions200JSONResponseBodyResource = "agentRuntime"
 	UpdateResourcePermissions200JSONResponseBodyResourceApp                UpdateResourcePermissions200JSONResponseBodyResource = "app"
 	UpdateResourcePermissions200JSONResponseBodyResourceConversation       UpdateResourcePermissions200JSONResponseBodyResource = "conversation"
 	UpdateResourcePermissions200JSONResponseBodyResourceCredential         UpdateResourcePermissions200JSONResponseBodyResource = "credential"
@@ -37065,6 +37150,8 @@ func (e UpdateResourcePermissions200JSONResponseBodyResource) Valid() bool {
 	case UpdateResourcePermissions200JSONResponseBodyResourceAgent:
 		return true
 	case UpdateResourcePermissions200JSONResponseBodyResourceAgentRun:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyResourceAgentRuntime:
 		return true
 	case UpdateResourcePermissions200JSONResponseBodyResourceApp:
 		return true
@@ -37199,16 +37286,15 @@ func (e UpdateResourcePermissions500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for CreateRoleJSONBodyPermission.
 const (
-	CreateRoleJSONBodyPermissionAdmin            CreateRoleJSONBodyPermission = "admin"
-	CreateRoleJSONBodyPermissionCancel           CreateRoleJSONBodyPermission = "cancel"
-	CreateRoleJSONBodyPermissionConfigureRuntime CreateRoleJSONBodyPermission = "configure-runtime"
-	CreateRoleJSONBodyPermissionCreate           CreateRoleJSONBodyPermission = "create"
-	CreateRoleJSONBodyPermissionDelete           CreateRoleJSONBodyPermission = "delete"
-	CreateRoleJSONBodyPermissionFullView         CreateRoleJSONBodyPermission = "full-view"
-	CreateRoleJSONBodyPermissionImpersonate      CreateRoleJSONBodyPermission = "impersonate"
-	CreateRoleJSONBodyPermissionQuery            CreateRoleJSONBodyPermission = "query"
-	CreateRoleJSONBodyPermissionRead             CreateRoleJSONBodyPermission = "read"
-	CreateRoleJSONBodyPermissionUpdate           CreateRoleJSONBodyPermission = "update"
+	CreateRoleJSONBodyPermissionAdmin       CreateRoleJSONBodyPermission = "admin"
+	CreateRoleJSONBodyPermissionCancel      CreateRoleJSONBodyPermission = "cancel"
+	CreateRoleJSONBodyPermissionCreate      CreateRoleJSONBodyPermission = "create"
+	CreateRoleJSONBodyPermissionDelete      CreateRoleJSONBodyPermission = "delete"
+	CreateRoleJSONBodyPermissionFullView    CreateRoleJSONBodyPermission = "full-view"
+	CreateRoleJSONBodyPermissionImpersonate CreateRoleJSONBodyPermission = "impersonate"
+	CreateRoleJSONBodyPermissionQuery       CreateRoleJSONBodyPermission = "query"
+	CreateRoleJSONBodyPermissionRead        CreateRoleJSONBodyPermission = "read"
+	CreateRoleJSONBodyPermissionUpdate      CreateRoleJSONBodyPermission = "update"
 )
 
 // Valid indicates whether the value is a known member of the CreateRoleJSONBodyPermission enum.
@@ -37217,8 +37303,6 @@ func (e CreateRoleJSONBodyPermission) Valid() bool {
 	case CreateRoleJSONBodyPermissionAdmin:
 		return true
 	case CreateRoleJSONBodyPermissionCancel:
-		return true
-	case CreateRoleJSONBodyPermissionConfigureRuntime:
 		return true
 	case CreateRoleJSONBodyPermissionCreate:
 		return true
@@ -37241,16 +37325,15 @@ func (e CreateRoleJSONBodyPermission) Valid() bool {
 
 // Defines values for CreateRole200JSONResponseBodyPermission.
 const (
-	CreateRole200JSONResponseBodyPermissionAdmin            CreateRole200JSONResponseBodyPermission = "admin"
-	CreateRole200JSONResponseBodyPermissionCancel           CreateRole200JSONResponseBodyPermission = "cancel"
-	CreateRole200JSONResponseBodyPermissionConfigureRuntime CreateRole200JSONResponseBodyPermission = "configure-runtime"
-	CreateRole200JSONResponseBodyPermissionCreate           CreateRole200JSONResponseBodyPermission = "create"
-	CreateRole200JSONResponseBodyPermissionDelete           CreateRole200JSONResponseBodyPermission = "delete"
-	CreateRole200JSONResponseBodyPermissionFullView         CreateRole200JSONResponseBodyPermission = "full-view"
-	CreateRole200JSONResponseBodyPermissionImpersonate      CreateRole200JSONResponseBodyPermission = "impersonate"
-	CreateRole200JSONResponseBodyPermissionQuery            CreateRole200JSONResponseBodyPermission = "query"
-	CreateRole200JSONResponseBodyPermissionRead             CreateRole200JSONResponseBodyPermission = "read"
-	CreateRole200JSONResponseBodyPermissionUpdate           CreateRole200JSONResponseBodyPermission = "update"
+	CreateRole200JSONResponseBodyPermissionAdmin       CreateRole200JSONResponseBodyPermission = "admin"
+	CreateRole200JSONResponseBodyPermissionCancel      CreateRole200JSONResponseBodyPermission = "cancel"
+	CreateRole200JSONResponseBodyPermissionCreate      CreateRole200JSONResponseBodyPermission = "create"
+	CreateRole200JSONResponseBodyPermissionDelete      CreateRole200JSONResponseBodyPermission = "delete"
+	CreateRole200JSONResponseBodyPermissionFullView    CreateRole200JSONResponseBodyPermission = "full-view"
+	CreateRole200JSONResponseBodyPermissionImpersonate CreateRole200JSONResponseBodyPermission = "impersonate"
+	CreateRole200JSONResponseBodyPermissionQuery       CreateRole200JSONResponseBodyPermission = "query"
+	CreateRole200JSONResponseBodyPermissionRead        CreateRole200JSONResponseBodyPermission = "read"
+	CreateRole200JSONResponseBodyPermissionUpdate      CreateRole200JSONResponseBodyPermission = "update"
 )
 
 // Valid indicates whether the value is a known member of the CreateRole200JSONResponseBodyPermission enum.
@@ -37259,8 +37342,6 @@ func (e CreateRole200JSONResponseBodyPermission) Valid() bool {
 	case CreateRole200JSONResponseBodyPermissionAdmin:
 		return true
 	case CreateRole200JSONResponseBodyPermissionCancel:
-		return true
-	case CreateRole200JSONResponseBodyPermissionConfigureRuntime:
 		return true
 	case CreateRole200JSONResponseBodyPermissionCreate:
 		return true
@@ -37463,16 +37544,15 @@ func (e DeleteRole500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetRole200JSONResponseBodyPermission.
 const (
-	GetRole200JSONResponseBodyPermissionAdmin            GetRole200JSONResponseBodyPermission = "admin"
-	GetRole200JSONResponseBodyPermissionCancel           GetRole200JSONResponseBodyPermission = "cancel"
-	GetRole200JSONResponseBodyPermissionConfigureRuntime GetRole200JSONResponseBodyPermission = "configure-runtime"
-	GetRole200JSONResponseBodyPermissionCreate           GetRole200JSONResponseBodyPermission = "create"
-	GetRole200JSONResponseBodyPermissionDelete           GetRole200JSONResponseBodyPermission = "delete"
-	GetRole200JSONResponseBodyPermissionFullView         GetRole200JSONResponseBodyPermission = "full-view"
-	GetRole200JSONResponseBodyPermissionImpersonate      GetRole200JSONResponseBodyPermission = "impersonate"
-	GetRole200JSONResponseBodyPermissionQuery            GetRole200JSONResponseBodyPermission = "query"
-	GetRole200JSONResponseBodyPermissionRead             GetRole200JSONResponseBodyPermission = "read"
-	GetRole200JSONResponseBodyPermissionUpdate           GetRole200JSONResponseBodyPermission = "update"
+	GetRole200JSONResponseBodyPermissionAdmin       GetRole200JSONResponseBodyPermission = "admin"
+	GetRole200JSONResponseBodyPermissionCancel      GetRole200JSONResponseBodyPermission = "cancel"
+	GetRole200JSONResponseBodyPermissionCreate      GetRole200JSONResponseBodyPermission = "create"
+	GetRole200JSONResponseBodyPermissionDelete      GetRole200JSONResponseBodyPermission = "delete"
+	GetRole200JSONResponseBodyPermissionFullView    GetRole200JSONResponseBodyPermission = "full-view"
+	GetRole200JSONResponseBodyPermissionImpersonate GetRole200JSONResponseBodyPermission = "impersonate"
+	GetRole200JSONResponseBodyPermissionQuery       GetRole200JSONResponseBodyPermission = "query"
+	GetRole200JSONResponseBodyPermissionRead        GetRole200JSONResponseBodyPermission = "read"
+	GetRole200JSONResponseBodyPermissionUpdate      GetRole200JSONResponseBodyPermission = "update"
 )
 
 // Valid indicates whether the value is a known member of the GetRole200JSONResponseBodyPermission enum.
@@ -37481,8 +37561,6 @@ func (e GetRole200JSONResponseBodyPermission) Valid() bool {
 	case GetRole200JSONResponseBodyPermissionAdmin:
 		return true
 	case GetRole200JSONResponseBodyPermissionCancel:
-		return true
-	case GetRole200JSONResponseBodyPermissionConfigureRuntime:
 		return true
 	case GetRole200JSONResponseBodyPermissionCreate:
 		return true
@@ -37595,16 +37673,15 @@ func (e GetRole500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for UpdateRoleJSONBodyPermission.
 const (
-	UpdateRoleJSONBodyPermissionAdmin            UpdateRoleJSONBodyPermission = "admin"
-	UpdateRoleJSONBodyPermissionCancel           UpdateRoleJSONBodyPermission = "cancel"
-	UpdateRoleJSONBodyPermissionConfigureRuntime UpdateRoleJSONBodyPermission = "configure-runtime"
-	UpdateRoleJSONBodyPermissionCreate           UpdateRoleJSONBodyPermission = "create"
-	UpdateRoleJSONBodyPermissionDelete           UpdateRoleJSONBodyPermission = "delete"
-	UpdateRoleJSONBodyPermissionFullView         UpdateRoleJSONBodyPermission = "full-view"
-	UpdateRoleJSONBodyPermissionImpersonate      UpdateRoleJSONBodyPermission = "impersonate"
-	UpdateRoleJSONBodyPermissionQuery            UpdateRoleJSONBodyPermission = "query"
-	UpdateRoleJSONBodyPermissionRead             UpdateRoleJSONBodyPermission = "read"
-	UpdateRoleJSONBodyPermissionUpdate           UpdateRoleJSONBodyPermission = "update"
+	UpdateRoleJSONBodyPermissionAdmin       UpdateRoleJSONBodyPermission = "admin"
+	UpdateRoleJSONBodyPermissionCancel      UpdateRoleJSONBodyPermission = "cancel"
+	UpdateRoleJSONBodyPermissionCreate      UpdateRoleJSONBodyPermission = "create"
+	UpdateRoleJSONBodyPermissionDelete      UpdateRoleJSONBodyPermission = "delete"
+	UpdateRoleJSONBodyPermissionFullView    UpdateRoleJSONBodyPermission = "full-view"
+	UpdateRoleJSONBodyPermissionImpersonate UpdateRoleJSONBodyPermission = "impersonate"
+	UpdateRoleJSONBodyPermissionQuery       UpdateRoleJSONBodyPermission = "query"
+	UpdateRoleJSONBodyPermissionRead        UpdateRoleJSONBodyPermission = "read"
+	UpdateRoleJSONBodyPermissionUpdate      UpdateRoleJSONBodyPermission = "update"
 )
 
 // Valid indicates whether the value is a known member of the UpdateRoleJSONBodyPermission enum.
@@ -37613,8 +37690,6 @@ func (e UpdateRoleJSONBodyPermission) Valid() bool {
 	case UpdateRoleJSONBodyPermissionAdmin:
 		return true
 	case UpdateRoleJSONBodyPermissionCancel:
-		return true
-	case UpdateRoleJSONBodyPermissionConfigureRuntime:
 		return true
 	case UpdateRoleJSONBodyPermissionCreate:
 		return true
@@ -37637,16 +37712,15 @@ func (e UpdateRoleJSONBodyPermission) Valid() bool {
 
 // Defines values for UpdateRole200JSONResponseBodyPermission.
 const (
-	UpdateRole200JSONResponseBodyPermissionAdmin            UpdateRole200JSONResponseBodyPermission = "admin"
-	UpdateRole200JSONResponseBodyPermissionCancel           UpdateRole200JSONResponseBodyPermission = "cancel"
-	UpdateRole200JSONResponseBodyPermissionConfigureRuntime UpdateRole200JSONResponseBodyPermission = "configure-runtime"
-	UpdateRole200JSONResponseBodyPermissionCreate           UpdateRole200JSONResponseBodyPermission = "create"
-	UpdateRole200JSONResponseBodyPermissionDelete           UpdateRole200JSONResponseBodyPermission = "delete"
-	UpdateRole200JSONResponseBodyPermissionFullView         UpdateRole200JSONResponseBodyPermission = "full-view"
-	UpdateRole200JSONResponseBodyPermissionImpersonate      UpdateRole200JSONResponseBodyPermission = "impersonate"
-	UpdateRole200JSONResponseBodyPermissionQuery            UpdateRole200JSONResponseBodyPermission = "query"
-	UpdateRole200JSONResponseBodyPermissionRead             UpdateRole200JSONResponseBodyPermission = "read"
-	UpdateRole200JSONResponseBodyPermissionUpdate           UpdateRole200JSONResponseBodyPermission = "update"
+	UpdateRole200JSONResponseBodyPermissionAdmin       UpdateRole200JSONResponseBodyPermission = "admin"
+	UpdateRole200JSONResponseBodyPermissionCancel      UpdateRole200JSONResponseBodyPermission = "cancel"
+	UpdateRole200JSONResponseBodyPermissionCreate      UpdateRole200JSONResponseBodyPermission = "create"
+	UpdateRole200JSONResponseBodyPermissionDelete      UpdateRole200JSONResponseBodyPermission = "delete"
+	UpdateRole200JSONResponseBodyPermissionFullView    UpdateRole200JSONResponseBodyPermission = "full-view"
+	UpdateRole200JSONResponseBodyPermissionImpersonate UpdateRole200JSONResponseBodyPermission = "impersonate"
+	UpdateRole200JSONResponseBodyPermissionQuery       UpdateRole200JSONResponseBodyPermission = "query"
+	UpdateRole200JSONResponseBodyPermissionRead        UpdateRole200JSONResponseBodyPermission = "read"
+	UpdateRole200JSONResponseBodyPermissionUpdate      UpdateRole200JSONResponseBodyPermission = "update"
 )
 
 // Valid indicates whether the value is a known member of the UpdateRole200JSONResponseBodyPermission enum.
@@ -37655,8 +37729,6 @@ func (e UpdateRole200JSONResponseBodyPermission) Valid() bool {
 	case UpdateRole200JSONResponseBodyPermissionAdmin:
 		return true
 	case UpdateRole200JSONResponseBodyPermissionCancel:
-		return true
-	case UpdateRole200JSONResponseBodyPermissionConfigureRuntime:
 		return true
 	case UpdateRole200JSONResponseBodyPermissionCreate:
 		return true
@@ -38129,6 +38201,7 @@ func (e UpdateScheduleTrigger500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for CreateServiceAccountJSONBodyInitialGrantsActions.
 const (
+	CreateServiceAccountJSONBodyInitialGrantsActionsConfigure               CreateServiceAccountJSONBodyInitialGrantsActions = "configure"
 	CreateServiceAccountJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateServiceAccountJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateServiceAccountJSONBodyInitialGrantsActionsDelete                  CreateServiceAccountJSONBodyInitialGrantsActions = "delete"
 	CreateServiceAccountJSONBodyInitialGrantsActionsManagePermissions       CreateServiceAccountJSONBodyInitialGrantsActions = "manage-permissions"
@@ -38140,6 +38213,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateServiceAccountJSONBodyInitialGrantsActions enum.
 func (e CreateServiceAccountJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateServiceAccountJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateServiceAccountJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateServiceAccountJSONBodyInitialGrantsActionsDelete:
@@ -39506,6 +39581,7 @@ func (e CreateSkillJSONBodyFilesEncoding) Valid() bool {
 
 // Defines values for CreateSkillJSONBodyInitialGrantsActions.
 const (
+	CreateSkillJSONBodyInitialGrantsActionsConfigure               CreateSkillJSONBodyInitialGrantsActions = "configure"
 	CreateSkillJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateSkillJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateSkillJSONBodyInitialGrantsActionsDelete                  CreateSkillJSONBodyInitialGrantsActions = "delete"
 	CreateSkillJSONBodyInitialGrantsActionsManagePermissions       CreateSkillJSONBodyInitialGrantsActions = "manage-permissions"
@@ -39517,6 +39593,8 @@ const (
 // Valid indicates whether the value is a known member of the CreateSkillJSONBodyInitialGrantsActions enum.
 func (e CreateSkillJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case CreateSkillJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case CreateSkillJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateSkillJSONBodyInitialGrantsActionsDelete:
@@ -39875,6 +39953,7 @@ func (e CreateSkill500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsActions.
 const (
+	ImportGithubSkillsJSONBodyInitialGrantsActionsConfigure               ImportGithubSkillsJSONBodyInitialGrantsActions = "configure"
 	ImportGithubSkillsJSONBodyInitialGrantsActionsConfigureDeploymentSpec ImportGithubSkillsJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	ImportGithubSkillsJSONBodyInitialGrantsActionsDelete                  ImportGithubSkillsJSONBodyInitialGrantsActions = "delete"
 	ImportGithubSkillsJSONBodyInitialGrantsActionsManagePermissions       ImportGithubSkillsJSONBodyInitialGrantsActions = "manage-permissions"
@@ -39886,6 +39965,8 @@ const (
 // Valid indicates whether the value is a known member of the ImportGithubSkillsJSONBodyInitialGrantsActions enum.
 func (e ImportGithubSkillsJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
+	case ImportGithubSkillsJSONBodyInitialGrantsActionsConfigure:
+		return true
 	case ImportGithubSkillsJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case ImportGithubSkillsJSONBodyInitialGrantsActionsDelete:
@@ -43146,7 +43227,6 @@ type CreateAgentJSONBody struct {
 	ConnectorIds               *[]string                                     `json:"connectorIds,omitempty"`
 	DeletedAt                  interface{}                                   `json:"deletedAt,omitempty"`
 	Description                *string                                       `json:"description,omitempty"`
-	EntraAgentIdentityId       *string                                       `json:"entraAgentIdentityId,omitempty"`
 	EnvironmentId              *openapi_types.UUID                           `json:"environmentId,omitempty"`
 	Icon                       *string                                       `json:"icon,omitempty"`
 	IdentityProviderId         *string                                       `json:"identityProviderId,omitempty"`
@@ -43916,17 +43996,16 @@ type GetAgent500JSONResponseBodyErrorType string
 
 // UpdateAgentJSONBody defines parameters for UpdateAgent.
 type UpdateAgentJSONBody struct {
-	AccessAllSubagents   *bool                                   `json:"accessAllSubagents,omitempty"`
-	AccessAllTools       *bool                                   `json:"accessAllTools,omitempty"`
-	AgentType            *UpdateAgentJSONBodyAgentType           `json:"agentType,omitempty"`
-	AutoRouterId         *openapi_types.UUID                     `json:"autoRouterId,omitempty"`
-	BuiltInAgentConfig   *UpdateAgentJSONBody_BuiltInAgentConfig `json:"builtInAgentConfig,omitempty"`
-	ConnectorIds         *[]string                               `json:"connectorIds,omitempty"`
-	DeletedAt            interface{}                             `json:"deletedAt,omitempty"`
-	Description          *string                                 `json:"description,omitempty"`
-	EntraAgentIdentityId *string                                 `json:"entraAgentIdentityId,omitempty"`
-	EnvironmentId        *openapi_types.UUID                     `json:"environmentId,omitempty"`
-	GithubActionsAccess  *struct {
+	AccessAllSubagents  *bool                                   `json:"accessAllSubagents,omitempty"`
+	AccessAllTools      *bool                                   `json:"accessAllTools,omitempty"`
+	AgentType           *UpdateAgentJSONBodyAgentType           `json:"agentType,omitempty"`
+	AutoRouterId        *openapi_types.UUID                     `json:"autoRouterId,omitempty"`
+	BuiltInAgentConfig  *UpdateAgentJSONBody_BuiltInAgentConfig `json:"builtInAgentConfig,omitempty"`
+	ConnectorIds        *[]string                               `json:"connectorIds,omitempty"`
+	DeletedAt           interface{}                             `json:"deletedAt,omitempty"`
+	Description         *string                                 `json:"description,omitempty"`
+	EnvironmentId       *openapi_types.UUID                     `json:"environmentId,omitempty"`
+	GithubActionsAccess *struct {
 		ActAs                  *UpdateAgentJSONBodyGithubActionsAccessActAs `json:"actAs,omitempty"`
 		GithubAppCredentialKey string                                       `json:"githubAppCredentialKey"`
 		Repositories           []string                                     `json:"repositories"`
@@ -46780,6 +46859,12 @@ type CreateIdentityProviderJSONBody struct {
 		DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
 		EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 		EnterpriseManagedCredentials *struct {
+			AgentIdentity *struct {
+				ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
+				PrivateKeyId         *string `json:"privateKeyId,omitempty"`
+				PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
+				RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+			} `json:"agentIdentity,omitempty"`
 			ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 			ClientId                *string `json:"clientId,omitempty"`
 			ClientSecret            *string `json:"clientSecret,omitempty"`
@@ -47003,6 +47088,12 @@ type UpdateIdentityProviderJSONBody struct {
 		DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
 		EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 		EnterpriseManagedCredentials *struct {
+			AgentIdentity *struct {
+				ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
+				PrivateKeyId         *string `json:"privateKeyId,omitempty"`
+				PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
+				RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+			} `json:"agentIdentity,omitempty"`
 			ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 			ClientId                *string `json:"clientId,omitempty"`
 			ClientSecret            *string `json:"clientSecret,omitempty"`
@@ -75533,7 +75624,6 @@ type GetAgentsResponse struct {
 			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 			DeletedAt                 *time.Time          `json:"deletedAt"`
 			Description               *string             `json:"description"`
-			EntraAgentIdentityId      *string             `json:"entraAgentIdentityId"`
 			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
 			GithubActionsAccess       *struct {
 				ActAs                  *GetAgents200JSONResponseBodyDataGithubActionsAccessActAs `json:"actAs,omitempty"`
@@ -75760,7 +75850,6 @@ type CreateAgentResponse struct {
 		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 		DeletedAt                 *time.Time          `json:"deletedAt"`
 		Description               *string             `json:"description"`
-		EntraAgentIdentityId      *string             `json:"entraAgentIdentityId"`
 		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
 		GithubActionsAccess       *struct {
 			ActAs                  *CreateAgent200JSONResponseBodyGithubActionsAccessActAs `json:"actAs,omitempty"`
@@ -76743,7 +76832,6 @@ type GetAgentResponse struct {
 		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 		DeletedAt                 *time.Time          `json:"deletedAt"`
 		Description               *string             `json:"description"`
-		EntraAgentIdentityId      *string             `json:"entraAgentIdentityId"`
 		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
 		GithubActionsAccess       *struct {
 			ActAs                  *GetAgent200JSONResponseBodyGithubActionsAccessActAs `json:"actAs,omitempty"`
@@ -76954,7 +77042,6 @@ type UpdateAgentResponse struct {
 		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 		DeletedAt                 *time.Time          `json:"deletedAt"`
 		Description               *string             `json:"description"`
-		EntraAgentIdentityId      *string             `json:"entraAgentIdentityId"`
 		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
 		GithubActionsAccess       *struct {
 			ActAs                  *UpdateAgent200JSONResponseBodyGithubActionsAccessActAs `json:"actAs,omitempty"`
@@ -82811,6 +82898,12 @@ type CreateIdentityProviderResponse struct {
 			DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
 			EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 			EnterpriseManagedCredentials *struct {
+				AgentIdentity *struct {
+					ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
+					PrivateKeyId         *string `json:"privateKeyId,omitempty"`
+					PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
+					RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+				} `json:"agentIdentity,omitempty"`
 				ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 				ClientId                *string `json:"clientId,omitempty"`
 				ClientSecret            *string `json:"clientSecret,omitempty"`
@@ -83086,6 +83179,12 @@ type GetIdentityProviderResponse struct {
 			DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
 			EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 			EnterpriseManagedCredentials *struct {
+				AgentIdentity *struct {
+					ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
+					PrivateKeyId         *string `json:"privateKeyId,omitempty"`
+					PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
+					RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+				} `json:"agentIdentity,omitempty"`
 				ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 				ClientId                *string `json:"clientId,omitempty"`
 				ClientSecret            *string `json:"clientSecret,omitempty"`
@@ -83286,6 +83385,12 @@ type UpdateIdentityProviderResponse struct {
 			DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
 			EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 			EnterpriseManagedCredentials *struct {
+				AgentIdentity *struct {
+					ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
+					PrivateKeyId         *string `json:"privateKeyId,omitempty"`
+					PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
+					RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+				} `json:"agentIdentity,omitempty"`
 				ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 				ClientId                *string `json:"clientId,omitempty"`
 				ClientSecret            *string `json:"clientSecret,omitempty"`
@@ -83605,6 +83710,7 @@ type CreateInternalMcpCatalogItemResponse struct {
 			Level CreateInternalMcpCatalogItem200JSONResponseBodyTeamsLevel `json:"level"`
 			Name  string                                                    `json:"name"`
 		} `json:"teams"`
+		ToolPrefix *string                     `json:"toolPrefix"`
 		UpdatedAt  time.Time                   `json:"updatedAt"`
 		UserConfig *map[string]UserConfigField `json:"userConfig"`
 		Version    *string                     `json:"version"`
@@ -83896,6 +84002,7 @@ type GetInternalMcpCatalogItemResponse struct {
 			Name  string                                                 `json:"name"`
 		} `json:"teams"`
 		ToolCount  *int                        `json:"toolCount,omitempty"`
+		ToolPrefix *string                     `json:"toolPrefix"`
 		UpdatedAt  time.Time                   `json:"updatedAt"`
 		UserConfig *map[string]UserConfigField `json:"userConfig"`
 		Version    *string                     `json:"version"`
@@ -84106,6 +84213,7 @@ type UpdateInternalMcpCatalogItemResponse struct {
 			Level UpdateInternalMcpCatalogItem200JSONResponseBodyTeamsLevel `json:"level"`
 			Name  string                                                    `json:"name"`
 		} `json:"teams"`
+		ToolPrefix *string                     `json:"toolPrefix"`
 		UpdatedAt  time.Time                   `json:"updatedAt"`
 		UserConfig *map[string]UserConfigField `json:"userConfig"`
 		Version    *string                     `json:"version"`
@@ -86889,27 +86997,28 @@ type GetMcpToolCallsResponse struct {
 	HTTPResponse *http.Response
 	JSON200      *struct {
 		Data []struct {
-			AgentId              *openapi_types.UUID                                         `json:"agentId"`
-			AppId                *openapi_types.UUID                                         `json:"appId"`
-			AppName              *string                                                     `json:"appName"`
-			AuthMethod           *GetMcpToolCalls200JSONResponseBodyDataAuthMethod           `json:"authMethod"`
-			CreatedAt            time.Time                                                   `json:"createdAt"`
-			CredentialClientId   *string                                                     `json:"credentialClientId"`
-			CredentialClientType *GetMcpToolCalls200JSONResponseBodyDataCredentialClientType `json:"credentialClientType"`
-			DurationMs           *int                                                        `json:"durationMs"`
-			Id                   openapi_types.UUID                                          `json:"id"`
-			LlmToolCallId        *string                                                     `json:"llmToolCallId"`
-			McpServerName        string                                                      `json:"mcpServerName"`
-			Method               string                                                      `json:"method"`
-			OauthClientId        *string                                                     `json:"oauthClientId"`
-			OwnerType            string                                                      `json:"ownerType"`
-			RunId                *string                                                     `json:"runId"`
-			SessionId            *string                                                     `json:"sessionId"`
-			Source               *GetMcpToolCalls200JSONResponseBodyDataSource               `json:"source"`
-			ToolCall             interface{}                                                 `json:"toolCall"`
-			ToolResult           interface{}                                                 `json:"toolResult"`
-			UserId               *string                                                     `json:"userId"`
-			UserName             *string                                                     `json:"userName"`
+			AgentId                 *openapi_types.UUID                                         `json:"agentId"`
+			AppId                   *openapi_types.UUID                                         `json:"appId"`
+			AppName                 *string                                                     `json:"appName"`
+			AuthMethod              *GetMcpToolCalls200JSONResponseBodyDataAuthMethod           `json:"authMethod"`
+			CreatedAt               time.Time                                                   `json:"createdAt"`
+			CredentialActorClientId *string                                                     `json:"credentialActorClientId"`
+			CredentialClientId      *string                                                     `json:"credentialClientId"`
+			CredentialClientType    *GetMcpToolCalls200JSONResponseBodyDataCredentialClientType `json:"credentialClientType"`
+			DurationMs              *int                                                        `json:"durationMs"`
+			Id                      openapi_types.UUID                                          `json:"id"`
+			LlmToolCallId           *string                                                     `json:"llmToolCallId"`
+			McpServerName           string                                                      `json:"mcpServerName"`
+			Method                  string                                                      `json:"method"`
+			OauthClientId           *string                                                     `json:"oauthClientId"`
+			OwnerType               string                                                      `json:"ownerType"`
+			RunId                   *string                                                     `json:"runId"`
+			SessionId               *string                                                     `json:"sessionId"`
+			Source                  *GetMcpToolCalls200JSONResponseBodyDataSource               `json:"source"`
+			ToolCall                interface{}                                                 `json:"toolCall"`
+			ToolResult              interface{}                                                 `json:"toolResult"`
+			UserId                  *string                                                     `json:"userId"`
+			UserName                *string                                                     `json:"userName"`
 		} `json:"data"`
 		Pagination struct {
 			HasNext    bool    `json:"hasNext"`
@@ -99888,7 +99997,6 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 				CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 				DeletedAt                 *time.Time          `json:"deletedAt"`
 				Description               *string             `json:"description"`
-				EntraAgentIdentityId      *string             `json:"entraAgentIdentityId"`
 				EnvironmentId             *openapi_types.UUID `json:"environmentId"`
 				GithubActionsAccess       *struct {
 					ActAs                  *GetAgents200JSONResponseBodyDataGithubActionsAccessActAs `json:"actAs,omitempty"`
@@ -100147,7 +100255,6 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 			DeletedAt                 *time.Time          `json:"deletedAt"`
 			Description               *string             `json:"description"`
-			EntraAgentIdentityId      *string             `json:"entraAgentIdentityId"`
 			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
 			GithubActionsAccess       *struct {
 				ActAs                  *CreateAgent200JSONResponseBodyGithubActionsAccessActAs `json:"actAs,omitempty"`
@@ -101482,7 +101589,6 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 			DeletedAt                 *time.Time          `json:"deletedAt"`
 			Description               *string             `json:"description"`
-			EntraAgentIdentityId      *string             `json:"entraAgentIdentityId"`
 			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
 			GithubActionsAccess       *struct {
 				ActAs                  *GetAgent200JSONResponseBodyGithubActionsAccessActAs `json:"actAs,omitempty"`
@@ -101725,7 +101831,6 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
 			DeletedAt                 *time.Time          `json:"deletedAt"`
 			Description               *string             `json:"description"`
-			EntraAgentIdentityId      *string             `json:"entraAgentIdentityId"`
 			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
 			GithubActionsAccess       *struct {
 				ActAs                  *UpdateAgent200JSONResponseBodyGithubActionsAccessActAs `json:"actAs,omitempty"`
@@ -109630,6 +109735,12 @@ func ParseCreateIdentityProviderResponse(rsp *http.Response) (*CreateIdentityPro
 				DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
 				EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 				EnterpriseManagedCredentials *struct {
+					AgentIdentity *struct {
+						ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
+						PrivateKeyId         *string `json:"privateKeyId,omitempty"`
+						PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
+						RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+					} `json:"agentIdentity,omitempty"`
 					ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 					ClientId                *string `json:"clientId,omitempty"`
 					ClientSecret            *string `json:"clientSecret,omitempty"`
@@ -109969,6 +110080,12 @@ func ParseGetIdentityProviderResponse(rsp *http.Response) (*GetIdentityProviderR
 				DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
 				EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 				EnterpriseManagedCredentials *struct {
+					AgentIdentity *struct {
+						ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
+						PrivateKeyId         *string `json:"privateKeyId,omitempty"`
+						PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
+						RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+					} `json:"agentIdentity,omitempty"`
 					ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 					ClientId                *string `json:"clientId,omitempty"`
 					ClientSecret            *string `json:"clientSecret,omitempty"`
@@ -110201,6 +110318,12 @@ func ParseUpdateIdentityProviderResponse(rsp *http.Response) (*UpdateIdentityPro
 				DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
 				EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 				EnterpriseManagedCredentials *struct {
+					AgentIdentity *struct {
+						ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
+						PrivateKeyId         *string `json:"privateKeyId,omitempty"`
+						PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
+						RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+					} `json:"agentIdentity,omitempty"`
 					ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 					ClientId                *string `json:"clientId,omitempty"`
 					ClientSecret            *string `json:"clientSecret,omitempty"`
@@ -110552,6 +110675,7 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 				Level CreateInternalMcpCatalogItem200JSONResponseBodyTeamsLevel `json:"level"`
 				Name  string                                                    `json:"name"`
 			} `json:"teams"`
+			ToolPrefix *string                     `json:"toolPrefix"`
 			UpdatedAt  time.Time                   `json:"updatedAt"`
 			UserConfig *map[string]UserConfigField `json:"userConfig"`
 			Version    *string                     `json:"version"`
@@ -110907,6 +111031,7 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 				Name  string                                                 `json:"name"`
 			} `json:"teams"`
 			ToolCount  *int                        `json:"toolCount,omitempty"`
+			ToolPrefix *string                     `json:"toolPrefix"`
 			UpdatedAt  time.Time                   `json:"updatedAt"`
 			UserConfig *map[string]UserConfigField `json:"userConfig"`
 			Version    *string                     `json:"version"`
@@ -111149,6 +111274,7 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 				Level UpdateInternalMcpCatalogItem200JSONResponseBodyTeamsLevel `json:"level"`
 				Name  string                                                    `json:"name"`
 			} `json:"teams"`
+			ToolPrefix *string                     `json:"toolPrefix"`
 			UpdatedAt  time.Time                   `json:"updatedAt"`
 			UserConfig *map[string]UserConfigField `json:"userConfig"`
 			Version    *string                     `json:"version"`
@@ -114815,27 +114941,28 @@ func ParseGetMcpToolCallsResponse(rsp *http.Response) (*GetMcpToolCallsResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			Data []struct {
-				AgentId              *openapi_types.UUID                                         `json:"agentId"`
-				AppId                *openapi_types.UUID                                         `json:"appId"`
-				AppName              *string                                                     `json:"appName"`
-				AuthMethod           *GetMcpToolCalls200JSONResponseBodyDataAuthMethod           `json:"authMethod"`
-				CreatedAt            time.Time                                                   `json:"createdAt"`
-				CredentialClientId   *string                                                     `json:"credentialClientId"`
-				CredentialClientType *GetMcpToolCalls200JSONResponseBodyDataCredentialClientType `json:"credentialClientType"`
-				DurationMs           *int                                                        `json:"durationMs"`
-				Id                   openapi_types.UUID                                          `json:"id"`
-				LlmToolCallId        *string                                                     `json:"llmToolCallId"`
-				McpServerName        string                                                      `json:"mcpServerName"`
-				Method               string                                                      `json:"method"`
-				OauthClientId        *string                                                     `json:"oauthClientId"`
-				OwnerType            string                                                      `json:"ownerType"`
-				RunId                *string                                                     `json:"runId"`
-				SessionId            *string                                                     `json:"sessionId"`
-				Source               *GetMcpToolCalls200JSONResponseBodyDataSource               `json:"source"`
-				ToolCall             interface{}                                                 `json:"toolCall"`
-				ToolResult           interface{}                                                 `json:"toolResult"`
-				UserId               *string                                                     `json:"userId"`
-				UserName             *string                                                     `json:"userName"`
+				AgentId                 *openapi_types.UUID                                         `json:"agentId"`
+				AppId                   *openapi_types.UUID                                         `json:"appId"`
+				AppName                 *string                                                     `json:"appName"`
+				AuthMethod              *GetMcpToolCalls200JSONResponseBodyDataAuthMethod           `json:"authMethod"`
+				CreatedAt               time.Time                                                   `json:"createdAt"`
+				CredentialActorClientId *string                                                     `json:"credentialActorClientId"`
+				CredentialClientId      *string                                                     `json:"credentialClientId"`
+				CredentialClientType    *GetMcpToolCalls200JSONResponseBodyDataCredentialClientType `json:"credentialClientType"`
+				DurationMs              *int                                                        `json:"durationMs"`
+				Id                      openapi_types.UUID                                          `json:"id"`
+				LlmToolCallId           *string                                                     `json:"llmToolCallId"`
+				McpServerName           string                                                      `json:"mcpServerName"`
+				Method                  string                                                      `json:"method"`
+				OauthClientId           *string                                                     `json:"oauthClientId"`
+				OwnerType               string                                                      `json:"ownerType"`
+				RunId                   *string                                                     `json:"runId"`
+				SessionId               *string                                                     `json:"sessionId"`
+				Source                  *GetMcpToolCalls200JSONResponseBodyDataSource               `json:"source"`
+				ToolCall                interface{}                                                 `json:"toolCall"`
+				ToolResult              interface{}                                                 `json:"toolResult"`
+				UserId                  *string                                                     `json:"userId"`
+				UserName                *string                                                     `json:"userName"`
 			} `json:"data"`
 			Pagination struct {
 				HasNext    bool    `json:"hasNext"`
