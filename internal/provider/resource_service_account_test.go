@@ -145,3 +145,49 @@ resource "archestra_service_account" "test" {
 		{Config: config("null"), PlanOnly: true},
 	}})
 }
+
+func TestAccServiceAccountFederatedCredentialResource(t *testing.T) {
+	if os.Getenv("TF_ACC") != "" && !testAccAPIVersionAtLeast(t, "1.5.0-rc.26") {
+		t.Skip("workload identity federation needs API 1.5.0-rc.26 or later")
+	}
+	const name = "archestra_service_account_federated_credential.test"
+	config := func(credentialName, subject, conditions string) string {
+		return fmt.Sprintf(`resource "archestra_service_account" "federated_parent" {
+ name="tf-federated-parent"
+ role="member"
+}
+resource "archestra_service_account_federated_credential" "test" {
+ service_account_id=archestra_service_account.federated_parent.id
+ name=%q
+ issuer="https://token.actions.githubusercontent.com"
+ audience="https://archestra.example.com"
+ subject=%q
+ %s
+}`, credentialName, subject, conditions)
+	}
+	var id string
+	unchanged := func(s *terraform.State) error {
+		if s.RootModule().Resources[name].Primary.ID != id {
+			return fmt.Errorf("an in-place change replaced the federated credential")
+		}
+		return nil
+	}
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+		{Config: config("tf-main", "repo:acme/infra:ref:refs/heads/main", `claim_conditions={repository_id="1", job_workflow_ref="acme/infra/.github/workflows/deploy.yml@refs/heads/main"}`), Check: resource.ComposeTestCheckFunc(
+			resource.TestCheckResourceAttr(name, "claim_conditions.%", "2"),
+			resource.TestCheckResourceAttr(name, "claim_conditions.repository_id", "1"),
+			resource.TestCheckResourceAttrPair("archestra_service_account.federated_parent", "id", name, "service_account_id"),
+			func(s *terraform.State) error { id = s.RootModule().Resources[name].Primary.ID; return nil },
+		)},
+		{ResourceName: name, ImportState: true, ImportStateVerify: true},
+		// Renaming and narrowing the trust update the same credential.
+		{Config: config("tf-production", "repo:acme/infra:environment:production", `claim_conditions={repository_id="1"}`), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction(name, plancheck.ResourceActionUpdate)}}, Check: resource.ComposeTestCheckFunc(unchanged,
+			resource.TestCheckResourceAttr(name, "name", "tf-production"),
+			resource.TestCheckResourceAttr(name, "subject", "repo:acme/infra:environment:production"),
+			resource.TestCheckResourceAttr(name, "claim_conditions.%", "1"),
+		)},
+		// Removing the conditions clears them; it does not leave the old ones trusted.
+		{Config: config("tf-production", "repo:acme/infra:environment:production", ""), Check: resource.ComposeTestCheckFunc(unchanged, resource.TestCheckResourceAttr(name, "claim_conditions.%", "0"))},
+		{Config: config("tf-production", "repo:acme/infra:environment:production", ""), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
+	}})
+}

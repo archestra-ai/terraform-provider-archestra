@@ -1,0 +1,1 @@
+terraform import archestra_service_account_federated_credential.example service_account_uuid:credential_uuid

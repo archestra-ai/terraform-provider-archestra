@@ -58,6 +58,7 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_schedule` | `schedule` / `Schedule` |
 | `archestra_service_account` | `identity` / `ServiceAccount` |
 | `archestra_service_account_api_key` | `credential` / `ServiceAccountAPIKey` |
+| `archestra_service_account_federated_credential` | `identity` / `ServiceAccountFederatedCredential` |
 | `archestra_share_link` | `marketplace` / `ShareLink` |
 | `archestra_skill` | `skill` / `Skill` |
 | `archestra_team` | `team` / `Team` |

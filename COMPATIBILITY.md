@@ -38,6 +38,7 @@ them on older releases:
 | `archestra_openappa_battery_install` | 1.5.0-rc.1 |
 | `network_policy` on `archestra_agent` | 1.5.0-rc.20 |
 | `subagent_load_balancing` on `archestra_mcp_gateway` | 1.5.0-rc.23 |
+| `archestra_service_account_federated_credential` | 1.5.0-rc.26, with an Enterprise license |
 | `archestra_auto_router` (ALPHA) and the `auto_router_id` / `auto_router_ids` / `default_auto_router_id` settings | 1.5.0-rc.29, with `ARCHESTRA_AUTO_ROUTING_ENABLED=true` (or `ARCHESTRA_BETA=true`) |
 | `archestra_blob_provider` and `archestra_cost_export` | 1.5.0-rc.30 |
 | `desktop_config` on `archestra_mcp_registry_entry` | 1.5.0-rc.32, with `ARCHESTRA_BETA=true` |
@@ -107,11 +108,12 @@ oldest supported release and newest released member. Both ends must exercise
 native acceptance and both Crossplane scopes. Add a targeted regression when an
 intermediate release changes a contract; passing the endpoints cannot prove every
 intermediate prerelease. Advance the tested release through reviewed provider PRs
-as upstream releases arrive. The Update Terraform Provider workflow in
-archestra-ai/archestra opens them on the `automation/platform-api` branch: it
-regenerates the client from the release's spec and updates
-`platform-version.txt`. It never merges. Merging after acceptance passes makes
-that release the tested one.
+as upstream releases arrive. When archestra-ai/archestra publishes a release,
+its release pipeline starts the Terraform Provider Sync agent, which opens them
+on the `automation/platform-sync` branch: it regenerates the client from the
+release's spec, updates `platform-version.txt`, and changes the resources the
+release's API changes touch, here and in the Crossplane provider. It never
+merges. Merging after acceptance passes makes that release the tested one.
 
 ## Runtime compatibility check
 

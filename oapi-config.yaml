@@ -152,6 +152,10 @@ output-options:
     - createServiceAccountToken
     - updateServiceAccountToken
     - deleteServiceAccountToken
+    - getServiceAccountFederatedCredentials
+    - createServiceAccountFederatedCredential
+    - updateServiceAccountFederatedCredential
+    - deleteServiceAccountFederatedCredential
     - updateEnvironmentResourceDefaults
     - createA2aRemoteAgent
     - getA2aRemoteAgent
