@@ -245,6 +245,7 @@ resource "archestra_mcp_registry_entry" "private_registry" {
 
 - `auth_description` (String) Description of the authentication requirements
 - `auth_fields` (Attributes List) Custom authentication fields required by the MCP server (see [below for nested schema](#nestedatt--auth_fields))
+- `aws_iam_config` (Attributes) AWS IAM (SigV4) sign-in for a remote MCP server: each agent assumes the role as its own session. (see [below for nested schema](#nestedatt--aws_iam_config))
 - `client_secret_id` (String) UUID of a stored secret holding the OAuth client secret. Mutually exclusive with inline `oauth_config.client_secret`. Computed when the backend stores inline credentials.
 - `cloned_from` (String) Source catalog item copied when this item is created.
 - `deployment_spec_yaml` (String) Custom Kubernetes deployment YAML for the MCP server
@@ -280,6 +281,7 @@ resource "archestra_mcp_registry_entry" "private_registry" {
 - `deleted_at` (String) Deleted at.
 - `deployment_name` (String) Deployment name.
 - `id` (String) MCP server catalog identifier
+- `tool_prefix` (String) Prefix of this item's tool names.
 
 <a id="nestedatt--auth_fields"></a>
 ### Nested Schema for `auth_fields`
@@ -294,6 +296,20 @@ Required:
 Optional:
 
 - `description` (String) Description of the field
+
+
+<a id="nestedatt--aws_iam_config"></a>
+### Nested Schema for `aws_iam_config`
+
+Required:
+
+- `region` (String) AWS region requests are signed for.
+- `role_arn` (String) IAM role each agent assumes.
+- `service` (String) SigV4 signing name of the service in front of the server, such as `bedrock-agentcore`.
+
+Optional:
+
+- `audience` (String) Audience of the agent's JWT-SVID; the platform defaults to `sts.amazonaws.com`.
 
 
 <a id="nestedatt--desktop_config"></a>

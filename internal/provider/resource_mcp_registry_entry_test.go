@@ -157,6 +157,65 @@ func TestAccMcpRegistryCatalogItemResourceRemote(t *testing.T) {
 	})
 }
 
+func TestAccMcpRegistryCatalogItemResourceRemoteWithAwsIam(t *testing.T) {
+	if os.Getenv("TF_ACC") != "" && !testAccAPIVersionAtLeast(t, "1.5.0-rc.35") {
+		t.Skip("AWS IAM sign-in requires API 1.5.0-rc.35")
+	}
+	const name = "archestra_mcp_registry_entry.test_remote_aws_iam"
+	config := func(awsIam string) string {
+		return fmt.Sprintf(`
+resource "archestra_mcp_registry_entry" "test_remote_aws_iam" {
+  name        = "test-remote-aws-iam"
+  description = "Test remote MCP server behind AWS IAM"
+
+  remote_config = {
+    url = "https://gateway.example.com/mcp"
+  }
+%s
+}
+`, awsIam)
+	}
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: config(`
+  aws_iam_config = {
+    role_arn = "arn:aws:iam::123456789012:role/archestra-agents"
+    region   = "us-east-1"
+    service  = "bedrock-agentcore"
+  }`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(name, tfjsonpath.New("aws_iam_config").AtMapKey("service"), knownvalue.StringExact("bedrock-agentcore")),
+					statecheck.ExpectKnownValue(name, tfjsonpath.New("aws_iam_config").AtMapKey("audience"), knownvalue.Null()),
+					statecheck.ExpectKnownValue(name, tfjsonpath.New("tool_prefix"), knownvalue.NotNull()),
+				},
+			},
+			{
+				Config: config(`
+  aws_iam_config = {
+    role_arn = "arn:aws:iam::123456789012:role/archestra-agents"
+    region   = "eu-west-1"
+    service  = "execute-api"
+    audience = "archestra"
+  }`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(name, tfjsonpath.New("aws_iam_config").AtMapKey("region"), knownvalue.StringExact("eu-west-1")),
+					statecheck.ExpectKnownValue(name, tfjsonpath.New("aws_iam_config").AtMapKey("audience"), knownvalue.StringExact("archestra")),
+				},
+			},
+			{
+				// Removing the block clears the sign-in.
+				Config: config(""),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(name, tfjsonpath.New("aws_iam_config"), knownvalue.Null()),
+				},
+			},
+		},
+	})
+}
+
 func TestAccMcpRegistryCatalogItemResourceRemoteWithOAuth(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },

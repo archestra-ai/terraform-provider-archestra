@@ -31,6 +31,12 @@
 // Unions whose arms are all `$ref`s to named component schemas are left
 // alone; codegen's named-union path generates working helpers.
 //
+// It also names the constants of a string enum whose value would become
+// one of the generated client's own identifiers (a `client` value makes a
+// `Client` constant, which redeclares the `Client` type): the enum gets
+// `x-enum-varnames` prefixed with its property or parameter name
+// (`source: [client, spiffe]` → `SourceClient`, `SourceSpiffe`).
+//
 // TODO: This is a workaround. The real fix lives in the platform repo:
 // replace inline `z.union([z.literal(N),...])` (e.g.
 // EmbeddingDimensionsSchema) and inline polymorphic
@@ -47,6 +53,8 @@ import (
 	"io"
 	"os"
 	"sort"
+	"strings"
+	"unicode"
 )
 
 func main() {
@@ -78,8 +86,8 @@ func main() {
 	}
 
 	fmt.Fprintf(os.Stderr,
-		"oapi-patch: collapsed=%d freeFormed=%d unwrapped=%d preserved=%d\n",
-		stats.collapsed, stats.freeFormed, stats.unwrapped, stats.preserved)
+		"oapi-patch: collapsed=%d freeFormed=%d unwrapped=%d preserved=%d enumsNamed=%d\n",
+		stats.collapsed, stats.freeFormed, stats.unwrapped, stats.preserved, stats.enumsNamed)
 }
 
 type patchStats struct {
@@ -87,6 +95,7 @@ type patchStats struct {
 	freeFormed int // inline mixed/object → free-form
 	unwrapped  int // single-arm union → arm
 	preserved  int // all-$ref union or discriminator-tagged, kept as-is
+	enumsNamed int // enum whose constants would redeclare a client identifier
 }
 
 func patch(node any, stats *patchStats) any {
@@ -102,6 +111,15 @@ func patch(node any, stats *patchStats) any {
 			if arms, ok := n[kw].([]any); ok {
 				replaceUnion(n, kw, arms, stats)
 				break
+			}
+		}
+		for k, v := range n {
+			if child, ok := v.(map[string]any); ok {
+				hint := k
+				if name, ok := n["name"].(string); ok && k == "schema" {
+					hint = name
+				}
+				nameClashingEnum(child, hint, stats)
 			}
 		}
 		return n
@@ -242,6 +260,61 @@ func replaceUnion(parent map[string]any, kw string, arms []any, stats *patchStat
 		delete(parent, k)
 	}
 	stats.freeFormed++
+}
+
+// nameClashingEnum gives a string enum `x-enum-varnames` of hint + value
+// when one of its values would otherwise become a generated client
+// identifier.
+func nameClashingEnum(schema map[string]any, hint string, stats *patchStats) {
+	values, ok := schema["enum"].([]any)
+	if !ok || len(values) == 0 {
+		return
+	}
+	if _, named := schema["x-enum-varnames"]; named {
+		return
+	}
+	clashes := false
+	for _, v := range values {
+		s, ok := v.(string)
+		if !ok {
+			return
+		}
+		if clientIdentifiers[goName(s)] {
+			clashes = true
+		}
+	}
+	if !clashes {
+		return
+	}
+	prefix := goName(hint)
+	names := make([]any, len(values))
+	for i, v := range values {
+		names[i] = prefix + goName(v.(string))
+	}
+	schema["x-enum-varnames"] = names
+	stats.enumsNamed++
+}
+
+// clientIdentifiers are the exported names oapi-codegen's client
+// generation declares itself.
+var clientIdentifiers = map[string]bool{
+	"Client": true, "ClientInterface": true, "ClientOption": true,
+	"ClientWithResponses": true, "ClientWithResponsesInterface": true,
+	"HttpRequestDoer": true, "RequestEditorFn": true,
+}
+
+// goName is a value's exported Go name: words split on anything not a
+// letter or digit, each word capitalized.
+func goName(s string) string {
+	var b strings.Builder
+	for _, word := range strings.FieldsFunc(s, func(r rune) bool {
+		return !unicode.IsLetter(r) && !unicode.IsDigit(r)
+	}) {
+		runes := []rune(word)
+		b.WriteRune(unicode.ToUpper(runes[0]))
+		b.WriteString(string(runes[1:]))
+	}
+	return b.String()
 }
 
 func appendUnique(out *[]any, seen map[string]bool, v any) {

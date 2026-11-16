@@ -27,8 +27,28 @@ func currentCatalogAttributes() map[string]schema.Attribute {
 		"deleted_at":                        schema.StringAttribute{Computed: true, MarkdownDescription: "Deleted at."},
 		"deployment_name":                   schema.StringAttribute{Computed: true, MarkdownDescription: "Deployment name."},
 		"catalog_reinstall_required":        schema.BoolAttribute{Computed: true, MarkdownDescription: "Whether existing shared installations need reinstallation."},
+		"tool_prefix":                       schema.StringAttribute{Computed: true, MarkdownDescription: "Prefix of this item's tool names."},
+		"aws_iam_config": schema.SingleNestedAttribute{
+			Optional:            true,
+			MarkdownDescription: "AWS IAM (SigV4) sign-in for a remote MCP server: each agent assumes the role as its own session.",
+			Attributes: map[string]schema.Attribute{
+				"role_arn": schema.StringAttribute{Required: true, MarkdownDescription: "IAM role each agent assumes."},
+				"region":   schema.StringAttribute{Required: true, MarkdownDescription: "AWS region requests are signed for."},
+				"service":  schema.StringAttribute{Required: true, MarkdownDescription: "SigV4 signing name of the service in front of the server, such as `bedrock-agentcore`."},
+				"audience": schema.StringAttribute{Optional: true, MarkdownDescription: "Audience of the agent's JWT-SVID; the platform defaults to `sts.amazonaws.com`."},
+			},
+		},
 	}
 }
+
+// AwsIamConfigModel mirrors a catalog item's awsIamConfig.
+type AwsIamConfigModel struct {
+	RoleArn  types.String `tfsdk:"role_arn"`
+	Region   types.String `tfsdk:"region"`
+	Service  types.String `tfsdk:"service"`
+	Audience types.String `tfsdk:"audience"`
+}
+
 func flattenCurrentCatalogFields(data *MCPServerRegistryResourceModel, response *client.GetInternalMcpCatalogItemResponse, diags *diag.Diagnostics) {
 	j := response.JSON200
 	data.CatalogItemApprovalReason = types.StringPointerValue(j.CatalogItemApprovalReason)
@@ -37,6 +57,16 @@ func flattenCurrentCatalogFields(data *MCPServerRegistryResourceModel, response 
 	data.DeploymentName = types.StringPointerValue(j.DeploymentName)
 	data.CatalogReinstallRequired = types.BoolValue(j.CatalogReinstallRequired)
 	data.Multitenant = types.BoolValue(j.Multitenant)
+	data.ToolPrefix = types.StringPointerValue(j.ToolPrefix)
+	data.AwsIamConfig = nil
+	if j.AwsIamConfig != nil {
+		data.AwsIamConfig = &AwsIamConfigModel{
+			RoleArn:  types.StringValue(j.AwsIamConfig.RoleArn),
+			Region:   types.StringValue(j.AwsIamConfig.Region),
+			Service:  types.StringValue(j.AwsIamConfig.Service),
+			Audience: types.StringPointerValue(j.AwsIamConfig.Audience),
+		}
+	}
 	data.CatalogItemApprovalReviewedAt = types.StringNull()
 	if j.CatalogItemApprovalReviewedAt != nil {
 		data.CatalogItemApprovalReviewedAt = types.StringValue(j.CatalogItemApprovalReviewedAt.Format(time.RFC3339Nano))

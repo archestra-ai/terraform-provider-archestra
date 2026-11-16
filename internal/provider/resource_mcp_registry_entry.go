@@ -40,20 +40,22 @@ type MCPServerRegistryResource struct {
 }
 
 type MCPServerRegistryResourceModel struct {
-	InitialGrants                 types.Set    `tfsdk:"permissions"`
-	CatalogItemApprovalReason     types.String `tfsdk:"catalog_item_approval_reason"`
-	CatalogItemApprovalReviewedAt types.String `tfsdk:"catalog_item_approval_reviewed_at"`
-	CatalogItemApprovalReviewedBy types.String `tfsdk:"catalog_item_approval_reviewed_by"`
-	CatalogItemApprovalStatus     types.String `tfsdk:"catalog_item_approval_status"`
-	ClonedFrom                    types.String `tfsdk:"cloned_from"`
-	CreatedBy                     types.String `tfsdk:"created_by"`
-	CreatedByServiceAccountID     types.String `tfsdk:"created_by_service_account_id"`
-	DeletedAt                     types.String `tfsdk:"deleted_at"`
-	DeploymentName                types.String `tfsdk:"deployment_name"`
-	DynamicConnectionMcpServerID  types.String `tfsdk:"dynamic_connection_mcp_server_id"`
-	EnvironmentID                 types.String `tfsdk:"environment_id"`
-	CatalogReinstallRequired      types.Bool   `tfsdk:"catalog_reinstall_required"`
-	Multitenant                   types.Bool   `tfsdk:"multitenant"`
+	InitialGrants                 types.Set          `tfsdk:"permissions"`
+	CatalogItemApprovalReason     types.String       `tfsdk:"catalog_item_approval_reason"`
+	CatalogItemApprovalReviewedAt types.String       `tfsdk:"catalog_item_approval_reviewed_at"`
+	CatalogItemApprovalReviewedBy types.String       `tfsdk:"catalog_item_approval_reviewed_by"`
+	CatalogItemApprovalStatus     types.String       `tfsdk:"catalog_item_approval_status"`
+	ClonedFrom                    types.String       `tfsdk:"cloned_from"`
+	CreatedBy                     types.String       `tfsdk:"created_by"`
+	CreatedByServiceAccountID     types.String       `tfsdk:"created_by_service_account_id"`
+	DeletedAt                     types.String       `tfsdk:"deleted_at"`
+	DeploymentName                types.String       `tfsdk:"deployment_name"`
+	DynamicConnectionMcpServerID  types.String       `tfsdk:"dynamic_connection_mcp_server_id"`
+	EnvironmentID                 types.String       `tfsdk:"environment_id"`
+	CatalogReinstallRequired      types.Bool         `tfsdk:"catalog_reinstall_required"`
+	Multitenant                   types.Bool         `tfsdk:"multitenant"`
+	ToolPrefix                    types.String       `tfsdk:"tool_prefix"`
+	AwsIamConfig                  *AwsIamConfigModel `tfsdk:"aws_iam_config"`
 
 	ID                  types.String `tfsdk:"id"`
 	Name                types.String `tfsdk:"name"`
