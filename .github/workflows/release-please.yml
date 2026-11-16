@@ -230,18 +230,17 @@ jobs:
   # release and publishes it (immutable releases take no assets once public).
   # Retry with "Re-run failed jobs": this job attests the same files and
   # package again in the new attempt.
-  attest-release:
-    name: Attest release
+  release-subjects:
+    name: Collect release subjects
     needs: [release-please, build-release]
     if: ${{ always() && !cancelled() && needs.build-release.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       actions: read # download the release files
-      attestations: write # store the build provenance attestation
-      id-token: write # sign the build provenance attestation
     outputs:
       images: ${{ steps.subjects.outputs.images }}
+      subjects: ${{ steps.subjects.outputs.subjects }}
     steps:
       - name: Download the release files
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
@@ -259,21 +258,34 @@ jobs:
           set -euo pipefail
           python3 -c 'import re, sys; assert re.fullmatch(r"sha256:[0-9a-f]{64}", sys.argv[1])' "$PACKAGE_DIGEST"
           (cd release-provider && sha256sum -- *) > release-subjects.txt
-          echo "${PACKAGE_DIGEST#sha256:}  xpkg.upbound.io/archestra/provider-archestra" >> release-subjects.txt
+          echo "xpkg.upbound.io/archestra/provider-archestra@${PACKAGE_DIGEST}" >> release-subjects.txt
           echo "images=$(jq -cn --arg digest "$PACKAGE_DIGEST" '{"xpkg.upbound.io/archestra/provider-archestra": $digest}')" >> "$GITHUB_OUTPUT"
+          {
+            echo "subjects<<SUBJECTS"
+            cat release-subjects.txt
+            echo "SUBJECTS"
+          } >> "$GITHUB_OUTPUT"
           cat release-subjects.txt
 
-      - name: Attest the release files and package
-        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
-        with:
-          subject-checksums: release-subjects.txt
+  # Signs in a job of its own that runs no build step (SLSA Build L3): no job
+  # here that builds or handles the release files can sign.
+  attest-release:
+    name: Attest release
+    needs: [release-subjects]
+    if: ${{ always() && !cancelled() && needs.release-subjects.result == 'success' }}
+    permissions:
+      attestations: write # store the build provenance attestation
+      id-token: write # sign the build provenance attestation
+    uses: archestra-ai/.github/.github/workflows/attest-provenance.yml@SHARED_SHA # SHARED_VERSION
+    with:
+      subjects: ${{ needs.release-subjects.outputs.subjects }}
 
   # Waits for the publisher, a stable release's approval included, up to 360
   # minutes. The publisher signs SHA256SUMS, pushes the package to Upbound and
   # returns the signed files as this run's release-assets artifact.
   publish-release:
     name: Publish release
-    needs: [build-release, attest-release]
+    needs: [build-release, release-subjects, attest-release]
     if: ${{ always() && !cancelled() && needs.attest-release.result == 'success' }}
     permissions:
       actions: read # download this run's release files
@@ -286,7 +298,7 @@ jobs:
       environment: releaser
       project: terraform-provider-archestra
       version: ${{ needs.build-release.outputs.version }}
-      images: ${{ needs.attest-release.outputs.images }}
+      images: ${{ needs.release-subjects.outputs.images }}
       asset-artifact: release-provider
       # A release hands its request off: it waits for its approval in the
       # publisher, and release-finalize.yml uploads the signed files and
