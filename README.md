@@ -204,7 +204,7 @@ tag vX.Y.Z  ──▶  build-release (no secrets)
                      │
                      ▼
                  publish-release (archestra-ai/.github release-publish.yml):
-                   ask archestra-ai/release-publisher to publish, wait ≤360 min
+                   hand the request to archestra-ai/release-publisher; the run ends
                      │
                      ▼
                  release-publisher (after an Engineering approval):
@@ -212,8 +212,10 @@ tag vX.Y.Z  ──▶  build-release (no secrets)
                    copies the package to xpkg.upbound.io/archestra
                      │
                      ▼
-                 upload-release uploads the signed files to the draft
-                 release, then publishes it ──▶  GitHub release ──▶  Terraform Registry
+                 release-finalize.yml (started by Release Gate, or its
+                 half-hourly sweep, once the publisher run succeeded):
+                   checks the publication, uploads the signed files to the
+                   draft release, then publishes it ──▶  GitHub release ──▶  Terraform Registry
                      │
                      ▼
                  verify-marketplace: public listing, digest and logo
@@ -222,10 +224,13 @@ tag vX.Y.Z  ──▶  build-release (no secrets)
 This repository holds no signing key or registry token: the GPG key and the
 Upbound robot token live only in the publisher. A stable release waits in the
 publisher's `stable-release` environment for an Engineering member who did not
-merge or start it; `publish-release` waits for it up to 360 minutes, then
-fails while the publisher keeps waiting. Retry a failed or expired publication
-with **Re-run failed jobs** on the Release Please run: it sends a new request
-(a new approval) without attesting again, and the publisher is idempotent. To prove the path without a release, run **Release
+merge or start it, for up to 30 days; the Release Please run does not wait for
+it. When the publisher run succeeds, **Release Finalize** checks it, uploads the
+signed files and publishes the release. Retry a failed publication with **Re-run
+failed jobs** on the Release Please run: it sends a new request (a new approval)
+without attesting again, and the publisher is idempotent. A failed finalize is
+retried by its sweep, or by **Run workflow** on **Release Finalize** with the
+`<run id>-<attempt>` of the Release Please run. To prove the path without a release, run **Release
 Please** on `main` with `publisher_smoke`: it signs and uploads to a draft
 release and writes no tag or package. Repository visibility is managed by the
 Upbound organization owner.
