@@ -1,7 +1,10 @@
 package provider
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -107,11 +110,13 @@ func TestAccAgentIdentityBindings(t *testing.T) {
 	if os.Getenv("TF_ACC") != "" && !testAccAPIVersionAtLeast(t, identityBindingsMinimumAPIVersion) {
 		t.Skip("Identity bindings require API " + identityBindingsMinimumAPIVersion)
 	}
-	idpID := os.Getenv("ARCHESTRA_TEST_IDP_ID")
-	if os.Getenv("TF_ACC") != "" && idpID == "" {
-		t.Fatal("ARCHESTRA_TEST_IDP_ID must be set; provision a throwaway IdP with scripts/bootstrap-test-idp.sh and export the resulting UUID")
+	if os.Getenv("TF_ACC") == "" {
+		return
 	}
+	testAccPreCheck(t)
 	suffix := acctest.RandString(8)
+	idpID := testAccAgentIdentityProvider(t, suffix)
+	first, second := uuid.NewString(), uuid.NewString()
 	const name = "archestra_agent.test"
 	config := func(bindings string) string {
 		return fmt.Sprintf(`
@@ -130,21 +135,21 @@ resource "archestra_agent" "test" {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: config(binding("agent-" + suffix)),
+				Config: config(binding(first)),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(name, tfjsonpath.New("identity_bindings"), knownvalue.SetExact([]knownvalue.Check{
 						knownvalue.ObjectExact(map[string]knownvalue.Check{
 							"identity_provider_id": knownvalue.StringExact(idpID),
-							"external_id":          knownvalue.StringExact("agent-" + suffix),
+							"external_id":          knownvalue.StringExact(first),
 						}),
 					})),
 				},
 			},
 			{
-				Config: config(binding("agent-" + suffix + "-2")),
+				Config: config(binding(second)),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(name, tfjsonpath.New("identity_bindings"), knownvalue.SetExact([]knownvalue.Check{
-						knownvalue.ObjectPartial(map[string]knownvalue.Check{"external_id": knownvalue.StringExact("agent-" + suffix + "-2")}),
+						knownvalue.ObjectPartial(map[string]knownvalue.Check{"external_id": knownvalue.StringExact(second)}),
 					})),
 				},
 			},
@@ -164,4 +169,61 @@ resource "archestra_agent" "test" {
 			},
 		},
 	})
+}
+
+// testAccAgentIdentityProvider creates a throwaway Microsoft Entra
+// On-Behalf-Of identity provider with an Agent ID blueprint, which agents
+// can be bound to by their Entra agent identity's app ID (a GUID), and
+// deletes it after the test.
+func testAccAgentIdentityProvider(t *testing.T, suffix string) string {
+	t.Helper()
+	issuer := "https://login.microsoftonline.com/" + uuid.NewString() + "/v2.0"
+	payload := fmt.Sprintf(`{
+		"providerId": "tf-acc-agent-identity-%[1]s",
+		"domain": "%[1]s.agent-identity.test",
+		"issuer": %[2]q,
+		"oidcConfig": {
+			"issuer": %[2]q,
+			"discoveryEndpoint": %[3]q,
+			"clientId": %[4]q,
+			"clientSecret": "tf-acc-secret",
+			"pkce": false,
+			"skipDiscovery": true,
+			"enterpriseManagedCredentials": {
+				"exchangeStrategy": "entra_obo",
+				"entraAgentId": {"blueprintClientId": %[5]q}
+			}
+		}
+	}`, strings.ToLower(suffix), issuer, issuer+"/.well-known/openid-configuration", uuid.NewString(), uuid.NewString())
+	request := func(ctx context.Context, method, path string, body string) (int, []byte) {
+		req, err := http.NewRequestWithContext(ctx, method, strings.TrimRight(os.Getenv("ARCHESTRA_BASE_URL"), "/")+path, strings.NewReader(body))
+		if err != nil {
+			t.Fatal(err)
+		}
+		req.Header.Set("Authorization", os.Getenv("ARCHESTRA_API_KEY"))
+		if body != "" {
+			req.Header.Set("Content-Type", "application/json")
+		}
+		response, err := http.DefaultClient.Do(req)
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer response.Body.Close()
+		data, _ := io.ReadAll(response.Body)
+		return response.StatusCode, data
+	}
+	status, body := request(t.Context(), http.MethodPost, "/api/identity-providers", payload)
+	var created struct {
+		ID string `json:"id"`
+	}
+	if status != http.StatusOK || json.Unmarshal(body, &created) != nil || created.ID == "" {
+		t.Fatalf("create the agent identity provider: status %d: %s", status, body)
+	}
+	t.Cleanup(func() {
+		// t.Context() is already canceled when cleanups run.
+		if status, body := request(context.Background(), http.MethodDelete, "/api/identity-providers/"+created.ID, ""); status != http.StatusOK {
+			t.Errorf("delete the agent identity provider %s: status %d: %s", created.ID, status, body)
+		}
+	})
+	return created.ID
 }
