@@ -14202,6 +14202,24 @@ func (e UpdateHook500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource.
+const (
+	CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceClient CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "client"
+	CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSpiffe CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "spiffe"
+)
+
+// Valid indicates whether the value is a known member of the CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource enum.
+func (e CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource) Valid() bool {
+	switch e {
+	case CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceClient:
+		return true
+	case CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSpiffe:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy.
 const (
 	CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyEntraObo    CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "entra_obo"
@@ -14340,6 +14358,24 @@ func (e CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths) Valid() 
 	case CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKey:
 		return true
 	case CreateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKeyPass:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource.
+const (
+	CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceClient CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "client"
+	CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSpiffe CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "spiffe"
+)
+
+// Valid indicates whether the value is a known member of the CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource enum.
+func (e CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource) Valid() bool {
+	switch e {
+	case CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceClient:
+		return true
+	case CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSpiffe:
 		return true
 	default:
 		return false
@@ -14670,6 +14706,24 @@ func (e GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths) Valid() boo
 	}
 }
 
+// Defines values for GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource.
+const (
+	GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceClient GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "client"
+	GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSpiffe GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "spiffe"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource enum.
+func (e GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource) Valid() bool {
+	switch e {
+	case GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceClient:
+		return true
+	case GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSpiffe:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy.
 const (
 	GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyEntraObo    GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "entra_obo"
@@ -14844,6 +14898,24 @@ func (e GetIdentityProvider500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource.
+const (
+	UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceClient UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "client"
+	UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSpiffe UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "spiffe"
+)
+
+// Valid indicates whether the value is a known member of the UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource enum.
+func (e UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource) Valid() bool {
+	switch e {
+	case UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceClient:
+		return true
+	case UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSpiffe:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy.
 const (
 	UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyEntraObo    UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "entra_obo"
@@ -14982,6 +15054,24 @@ func (e UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths) Valid() 
 	case SamlConfigSpMetadataPrivateKey:
 		return true
 	case SamlConfigSpMetadataPrivateKeyPass:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource.
+const (
+	Client UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "client"
+	Spiffe UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "spiffe"
+)
+
+// Valid indicates whether the value is a known member of the UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource enum.
+func (e UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource) Valid() bool {
+	switch e {
+	case Client:
+		return true
+	case Spiffe:
 		return true
 	default:
 		return false
@@ -46860,10 +46950,12 @@ type CreateIdentityProviderJSONBody struct {
 		EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 		EnterpriseManagedCredentials *struct {
 			AgentIdentity *struct {
-				ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
-				PrivateKeyId         *string `json:"privateKeyId,omitempty"`
-				PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
-				RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+				ActorTokenScope      *string                                                                                  `json:"actorTokenScope,omitempty"`
+				PrivateKeyId         *string                                                                                  `json:"privateKeyId,omitempty"`
+				PrivateKeyPem        *string                                                                                  `json:"privateKeyPem,omitempty"`
+				RequireAgentIdentity *bool                                                                                    `json:"requireAgentIdentity,omitempty"`
+				Source               *CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource `json:"source,omitempty"`
+				SpiffeAudience       *string                                                                                  `json:"spiffeAudience,omitempty"`
 			} `json:"agentIdentity,omitempty"`
 			ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 			ClientId                *string `json:"clientId,omitempty"`
@@ -46978,6 +47070,9 @@ type CreateIdentityProviderJSONBody struct {
 	UserId *string `json:"userId,omitempty"`
 }
 
+// CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource defines parameters for CreateIdentityProvider.
+type CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource string
+
 // CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy defines parameters for CreateIdentityProvider.
 type CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy string
 
@@ -46992,6 +47087,9 @@ type CreateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication string
 
 // CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths defines parameters for CreateIdentityProvider.
 type CreateIdentityProvider200JSONResponseBodyConfiguredSecretPaths string
+
+// CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource defines parameters for CreateIdentityProvider.
+type CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource string
 
 // CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy defines parameters for CreateIdentityProvider.
 type CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy string
@@ -47044,6 +47142,9 @@ type DeleteIdentityProvider500JSONResponseBodyErrorType string
 // GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths defines parameters for GetIdentityProvider.
 type GetIdentityProvider200JSONResponseBodyConfiguredSecretPaths string
 
+// GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource defines parameters for GetIdentityProvider.
+type GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource string
+
 // GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy defines parameters for GetIdentityProvider.
 type GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy string
 
@@ -47089,10 +47190,12 @@ type UpdateIdentityProviderJSONBody struct {
 		EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 		EnterpriseManagedCredentials *struct {
 			AgentIdentity *struct {
-				ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
-				PrivateKeyId         *string `json:"privateKeyId,omitempty"`
-				PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
-				RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+				ActorTokenScope      *string                                                                                  `json:"actorTokenScope,omitempty"`
+				PrivateKeyId         *string                                                                                  `json:"privateKeyId,omitempty"`
+				PrivateKeyPem        *string                                                                                  `json:"privateKeyPem,omitempty"`
+				RequireAgentIdentity *bool                                                                                    `json:"requireAgentIdentity,omitempty"`
+				Source               *UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource `json:"source,omitempty"`
+				SpiffeAudience       *string                                                                                  `json:"spiffeAudience,omitempty"`
 			} `json:"agentIdentity,omitempty"`
 			ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 			ClientId                *string `json:"clientId,omitempty"`
@@ -47206,6 +47309,9 @@ type UpdateIdentityProviderJSONBody struct {
 	} `json:"teamSyncConfig,omitempty"`
 }
 
+// UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource defines parameters for UpdateIdentityProvider.
+type UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource string
+
 // UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy defines parameters for UpdateIdentityProvider.
 type UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy string
 
@@ -47220,6 +47326,9 @@ type UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication string
 
 // UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths defines parameters for UpdateIdentityProvider.
 type UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths string
+
+// UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource defines parameters for UpdateIdentityProvider.
+type UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource string
 
 // UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy defines parameters for UpdateIdentityProvider.
 type UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy string
@@ -47261,6 +47370,12 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 		Required    *bool   `json:"required,omitempty"`
 		Type        string  `json:"type"`
 	} `json:"authFields,omitempty"`
+	AwsIamConfig *struct {
+		Audience *string `json:"audience,omitempty"`
+		Region   string  `json:"region"`
+		RoleArn  string  `json:"roleArn"`
+		Service  string  `json:"service"`
+	} `json:"awsIamConfig,omitempty"`
 	CatalogReinstallRequired *bool               `json:"catalogReinstallRequired,omitempty"`
 	ClientSecretId           *openapi_types.UUID `json:"clientSecretId,omitempty"`
 	ClonedFrom               *openapi_types.UUID `json:"clonedFrom,omitempty"`
@@ -47717,6 +47832,12 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 		Required    *bool   `json:"required,omitempty"`
 		Type        string  `json:"type"`
 	} `json:"authFields,omitempty"`
+	AwsIamConfig *struct {
+		Audience *string `json:"audience,omitempty"`
+		Region   string  `json:"region"`
+		RoleArn  string  `json:"roleArn"`
+		Service  string  `json:"service"`
+	} `json:"awsIamConfig,omitempty"`
 	CatalogReinstallRequired *bool               `json:"catalogReinstallRequired,omitempty"`
 	ClientSecretId           *openapi_types.UUID `json:"clientSecretId,omitempty"`
 	DeploymentSpecYaml       *string             `json:"deploymentSpecYaml,omitempty"`
@@ -82899,10 +83020,12 @@ type CreateIdentityProviderResponse struct {
 			EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 			EnterpriseManagedCredentials *struct {
 				AgentIdentity *struct {
-					ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
-					PrivateKeyId         *string `json:"privateKeyId,omitempty"`
-					PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
-					RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+					ActorTokenScope      *string                                                                                             `json:"actorTokenScope,omitempty"`
+					PrivateKeyId         *string                                                                                             `json:"privateKeyId,omitempty"`
+					PrivateKeyPem        *string                                                                                             `json:"privateKeyPem,omitempty"`
+					RequireAgentIdentity *bool                                                                                               `json:"requireAgentIdentity,omitempty"`
+					Source               *CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource `json:"source,omitempty"`
+					SpiffeAudience       *string                                                                                             `json:"spiffeAudience,omitempty"`
 				} `json:"agentIdentity,omitempty"`
 				ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 				ClientId                *string `json:"clientId,omitempty"`
@@ -83180,10 +83303,12 @@ type GetIdentityProviderResponse struct {
 			EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 			EnterpriseManagedCredentials *struct {
 				AgentIdentity *struct {
-					ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
-					PrivateKeyId         *string `json:"privateKeyId,omitempty"`
-					PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
-					RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+					ActorTokenScope      *string                                                                                          `json:"actorTokenScope,omitempty"`
+					PrivateKeyId         *string                                                                                          `json:"privateKeyId,omitempty"`
+					PrivateKeyPem        *string                                                                                          `json:"privateKeyPem,omitempty"`
+					RequireAgentIdentity *bool                                                                                            `json:"requireAgentIdentity,omitempty"`
+					Source               *GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource `json:"source,omitempty"`
+					SpiffeAudience       *string                                                                                          `json:"spiffeAudience,omitempty"`
 				} `json:"agentIdentity,omitempty"`
 				ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 				ClientId                *string `json:"clientId,omitempty"`
@@ -83386,10 +83511,12 @@ type UpdateIdentityProviderResponse struct {
 			EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 			EnterpriseManagedCredentials *struct {
 				AgentIdentity *struct {
-					ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
-					PrivateKeyId         *string `json:"privateKeyId,omitempty"`
-					PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
-					RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+					ActorTokenScope      *string                                                                                             `json:"actorTokenScope,omitempty"`
+					PrivateKeyId         *string                                                                                             `json:"privateKeyId,omitempty"`
+					PrivateKeyPem        *string                                                                                             `json:"privateKeyPem,omitempty"`
+					RequireAgentIdentity *bool                                                                                               `json:"requireAgentIdentity,omitempty"`
+					Source               *UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource `json:"source,omitempty"`
+					SpiffeAudience       *string                                                                                             `json:"spiffeAudience,omitempty"`
 				} `json:"agentIdentity,omitempty"`
 				ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 				ClientId                *string `json:"clientId,omitempty"`
@@ -83585,8 +83712,14 @@ type CreateInternalMcpCatalogItemResponse struct {
 			Required    bool    `json:"required"`
 			Type        string  `json:"type"`
 		} `json:"authFields"`
-		AuthorId                      *string             `json:"authorId"`
-		AuthorName                    *string             `json:"authorName,omitempty"`
+		AuthorId     *string `json:"authorId"`
+		AuthorName   *string `json:"authorName,omitempty"`
+		AwsIamConfig *struct {
+			Audience *string `json:"audience,omitempty"`
+			Region   string  `json:"region"`
+			RoleArn  string  `json:"roleArn"`
+			Service  string  `json:"service"`
+		} `json:"awsIamConfig"`
 		CatalogItemApprovalReason     *string             `json:"catalogItemApprovalReason"`
 		CatalogItemApprovalReviewedAt *time.Time          `json:"catalogItemApprovalReviewedAt"`
 		CatalogItemApprovalReviewedBy *string             `json:"catalogItemApprovalReviewedBy"`
@@ -83871,8 +84004,14 @@ type GetInternalMcpCatalogItemResponse struct {
 			Required    bool    `json:"required"`
 			Type        string  `json:"type"`
 		} `json:"authFields"`
-		AuthorId                      *string             `json:"authorId"`
-		AuthorName                    *string             `json:"authorName,omitempty"`
+		AuthorId     *string `json:"authorId"`
+		AuthorName   *string `json:"authorName,omitempty"`
+		AwsIamConfig *struct {
+			Audience *string `json:"audience,omitempty"`
+			Region   string  `json:"region"`
+			RoleArn  string  `json:"roleArn"`
+			Service  string  `json:"service"`
+		} `json:"awsIamConfig"`
 		CatalogItemApprovalReason     *string             `json:"catalogItemApprovalReason"`
 		CatalogItemApprovalReviewedAt *time.Time          `json:"catalogItemApprovalReviewedAt"`
 		CatalogItemApprovalReviewedBy *string             `json:"catalogItemApprovalReviewedBy"`
@@ -84088,8 +84227,14 @@ type UpdateInternalMcpCatalogItemResponse struct {
 			Required    bool    `json:"required"`
 			Type        string  `json:"type"`
 		} `json:"authFields"`
-		AuthorId                      *string             `json:"authorId"`
-		AuthorName                    *string             `json:"authorName,omitempty"`
+		AuthorId     *string `json:"authorId"`
+		AuthorName   *string `json:"authorName,omitempty"`
+		AwsIamConfig *struct {
+			Audience *string `json:"audience,omitempty"`
+			Region   string  `json:"region"`
+			RoleArn  string  `json:"roleArn"`
+			Service  string  `json:"service"`
+		} `json:"awsIamConfig"`
 		CatalogItemApprovalReason     *string             `json:"catalogItemApprovalReason"`
 		CatalogItemApprovalReviewedAt *time.Time          `json:"catalogItemApprovalReviewedAt"`
 		CatalogItemApprovalReviewedBy *string             `json:"catalogItemApprovalReviewedBy"`
@@ -109736,10 +109881,12 @@ func ParseCreateIdentityProviderResponse(rsp *http.Response) (*CreateIdentityPro
 				EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 				EnterpriseManagedCredentials *struct {
 					AgentIdentity *struct {
-						ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
-						PrivateKeyId         *string `json:"privateKeyId,omitempty"`
-						PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
-						RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+						ActorTokenScope      *string                                                                                             `json:"actorTokenScope,omitempty"`
+						PrivateKeyId         *string                                                                                             `json:"privateKeyId,omitempty"`
+						PrivateKeyPem        *string                                                                                             `json:"privateKeyPem,omitempty"`
+						RequireAgentIdentity *bool                                                                                               `json:"requireAgentIdentity,omitempty"`
+						Source               *CreateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource `json:"source,omitempty"`
+						SpiffeAudience       *string                                                                                             `json:"spiffeAudience,omitempty"`
 					} `json:"agentIdentity,omitempty"`
 					ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 					ClientId                *string `json:"clientId,omitempty"`
@@ -110081,10 +110228,12 @@ func ParseGetIdentityProviderResponse(rsp *http.Response) (*GetIdentityProviderR
 				EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 				EnterpriseManagedCredentials *struct {
 					AgentIdentity *struct {
-						ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
-						PrivateKeyId         *string `json:"privateKeyId,omitempty"`
-						PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
-						RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+						ActorTokenScope      *string                                                                                          `json:"actorTokenScope,omitempty"`
+						PrivateKeyId         *string                                                                                          `json:"privateKeyId,omitempty"`
+						PrivateKeyPem        *string                                                                                          `json:"privateKeyPem,omitempty"`
+						RequireAgentIdentity *bool                                                                                            `json:"requireAgentIdentity,omitempty"`
+						Source               *GetIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource `json:"source,omitempty"`
+						SpiffeAudience       *string                                                                                          `json:"spiffeAudience,omitempty"`
 					} `json:"agentIdentity,omitempty"`
 					ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 					ClientId                *string `json:"clientId,omitempty"`
@@ -110319,10 +110468,12 @@ func ParseUpdateIdentityProviderResponse(rsp *http.Response) (*UpdateIdentityPro
 				EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
 				EnterpriseManagedCredentials *struct {
 					AgentIdentity *struct {
-						ActorTokenScope      *string `json:"actorTokenScope,omitempty"`
-						PrivateKeyId         *string `json:"privateKeyId,omitempty"`
-						PrivateKeyPem        *string `json:"privateKeyPem,omitempty"`
-						RequireAgentIdentity *bool   `json:"requireAgentIdentity,omitempty"`
+						ActorTokenScope      *string                                                                                             `json:"actorTokenScope,omitempty"`
+						PrivateKeyId         *string                                                                                             `json:"privateKeyId,omitempty"`
+						PrivateKeyPem        *string                                                                                             `json:"privateKeyPem,omitempty"`
+						RequireAgentIdentity *bool                                                                                               `json:"requireAgentIdentity,omitempty"`
+						Source               *UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource `json:"source,omitempty"`
+						SpiffeAudience       *string                                                                                             `json:"spiffeAudience,omitempty"`
 					} `json:"agentIdentity,omitempty"`
 					ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
 					ClientId                *string `json:"clientId,omitempty"`
@@ -110550,8 +110701,14 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 				Required    bool    `json:"required"`
 				Type        string  `json:"type"`
 			} `json:"authFields"`
-			AuthorId                      *string             `json:"authorId"`
-			AuthorName                    *string             `json:"authorName,omitempty"`
+			AuthorId     *string `json:"authorId"`
+			AuthorName   *string `json:"authorName,omitempty"`
+			AwsIamConfig *struct {
+				Audience *string `json:"audience,omitempty"`
+				Region   string  `json:"region"`
+				RoleArn  string  `json:"roleArn"`
+				Service  string  `json:"service"`
+			} `json:"awsIamConfig"`
 			CatalogItemApprovalReason     *string             `json:"catalogItemApprovalReason"`
 			CatalogItemApprovalReviewedAt *time.Time          `json:"catalogItemApprovalReviewedAt"`
 			CatalogItemApprovalReviewedBy *string             `json:"catalogItemApprovalReviewedBy"`
@@ -110900,8 +111057,14 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 				Required    bool    `json:"required"`
 				Type        string  `json:"type"`
 			} `json:"authFields"`
-			AuthorId                      *string             `json:"authorId"`
-			AuthorName                    *string             `json:"authorName,omitempty"`
+			AuthorId     *string `json:"authorId"`
+			AuthorName   *string `json:"authorName,omitempty"`
+			AwsIamConfig *struct {
+				Audience *string `json:"audience,omitempty"`
+				Region   string  `json:"region"`
+				RoleArn  string  `json:"roleArn"`
+				Service  string  `json:"service"`
+			} `json:"awsIamConfig"`
 			CatalogItemApprovalReason     *string             `json:"catalogItemApprovalReason"`
 			CatalogItemApprovalReviewedAt *time.Time          `json:"catalogItemApprovalReviewedAt"`
 			CatalogItemApprovalReviewedBy *string             `json:"catalogItemApprovalReviewedBy"`
@@ -111149,8 +111312,14 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 				Required    bool    `json:"required"`
 				Type        string  `json:"type"`
 			} `json:"authFields"`
-			AuthorId                      *string             `json:"authorId"`
-			AuthorName                    *string             `json:"authorName,omitempty"`
+			AuthorId     *string `json:"authorId"`
+			AuthorName   *string `json:"authorName,omitempty"`
+			AwsIamConfig *struct {
+				Audience *string `json:"audience,omitempty"`
+				Region   string  `json:"region"`
+				RoleArn  string  `json:"roleArn"`
+				Service  string  `json:"service"`
+			} `json:"awsIamConfig"`
 			CatalogItemApprovalReason     *string             `json:"catalogItemApprovalReason"`
 			CatalogItemApprovalReviewedAt *time.Time          `json:"catalogItemApprovalReviewedAt"`
 			CatalogItemApprovalReviewedBy *string             `json:"catalogItemApprovalReviewedBy"`
