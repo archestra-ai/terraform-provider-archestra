@@ -52,7 +52,7 @@ type McpGatewayResourceModel struct {
 	CreatedByServiceAccountId types.String `tfsdk:"created_by_service_account_id"`
 	DeletedAt                 types.String `tfsdk:"deleted_at"`
 	LastUsedAt                types.String `tfsdk:"last_used_at"`
-	EntraAgentIdentityId      types.String `tfsdk:"entra_agent_identity_id"`
+	IdentityBindings          types.Set    `tfsdk:"identity_bindings"`
 	LatestVersion             types.Int64  `tfsdk:"latest_version"`
 	AccessAllSubagents        types.Bool   `tfsdk:"access_all_subagents"`
 	AccessAllTools            types.Bool   `tfsdk:"access_all_tools"`
@@ -462,7 +462,6 @@ var mcpGatewayAttrSpec = append(gatewayRelationshipAttrSpecs(), []AttrSpec{
 	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},
 	{TFName: "missing_credential_behavior", JSONName: "missingCredentialBehavior", Kind: Scalar, OmitOnNull: true},
 	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar, OmitOnNull: false},
-	{TFName: "entra_agent_identity_id", JSONName: "entraAgentIdentityId", Kind: Scalar},
 
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},

@@ -177,9 +177,11 @@ to a specific platform version. To bump:
    `scripts/bootstrap-local-stack.sh` and the provider's untested-version
    warning all read it.
 
-For new platform releases, the Update Terraform Provider workflow in
-archestra-ai/archestra does steps 2 and 3 and opens a pull request on the
-`automation/platform-api` branch.
+For new platform releases, the Terraform Provider Sync agent does steps 2 and
+3 from the release's `docs/openapi.json` (`OPENAPI_SPEC=<file> make
+codegen-api-client`), makes the resource changes the release needs, and opens a
+pull request on the `automation/platform-sync` branch. The release pipeline of
+archestra-ai/archestra starts it for each published release.
 
 Pull request CI also runs both acceptance suites against the oldest supported
 release (`minimumAPIVersion`) and the newest stable release, which

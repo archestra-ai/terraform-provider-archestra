@@ -53,7 +53,6 @@ output "support_tools" {
 - `created_by_service_account_id` (String) Server-reported created by service account id.
 - `deleted_at` (String) Server-reported deleted at.
 - `description` (String) Human-readable description
-- `entra_agent_identity_id` (String) Application (client) ID of the Microsoft Entra agent identity this record calls tools as, a GUID. Requires an identity provider with an Entra Agent ID blueprint (API 1.5.0-rc.29 or later; leave unset on older releases).
 - `environment_id` (String) Environment UUID scoping which MCP servers and connections the agent resolves against; omit for the default environment
 - `excluded_connector_ids` (Set of String) Knowledge connectors excluded from automatic access.
 - `excluded_subagent_ids` (Set of String) Local agents excluded from automatic access.
@@ -61,6 +60,7 @@ output "support_tools" {
 - `fast_model_id` (String) Database UUID of a faster tool-capable chat model on the agent's `llm_api_key_id`, used when the agent forks a subagent on the `fast` tier; null falls back to the organization's `default_fast_model_id`, then the provider default
 - `hooks` (Attributes Set) Current event hooks and their file configuration. (see [below for nested schema](#nestedatt--hooks))
 - `icon` (String) Emoji or base64 image data URL
+- `identity_bindings` (Attributes Set) Identities this agent acts as at identity providers, such as its Microsoft Entra agent identity or Okta AI agent; omit to preserve or set an empty set to clear. Requires Archestra 1.5.0-rc.35 or later. (see [below for nested schema](#nestedatt--identity_bindings))
 - `incoming_email_allowed_domain` (String) Allowed sender domain when `incoming_email_security_mode = "internal"`
 - `incoming_email_enabled` (Boolean) Whether incoming-email invocation is enabled
 - `incoming_email_security_mode` (String) Email-trigger security mode. One of `private` (only the agent owner can email it), `internal` (any sender from `incoming_email_allowed_domain` can), or `public` (any sender). Defaults to `private`.
@@ -103,6 +103,15 @@ Read-Only:
 - `event` (String) Event that runs the hook.
 - `file_name` (String) Plain Python or shell filename, unique within this event.
 - `requirements` (List of String) Python dependencies; an empty list removes dependencies.
+
+
+<a id="nestedatt--identity_bindings"></a>
+### Nested Schema for `identity_bindings`
+
+Read-Only:
+
+- `external_id` (String) The agent's ID at that identity provider, such as an Entra agent identity's application (client) ID.
+- `identity_provider_id` (String) Identity provider the identity belongs to.
 
 
 <a id="nestedatt--labels"></a>

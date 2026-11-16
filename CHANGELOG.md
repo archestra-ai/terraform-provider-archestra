@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.4.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.3.0...v3.4.0) (2026-11-16)
+
+
+### Features
+
+* manage service account federated credentials ([#256](https://github.com/archestra-ai/terraform-provider-archestra/issues/256)) ([24c61fe](https://github.com/archestra-ai/terraform-provider-archestra/commit/24c61fe8e5e0adfd8c0329514a00d826797c2c96))
+
+## [3.3.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.2.1...v3.3.0) (2026-11-16)
+
+
+### Features
+
+* AWS IAM sign-in and tool prefix on MCP registry entries; sync platform API to 1.5.0-rc.35 ([#250](https://github.com/archestra-ai/terraform-provider-archestra/issues/250)) ([57f3a1f](https://github.com/archestra-ai/terraform-provider-archestra/commit/57f3a1fd0a9115600248ae3c9cb40b8fa5ed627b))
+* identity_bindings on agents and gateways, replacing entra_agent_identity_id ([#254](https://github.com/archestra-ai/terraform-provider-archestra/issues/254)) ([efda526](https://github.com/archestra-ai/terraform-provider-archestra/commit/efda526d4e8cc1d68c512ce33a44b01f3d8aa2ef))
+
 ## [3.2.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.2.0...v3.2.1) (2026-11-15)
 
 
