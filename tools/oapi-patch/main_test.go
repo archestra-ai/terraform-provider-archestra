@@ -309,3 +309,41 @@ func mustEncode(t *testing.T, v any) string {
 		return buf.String()
 	}
 }
+
+func TestPatch_EnumValueThatWouldRedeclareClientIsNamedByItsProperty(t *testing.T) {
+	out, stats := runPatch(t, `{
+		"properties": {"source": {"type": "string", "enum": ["client", "spiffe"]}},
+		"parameters": [{"name": "actorKind", "in": "query",
+			"schema": {"type": "string", "enum": ["person", "client"]}}]
+	}`)
+	source := out["properties"].(map[string]any)["source"].(map[string]any)
+	if got, want := source["x-enum-varnames"], []any{"SourceClient", "SourceSpiffe"}; !reflect.DeepEqual(got, want) {
+		t.Errorf("property enum names = %v, want %v", got, want)
+	}
+	param := out["parameters"].([]any)[0].(map[string]any)["schema"].(map[string]any)
+	if got, want := param["x-enum-varnames"], []any{"ActorKindPerson", "ActorKindClient"}; !reflect.DeepEqual(got, want) {
+		t.Errorf("parameter enum names = %v, want %v", got, want)
+	}
+	if stats.enumsNamed != 2 {
+		t.Errorf("enumsNamed = %d, want 2", stats.enumsNamed)
+	}
+}
+
+func TestPatch_EnumWithoutClashOrAlreadyNamedIsLeftAlone(t *testing.T) {
+	out, stats := runPatch(t, `{
+		"properties": {
+			"mode": {"type": "string", "enum": ["team", "personal"]},
+			"kind": {"type": "string", "enum": ["client"], "x-enum-varnames": ["KindOwnClient"]}
+		}
+	}`)
+	props := out["properties"].(map[string]any)
+	if _, ok := props["mode"].(map[string]any)["x-enum-varnames"]; ok {
+		t.Error("an enum without a clashing value got names")
+	}
+	if got := props["kind"].(map[string]any)["x-enum-varnames"]; !reflect.DeepEqual(got, []any{"KindOwnClient"}) {
+		t.Errorf("existing names were replaced: %v", got)
+	}
+	if stats.enumsNamed != 0 {
+		t.Errorf("enumsNamed = %d, want 0", stats.enumsNamed)
+	}
+}

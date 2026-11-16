@@ -147,6 +147,39 @@ func TestMapCatalogEnterpriseManagedConfig(t *testing.T) {
 	})
 }
 
+func TestFlattenCatalogAwsIamConfigAndToolPrefix(t *testing.T) {
+	t.Parallel()
+
+	t.Run("absent is null", func(t *testing.T) {
+		var data MCPServerRegistryResourceModel
+		var diags diag.Diagnostics
+		flattenCurrentCatalogFields(&data, parseCatalogResp(t, `{}`), &diags)
+		if diags.HasError() || data.AwsIamConfig != nil || !data.ToolPrefix.IsNull() {
+			t.Errorf("got aws_iam_config=%+v tool_prefix=%v diags=%v, want both null", data.AwsIamConfig, data.ToolPrefix, diags)
+		}
+	})
+
+	t.Run("populated maps each field, audience optional", func(t *testing.T) {
+		var data MCPServerRegistryResourceModel
+		var diags diag.Diagnostics
+		flattenCurrentCatalogFields(&data, parseCatalogResp(t, `{
+			"toolPrefix": "agentcore",
+			"awsIamConfig": {"roleArn": "arn:aws:iam::123456789012:role/agents", "region": "us-east-1", "service": "bedrock-agentcore"}
+		}`), &diags)
+		if diags.HasError() {
+			t.Fatal(diags)
+		}
+		if data.ToolPrefix.ValueString() != "agentcore" {
+			t.Errorf("ToolPrefix = %v", data.ToolPrefix)
+		}
+		got := data.AwsIamConfig
+		if got == nil || got.RoleArn.ValueString() != "arn:aws:iam::123456789012:role/agents" ||
+			got.Region.ValueString() != "us-east-1" || got.Service.ValueString() != "bedrock-agentcore" || !got.Audience.IsNull() {
+			t.Errorf("AwsIamConfig = %+v", got)
+		}
+	})
+}
+
 func TestMapCatalogLabels(t *testing.T) {
 	t.Parallel()
 

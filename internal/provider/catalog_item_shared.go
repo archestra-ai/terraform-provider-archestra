@@ -65,6 +65,14 @@ var catalogItemAttrSpec = []AttrSpec{
 	{TFName: "client_secret_id", JSONName: "clientSecretId", Kind: Scalar},
 	{TFName: "local_config_secret_id", JSONName: "localConfigSecretId", Kind: Scalar},
 
+	{TFName: "aws_iam_config", JSONName: "awsIamConfig", Kind: AtomicObject, Children: []AttrSpec{
+		{TFName: "role_arn", JSONName: "roleArn", Kind: Scalar},
+		{TFName: "region", JSONName: "region", Kind: Scalar},
+		{TFName: "service", JSONName: "service", Kind: Scalar},
+		// The platform's audience is optional, not nullable.
+		{TFName: "audience", JSONName: "audience", Kind: Scalar, OmitOnNull: true},
+	}},
+
 	{TFName: "enterprise_managed_config", JSONName: "enterpriseManagedConfig", Kind: AtomicObject, Children: []AttrSpec{
 		{TFName: "identity_provider_id", JSONName: "identityProviderId", Kind: Scalar},
 		{TFName: "resource_type", JSONName: "resourceType", Kind: Scalar},
