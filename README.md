@@ -200,7 +200,8 @@ tag vX.Y.Z  ──▶  build-release (no secrets)
                      ──▶  ghcr.io/archestra-ai/ci/provider-archestra (staging)
                      │
                      ▼
-                 attest-release: attest every file and the package digest
+                 attest-release (archestra-ai/.github attest-provenance.yml,
+                   a job no build step runs in): attest every file and the package digest
                      │
                      ▼
                  publish-release (archestra-ai/.github release-publish.yml):
