@@ -122,7 +122,7 @@ func ConfigureResources(p *ujconfig.Provider) {
 	})
 	p.AddResourceConfigurator("archestra_environment", func(r *ujconfig.Resource) { r.ShortGroup = "environment"; r.Kind = "Environment" })
 	p.AddResourceConfigurator("archestra_agent", func(r *ujconfig.Resource) {
-		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "subagent_ids", "remote_agent_ids", "excluded_subagent_ids", "excluded_connector_ids", "skills", "hooks", "tools", "excluded_tool_ids", "model_pool_id", "model_id", "llm_api_key_id")
+		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "subagent_ids", "remote_agent_ids", "excluded_subagent_ids", "excluded_connector_ids", "identity_bindings", "skills", "hooks", "tools", "excluded_tool_ids", "model_pool_id", "model_id", "llm_api_key_id")
 		r.References["tools.mcp_server_id"] = ujconfig.Reference{TerraformName: "archestra_mcp_server"}
 		r.References["subagent_ids"] = ujconfig.Reference{TerraformName: "archestra_agent"}
 		r.References["excluded_subagent_ids"] = ujconfig.Reference{TerraformName: "archestra_agent"}
@@ -172,7 +172,7 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.Kind = "ModelProvider"
 	})
 	p.AddResourceConfigurator("archestra_mcp_gateway", func(r *ujconfig.Resource) {
-		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "subagent_ids", "remote_agent_ids", "excluded_subagent_ids", "excluded_connector_ids", "tools", "excluded_tool_ids", "skills")
+		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "subagent_ids", "remote_agent_ids", "excluded_subagent_ids", "excluded_connector_ids", "identity_bindings", "tools", "excluded_tool_ids", "skills")
 		r.References["subagent_ids"] = ujconfig.Reference{TerraformName: "archestra_agent"}
 		r.References["remote_agent_ids"] = ujconfig.Reference{TerraformName: "archestra_remote_agent"}
 		r.References["excluded_subagent_ids"] = ujconfig.Reference{TerraformName: "archestra_agent"}

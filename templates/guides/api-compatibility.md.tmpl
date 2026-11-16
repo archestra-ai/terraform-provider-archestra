@@ -28,8 +28,8 @@ Two features need 1.5.0-rc.1 or later:
 
 Two settings need a later release. Leave them unset on older releases:
 
-- `entra_agent_identity_id` on `archestra_agent` and `archestra_mcp_gateway`
-  needs 1.5.0-rc.29 or later.
+- `identity_bindings` on `archestra_agent` and `archestra_mcp_gateway` needs
+  1.5.0-rc.35 or later. Setting it on an older release fails with an error.
 - `connection_page_hidden` on `archestra_organization_settings` needs
   1.5.0-rc.31 or later.
 

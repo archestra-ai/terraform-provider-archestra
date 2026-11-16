@@ -54,6 +54,7 @@ func agentRelationshipAttributes() map[string]schema.Attribute {
 		"remote_agent_ids":       agentIDSetAttribute("Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.", 500),
 		"excluded_subagent_ids":  ids("Local agents excluded from automatic subagent access; omit to preserve or set an empty set to clear."),
 		"excluded_connector_ids": ids("Knowledge connectors excluded from automatic knowledge access; omit to preserve or set an empty set to clear."),
+		"identity_bindings":      agentIdentityBindingsAttribute(),
 		"skills": schema.SingleNestedAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Object{objectplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Skill activation mode and complete allowed/excluded references; omit to preserve the current policy.", Attributes: map[string]schema.Attribute{
 			"mode":     schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.OneOf("all", "manual")}, MarkdownDescription: "Automatic access to all skills, or an explicit manual selection."},
 			"allowed":  references("Explicitly allowed skills; an empty set clears the selection."),
@@ -65,7 +66,7 @@ func agentRelationshipAttributes() map[string]schema.Attribute {
 }
 func agentRelationshipAttrSpecs() []AttrSpec {
 	return []AttrSpec{
-		{TFName: "subagent_ids", Kind: Synthetic}, {TFName: "remote_agent_ids", Kind: Synthetic}, {TFName: "excluded_subagent_ids", Kind: Synthetic}, {TFName: "excluded_connector_ids", Kind: Synthetic}, {TFName: "skills", Kind: Synthetic},
+		{TFName: "subagent_ids", Kind: Synthetic}, {TFName: "remote_agent_ids", Kind: Synthetic}, {TFName: "excluded_subagent_ids", Kind: Synthetic}, {TFName: "excluded_connector_ids", Kind: Synthetic}, {TFName: "identity_bindings", Kind: Synthetic}, {TFName: "skills", Kind: Synthetic},
 	}
 }
 func agentSet(ctx context.Context, values []string, diags *diag.Diagnostics) types.Set {
@@ -155,6 +156,7 @@ func (r *AgentResource) readAssignments(ctx context.Context, data *AgentResource
 		values = append(values, item.String())
 	}
 	data.ExcludedConnectorIDs = agentSet(ctx, values, diags)
+	r.readIdentityBindings(ctx, id, data, diags)
 }
 func (r *AgentResource) readInlineSkillPolicy(ctx context.Context, data *AgentResourceModel, diags *diag.Diagnostics) {
 	id, err := uuid.Parse(data.ID.ValueString())
@@ -263,6 +265,9 @@ func (r *AgentResource) writeAssignments(ctx context.Context, plan, prior *Agent
 			helper := AgentKnowledgeSourceExclusionsResource{client: r.client}
 			return helper.replaceExclusions(ctx, &AgentKnowledgeSourceExclusionsResourceModel{AgentID: plan.ID, ExcludedConnectorIds: plan.ExcludedConnectorIDs}, diags)
 		}},
+		{"identity_bindings", plan.IdentityBindings, prior.IdentityBindings, func() bool {
+			return r.writeIdentityBindings(ctx, id, plan, diags)
+		}},
 	}
 	for _, change := range changes {
 		if !agentConfigured(ctx, config, change.name, diags) || change.desired.Equal(change.before) {
@@ -337,6 +342,9 @@ func nullUnknownAgentRelationships(data *AgentResourceModel) {
 		if value.IsUnknown() {
 			*value = types.SetNull(types.StringType)
 		}
+	}
+	if data.IdentityBindings.IsUnknown() {
+		data.IdentityBindings = types.SetNull(agentIdentityBindingType)
 	}
 	if data.Hooks.IsUnknown() {
 		data.Hooks = types.SetNull(agentHookType)

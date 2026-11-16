@@ -6408,6 +6408,186 @@ func (e PatchAgentActivationSkillPolicy500JSONResponseBodyErrorType) Valid() boo
 	}
 }
 
+// Defines values for GetAgentIdentityBindings400JSONResponseBodyErrorType.
+const (
+	GetAgentIdentityBindings400JSONResponseBodyErrorTypeApiValidationError GetAgentIdentityBindings400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetAgentIdentityBindings400JSONResponseBodyErrorType enum.
+func (e GetAgentIdentityBindings400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetAgentIdentityBindings400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAgentIdentityBindings401JSONResponseBodyErrorType.
+const (
+	GetAgentIdentityBindings401JSONResponseBodyErrorTypeApiAuthenticationError GetAgentIdentityBindings401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetAgentIdentityBindings401JSONResponseBodyErrorType enum.
+func (e GetAgentIdentityBindings401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetAgentIdentityBindings401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAgentIdentityBindings403JSONResponseBodyErrorType.
+const (
+	GetAgentIdentityBindings403JSONResponseBodyErrorTypeApiAuthorizationError GetAgentIdentityBindings403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetAgentIdentityBindings403JSONResponseBodyErrorType enum.
+func (e GetAgentIdentityBindings403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetAgentIdentityBindings403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAgentIdentityBindings404JSONResponseBodyErrorType.
+const (
+	GetAgentIdentityBindings404JSONResponseBodyErrorTypeApiNotFoundError GetAgentIdentityBindings404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetAgentIdentityBindings404JSONResponseBodyErrorType enum.
+func (e GetAgentIdentityBindings404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetAgentIdentityBindings404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAgentIdentityBindings409JSONResponseBodyErrorType.
+const (
+	GetAgentIdentityBindings409JSONResponseBodyErrorTypeApiConflictError GetAgentIdentityBindings409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetAgentIdentityBindings409JSONResponseBodyErrorType enum.
+func (e GetAgentIdentityBindings409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetAgentIdentityBindings409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAgentIdentityBindings500JSONResponseBodyErrorType.
+const (
+	GetAgentIdentityBindings500JSONResponseBodyErrorTypeApiInternalServerError GetAgentIdentityBindings500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetAgentIdentityBindings500JSONResponseBodyErrorType enum.
+func (e GetAgentIdentityBindings500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetAgentIdentityBindings500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReplaceAgentIdentityBindings400JSONResponseBodyErrorType.
+const (
+	ReplaceAgentIdentityBindings400JSONResponseBodyErrorTypeApiValidationError ReplaceAgentIdentityBindings400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the ReplaceAgentIdentityBindings400JSONResponseBodyErrorType enum.
+func (e ReplaceAgentIdentityBindings400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ReplaceAgentIdentityBindings400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReplaceAgentIdentityBindings401JSONResponseBodyErrorType.
+const (
+	ReplaceAgentIdentityBindings401JSONResponseBodyErrorTypeApiAuthenticationError ReplaceAgentIdentityBindings401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the ReplaceAgentIdentityBindings401JSONResponseBodyErrorType enum.
+func (e ReplaceAgentIdentityBindings401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ReplaceAgentIdentityBindings401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReplaceAgentIdentityBindings403JSONResponseBodyErrorType.
+const (
+	ReplaceAgentIdentityBindings403JSONResponseBodyErrorTypeApiAuthorizationError ReplaceAgentIdentityBindings403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the ReplaceAgentIdentityBindings403JSONResponseBodyErrorType enum.
+func (e ReplaceAgentIdentityBindings403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ReplaceAgentIdentityBindings403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReplaceAgentIdentityBindings404JSONResponseBodyErrorType.
+const (
+	ReplaceAgentIdentityBindings404JSONResponseBodyErrorTypeApiNotFoundError ReplaceAgentIdentityBindings404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the ReplaceAgentIdentityBindings404JSONResponseBodyErrorType enum.
+func (e ReplaceAgentIdentityBindings404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ReplaceAgentIdentityBindings404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReplaceAgentIdentityBindings409JSONResponseBodyErrorType.
+const (
+	ReplaceAgentIdentityBindings409JSONResponseBodyErrorTypeApiConflictError ReplaceAgentIdentityBindings409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the ReplaceAgentIdentityBindings409JSONResponseBodyErrorType enum.
+func (e ReplaceAgentIdentityBindings409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ReplaceAgentIdentityBindings409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReplaceAgentIdentityBindings500JSONResponseBodyErrorType.
+const (
+	ReplaceAgentIdentityBindings500JSONResponseBodyErrorTypeApiInternalServerError ReplaceAgentIdentityBindings500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the ReplaceAgentIdentityBindings500JSONResponseBodyErrorType enum.
+func (e ReplaceAgentIdentityBindings500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ReplaceAgentIdentityBindings500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetAgentKnowledgeSourceExclusions400JSONResponseBodyErrorType.
 const (
 	GetAgentKnowledgeSourceExclusions400JSONResponseBodyErrorTypeApiValidationError GetAgentKnowledgeSourceExclusions400JSONResponseBodyErrorType = "api_validation_error"
@@ -44880,6 +45060,50 @@ type PatchAgentActivationSkillPolicy409JSONResponseBodyErrorType string
 // PatchAgentActivationSkillPolicy500JSONResponseBodyErrorType defines parameters for PatchAgentActivationSkillPolicy.
 type PatchAgentActivationSkillPolicy500JSONResponseBodyErrorType string
 
+// GetAgentIdentityBindings400JSONResponseBodyErrorType defines parameters for GetAgentIdentityBindings.
+type GetAgentIdentityBindings400JSONResponseBodyErrorType string
+
+// GetAgentIdentityBindings401JSONResponseBodyErrorType defines parameters for GetAgentIdentityBindings.
+type GetAgentIdentityBindings401JSONResponseBodyErrorType string
+
+// GetAgentIdentityBindings403JSONResponseBodyErrorType defines parameters for GetAgentIdentityBindings.
+type GetAgentIdentityBindings403JSONResponseBodyErrorType string
+
+// GetAgentIdentityBindings404JSONResponseBodyErrorType defines parameters for GetAgentIdentityBindings.
+type GetAgentIdentityBindings404JSONResponseBodyErrorType string
+
+// GetAgentIdentityBindings409JSONResponseBodyErrorType defines parameters for GetAgentIdentityBindings.
+type GetAgentIdentityBindings409JSONResponseBodyErrorType string
+
+// GetAgentIdentityBindings500JSONResponseBodyErrorType defines parameters for GetAgentIdentityBindings.
+type GetAgentIdentityBindings500JSONResponseBodyErrorType string
+
+// ReplaceAgentIdentityBindingsJSONBody defines parameters for ReplaceAgentIdentityBindings.
+type ReplaceAgentIdentityBindingsJSONBody struct {
+	Bindings []struct {
+		ExternalId         string `json:"externalId"`
+		IdentityProviderId string `json:"identityProviderId"`
+	} `json:"bindings"`
+}
+
+// ReplaceAgentIdentityBindings400JSONResponseBodyErrorType defines parameters for ReplaceAgentIdentityBindings.
+type ReplaceAgentIdentityBindings400JSONResponseBodyErrorType string
+
+// ReplaceAgentIdentityBindings401JSONResponseBodyErrorType defines parameters for ReplaceAgentIdentityBindings.
+type ReplaceAgentIdentityBindings401JSONResponseBodyErrorType string
+
+// ReplaceAgentIdentityBindings403JSONResponseBodyErrorType defines parameters for ReplaceAgentIdentityBindings.
+type ReplaceAgentIdentityBindings403JSONResponseBodyErrorType string
+
+// ReplaceAgentIdentityBindings404JSONResponseBodyErrorType defines parameters for ReplaceAgentIdentityBindings.
+type ReplaceAgentIdentityBindings404JSONResponseBodyErrorType string
+
+// ReplaceAgentIdentityBindings409JSONResponseBodyErrorType defines parameters for ReplaceAgentIdentityBindings.
+type ReplaceAgentIdentityBindings409JSONResponseBodyErrorType string
+
+// ReplaceAgentIdentityBindings500JSONResponseBodyErrorType defines parameters for ReplaceAgentIdentityBindings.
+type ReplaceAgentIdentityBindings500JSONResponseBodyErrorType string
+
 // GetAgentKnowledgeSourceExclusions400JSONResponseBodyErrorType defines parameters for GetAgentKnowledgeSourceExclusions.
 type GetAgentKnowledgeSourceExclusions400JSONResponseBodyErrorType string
 
@@ -53585,6 +53809,9 @@ type UpdateAgentJSONRequestBody UpdateAgentJSONBody
 // PatchAgentActivationSkillPolicyJSONRequestBody defines body for PatchAgentActivationSkillPolicy for application/json ContentType.
 type PatchAgentActivationSkillPolicyJSONRequestBody PatchAgentActivationSkillPolicyJSONBody
 
+// ReplaceAgentIdentityBindingsJSONRequestBody defines body for ReplaceAgentIdentityBindings for application/json ContentType.
+type ReplaceAgentIdentityBindingsJSONRequestBody ReplaceAgentIdentityBindingsJSONBody
+
 // UpdateAgentKnowledgeSourceExclusionsJSONRequestBody defines body for UpdateAgentKnowledgeSourceExclusions for application/json ContentType.
 type UpdateAgentKnowledgeSourceExclusionsJSONRequestBody UpdateAgentKnowledgeSourceExclusionsJSONBody
 
@@ -60736,6 +60963,14 @@ type ClientInterface interface {
 
 	PatchAgentActivationSkillPolicy(ctx context.Context, id openapi_types.UUID, body PatchAgentActivationSkillPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetAgentIdentityBindings request
+	GetAgentIdentityBindings(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReplaceAgentIdentityBindingsWithBody request with any body
+	ReplaceAgentIdentityBindingsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ReplaceAgentIdentityBindings(ctx context.Context, id openapi_types.UUID, body ReplaceAgentIdentityBindingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetAgentKnowledgeSourceExclusions request
 	GetAgentKnowledgeSourceExclusions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -61836,6 +62071,42 @@ func (c *Client) PatchAgentActivationSkillPolicyWithBody(ctx context.Context, id
 
 func (c *Client) PatchAgentActivationSkillPolicy(ctx context.Context, id openapi_types.UUID, body PatchAgentActivationSkillPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPatchAgentActivationSkillPolicyRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAgentIdentityBindings(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAgentIdentityBindingsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ReplaceAgentIdentityBindingsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReplaceAgentIdentityBindingsRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ReplaceAgentIdentityBindings(ctx context.Context, id openapi_types.UUID, body ReplaceAgentIdentityBindingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReplaceAgentIdentityBindingsRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -66434,6 +66705,87 @@ func NewPatchAgentActivationSkillPolicyRequestWithBody(server string, id openapi
 	}
 
 	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetAgentIdentityBindingsRequest generates requests for GetAgentIdentityBindings
+func NewGetAgentIdentityBindingsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/identity-bindings", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewReplaceAgentIdentityBindingsRequest calls the generic ReplaceAgentIdentityBindings builder with application/json body
+func NewReplaceAgentIdentityBindingsRequest(server string, id openapi_types.UUID, body ReplaceAgentIdentityBindingsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewReplaceAgentIdentityBindingsRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewReplaceAgentIdentityBindingsRequestWithBody generates requests for ReplaceAgentIdentityBindings with any type of body
+func NewReplaceAgentIdentityBindingsRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/identity-bindings", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -74370,6 +74722,14 @@ type ClientWithResponsesInterface interface {
 
 	PatchAgentActivationSkillPolicyWithResponse(ctx context.Context, id openapi_types.UUID, body PatchAgentActivationSkillPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchAgentActivationSkillPolicyResponse, error)
 
+	// GetAgentIdentityBindingsWithResponse request
+	GetAgentIdentityBindingsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentIdentityBindingsResponse, error)
+
+	// ReplaceAgentIdentityBindingsWithBodyWithResponse request with any body
+	ReplaceAgentIdentityBindingsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReplaceAgentIdentityBindingsResponse, error)
+
+	ReplaceAgentIdentityBindingsWithResponse(ctx context.Context, id openapi_types.UUID, body ReplaceAgentIdentityBindingsJSONRequestBody, reqEditors ...RequestEditorFn) (*ReplaceAgentIdentityBindingsResponse, error)
+
 	// GetAgentKnowledgeSourceExclusionsWithResponse request
 	GetAgentKnowledgeSourceExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentKnowledgeSourceExclusionsResponse, error)
 
@@ -77575,6 +77935,162 @@ func (r PatchAgentActivationSkillPolicyResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r PatchAgentActivationSkillPolicyResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetAgentIdentityBindingsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Bindings []struct {
+			ExternalId         string `json:"externalId"`
+			IdentityProviderId string `json:"identityProviderId"`
+		} `json:"bindings"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetAgentIdentityBindings400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetAgentIdentityBindings401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                              `json:"details,omitempty"`
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetAgentIdentityBindings403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetAgentIdentityBindings404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetAgentIdentityBindings409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetAgentIdentityBindings500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetAgentIdentityBindingsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAgentIdentityBindingsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetAgentIdentityBindingsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ReplaceAgentIdentityBindingsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Bindings []struct {
+			ExternalId         string `json:"externalId"`
+			IdentityProviderId string `json:"identityProviderId"`
+		} `json:"bindings"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         ReplaceAgentIdentityBindings400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         ReplaceAgentIdentityBindings401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                  `json:"details,omitempty"`
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         ReplaceAgentIdentityBindings403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         ReplaceAgentIdentityBindings404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         ReplaceAgentIdentityBindings409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                  `json:"internal_code,omitempty"`
+			Message      string                                                   `json:"message"`
+			Type         ReplaceAgentIdentityBindings500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r ReplaceAgentIdentityBindingsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReplaceAgentIdentityBindingsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReplaceAgentIdentityBindingsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -96938,6 +97454,32 @@ func (c *ClientWithResponses) PatchAgentActivationSkillPolicyWithResponse(ctx co
 	return ParsePatchAgentActivationSkillPolicyResponse(rsp)
 }
 
+// GetAgentIdentityBindingsWithResponse request returning *GetAgentIdentityBindingsResponse
+func (c *ClientWithResponses) GetAgentIdentityBindingsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentIdentityBindingsResponse, error) {
+	rsp, err := c.GetAgentIdentityBindings(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAgentIdentityBindingsResponse(rsp)
+}
+
+// ReplaceAgentIdentityBindingsWithBodyWithResponse request with arbitrary body returning *ReplaceAgentIdentityBindingsResponse
+func (c *ClientWithResponses) ReplaceAgentIdentityBindingsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReplaceAgentIdentityBindingsResponse, error) {
+	rsp, err := c.ReplaceAgentIdentityBindingsWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReplaceAgentIdentityBindingsResponse(rsp)
+}
+
+func (c *ClientWithResponses) ReplaceAgentIdentityBindingsWithResponse(ctx context.Context, id openapi_types.UUID, body ReplaceAgentIdentityBindingsJSONRequestBody, reqEditors ...RequestEditorFn) (*ReplaceAgentIdentityBindingsResponse, error) {
+	rsp, err := c.ReplaceAgentIdentityBindings(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReplaceAgentIdentityBindingsResponse(rsp)
+}
+
 // GetAgentKnowledgeSourceExclusionsWithResponse request returning *GetAgentKnowledgeSourceExclusionsResponse
 func (c *ClientWithResponses) GetAgentKnowledgeSourceExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentKnowledgeSourceExclusionsResponse, error) {
 	rsp, err := c.GetAgentKnowledgeSourceExclusions(ctx, id, reqEditors...)
@@ -102466,6 +103008,226 @@ func ParsePatchAgentActivationSkillPolicyResponse(rsp *http.Response) (*PatchAge
 				InternalCode *string                                                     `json:"internal_code,omitempty"`
 				Message      string                                                      `json:"message"`
 				Type         PatchAgentActivationSkillPolicy500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAgentIdentityBindingsResponse parses an HTTP response from a GetAgentIdentityBindingsWithResponse call
+func ParseGetAgentIdentityBindingsResponse(rsp *http.Response) (*GetAgentIdentityBindingsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAgentIdentityBindingsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Bindings []struct {
+				ExternalId         string `json:"externalId"`
+				IdentityProviderId string `json:"identityProviderId"`
+			} `json:"bindings"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetAgentIdentityBindings400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetAgentIdentityBindings401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                              `json:"details,omitempty"`
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetAgentIdentityBindings403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetAgentIdentityBindings404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetAgentIdentityBindings409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetAgentIdentityBindings500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseReplaceAgentIdentityBindingsResponse parses an HTTP response from a ReplaceAgentIdentityBindingsWithResponse call
+func ParseReplaceAgentIdentityBindingsResponse(rsp *http.Response) (*ReplaceAgentIdentityBindingsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReplaceAgentIdentityBindingsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Bindings []struct {
+				ExternalId         string `json:"externalId"`
+				IdentityProviderId string `json:"identityProviderId"`
+			} `json:"bindings"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         ReplaceAgentIdentityBindings400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         ReplaceAgentIdentityBindings401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                  `json:"details,omitempty"`
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         ReplaceAgentIdentityBindings403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         ReplaceAgentIdentityBindings404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         ReplaceAgentIdentityBindings409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                  `json:"internal_code,omitempty"`
+				Message      string                                                   `json:"message"`
+				Type         ReplaceAgentIdentityBindings500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

@@ -70,13 +70,13 @@ resource "archestra_mcp_gateway" "engineering" {
 - `access_all_tools` (Boolean) Whether all accessible tools are exposed automatically.
 - `connector_ids` (List of String) Knowledge connector IDs the gateway has access to
 - `description` (String) Human-readable description
-- `entra_agent_identity_id` (String) Application (client) ID of the Microsoft Entra agent identity this record calls tools as, a GUID. Requires an identity provider with an Entra Agent ID blueprint (API 1.5.0-rc.29 or later; leave unset on older releases).
 - `environment_id` (String) Deployment environment used to resolve MCP servers and credentials.
 - `excluded_connector_ids` (Set of String) Knowledge connectors excluded from automatic knowledge access; omit to preserve or set an empty set to clear.
 - `excluded_subagent_ids` (Set of String) Local agents excluded from automatic subagent access; omit to preserve or set an empty set to clear.
 - `excluded_tool_ids` (Set of String) Tools excluded from automatic tool access; omit to preserve or set an empty set to clear.
 - `github_actions_access` (Attributes) GitHub Actions token exchange access for this gateway. (see [below for nested schema](#nestedatt--github_actions_access))
 - `icon` (String) Emoji or base64 image data URL
+- `identity_bindings` (Attributes Set) Identities this agent acts as at identity providers, such as its Microsoft Entra agent identity or Okta AI agent; omit to preserve or set an empty set to clear. Requires Archestra 1.5.0-rc.35 or later. (see [below for nested schema](#nestedatt--identity_bindings))
 - `identity_provider_id` (String) Identity provider used to validate inbound JWTs. Reference an `archestra_identity_provider`. Omit to disable JWT auth.
 - `is_default` (Boolean) Whether this is the default MCP gateway
 - `knowledge_base_ids` (List of String) Knowledge base IDs the gateway has access to
@@ -116,6 +116,15 @@ Optional:
 
 - `act_as` (String) Account used by a run: author (default) or the actor who started it.
 - `resolve_review_threads` (Boolean) Whether repository tokens can resolve review threads.
+
+
+<a id="nestedatt--identity_bindings"></a>
+### Nested Schema for `identity_bindings`
+
+Required:
+
+- `external_id` (String) The agent's ID at that identity provider, such as an Entra agent identity's application (client) ID.
+- `identity_provider_id` (String) Identity provider the identity belongs to.
 
 
 <a id="nestedatt--labels"></a>
