@@ -85,7 +85,7 @@ func TestGeneratedInlineCollectionsReachTerraformAndKubernetes(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			for _, name := range []string{"subagent_ids", "remote_agent_ids", "excluded_subagent_ids", "excluded_connector_ids", "tools", "excluded_tool_ids", "hooks"} {
+			for _, name := range []string{"subagent_ids", "remote_agent_ids", "excluded_subagent_ids", "excluded_connector_ids", "identity_bindings", "tools", "excluded_tool_ids", "hooks"} {
 				if _, ok := omitted[name]; ok {
 					t.Errorf("unmanaged collection %s was emitted: %#v", name, omitted[name])
 				}

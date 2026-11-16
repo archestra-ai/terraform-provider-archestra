@@ -44,16 +44,17 @@ func gatewayRelationshipAttributes() map[string]schema.Attribute {
 	return attributes
 }
 func gatewayRelationshipAttrSpecs() []AttrSpec {
-	return []AttrSpec{{TFName: "subagent_ids", Kind: Synthetic}, {TFName: "remote_agent_ids", Kind: Synthetic}, {TFName: "excluded_subagent_ids", Kind: Synthetic}, {TFName: "excluded_connector_ids", Kind: Synthetic}, {TFName: "skills", Kind: Synthetic}, {TFName: "tools", Kind: Synthetic}, {TFName: "excluded_tool_ids", Kind: Synthetic}}
+	return []AttrSpec{{TFName: "subagent_ids", Kind: Synthetic}, {TFName: "remote_agent_ids", Kind: Synthetic}, {TFName: "excluded_subagent_ids", Kind: Synthetic}, {TFName: "excluded_connector_ids", Kind: Synthetic}, {TFName: "identity_bindings", Kind: Synthetic}, {TFName: "skills", Kind: Synthetic}, {TFName: "tools", Kind: Synthetic}, {TFName: "excluded_tool_ids", Kind: Synthetic}}
 }
 func gatewayAgentView(data *McpGatewayResourceModel) AgentResourceModel {
-	return AgentResourceModel{ID: data.ID, SubagentIDs: data.SubagentIDs, RemoteAgentIDs: data.RemoteAgentIDs, ExcludedSubagentIDs: data.ExcludedSubagentIDs, ExcludedConnectorIDs: data.ExcludedConnectorIDs, Tools: data.Tools, ExcludedToolIDs: data.ExcludedToolIDs}
+	return AgentResourceModel{ID: data.ID, SubagentIDs: data.SubagentIDs, RemoteAgentIDs: data.RemoteAgentIDs, ExcludedSubagentIDs: data.ExcludedSubagentIDs, ExcludedConnectorIDs: data.ExcludedConnectorIDs, IdentityBindings: data.IdentityBindings, Tools: data.Tools, ExcludedToolIDs: data.ExcludedToolIDs}
 }
 func copyGatewayRelations(data *McpGatewayResourceModel, view AgentResourceModel) {
 	data.SubagentIDs = view.SubagentIDs
 	data.RemoteAgentIDs = view.RemoteAgentIDs
 	data.ExcludedSubagentIDs = view.ExcludedSubagentIDs
 	data.ExcludedConnectorIDs = view.ExcludedConnectorIDs
+	data.IdentityBindings = view.IdentityBindings
 	data.Tools = view.Tools
 	data.ExcludedToolIDs = view.ExcludedToolIDs
 }

@@ -55,7 +55,7 @@ type AgentResourceModel struct {
 	CreatedByServiceAccountId            types.String `tfsdk:"created_by_service_account_id"`
 	DeletedAt                            types.String `tfsdk:"deleted_at"`
 	LastUsedAt                           types.String `tfsdk:"last_used_at"`
-	EntraAgentIdentityId                 types.String `tfsdk:"entra_agent_identity_id"`
+	IdentityBindings                     types.Set    `tfsdk:"identity_bindings"`
 	LatestVersion                        types.Int64  `tfsdk:"latest_version"`
 	ActivationSkillMode                  types.String `tfsdk:"activation_skill_mode"`
 	ActivationSkillPolicyRevision        types.Int64  `tfsdk:"activation_skill_policy_revision"`
@@ -636,7 +636,6 @@ var agentAttrSpec = append(append(agentRelationshipAttrSpecs(), AttrSpec{TFName:
 	{TFName: "model_pool_id", JSONName: "modelPoolId", Kind: Scalar},
 	{TFName: "auto_router_id", JSONName: "autoRouterId", Kind: Scalar},
 	agentNetworkPolicyAttrSpec,
-	{TFName: "entra_agent_identity_id", JSONName: "entraAgentIdentityId", Kind: Scalar},
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar, OmitOnNull: true},
 
