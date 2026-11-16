@@ -281,7 +281,7 @@ resource "archestra_mcp_registry_entry" "private_registry" {
 - `deleted_at` (String) Deleted at.
 - `deployment_name` (String) Deployment name.
 - `id` (String) MCP server catalog identifier
-- `tool_prefix` (String) Prefix of this item's tool names.
+- `tool_prefix` (String) Prefix of this item's tool names when it is not the slugified name; null otherwise.
 
 <a id="nestedatt--auth_fields"></a>
 ### Nested Schema for `auth_fields`

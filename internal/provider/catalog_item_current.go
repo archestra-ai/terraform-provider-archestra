@@ -27,7 +27,7 @@ func currentCatalogAttributes() map[string]schema.Attribute {
 		"deleted_at":                        schema.StringAttribute{Computed: true, MarkdownDescription: "Deleted at."},
 		"deployment_name":                   schema.StringAttribute{Computed: true, MarkdownDescription: "Deployment name."},
 		"catalog_reinstall_required":        schema.BoolAttribute{Computed: true, MarkdownDescription: "Whether existing shared installations need reinstallation."},
-		"tool_prefix":                       schema.StringAttribute{Computed: true, MarkdownDescription: "Prefix of this item's tool names."},
+		"tool_prefix":                       schema.StringAttribute{Computed: true, MarkdownDescription: "Prefix of this item's tool names when it is not the slugified name; null otherwise."},
 		"aws_iam_config": schema.SingleNestedAttribute{
 			Optional:            true,
 			MarkdownDescription: "AWS IAM (SigV4) sign-in for a remote MCP server: each agent assumes the role as its own session.",

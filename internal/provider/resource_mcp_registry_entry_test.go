@@ -189,7 +189,8 @@ resource "archestra_mcp_registry_entry" "test_remote_aws_iam" {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(name, tfjsonpath.New("aws_iam_config").AtMapKey("service"), knownvalue.StringExact("bedrock-agentcore")),
 					statecheck.ExpectKnownValue(name, tfjsonpath.New("aws_iam_config").AtMapKey("audience"), knownvalue.Null()),
-					statecheck.ExpectKnownValue(name, tfjsonpath.New("tool_prefix"), knownvalue.NotNull()),
+					// A short name needs no prefix of its own.
+					statecheck.ExpectKnownValue(name, tfjsonpath.New("tool_prefix"), knownvalue.Null()),
 				},
 			},
 			{
