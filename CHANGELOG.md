@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.3.0...v3.4.0) (2026-11-16)
+
+
+### Features
+
+* manage service account federated credentials ([#256](https://github.com/archestra-ai/terraform-provider-archestra/issues/256)) ([24c61fe](https://github.com/archestra-ai/terraform-provider-archestra/commit/24c61fe8e5e0adfd8c0329514a00d826797c2c96))
+
 ## [3.3.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.2.1...v3.3.0) (2026-11-16)
 
 
