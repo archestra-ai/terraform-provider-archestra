@@ -40,7 +40,7 @@ jobs:
       contents: write # Read draft releases.
       actions: write # Read the release run; the sweep dispatches this workflow.
       attestations: read # Verify the published package's attestation.
-    uses: archestra-ai/.github/.github/workflows/release-finalize.yml@664e9596c6ff346277291e65d040515b2dae1c44 # v1.30.0
+    uses: archestra-ai/.github/.github/workflows/release-finalize.yml@0bd6a54bf206174fd0cebc3222def111651e91bb # v1.31.1
     with:
       # Holds the archestra-releaser App's key; main only.
       environment: releaser
@@ -78,7 +78,7 @@ jobs:
 
       - name: Generate a publisher token
         id: publisher-token
-        uses: archestra-ai/.github/actions/github-app-token@664e9596c6ff346277291e65d040515b2dae1c44 # v1.30.0
+        uses: archestra-ai/.github/actions/github-app-token@0bd6a54bf206174fd0cebc3222def111651e91bb # v1.31.1
         with:
           owner: archestra-ai
           repositories: release-publisher
