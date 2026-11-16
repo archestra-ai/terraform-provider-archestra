@@ -39021,6 +39021,366 @@ func (e UpdateServiceAccount500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetServiceAccountFederatedCredentials400JSONResponseBodyErrorType.
+const (
+	GetServiceAccountFederatedCredentials400JSONResponseBodyErrorTypeApiValidationError GetServiceAccountFederatedCredentials400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccountFederatedCredentials400JSONResponseBodyErrorType enum.
+func (e GetServiceAccountFederatedCredentials400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccountFederatedCredentials400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetServiceAccountFederatedCredentials401JSONResponseBodyErrorType.
+const (
+	GetServiceAccountFederatedCredentials401JSONResponseBodyErrorTypeApiAuthenticationError GetServiceAccountFederatedCredentials401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccountFederatedCredentials401JSONResponseBodyErrorType enum.
+func (e GetServiceAccountFederatedCredentials401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccountFederatedCredentials401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetServiceAccountFederatedCredentials403JSONResponseBodyErrorType.
+const (
+	GetServiceAccountFederatedCredentials403JSONResponseBodyErrorTypeApiAuthorizationError GetServiceAccountFederatedCredentials403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccountFederatedCredentials403JSONResponseBodyErrorType enum.
+func (e GetServiceAccountFederatedCredentials403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccountFederatedCredentials403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetServiceAccountFederatedCredentials404JSONResponseBodyErrorType.
+const (
+	GetServiceAccountFederatedCredentials404JSONResponseBodyErrorTypeApiNotFoundError GetServiceAccountFederatedCredentials404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccountFederatedCredentials404JSONResponseBodyErrorType enum.
+func (e GetServiceAccountFederatedCredentials404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccountFederatedCredentials404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetServiceAccountFederatedCredentials409JSONResponseBodyErrorType.
+const (
+	GetServiceAccountFederatedCredentials409JSONResponseBodyErrorTypeApiConflictError GetServiceAccountFederatedCredentials409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccountFederatedCredentials409JSONResponseBodyErrorType enum.
+func (e GetServiceAccountFederatedCredentials409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccountFederatedCredentials409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetServiceAccountFederatedCredentials500JSONResponseBodyErrorType.
+const (
+	GetServiceAccountFederatedCredentials500JSONResponseBodyErrorTypeApiInternalServerError GetServiceAccountFederatedCredentials500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccountFederatedCredentials500JSONResponseBodyErrorType enum.
+func (e GetServiceAccountFederatedCredentials500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccountFederatedCredentials500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateServiceAccountFederatedCredential400JSONResponseBodyErrorType.
+const (
+	CreateServiceAccountFederatedCredential400JSONResponseBodyErrorTypeApiValidationError CreateServiceAccountFederatedCredential400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateServiceAccountFederatedCredential400JSONResponseBodyErrorType enum.
+func (e CreateServiceAccountFederatedCredential400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateServiceAccountFederatedCredential400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateServiceAccountFederatedCredential401JSONResponseBodyErrorType.
+const (
+	CreateServiceAccountFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError CreateServiceAccountFederatedCredential401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateServiceAccountFederatedCredential401JSONResponseBodyErrorType enum.
+func (e CreateServiceAccountFederatedCredential401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateServiceAccountFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateServiceAccountFederatedCredential403JSONResponseBodyErrorType.
+const (
+	CreateServiceAccountFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError CreateServiceAccountFederatedCredential403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateServiceAccountFederatedCredential403JSONResponseBodyErrorType enum.
+func (e CreateServiceAccountFederatedCredential403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateServiceAccountFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateServiceAccountFederatedCredential404JSONResponseBodyErrorType.
+const (
+	CreateServiceAccountFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError CreateServiceAccountFederatedCredential404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateServiceAccountFederatedCredential404JSONResponseBodyErrorType enum.
+func (e CreateServiceAccountFederatedCredential404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateServiceAccountFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateServiceAccountFederatedCredential409JSONResponseBodyErrorType.
+const (
+	CreateServiceAccountFederatedCredential409JSONResponseBodyErrorTypeApiConflictError CreateServiceAccountFederatedCredential409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateServiceAccountFederatedCredential409JSONResponseBodyErrorType enum.
+func (e CreateServiceAccountFederatedCredential409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateServiceAccountFederatedCredential409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateServiceAccountFederatedCredential500JSONResponseBodyErrorType.
+const (
+	CreateServiceAccountFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError CreateServiceAccountFederatedCredential500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateServiceAccountFederatedCredential500JSONResponseBodyErrorType enum.
+func (e CreateServiceAccountFederatedCredential500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateServiceAccountFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteServiceAccountFederatedCredential400JSONResponseBodyErrorType.
+const (
+	DeleteServiceAccountFederatedCredential400JSONResponseBodyErrorTypeApiValidationError DeleteServiceAccountFederatedCredential400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteServiceAccountFederatedCredential400JSONResponseBodyErrorType enum.
+func (e DeleteServiceAccountFederatedCredential400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteServiceAccountFederatedCredential400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteServiceAccountFederatedCredential401JSONResponseBodyErrorType.
+const (
+	DeleteServiceAccountFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError DeleteServiceAccountFederatedCredential401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteServiceAccountFederatedCredential401JSONResponseBodyErrorType enum.
+func (e DeleteServiceAccountFederatedCredential401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteServiceAccountFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteServiceAccountFederatedCredential403JSONResponseBodyErrorType.
+const (
+	DeleteServiceAccountFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError DeleteServiceAccountFederatedCredential403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteServiceAccountFederatedCredential403JSONResponseBodyErrorType enum.
+func (e DeleteServiceAccountFederatedCredential403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteServiceAccountFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteServiceAccountFederatedCredential404JSONResponseBodyErrorType.
+const (
+	DeleteServiceAccountFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError DeleteServiceAccountFederatedCredential404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteServiceAccountFederatedCredential404JSONResponseBodyErrorType enum.
+func (e DeleteServiceAccountFederatedCredential404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteServiceAccountFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteServiceAccountFederatedCredential409JSONResponseBodyErrorType.
+const (
+	DeleteServiceAccountFederatedCredential409JSONResponseBodyErrorTypeApiConflictError DeleteServiceAccountFederatedCredential409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteServiceAccountFederatedCredential409JSONResponseBodyErrorType enum.
+func (e DeleteServiceAccountFederatedCredential409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteServiceAccountFederatedCredential409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteServiceAccountFederatedCredential500JSONResponseBodyErrorType.
+const (
+	DeleteServiceAccountFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError DeleteServiceAccountFederatedCredential500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteServiceAccountFederatedCredential500JSONResponseBodyErrorType enum.
+func (e DeleteServiceAccountFederatedCredential500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteServiceAccountFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateServiceAccountFederatedCredential400JSONResponseBodyErrorType.
+const (
+	UpdateServiceAccountFederatedCredential400JSONResponseBodyErrorTypeApiValidationError UpdateServiceAccountFederatedCredential400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateServiceAccountFederatedCredential400JSONResponseBodyErrorType enum.
+func (e UpdateServiceAccountFederatedCredential400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateServiceAccountFederatedCredential400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateServiceAccountFederatedCredential401JSONResponseBodyErrorType.
+const (
+	UpdateServiceAccountFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError UpdateServiceAccountFederatedCredential401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateServiceAccountFederatedCredential401JSONResponseBodyErrorType enum.
+func (e UpdateServiceAccountFederatedCredential401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateServiceAccountFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateServiceAccountFederatedCredential403JSONResponseBodyErrorType.
+const (
+	UpdateServiceAccountFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError UpdateServiceAccountFederatedCredential403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateServiceAccountFederatedCredential403JSONResponseBodyErrorType enum.
+func (e UpdateServiceAccountFederatedCredential403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateServiceAccountFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateServiceAccountFederatedCredential404JSONResponseBodyErrorType.
+const (
+	UpdateServiceAccountFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError UpdateServiceAccountFederatedCredential404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateServiceAccountFederatedCredential404JSONResponseBodyErrorType enum.
+func (e UpdateServiceAccountFederatedCredential404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateServiceAccountFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateServiceAccountFederatedCredential409JSONResponseBodyErrorType.
+const (
+	UpdateServiceAccountFederatedCredential409JSONResponseBodyErrorTypeApiConflictError UpdateServiceAccountFederatedCredential409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateServiceAccountFederatedCredential409JSONResponseBodyErrorType enum.
+func (e UpdateServiceAccountFederatedCredential409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateServiceAccountFederatedCredential409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateServiceAccountFederatedCredential500JSONResponseBodyErrorType.
+const (
+	UpdateServiceAccountFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError UpdateServiceAccountFederatedCredential500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateServiceAccountFederatedCredential500JSONResponseBodyErrorType enum.
+func (e UpdateServiceAccountFederatedCredential500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateServiceAccountFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateServiceAccountToken400JSONResponseBodyErrorType.
 const (
 	CreateServiceAccountToken400JSONResponseBodyErrorTypeApiValidationError CreateServiceAccountToken400JSONResponseBodyErrorType = "api_validation_error"
@@ -52775,6 +53135,96 @@ type UpdateServiceAccount409JSONResponseBodyErrorType string
 // UpdateServiceAccount500JSONResponseBodyErrorType defines parameters for UpdateServiceAccount.
 type UpdateServiceAccount500JSONResponseBodyErrorType string
 
+// GetServiceAccountFederatedCredentials400JSONResponseBodyErrorType defines parameters for GetServiceAccountFederatedCredentials.
+type GetServiceAccountFederatedCredentials400JSONResponseBodyErrorType string
+
+// GetServiceAccountFederatedCredentials401JSONResponseBodyErrorType defines parameters for GetServiceAccountFederatedCredentials.
+type GetServiceAccountFederatedCredentials401JSONResponseBodyErrorType string
+
+// GetServiceAccountFederatedCredentials403JSONResponseBodyErrorType defines parameters for GetServiceAccountFederatedCredentials.
+type GetServiceAccountFederatedCredentials403JSONResponseBodyErrorType string
+
+// GetServiceAccountFederatedCredentials404JSONResponseBodyErrorType defines parameters for GetServiceAccountFederatedCredentials.
+type GetServiceAccountFederatedCredentials404JSONResponseBodyErrorType string
+
+// GetServiceAccountFederatedCredentials409JSONResponseBodyErrorType defines parameters for GetServiceAccountFederatedCredentials.
+type GetServiceAccountFederatedCredentials409JSONResponseBodyErrorType string
+
+// GetServiceAccountFederatedCredentials500JSONResponseBodyErrorType defines parameters for GetServiceAccountFederatedCredentials.
+type GetServiceAccountFederatedCredentials500JSONResponseBodyErrorType string
+
+// CreateServiceAccountFederatedCredentialJSONBody defines parameters for CreateServiceAccountFederatedCredential.
+type CreateServiceAccountFederatedCredentialJSONBody struct {
+	Audience        string             `json:"audience"`
+	ClaimConditions *map[string]string `json:"claimConditions,omitempty"`
+	Issuer          string             `json:"issuer"`
+	Name            string             `json:"name"`
+	Subject         string             `json:"subject"`
+}
+
+// CreateServiceAccountFederatedCredential400JSONResponseBodyErrorType defines parameters for CreateServiceAccountFederatedCredential.
+type CreateServiceAccountFederatedCredential400JSONResponseBodyErrorType string
+
+// CreateServiceAccountFederatedCredential401JSONResponseBodyErrorType defines parameters for CreateServiceAccountFederatedCredential.
+type CreateServiceAccountFederatedCredential401JSONResponseBodyErrorType string
+
+// CreateServiceAccountFederatedCredential403JSONResponseBodyErrorType defines parameters for CreateServiceAccountFederatedCredential.
+type CreateServiceAccountFederatedCredential403JSONResponseBodyErrorType string
+
+// CreateServiceAccountFederatedCredential404JSONResponseBodyErrorType defines parameters for CreateServiceAccountFederatedCredential.
+type CreateServiceAccountFederatedCredential404JSONResponseBodyErrorType string
+
+// CreateServiceAccountFederatedCredential409JSONResponseBodyErrorType defines parameters for CreateServiceAccountFederatedCredential.
+type CreateServiceAccountFederatedCredential409JSONResponseBodyErrorType string
+
+// CreateServiceAccountFederatedCredential500JSONResponseBodyErrorType defines parameters for CreateServiceAccountFederatedCredential.
+type CreateServiceAccountFederatedCredential500JSONResponseBodyErrorType string
+
+// DeleteServiceAccountFederatedCredential400JSONResponseBodyErrorType defines parameters for DeleteServiceAccountFederatedCredential.
+type DeleteServiceAccountFederatedCredential400JSONResponseBodyErrorType string
+
+// DeleteServiceAccountFederatedCredential401JSONResponseBodyErrorType defines parameters for DeleteServiceAccountFederatedCredential.
+type DeleteServiceAccountFederatedCredential401JSONResponseBodyErrorType string
+
+// DeleteServiceAccountFederatedCredential403JSONResponseBodyErrorType defines parameters for DeleteServiceAccountFederatedCredential.
+type DeleteServiceAccountFederatedCredential403JSONResponseBodyErrorType string
+
+// DeleteServiceAccountFederatedCredential404JSONResponseBodyErrorType defines parameters for DeleteServiceAccountFederatedCredential.
+type DeleteServiceAccountFederatedCredential404JSONResponseBodyErrorType string
+
+// DeleteServiceAccountFederatedCredential409JSONResponseBodyErrorType defines parameters for DeleteServiceAccountFederatedCredential.
+type DeleteServiceAccountFederatedCredential409JSONResponseBodyErrorType string
+
+// DeleteServiceAccountFederatedCredential500JSONResponseBodyErrorType defines parameters for DeleteServiceAccountFederatedCredential.
+type DeleteServiceAccountFederatedCredential500JSONResponseBodyErrorType string
+
+// UpdateServiceAccountFederatedCredentialJSONBody defines parameters for UpdateServiceAccountFederatedCredential.
+type UpdateServiceAccountFederatedCredentialJSONBody struct {
+	Audience        *string            `json:"audience,omitempty"`
+	ClaimConditions *map[string]string `json:"claimConditions,omitempty"`
+	Issuer          *string            `json:"issuer,omitempty"`
+	Name            *string            `json:"name,omitempty"`
+	Subject         *string            `json:"subject,omitempty"`
+}
+
+// UpdateServiceAccountFederatedCredential400JSONResponseBodyErrorType defines parameters for UpdateServiceAccountFederatedCredential.
+type UpdateServiceAccountFederatedCredential400JSONResponseBodyErrorType string
+
+// UpdateServiceAccountFederatedCredential401JSONResponseBodyErrorType defines parameters for UpdateServiceAccountFederatedCredential.
+type UpdateServiceAccountFederatedCredential401JSONResponseBodyErrorType string
+
+// UpdateServiceAccountFederatedCredential403JSONResponseBodyErrorType defines parameters for UpdateServiceAccountFederatedCredential.
+type UpdateServiceAccountFederatedCredential403JSONResponseBodyErrorType string
+
+// UpdateServiceAccountFederatedCredential404JSONResponseBodyErrorType defines parameters for UpdateServiceAccountFederatedCredential.
+type UpdateServiceAccountFederatedCredential404JSONResponseBodyErrorType string
+
+// UpdateServiceAccountFederatedCredential409JSONResponseBodyErrorType defines parameters for UpdateServiceAccountFederatedCredential.
+type UpdateServiceAccountFederatedCredential409JSONResponseBodyErrorType string
+
+// UpdateServiceAccountFederatedCredential500JSONResponseBodyErrorType defines parameters for UpdateServiceAccountFederatedCredential.
+type UpdateServiceAccountFederatedCredential500JSONResponseBodyErrorType string
+
 // CreateServiceAccountTokenJSONBody defines parameters for CreateServiceAccountToken.
 type CreateServiceAccountTokenJSONBody struct {
 	ExpiresIn *int   `json:"expiresIn,omitempty"`
@@ -54036,6 +54486,12 @@ type CreateServiceAccountJSONRequestBody CreateServiceAccountJSONBody
 
 // UpdateServiceAccountJSONRequestBody defines body for UpdateServiceAccount for application/json ContentType.
 type UpdateServiceAccountJSONRequestBody UpdateServiceAccountJSONBody
+
+// CreateServiceAccountFederatedCredentialJSONRequestBody defines body for CreateServiceAccountFederatedCredential for application/json ContentType.
+type CreateServiceAccountFederatedCredentialJSONRequestBody CreateServiceAccountFederatedCredentialJSONBody
+
+// UpdateServiceAccountFederatedCredentialJSONRequestBody defines body for UpdateServiceAccountFederatedCredential for application/json ContentType.
+type UpdateServiceAccountFederatedCredentialJSONRequestBody UpdateServiceAccountFederatedCredentialJSONBody
 
 // CreateServiceAccountTokenJSONRequestBody defines body for CreateServiceAccountToken for application/json ContentType.
 type CreateServiceAccountTokenJSONRequestBody CreateServiceAccountTokenJSONBody
@@ -61589,6 +62045,22 @@ type ClientInterface interface {
 
 	UpdateServiceAccount(ctx context.Context, id openapi_types.UUID, body UpdateServiceAccountJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetServiceAccountFederatedCredentials request
+	GetServiceAccountFederatedCredentials(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateServiceAccountFederatedCredentialWithBody request with any body
+	CreateServiceAccountFederatedCredentialWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateServiceAccountFederatedCredential(ctx context.Context, id openapi_types.UUID, body CreateServiceAccountFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteServiceAccountFederatedCredential request
+	DeleteServiceAccountFederatedCredential(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateServiceAccountFederatedCredentialWithBody request with any body
+	UpdateServiceAccountFederatedCredentialWithBody(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateServiceAccountFederatedCredential(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, body UpdateServiceAccountFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CreateServiceAccountTokenWithBody request with any body
 	CreateServiceAccountTokenWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -64879,6 +65351,78 @@ func (c *Client) UpdateServiceAccountWithBody(ctx context.Context, id openapi_ty
 
 func (c *Client) UpdateServiceAccount(ctx context.Context, id openapi_types.UUID, body UpdateServiceAccountJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateServiceAccountRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetServiceAccountFederatedCredentials(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetServiceAccountFederatedCredentialsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateServiceAccountFederatedCredentialWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateServiceAccountFederatedCredentialRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateServiceAccountFederatedCredential(ctx context.Context, id openapi_types.UUID, body CreateServiceAccountFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateServiceAccountFederatedCredentialRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteServiceAccountFederatedCredential(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteServiceAccountFederatedCredentialRequest(c.Server, id, credentialId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateServiceAccountFederatedCredentialWithBody(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateServiceAccountFederatedCredentialRequestWithBody(c.Server, id, credentialId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateServiceAccountFederatedCredential(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, body UpdateServiceAccountFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateServiceAccountFederatedCredentialRequest(c.Server, id, credentialId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -73324,6 +73868,182 @@ func NewUpdateServiceAccountRequestWithBody(server string, id openapi_types.UUID
 	return req, nil
 }
 
+// NewGetServiceAccountFederatedCredentialsRequest generates requests for GetServiceAccountFederatedCredentials
+func NewGetServiceAccountFederatedCredentialsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/service-accounts/%s/federated-credentials", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateServiceAccountFederatedCredentialRequest calls the generic CreateServiceAccountFederatedCredential builder with application/json body
+func NewCreateServiceAccountFederatedCredentialRequest(server string, id openapi_types.UUID, body CreateServiceAccountFederatedCredentialJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateServiceAccountFederatedCredentialRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewCreateServiceAccountFederatedCredentialRequestWithBody generates requests for CreateServiceAccountFederatedCredential with any type of body
+func NewCreateServiceAccountFederatedCredentialRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/service-accounts/%s/federated-credentials", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteServiceAccountFederatedCredentialRequest generates requests for DeleteServiceAccountFederatedCredential
+func NewDeleteServiceAccountFederatedCredentialRequest(server string, id openapi_types.UUID, credentialId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "credentialId", credentialId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/service-accounts/%s/federated-credentials/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateServiceAccountFederatedCredentialRequest calls the generic UpdateServiceAccountFederatedCredential builder with application/json body
+func NewUpdateServiceAccountFederatedCredentialRequest(server string, id openapi_types.UUID, credentialId openapi_types.UUID, body UpdateServiceAccountFederatedCredentialJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateServiceAccountFederatedCredentialRequestWithBody(server, id, credentialId, "application/json", bodyReader)
+}
+
+// NewUpdateServiceAccountFederatedCredentialRequestWithBody generates requests for UpdateServiceAccountFederatedCredential with any type of body
+func NewUpdateServiceAccountFederatedCredentialRequestWithBody(server string, id openapi_types.UUID, credentialId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "credentialId", credentialId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/service-accounts/%s/federated-credentials/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewCreateServiceAccountTokenRequest calls the generic CreateServiceAccountToken builder with application/json body
 func NewCreateServiceAccountTokenRequest(server string, id openapi_types.UUID, body CreateServiceAccountTokenJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -75347,6 +76067,22 @@ type ClientWithResponsesInterface interface {
 	UpdateServiceAccountWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateServiceAccountResponse, error)
 
 	UpdateServiceAccountWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateServiceAccountJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateServiceAccountResponse, error)
+
+	// GetServiceAccountFederatedCredentialsWithResponse request
+	GetServiceAccountFederatedCredentialsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetServiceAccountFederatedCredentialsResponse, error)
+
+	// CreateServiceAccountFederatedCredentialWithBodyWithResponse request with any body
+	CreateServiceAccountFederatedCredentialWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateServiceAccountFederatedCredentialResponse, error)
+
+	CreateServiceAccountFederatedCredentialWithResponse(ctx context.Context, id openapi_types.UUID, body CreateServiceAccountFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateServiceAccountFederatedCredentialResponse, error)
+
+	// DeleteServiceAccountFederatedCredentialWithResponse request
+	DeleteServiceAccountFederatedCredentialWithResponse(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteServiceAccountFederatedCredentialResponse, error)
+
+	// UpdateServiceAccountFederatedCredentialWithBodyWithResponse request with any body
+	UpdateServiceAccountFederatedCredentialWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateServiceAccountFederatedCredentialResponse, error)
+
+	UpdateServiceAccountFederatedCredentialWithResponse(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, body UpdateServiceAccountFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateServiceAccountFederatedCredentialResponse, error)
 
 	// CreateServiceAccountTokenWithBodyWithResponse request with any body
 	CreateServiceAccountTokenWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateServiceAccountTokenResponse, error)
@@ -94643,6 +95379,333 @@ func (r UpdateServiceAccountResponse) ContentType() string {
 	return ""
 }
 
+type GetServiceAccountFederatedCredentialsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		Audience         string             `json:"audience"`
+		ClaimConditions  map[string]string  `json:"claimConditions"`
+		CreatedAt        time.Time          `json:"createdAt"`
+		Id               openapi_types.UUID `json:"id"`
+		Issuer           string             `json:"issuer"`
+		LastUsedAt       *time.Time         `json:"lastUsedAt"`
+		Name             string             `json:"name"`
+		ServiceAccountId openapi_types.UUID `json:"serviceAccountId"`
+		Subject          string             `json:"subject"`
+		UpdatedAt        time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                           `json:"internal_code,omitempty"`
+			Message      string                                                            `json:"message"`
+			Type         GetServiceAccountFederatedCredentials400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                           `json:"internal_code,omitempty"`
+			Message      string                                                            `json:"message"`
+			Type         GetServiceAccountFederatedCredentials401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                           `json:"details,omitempty"`
+			InternalCode *string                                                           `json:"internal_code,omitempty"`
+			Message      string                                                            `json:"message"`
+			Type         GetServiceAccountFederatedCredentials403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                           `json:"internal_code,omitempty"`
+			Message      string                                                            `json:"message"`
+			Type         GetServiceAccountFederatedCredentials404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                           `json:"internal_code,omitempty"`
+			Message      string                                                            `json:"message"`
+			Type         GetServiceAccountFederatedCredentials409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                           `json:"internal_code,omitempty"`
+			Message      string                                                            `json:"message"`
+			Type         GetServiceAccountFederatedCredentials500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetServiceAccountFederatedCredentialsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetServiceAccountFederatedCredentialsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetServiceAccountFederatedCredentialsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CreateServiceAccountFederatedCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Audience         string             `json:"audience"`
+		ClaimConditions  map[string]string  `json:"claimConditions"`
+		CreatedAt        time.Time          `json:"createdAt"`
+		Id               openapi_types.UUID `json:"id"`
+		Issuer           string             `json:"issuer"`
+		LastUsedAt       *time.Time         `json:"lastUsedAt"`
+		Name             string             `json:"name"`
+		ServiceAccountId openapi_types.UUID `json:"serviceAccountId"`
+		Subject          string             `json:"subject"`
+		UpdatedAt        time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         CreateServiceAccountFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         CreateServiceAccountFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                             `json:"details,omitempty"`
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         CreateServiceAccountFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         CreateServiceAccountFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         CreateServiceAccountFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         CreateServiceAccountFederatedCredential500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateServiceAccountFederatedCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateServiceAccountFederatedCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateServiceAccountFederatedCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteServiceAccountFederatedCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         DeleteServiceAccountFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         DeleteServiceAccountFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                             `json:"details,omitempty"`
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         DeleteServiceAccountFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         DeleteServiceAccountFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         DeleteServiceAccountFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         DeleteServiceAccountFederatedCredential500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteServiceAccountFederatedCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteServiceAccountFederatedCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteServiceAccountFederatedCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateServiceAccountFederatedCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Audience         string             `json:"audience"`
+		ClaimConditions  map[string]string  `json:"claimConditions"`
+		CreatedAt        time.Time          `json:"createdAt"`
+		Id               openapi_types.UUID `json:"id"`
+		Issuer           string             `json:"issuer"`
+		LastUsedAt       *time.Time         `json:"lastUsedAt"`
+		Name             string             `json:"name"`
+		ServiceAccountId openapi_types.UUID `json:"serviceAccountId"`
+		Subject          string             `json:"subject"`
+		UpdatedAt        time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         UpdateServiceAccountFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         UpdateServiceAccountFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                             `json:"details,omitempty"`
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         UpdateServiceAccountFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         UpdateServiceAccountFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         UpdateServiceAccountFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                             `json:"internal_code,omitempty"`
+			Message      string                                                              `json:"message"`
+			Type         UpdateServiceAccountFederatedCredential500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateServiceAccountFederatedCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateServiceAccountFederatedCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateServiceAccountFederatedCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type CreateServiceAccountTokenResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -99482,6 +100545,58 @@ func (c *ClientWithResponses) UpdateServiceAccountWithResponse(ctx context.Conte
 		return nil, err
 	}
 	return ParseUpdateServiceAccountResponse(rsp)
+}
+
+// GetServiceAccountFederatedCredentialsWithResponse request returning *GetServiceAccountFederatedCredentialsResponse
+func (c *ClientWithResponses) GetServiceAccountFederatedCredentialsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetServiceAccountFederatedCredentialsResponse, error) {
+	rsp, err := c.GetServiceAccountFederatedCredentials(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetServiceAccountFederatedCredentialsResponse(rsp)
+}
+
+// CreateServiceAccountFederatedCredentialWithBodyWithResponse request with arbitrary body returning *CreateServiceAccountFederatedCredentialResponse
+func (c *ClientWithResponses) CreateServiceAccountFederatedCredentialWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateServiceAccountFederatedCredentialResponse, error) {
+	rsp, err := c.CreateServiceAccountFederatedCredentialWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateServiceAccountFederatedCredentialResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateServiceAccountFederatedCredentialWithResponse(ctx context.Context, id openapi_types.UUID, body CreateServiceAccountFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateServiceAccountFederatedCredentialResponse, error) {
+	rsp, err := c.CreateServiceAccountFederatedCredential(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateServiceAccountFederatedCredentialResponse(rsp)
+}
+
+// DeleteServiceAccountFederatedCredentialWithResponse request returning *DeleteServiceAccountFederatedCredentialResponse
+func (c *ClientWithResponses) DeleteServiceAccountFederatedCredentialWithResponse(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteServiceAccountFederatedCredentialResponse, error) {
+	rsp, err := c.DeleteServiceAccountFederatedCredential(ctx, id, credentialId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteServiceAccountFederatedCredentialResponse(rsp)
+}
+
+// UpdateServiceAccountFederatedCredentialWithBodyWithResponse request with arbitrary body returning *UpdateServiceAccountFederatedCredentialResponse
+func (c *ClientWithResponses) UpdateServiceAccountFederatedCredentialWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateServiceAccountFederatedCredentialResponse, error) {
+	rsp, err := c.UpdateServiceAccountFederatedCredentialWithBody(ctx, id, credentialId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateServiceAccountFederatedCredentialResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateServiceAccountFederatedCredentialWithResponse(ctx context.Context, id openapi_types.UUID, credentialId openapi_types.UUID, body UpdateServiceAccountFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateServiceAccountFederatedCredentialResponse, error) {
+	rsp, err := c.UpdateServiceAccountFederatedCredential(ctx, id, credentialId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateServiceAccountFederatedCredentialResponse(rsp)
 }
 
 // CreateServiceAccountTokenWithBodyWithResponse request with arbitrary body returning *CreateServiceAccountTokenResponse
@@ -124721,6 +125836,461 @@ func ParseUpdateServiceAccountResponse(rsp *http.Response) (*UpdateServiceAccoun
 				InternalCode *string                                          `json:"internal_code,omitempty"`
 				Message      string                                           `json:"message"`
 				Type         UpdateServiceAccount500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetServiceAccountFederatedCredentialsResponse parses an HTTP response from a GetServiceAccountFederatedCredentialsWithResponse call
+func ParseGetServiceAccountFederatedCredentialsResponse(rsp *http.Response) (*GetServiceAccountFederatedCredentialsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetServiceAccountFederatedCredentialsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			Audience         string             `json:"audience"`
+			ClaimConditions  map[string]string  `json:"claimConditions"`
+			CreatedAt        time.Time          `json:"createdAt"`
+			Id               openapi_types.UUID `json:"id"`
+			Issuer           string             `json:"issuer"`
+			LastUsedAt       *time.Time         `json:"lastUsedAt"`
+			Name             string             `json:"name"`
+			ServiceAccountId openapi_types.UUID `json:"serviceAccountId"`
+			Subject          string             `json:"subject"`
+			UpdatedAt        time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                           `json:"internal_code,omitempty"`
+				Message      string                                                            `json:"message"`
+				Type         GetServiceAccountFederatedCredentials400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                           `json:"internal_code,omitempty"`
+				Message      string                                                            `json:"message"`
+				Type         GetServiceAccountFederatedCredentials401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                           `json:"details,omitempty"`
+				InternalCode *string                                                           `json:"internal_code,omitempty"`
+				Message      string                                                            `json:"message"`
+				Type         GetServiceAccountFederatedCredentials403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                           `json:"internal_code,omitempty"`
+				Message      string                                                            `json:"message"`
+				Type         GetServiceAccountFederatedCredentials404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                           `json:"internal_code,omitempty"`
+				Message      string                                                            `json:"message"`
+				Type         GetServiceAccountFederatedCredentials409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                           `json:"internal_code,omitempty"`
+				Message      string                                                            `json:"message"`
+				Type         GetServiceAccountFederatedCredentials500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateServiceAccountFederatedCredentialResponse parses an HTTP response from a CreateServiceAccountFederatedCredentialWithResponse call
+func ParseCreateServiceAccountFederatedCredentialResponse(rsp *http.Response) (*CreateServiceAccountFederatedCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateServiceAccountFederatedCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Audience         string             `json:"audience"`
+			ClaimConditions  map[string]string  `json:"claimConditions"`
+			CreatedAt        time.Time          `json:"createdAt"`
+			Id               openapi_types.UUID `json:"id"`
+			Issuer           string             `json:"issuer"`
+			LastUsedAt       *time.Time         `json:"lastUsedAt"`
+			Name             string             `json:"name"`
+			ServiceAccountId openapi_types.UUID `json:"serviceAccountId"`
+			Subject          string             `json:"subject"`
+			UpdatedAt        time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         CreateServiceAccountFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         CreateServiceAccountFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                             `json:"details,omitempty"`
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         CreateServiceAccountFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         CreateServiceAccountFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         CreateServiceAccountFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         CreateServiceAccountFederatedCredential500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteServiceAccountFederatedCredentialResponse parses an HTTP response from a DeleteServiceAccountFederatedCredentialWithResponse call
+func ParseDeleteServiceAccountFederatedCredentialResponse(rsp *http.Response) (*DeleteServiceAccountFederatedCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteServiceAccountFederatedCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         DeleteServiceAccountFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         DeleteServiceAccountFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                             `json:"details,omitempty"`
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         DeleteServiceAccountFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         DeleteServiceAccountFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         DeleteServiceAccountFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         DeleteServiceAccountFederatedCredential500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateServiceAccountFederatedCredentialResponse parses an HTTP response from a UpdateServiceAccountFederatedCredentialWithResponse call
+func ParseUpdateServiceAccountFederatedCredentialResponse(rsp *http.Response) (*UpdateServiceAccountFederatedCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateServiceAccountFederatedCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Audience         string             `json:"audience"`
+			ClaimConditions  map[string]string  `json:"claimConditions"`
+			CreatedAt        time.Time          `json:"createdAt"`
+			Id               openapi_types.UUID `json:"id"`
+			Issuer           string             `json:"issuer"`
+			LastUsedAt       *time.Time         `json:"lastUsedAt"`
+			Name             string             `json:"name"`
+			ServiceAccountId openapi_types.UUID `json:"serviceAccountId"`
+			Subject          string             `json:"subject"`
+			UpdatedAt        time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         UpdateServiceAccountFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         UpdateServiceAccountFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                             `json:"details,omitempty"`
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         UpdateServiceAccountFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         UpdateServiceAccountFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         UpdateServiceAccountFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                             `json:"internal_code,omitempty"`
+				Message      string                                                              `json:"message"`
+				Type         UpdateServiceAccountFederatedCredential500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

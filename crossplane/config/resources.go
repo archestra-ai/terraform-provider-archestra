@@ -120,6 +120,11 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.Kind = "ServiceAccountAPIKey"
 		r.References["service_account_id"] = ujconfig.Reference{TerraformName: "archestra_service_account"}
 	})
+	p.AddResourceConfigurator("archestra_service_account_federated_credential", func(r *ujconfig.Resource) {
+		r.ShortGroup = "identity"
+		r.Kind = "ServiceAccountFederatedCredential"
+		r.References["service_account_id"] = ujconfig.Reference{TerraformName: "archestra_service_account"}
+	})
 	p.AddResourceConfigurator("archestra_environment", func(r *ujconfig.Resource) { r.ShortGroup = "environment"; r.Kind = "Environment" })
 	p.AddResourceConfigurator("archestra_agent", func(r *ujconfig.Resource) {
 		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "subagent_ids", "remote_agent_ids", "excluded_subagent_ids", "excluded_connector_ids", "identity_bindings", "skills", "hooks", "tools", "excluded_tool_ids", "model_pool_id", "model_id", "llm_api_key_id")

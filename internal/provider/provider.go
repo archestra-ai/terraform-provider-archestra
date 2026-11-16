@@ -197,6 +197,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewKnowledgeFileResource,
 		NewServiceAccountResource,
 		NewServiceAccountTokenResource,
+		NewServiceAccountFederatedCredentialResource,
 		NewEnvironmentResource,
 		NewProjectResource,
 		NewProjectFileResource,

@@ -116,6 +116,11 @@ func stringListFromAPI(ctx context.Context, target *types.List, apiValues []stri
 		*target = list
 		return
 	}
+	// An explicit empty list in configuration stays an empty list: returning
+	// null for it fails the apply with an inconsistent result.
+	if !target.IsNull() && !target.IsUnknown() && len(target.Elements()) == 0 {
+		return
+	}
 	if !target.IsNull() {
 		*target = types.ListNull(types.StringType)
 	}
