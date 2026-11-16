@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -195,35 +194,29 @@ func testAccAgentIdentityProvider(t *testing.T, suffix string) string {
 			}
 		}
 	}`, strings.ToLower(suffix), issuer, issuer+"/.well-known/openid-configuration", uuid.NewString(), uuid.NewString())
-	request := func(ctx context.Context, method, path string, body string) (int, []byte) {
-		req, err := http.NewRequestWithContext(ctx, method, strings.TrimRight(os.Getenv("ARCHESTRA_BASE_URL"), "/")+path, strings.NewReader(body))
-		if err != nil {
-			t.Fatal(err)
-		}
-		req.Header.Set("Authorization", os.Getenv("ARCHESTRA_API_KEY"))
-		if body != "" {
-			req.Header.Set("Content-Type", "application/json")
-		}
-		response, err := http.DefaultClient.Do(req)
-		if err != nil {
-			t.Fatal(err)
-		}
-		defer response.Body.Close()
-		data, _ := io.ReadAll(response.Body)
-		return response.StatusCode, data
+	api, err := client.NewClientWithResponses(os.Getenv("ARCHESTRA_BASE_URL"), client.WithRequestEditorFn(func(_ context.Context, r *http.Request) error {
+		r.Header.Set("Authorization", os.Getenv("ARCHESTRA_API_KEY"))
+		return nil
+	}))
+	if err != nil {
+		t.Fatal(err)
 	}
-	status, body := request(t.Context(), http.MethodPost, "/api/identity-providers", payload)
-	var created struct {
+	created, err := api.CreateIdentityProviderWithBodyWithResponse(t.Context(), "application/json", strings.NewReader(payload))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var identityProvider struct {
 		ID string `json:"id"`
 	}
-	if status != http.StatusOK || json.Unmarshal(body, &created) != nil || created.ID == "" {
-		t.Fatalf("create the agent identity provider: status %d: %s", status, body)
+	if created.StatusCode() != http.StatusOK || json.Unmarshal(created.Body, &identityProvider) != nil || identityProvider.ID == "" {
+		t.Fatalf("create the agent identity provider: status %d: %s", created.StatusCode(), created.Body)
 	}
 	t.Cleanup(func() {
 		// t.Context() is already canceled when cleanups run.
-		if status, body := request(context.Background(), http.MethodDelete, "/api/identity-providers/"+created.ID, ""); status != http.StatusOK {
-			t.Errorf("delete the agent identity provider %s: status %d: %s", created.ID, status, body)
+		deleted, err := api.DeleteIdentityProviderWithResponse(context.Background(), identityProvider.ID)
+		if err != nil || deleted.StatusCode() != http.StatusOK {
+			t.Errorf("delete the agent identity provider %s: %v %v", identityProvider.ID, err, deleted)
 		}
 	})
-	return created.ID
+	return identityProvider.ID
 }
