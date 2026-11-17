@@ -166,3 +166,30 @@ func TestAccEnvironmentInlinePermissions(t *testing.T) {
 		{Config: config(`[]`), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
 	}})
 }
+
+func TestAccEnvironmentLimitedDeployPermissions(t *testing.T) {
+	if os.Getenv("TF_ACC") != "" {
+		testAccPreCheck(t)
+		if !testAccAPIVersionAtLeast(t, "1.5.0-rc.37") {
+			t.Skip("Per-kind environment deploy actions require API 1.5.0-rc.37")
+		}
+	}
+	name := acctest.RandomWithPrefix("tf-environment-deploy-kinds")
+	config := func(actions string) string {
+		return fmt.Sprintf(`resource "archestra_environment" "test" {
+ name=%q
+ permissions=[{subject_type="organization",subject_id="*",actions=%s}]
+ }`, name, actions)
+	}
+	limited := `["read","deploy-agent","deploy-app"]`
+	widened := `["read","deploy-agent","deploy-app","deploy-skill"]`
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+		{Config: config(limited), Check: resource.ComposeTestCheckFunc(
+			resource.TestCheckResourceAttr("archestra_environment.test", "permissions.#", "1"),
+			resource.TestCheckTypeSetElemAttr("archestra_environment.test", "permissions.0.actions.*", "deploy-app"),
+		)},
+		{ResourceName: "archestra_environment.test", ImportState: true, ImportStateVerify: true},
+		{Config: config(widened), Check: resource.TestCheckResourceAttr("archestra_environment.test", "permissions.0.actions.#", "4")},
+		{Config: config(widened), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
+	}})
+}

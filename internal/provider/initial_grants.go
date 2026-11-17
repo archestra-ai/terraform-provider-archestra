@@ -58,3 +58,14 @@ func nonAtomicPermissionsAttribute() schema.SetNestedAttribute {
 	value.MarkdownDescription = "Additional direct sharing grants. Applied after the parent identity exists, then reconciled in place. Omit to preserve grants; [] clears additional grants while retaining the owner's existing access."
 	return value
 }
+
+// Environment-only actions, introduced in 1.5.0-rc.37. A grant of read plus
+// some of them deploys only those kinds; use deploys every kind.
+var environmentDeployActions = []string{"deploy-agent", "deploy-mcp-gateway", "deploy-mcp-registry", "deploy-skill", "deploy-app", "deploy-knowledge-source"}
+
+func withEnvironmentDeployActions(value schema.SetNestedAttribute) schema.SetNestedAttribute {
+	actions, _ := value.NestedObject.Attributes["actions"].(schema.SetAttribute)
+	actions.Validators = []validator.Set{setvalidator.SizeBetween(1, 8), setvalidator.ValueStringsAre(stringvalidator.OneOf(append(append([]string{}, permissionActions...), environmentDeployActions...)...))}
+	value.NestedObject.Attributes["actions"] = actions
+	return value
+}

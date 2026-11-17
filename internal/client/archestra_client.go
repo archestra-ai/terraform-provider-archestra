@@ -224,6 +224,12 @@ const (
 	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsConfigure               CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "configure"
 	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDelete                  CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "delete"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeployAgent             CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeployApp               CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "deploy-app"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeployMcpGateway        CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeploySkill             CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsManagePermissions       CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsRead                    CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "read"
 	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsUpdate                  CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "update"
@@ -238,6 +244,18 @@ func (e CreateA2aRemoteAgentJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateA2aRemoteAgentJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -2342,6 +2360,12 @@ const (
 	CreateAgentJSONBodyInitialGrantsActionsConfigure               CreateAgentJSONBodyInitialGrantsActions = "configure"
 	CreateAgentJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateAgentJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateAgentJSONBodyInitialGrantsActionsDelete                  CreateAgentJSONBodyInitialGrantsActions = "delete"
+	CreateAgentJSONBodyInitialGrantsActionsDeployAgent             CreateAgentJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateAgentJSONBodyInitialGrantsActionsDeployApp               CreateAgentJSONBodyInitialGrantsActions = "deploy-app"
+	CreateAgentJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateAgentJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateAgentJSONBodyInitialGrantsActionsDeployMcpGateway        CreateAgentJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateAgentJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateAgentJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateAgentJSONBodyInitialGrantsActionsDeploySkill             CreateAgentJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateAgentJSONBodyInitialGrantsActionsManagePermissions       CreateAgentJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateAgentJSONBodyInitialGrantsActionsRead                    CreateAgentJSONBodyInitialGrantsActions = "read"
 	CreateAgentJSONBodyInitialGrantsActionsUpdate                  CreateAgentJSONBodyInitialGrantsActions = "update"
@@ -2356,6 +2380,18 @@ func (e CreateAgentJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateAgentJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateAgentJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateAgentJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateAgentJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateAgentJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateAgentJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateAgentJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateAgentJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateAgentJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -7847,6 +7883,12 @@ const (
 	CreateAppJSONBodyInitialGrantsActionsConfigure               CreateAppJSONBodyInitialGrantsActions = "configure"
 	CreateAppJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateAppJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateAppJSONBodyInitialGrantsActionsDelete                  CreateAppJSONBodyInitialGrantsActions = "delete"
+	CreateAppJSONBodyInitialGrantsActionsDeployAgent             CreateAppJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateAppJSONBodyInitialGrantsActionsDeployApp               CreateAppJSONBodyInitialGrantsActions = "deploy-app"
+	CreateAppJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateAppJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateAppJSONBodyInitialGrantsActionsDeployMcpGateway        CreateAppJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateAppJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateAppJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateAppJSONBodyInitialGrantsActionsDeploySkill             CreateAppJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateAppJSONBodyInitialGrantsActionsManagePermissions       CreateAppJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateAppJSONBodyInitialGrantsActionsRead                    CreateAppJSONBodyInitialGrantsActions = "read"
 	CreateAppJSONBodyInitialGrantsActionsUpdate                  CreateAppJSONBodyInitialGrantsActions = "update"
@@ -7861,6 +7903,18 @@ func (e CreateAppJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateAppJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateAppJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateAppJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateAppJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateAppJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateAppJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateAppJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateAppJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateAppJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -11165,6 +11219,12 @@ const (
 	CreateRuntimeCredentialJSONBodyInitialGrantsActionsConfigure               CreateRuntimeCredentialJSONBodyInitialGrantsActions = "configure"
 	CreateRuntimeCredentialJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateRuntimeCredentialJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateRuntimeCredentialJSONBodyInitialGrantsActionsDelete                  CreateRuntimeCredentialJSONBodyInitialGrantsActions = "delete"
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeployAgent             CreateRuntimeCredentialJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeployApp               CreateRuntimeCredentialJSONBodyInitialGrantsActions = "deploy-app"
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateRuntimeCredentialJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeployMcpGateway        CreateRuntimeCredentialJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateRuntimeCredentialJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeploySkill             CreateRuntimeCredentialJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateRuntimeCredentialJSONBodyInitialGrantsActionsManagePermissions       CreateRuntimeCredentialJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateRuntimeCredentialJSONBodyInitialGrantsActionsRead                    CreateRuntimeCredentialJSONBodyInitialGrantsActions = "read"
 	CreateRuntimeCredentialJSONBodyInitialGrantsActionsUpdate                  CreateRuntimeCredentialJSONBodyInitialGrantsActions = "update"
@@ -11179,6 +11239,18 @@ func (e CreateRuntimeCredentialJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateRuntimeCredentialJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -12399,6 +12471,36 @@ const (
 func (e UpdateDefaultUserLimit500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
 	case UpdateDefaultUserLimit500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds.
+const (
+	ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsAgent           ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds = "agent"
+	ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsApp             ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds = "app"
+	ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsKnowledgeSource ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds = "knowledgeSource"
+	ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsMcpGateway      ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds = "mcpGateway"
+	ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsMcpRegistry     ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds = "mcpRegistry"
+	ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsSkill           ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds = "skill"
+)
+
+// Valid indicates whether the value is a known member of the ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds enum.
+func (e ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds) Valid() bool {
+	switch e {
+	case ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsAgent:
+		return true
+	case ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsApp:
+		return true
+	case ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsKnowledgeSource:
+		return true
+	case ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsMcpGateway:
+		return true
+	case ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsMcpRegistry:
+		return true
+	case ListEnvironments200JSONResponseBodyEnvironmentsDeployKindsSkill:
 		return true
 	default:
 		return false
@@ -15557,6 +15659,12 @@ const (
 	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsConfigure               CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "configure"
 	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDelete                  CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "delete"
+	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeployAgent             CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeployApp               CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "deploy-app"
+	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeployMcpGateway        CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeploySkill             CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsManagePermissions       CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsRead                    CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "read"
 	CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsUpdate                  CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions = "update"
@@ -15571,6 +15679,18 @@ func (e CreateInternalMcpCatalogItemJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateInternalMcpCatalogItemJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -16418,6 +16538,12 @@ const (
 	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsConfigure               GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "configure"
 	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "configure-deployment-spec"
 	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDelete                  GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "delete"
+	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeployAgent             GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "deploy-agent"
+	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeployApp               GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "deploy-app"
+	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeployKnowledgeSource   GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "deploy-knowledge-source"
+	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeployMcpGateway        GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "deploy-mcp-gateway"
+	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeployMcpRegistry       GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "deploy-mcp-registry"
+	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeploySkill             GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "deploy-skill"
 	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsManagePermissions       GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "manage-permissions"
 	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsRead                    GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "read"
 	GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsUpdate                  GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions = "update"
@@ -16432,6 +16558,18 @@ func (e GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActions) Valid() bo
 	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec:
 		return true
 	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDelete:
+		return true
+	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeployAgent:
+		return true
+	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeployApp:
+		return true
+	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeployKnowledgeSource:
+		return true
+	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeployMcpGateway:
+		return true
+	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeployMcpRegistry:
+		return true
+	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsDeploySkill:
 		return true
 	case GetInternalMcpCatalogItem200JSONResponseBodyEffectiveActionsManagePermissions:
 		return true
@@ -17630,6 +17768,12 @@ const (
 	CreateKnowledgeBaseJSONBodyInitialGrantsActionsConfigure               CreateKnowledgeBaseJSONBodyInitialGrantsActions = "configure"
 	CreateKnowledgeBaseJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateKnowledgeBaseJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateKnowledgeBaseJSONBodyInitialGrantsActionsDelete                  CreateKnowledgeBaseJSONBodyInitialGrantsActions = "delete"
+	CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeployAgent             CreateKnowledgeBaseJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeployApp               CreateKnowledgeBaseJSONBodyInitialGrantsActions = "deploy-app"
+	CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateKnowledgeBaseJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeployMcpGateway        CreateKnowledgeBaseJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateKnowledgeBaseJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeploySkill             CreateKnowledgeBaseJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateKnowledgeBaseJSONBodyInitialGrantsActionsManagePermissions       CreateKnowledgeBaseJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateKnowledgeBaseJSONBodyInitialGrantsActionsRead                    CreateKnowledgeBaseJSONBodyInitialGrantsActions = "read"
 	CreateKnowledgeBaseJSONBodyInitialGrantsActionsUpdate                  CreateKnowledgeBaseJSONBodyInitialGrantsActions = "update"
@@ -17644,6 +17788,18 @@ func (e CreateKnowledgeBaseJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateKnowledgeBaseJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -18791,6 +18947,12 @@ const (
 	UploadKnowledgeFileJSONBodyInitialGrantsActionsConfigure               UploadKnowledgeFileJSONBodyInitialGrantsActions = "configure"
 	UploadKnowledgeFileJSONBodyInitialGrantsActionsConfigureDeploymentSpec UploadKnowledgeFileJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	UploadKnowledgeFileJSONBodyInitialGrantsActionsDelete                  UploadKnowledgeFileJSONBodyInitialGrantsActions = "delete"
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsDeployAgent             UploadKnowledgeFileJSONBodyInitialGrantsActions = "deploy-agent"
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsDeployApp               UploadKnowledgeFileJSONBodyInitialGrantsActions = "deploy-app"
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsDeployKnowledgeSource   UploadKnowledgeFileJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsDeployMcpGateway        UploadKnowledgeFileJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsDeployMcpRegistry       UploadKnowledgeFileJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsDeploySkill             UploadKnowledgeFileJSONBodyInitialGrantsActions = "deploy-skill"
 	UploadKnowledgeFileJSONBodyInitialGrantsActionsManagePermissions       UploadKnowledgeFileJSONBodyInitialGrantsActions = "manage-permissions"
 	UploadKnowledgeFileJSONBodyInitialGrantsActionsRead                    UploadKnowledgeFileJSONBodyInitialGrantsActions = "read"
 	UploadKnowledgeFileJSONBodyInitialGrantsActionsUpdate                  UploadKnowledgeFileJSONBodyInitialGrantsActions = "update"
@@ -18805,6 +18967,18 @@ func (e UploadKnowledgeFileJSONBodyInitialGrantsActions) Valid() bool {
 	case UploadKnowledgeFileJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case UploadKnowledgeFileJSONBodyInitialGrantsActionsDelete:
+		return true
+	case UploadKnowledgeFileJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case UploadKnowledgeFileJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case UploadKnowledgeFileJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case UploadKnowledgeFileJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case UploadKnowledgeFileJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case UploadKnowledgeFileJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case UploadKnowledgeFileJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -21302,6 +21476,12 @@ const (
 	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsConfigure               CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "configure"
 	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDelete                  CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "delete"
+	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeployAgent             CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeployApp               CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "deploy-app"
+	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeployMcpGateway        CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeploySkill             CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsManagePermissions       CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsRead                    CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "read"
 	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsUpdate                  CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "update"
@@ -21316,6 +21496,18 @@ func (e CreateLlmProviderApiKeyJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -22400,6 +22592,12 @@ const (
 	CreateVirtualApiKeyJSONBodyInitialGrantsActionsConfigure               CreateVirtualApiKeyJSONBodyInitialGrantsActions = "configure"
 	CreateVirtualApiKeyJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateVirtualApiKeyJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateVirtualApiKeyJSONBodyInitialGrantsActionsDelete                  CreateVirtualApiKeyJSONBodyInitialGrantsActions = "delete"
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeployAgent             CreateVirtualApiKeyJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeployApp               CreateVirtualApiKeyJSONBodyInitialGrantsActions = "deploy-app"
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateVirtualApiKeyJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeployMcpGateway        CreateVirtualApiKeyJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateVirtualApiKeyJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeploySkill             CreateVirtualApiKeyJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateVirtualApiKeyJSONBodyInitialGrantsActionsManagePermissions       CreateVirtualApiKeyJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateVirtualApiKeyJSONBodyInitialGrantsActionsRead                    CreateVirtualApiKeyJSONBodyInitialGrantsActions = "read"
 	CreateVirtualApiKeyJSONBodyInitialGrantsActionsUpdate                  CreateVirtualApiKeyJSONBodyInitialGrantsActions = "update"
@@ -22414,6 +22612,18 @@ func (e CreateVirtualApiKeyJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateVirtualApiKeyJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -25574,6 +25784,12 @@ const (
 	CreateOauthClientJSONBodyInitialGrantsActionsConfigure               CreateOauthClientJSONBodyInitialGrantsActions = "configure"
 	CreateOauthClientJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateOauthClientJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateOauthClientJSONBodyInitialGrantsActionsDelete                  CreateOauthClientJSONBodyInitialGrantsActions = "delete"
+	CreateOauthClientJSONBodyInitialGrantsActionsDeployAgent             CreateOauthClientJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateOauthClientJSONBodyInitialGrantsActionsDeployApp               CreateOauthClientJSONBodyInitialGrantsActions = "deploy-app"
+	CreateOauthClientJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateOauthClientJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateOauthClientJSONBodyInitialGrantsActionsDeployMcpGateway        CreateOauthClientJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateOauthClientJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateOauthClientJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateOauthClientJSONBodyInitialGrantsActionsDeploySkill             CreateOauthClientJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateOauthClientJSONBodyInitialGrantsActionsManagePermissions       CreateOauthClientJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateOauthClientJSONBodyInitialGrantsActionsRead                    CreateOauthClientJSONBodyInitialGrantsActions = "read"
 	CreateOauthClientJSONBodyInitialGrantsActionsUpdate                  CreateOauthClientJSONBodyInitialGrantsActions = "update"
@@ -25588,6 +25804,18 @@ func (e CreateOauthClientJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateOauthClientJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateOauthClientJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateOauthClientJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateOauthClientJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateOauthClientJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateOauthClientJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateOauthClientJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateOauthClientJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateOauthClientJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -33635,6 +33863,12 @@ const (
 	CreatePluginJSONBodyInitialGrantsActionsConfigure               CreatePluginJSONBodyInitialGrantsActions = "configure"
 	CreatePluginJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreatePluginJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreatePluginJSONBodyInitialGrantsActionsDelete                  CreatePluginJSONBodyInitialGrantsActions = "delete"
+	CreatePluginJSONBodyInitialGrantsActionsDeployAgent             CreatePluginJSONBodyInitialGrantsActions = "deploy-agent"
+	CreatePluginJSONBodyInitialGrantsActionsDeployApp               CreatePluginJSONBodyInitialGrantsActions = "deploy-app"
+	CreatePluginJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreatePluginJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreatePluginJSONBodyInitialGrantsActionsDeployMcpGateway        CreatePluginJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreatePluginJSONBodyInitialGrantsActionsDeployMcpRegistry       CreatePluginJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreatePluginJSONBodyInitialGrantsActionsDeploySkill             CreatePluginJSONBodyInitialGrantsActions = "deploy-skill"
 	CreatePluginJSONBodyInitialGrantsActionsManagePermissions       CreatePluginJSONBodyInitialGrantsActions = "manage-permissions"
 	CreatePluginJSONBodyInitialGrantsActionsRead                    CreatePluginJSONBodyInitialGrantsActions = "read"
 	CreatePluginJSONBodyInitialGrantsActionsUpdate                  CreatePluginJSONBodyInitialGrantsActions = "update"
@@ -33649,6 +33883,18 @@ func (e CreatePluginJSONBodyInitialGrantsActions) Valid() bool {
 	case CreatePluginJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreatePluginJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreatePluginJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreatePluginJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreatePluginJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreatePluginJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreatePluginJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreatePluginJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreatePluginJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -34091,6 +34337,12 @@ const (
 	ImportGithubPluginJSONBodyInitialGrantsActionsConfigure               ImportGithubPluginJSONBodyInitialGrantsActions = "configure"
 	ImportGithubPluginJSONBodyInitialGrantsActionsConfigureDeploymentSpec ImportGithubPluginJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	ImportGithubPluginJSONBodyInitialGrantsActionsDelete                  ImportGithubPluginJSONBodyInitialGrantsActions = "delete"
+	ImportGithubPluginJSONBodyInitialGrantsActionsDeployAgent             ImportGithubPluginJSONBodyInitialGrantsActions = "deploy-agent"
+	ImportGithubPluginJSONBodyInitialGrantsActionsDeployApp               ImportGithubPluginJSONBodyInitialGrantsActions = "deploy-app"
+	ImportGithubPluginJSONBodyInitialGrantsActionsDeployKnowledgeSource   ImportGithubPluginJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	ImportGithubPluginJSONBodyInitialGrantsActionsDeployMcpGateway        ImportGithubPluginJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	ImportGithubPluginJSONBodyInitialGrantsActionsDeployMcpRegistry       ImportGithubPluginJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	ImportGithubPluginJSONBodyInitialGrantsActionsDeploySkill             ImportGithubPluginJSONBodyInitialGrantsActions = "deploy-skill"
 	ImportGithubPluginJSONBodyInitialGrantsActionsManagePermissions       ImportGithubPluginJSONBodyInitialGrantsActions = "manage-permissions"
 	ImportGithubPluginJSONBodyInitialGrantsActionsRead                    ImportGithubPluginJSONBodyInitialGrantsActions = "read"
 	ImportGithubPluginJSONBodyInitialGrantsActionsUpdate                  ImportGithubPluginJSONBodyInitialGrantsActions = "update"
@@ -34105,6 +34357,18 @@ func (e ImportGithubPluginJSONBodyInitialGrantsActions) Valid() bool {
 	case ImportGithubPluginJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case ImportGithubPluginJSONBodyInitialGrantsActionsDelete:
+		return true
+	case ImportGithubPluginJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case ImportGithubPluginJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case ImportGithubPluginJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case ImportGithubPluginJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case ImportGithubPluginJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case ImportGithubPluginJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case ImportGithubPluginJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -35252,6 +35516,12 @@ const (
 	CreateProjectJSONBodyInitialGrantsActionsConfigure               CreateProjectJSONBodyInitialGrantsActions = "configure"
 	CreateProjectJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateProjectJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateProjectJSONBodyInitialGrantsActionsDelete                  CreateProjectJSONBodyInitialGrantsActions = "delete"
+	CreateProjectJSONBodyInitialGrantsActionsDeployAgent             CreateProjectJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateProjectJSONBodyInitialGrantsActionsDeployApp               CreateProjectJSONBodyInitialGrantsActions = "deploy-app"
+	CreateProjectJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateProjectJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateProjectJSONBodyInitialGrantsActionsDeployMcpGateway        CreateProjectJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateProjectJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateProjectJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateProjectJSONBodyInitialGrantsActionsDeploySkill             CreateProjectJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateProjectJSONBodyInitialGrantsActionsManagePermissions       CreateProjectJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateProjectJSONBodyInitialGrantsActionsRead                    CreateProjectJSONBodyInitialGrantsActions = "read"
 	CreateProjectJSONBodyInitialGrantsActionsUpdate                  CreateProjectJSONBodyInitialGrantsActions = "update"
@@ -35266,6 +35536,18 @@ func (e CreateProjectJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateProjectJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateProjectJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateProjectJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateProjectJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateProjectJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateProjectJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateProjectJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateProjectJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateProjectJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -36755,6 +37037,12 @@ const (
 	GetResourcePermissions200JSONResponseBodyEffectiveActionsConfigure               GetResourcePermissions200JSONResponseBodyEffectiveActions = "configure"
 	GetResourcePermissions200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec GetResourcePermissions200JSONResponseBodyEffectiveActions = "configure-deployment-spec"
 	GetResourcePermissions200JSONResponseBodyEffectiveActionsDelete                  GetResourcePermissions200JSONResponseBodyEffectiveActions = "delete"
+	GetResourcePermissions200JSONResponseBodyEffectiveActionsDeployAgent             GetResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-agent"
+	GetResourcePermissions200JSONResponseBodyEffectiveActionsDeployApp               GetResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-app"
+	GetResourcePermissions200JSONResponseBodyEffectiveActionsDeployKnowledgeSource   GetResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-knowledge-source"
+	GetResourcePermissions200JSONResponseBodyEffectiveActionsDeployMcpGateway        GetResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-mcp-gateway"
+	GetResourcePermissions200JSONResponseBodyEffectiveActionsDeployMcpRegistry       GetResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-mcp-registry"
+	GetResourcePermissions200JSONResponseBodyEffectiveActionsDeploySkill             GetResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-skill"
 	GetResourcePermissions200JSONResponseBodyEffectiveActionsManagePermissions       GetResourcePermissions200JSONResponseBodyEffectiveActions = "manage-permissions"
 	GetResourcePermissions200JSONResponseBodyEffectiveActionsRead                    GetResourcePermissions200JSONResponseBodyEffectiveActions = "read"
 	GetResourcePermissions200JSONResponseBodyEffectiveActionsUpdate                  GetResourcePermissions200JSONResponseBodyEffectiveActions = "update"
@@ -36769,6 +37057,18 @@ func (e GetResourcePermissions200JSONResponseBodyEffectiveActions) Valid() bool 
 	case GetResourcePermissions200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec:
 		return true
 	case GetResourcePermissions200JSONResponseBodyEffectiveActionsDelete:
+		return true
+	case GetResourcePermissions200JSONResponseBodyEffectiveActionsDeployAgent:
+		return true
+	case GetResourcePermissions200JSONResponseBodyEffectiveActionsDeployApp:
+		return true
+	case GetResourcePermissions200JSONResponseBodyEffectiveActionsDeployKnowledgeSource:
+		return true
+	case GetResourcePermissions200JSONResponseBodyEffectiveActionsDeployMcpGateway:
+		return true
+	case GetResourcePermissions200JSONResponseBodyEffectiveActionsDeployMcpRegistry:
+		return true
+	case GetResourcePermissions200JSONResponseBodyEffectiveActionsDeploySkill:
 		return true
 	case GetResourcePermissions200JSONResponseBodyEffectiveActionsManagePermissions:
 		return true
@@ -36788,6 +37088,12 @@ const (
 	GetResourcePermissions200JSONResponseBodyGrantsActionsConfigure               GetResourcePermissions200JSONResponseBodyGrantsActions = "configure"
 	GetResourcePermissions200JSONResponseBodyGrantsActionsConfigureDeploymentSpec GetResourcePermissions200JSONResponseBodyGrantsActions = "configure-deployment-spec"
 	GetResourcePermissions200JSONResponseBodyGrantsActionsDelete                  GetResourcePermissions200JSONResponseBodyGrantsActions = "delete"
+	GetResourcePermissions200JSONResponseBodyGrantsActionsDeployAgent             GetResourcePermissions200JSONResponseBodyGrantsActions = "deploy-agent"
+	GetResourcePermissions200JSONResponseBodyGrantsActionsDeployApp               GetResourcePermissions200JSONResponseBodyGrantsActions = "deploy-app"
+	GetResourcePermissions200JSONResponseBodyGrantsActionsDeployKnowledgeSource   GetResourcePermissions200JSONResponseBodyGrantsActions = "deploy-knowledge-source"
+	GetResourcePermissions200JSONResponseBodyGrantsActionsDeployMcpGateway        GetResourcePermissions200JSONResponseBodyGrantsActions = "deploy-mcp-gateway"
+	GetResourcePermissions200JSONResponseBodyGrantsActionsDeployMcpRegistry       GetResourcePermissions200JSONResponseBodyGrantsActions = "deploy-mcp-registry"
+	GetResourcePermissions200JSONResponseBodyGrantsActionsDeploySkill             GetResourcePermissions200JSONResponseBodyGrantsActions = "deploy-skill"
 	GetResourcePermissions200JSONResponseBodyGrantsActionsManagePermissions       GetResourcePermissions200JSONResponseBodyGrantsActions = "manage-permissions"
 	GetResourcePermissions200JSONResponseBodyGrantsActionsRead                    GetResourcePermissions200JSONResponseBodyGrantsActions = "read"
 	GetResourcePermissions200JSONResponseBodyGrantsActionsUpdate                  GetResourcePermissions200JSONResponseBodyGrantsActions = "update"
@@ -36802,6 +37108,18 @@ func (e GetResourcePermissions200JSONResponseBodyGrantsActions) Valid() bool {
 	case GetResourcePermissions200JSONResponseBodyGrantsActionsConfigureDeploymentSpec:
 		return true
 	case GetResourcePermissions200JSONResponseBodyGrantsActionsDelete:
+		return true
+	case GetResourcePermissions200JSONResponseBodyGrantsActionsDeployAgent:
+		return true
+	case GetResourcePermissions200JSONResponseBodyGrantsActionsDeployApp:
+		return true
+	case GetResourcePermissions200JSONResponseBodyGrantsActionsDeployKnowledgeSource:
+		return true
+	case GetResourcePermissions200JSONResponseBodyGrantsActionsDeployMcpGateway:
+		return true
+	case GetResourcePermissions200JSONResponseBodyGrantsActionsDeployMcpRegistry:
+		return true
+	case GetResourcePermissions200JSONResponseBodyGrantsActionsDeploySkill:
 		return true
 	case GetResourcePermissions200JSONResponseBodyGrantsActionsManagePermissions:
 		return true
@@ -36926,6 +37244,12 @@ const (
 	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigure               GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "configure"
 	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigureDeploymentSpec GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "configure-deployment-spec"
 	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDelete                  GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "delete"
+	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployAgent             GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-agent"
+	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployApp               GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-app"
+	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployKnowledgeSource   GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-knowledge-source"
+	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployMcpGateway        GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-mcp-gateway"
+	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployMcpRegistry       GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-mcp-registry"
+	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeploySkill             GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-skill"
 	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsManagePermissions       GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "manage-permissions"
 	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsRead                    GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "read"
 	GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsUpdate                  GetResourcePermissions200JSONResponseBodyInheritedGrantsActions = "update"
@@ -36940,6 +37264,18 @@ func (e GetResourcePermissions200JSONResponseBodyInheritedGrantsActions) Valid()
 	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigureDeploymentSpec:
 		return true
 	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDelete:
+		return true
+	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployAgent:
+		return true
+	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployApp:
+		return true
+	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployKnowledgeSource:
+		return true
+	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployMcpGateway:
+		return true
+	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployMcpRegistry:
+		return true
+	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeploySkill:
 		return true
 	case GetResourcePermissions200JSONResponseBodyInheritedGrantsActionsManagePermissions:
 		return true
@@ -37304,6 +37640,12 @@ const (
 	UpdateResourcePermissionsJSONBodyGrantsActionsConfigure               UpdateResourcePermissionsJSONBodyGrantsActions = "configure"
 	UpdateResourcePermissionsJSONBodyGrantsActionsConfigureDeploymentSpec UpdateResourcePermissionsJSONBodyGrantsActions = "configure-deployment-spec"
 	UpdateResourcePermissionsJSONBodyGrantsActionsDelete                  UpdateResourcePermissionsJSONBodyGrantsActions = "delete"
+	UpdateResourcePermissionsJSONBodyGrantsActionsDeployAgent             UpdateResourcePermissionsJSONBodyGrantsActions = "deploy-agent"
+	UpdateResourcePermissionsJSONBodyGrantsActionsDeployApp               UpdateResourcePermissionsJSONBodyGrantsActions = "deploy-app"
+	UpdateResourcePermissionsJSONBodyGrantsActionsDeployKnowledgeSource   UpdateResourcePermissionsJSONBodyGrantsActions = "deploy-knowledge-source"
+	UpdateResourcePermissionsJSONBodyGrantsActionsDeployMcpGateway        UpdateResourcePermissionsJSONBodyGrantsActions = "deploy-mcp-gateway"
+	UpdateResourcePermissionsJSONBodyGrantsActionsDeployMcpRegistry       UpdateResourcePermissionsJSONBodyGrantsActions = "deploy-mcp-registry"
+	UpdateResourcePermissionsJSONBodyGrantsActionsDeploySkill             UpdateResourcePermissionsJSONBodyGrantsActions = "deploy-skill"
 	UpdateResourcePermissionsJSONBodyGrantsActionsManagePermissions       UpdateResourcePermissionsJSONBodyGrantsActions = "manage-permissions"
 	UpdateResourcePermissionsJSONBodyGrantsActionsRead                    UpdateResourcePermissionsJSONBodyGrantsActions = "read"
 	UpdateResourcePermissionsJSONBodyGrantsActionsUpdate                  UpdateResourcePermissionsJSONBodyGrantsActions = "update"
@@ -37318,6 +37660,18 @@ func (e UpdateResourcePermissionsJSONBodyGrantsActions) Valid() bool {
 	case UpdateResourcePermissionsJSONBodyGrantsActionsConfigureDeploymentSpec:
 		return true
 	case UpdateResourcePermissionsJSONBodyGrantsActionsDelete:
+		return true
+	case UpdateResourcePermissionsJSONBodyGrantsActionsDeployAgent:
+		return true
+	case UpdateResourcePermissionsJSONBodyGrantsActionsDeployApp:
+		return true
+	case UpdateResourcePermissionsJSONBodyGrantsActionsDeployKnowledgeSource:
+		return true
+	case UpdateResourcePermissionsJSONBodyGrantsActionsDeployMcpGateway:
+		return true
+	case UpdateResourcePermissionsJSONBodyGrantsActionsDeployMcpRegistry:
+		return true
+	case UpdateResourcePermissionsJSONBodyGrantsActionsDeploySkill:
 		return true
 	case UpdateResourcePermissionsJSONBodyGrantsActionsManagePermissions:
 		return true
@@ -37547,6 +37901,12 @@ const (
 	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsConfigure               UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "configure"
 	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "configure-deployment-spec"
 	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDelete                  UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "delete"
+	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeployAgent             UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-agent"
+	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeployApp               UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-app"
+	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeployKnowledgeSource   UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-knowledge-source"
+	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeployMcpGateway        UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-mcp-gateway"
+	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeployMcpRegistry       UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-mcp-registry"
+	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeploySkill             UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "deploy-skill"
 	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsManagePermissions       UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "manage-permissions"
 	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsRead                    UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "read"
 	UpdateResourcePermissions200JSONResponseBodyEffectiveActionsUpdate                  UpdateResourcePermissions200JSONResponseBodyEffectiveActions = "update"
@@ -37561,6 +37921,18 @@ func (e UpdateResourcePermissions200JSONResponseBodyEffectiveActions) Valid() bo
 	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec:
 		return true
 	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDelete:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeployAgent:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeployApp:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeployKnowledgeSource:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeployMcpGateway:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeployMcpRegistry:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsDeploySkill:
 		return true
 	case UpdateResourcePermissions200JSONResponseBodyEffectiveActionsManagePermissions:
 		return true
@@ -37580,6 +37952,12 @@ const (
 	UpdateResourcePermissions200JSONResponseBodyGrantsActionsConfigure               UpdateResourcePermissions200JSONResponseBodyGrantsActions = "configure"
 	UpdateResourcePermissions200JSONResponseBodyGrantsActionsConfigureDeploymentSpec UpdateResourcePermissions200JSONResponseBodyGrantsActions = "configure-deployment-spec"
 	UpdateResourcePermissions200JSONResponseBodyGrantsActionsDelete                  UpdateResourcePermissions200JSONResponseBodyGrantsActions = "delete"
+	UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeployAgent             UpdateResourcePermissions200JSONResponseBodyGrantsActions = "deploy-agent"
+	UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeployApp               UpdateResourcePermissions200JSONResponseBodyGrantsActions = "deploy-app"
+	UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeployKnowledgeSource   UpdateResourcePermissions200JSONResponseBodyGrantsActions = "deploy-knowledge-source"
+	UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeployMcpGateway        UpdateResourcePermissions200JSONResponseBodyGrantsActions = "deploy-mcp-gateway"
+	UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeployMcpRegistry       UpdateResourcePermissions200JSONResponseBodyGrantsActions = "deploy-mcp-registry"
+	UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeploySkill             UpdateResourcePermissions200JSONResponseBodyGrantsActions = "deploy-skill"
 	UpdateResourcePermissions200JSONResponseBodyGrantsActionsManagePermissions       UpdateResourcePermissions200JSONResponseBodyGrantsActions = "manage-permissions"
 	UpdateResourcePermissions200JSONResponseBodyGrantsActionsRead                    UpdateResourcePermissions200JSONResponseBodyGrantsActions = "read"
 	UpdateResourcePermissions200JSONResponseBodyGrantsActionsUpdate                  UpdateResourcePermissions200JSONResponseBodyGrantsActions = "update"
@@ -37594,6 +37972,18 @@ func (e UpdateResourcePermissions200JSONResponseBodyGrantsActions) Valid() bool 
 	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsConfigureDeploymentSpec:
 		return true
 	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsDelete:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeployAgent:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeployApp:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeployKnowledgeSource:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeployMcpGateway:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeployMcpRegistry:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsDeploySkill:
 		return true
 	case UpdateResourcePermissions200JSONResponseBodyGrantsActionsManagePermissions:
 		return true
@@ -37718,6 +38108,12 @@ const (
 	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigure               UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "configure"
 	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigureDeploymentSpec UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "configure-deployment-spec"
 	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDelete                  UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "delete"
+	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployAgent             UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-agent"
+	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployApp               UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-app"
+	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployKnowledgeSource   UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-knowledge-source"
+	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployMcpGateway        UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-mcp-gateway"
+	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployMcpRegistry       UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-mcp-registry"
+	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeploySkill             UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "deploy-skill"
 	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsManagePermissions       UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "manage-permissions"
 	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsRead                    UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "read"
 	UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsUpdate                  UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions = "update"
@@ -37732,6 +38128,18 @@ func (e UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActions) Vali
 	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsConfigureDeploymentSpec:
 		return true
 	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDelete:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployAgent:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployApp:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployKnowledgeSource:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployMcpGateway:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeployMcpRegistry:
+		return true
+	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsDeploySkill:
 		return true
 	case UpdateResourcePermissions200JSONResponseBodyInheritedGrantsActionsManagePermissions:
 		return true
@@ -39044,6 +39452,12 @@ const (
 	CreateServiceAccountJSONBodyInitialGrantsActionsConfigure               CreateServiceAccountJSONBodyInitialGrantsActions = "configure"
 	CreateServiceAccountJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateServiceAccountJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateServiceAccountJSONBodyInitialGrantsActionsDelete                  CreateServiceAccountJSONBodyInitialGrantsActions = "delete"
+	CreateServiceAccountJSONBodyInitialGrantsActionsDeployAgent             CreateServiceAccountJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateServiceAccountJSONBodyInitialGrantsActionsDeployApp               CreateServiceAccountJSONBodyInitialGrantsActions = "deploy-app"
+	CreateServiceAccountJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateServiceAccountJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateServiceAccountJSONBodyInitialGrantsActionsDeployMcpGateway        CreateServiceAccountJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateServiceAccountJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateServiceAccountJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateServiceAccountJSONBodyInitialGrantsActionsDeploySkill             CreateServiceAccountJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateServiceAccountJSONBodyInitialGrantsActionsManagePermissions       CreateServiceAccountJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateServiceAccountJSONBodyInitialGrantsActionsRead                    CreateServiceAccountJSONBodyInitialGrantsActions = "read"
 	CreateServiceAccountJSONBodyInitialGrantsActionsUpdate                  CreateServiceAccountJSONBodyInitialGrantsActions = "update"
@@ -39058,6 +39472,18 @@ func (e CreateServiceAccountJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateServiceAccountJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateServiceAccountJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateServiceAccountJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateServiceAccountJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateServiceAccountJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateServiceAccountJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateServiceAccountJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateServiceAccountJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateServiceAccountJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -40784,6 +41210,12 @@ const (
 	CreateSkillJSONBodyInitialGrantsActionsConfigure               CreateSkillJSONBodyInitialGrantsActions = "configure"
 	CreateSkillJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateSkillJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	CreateSkillJSONBodyInitialGrantsActionsDelete                  CreateSkillJSONBodyInitialGrantsActions = "delete"
+	CreateSkillJSONBodyInitialGrantsActionsDeployAgent             CreateSkillJSONBodyInitialGrantsActions = "deploy-agent"
+	CreateSkillJSONBodyInitialGrantsActionsDeployApp               CreateSkillJSONBodyInitialGrantsActions = "deploy-app"
+	CreateSkillJSONBodyInitialGrantsActionsDeployKnowledgeSource   CreateSkillJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	CreateSkillJSONBodyInitialGrantsActionsDeployMcpGateway        CreateSkillJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	CreateSkillJSONBodyInitialGrantsActionsDeployMcpRegistry       CreateSkillJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	CreateSkillJSONBodyInitialGrantsActionsDeploySkill             CreateSkillJSONBodyInitialGrantsActions = "deploy-skill"
 	CreateSkillJSONBodyInitialGrantsActionsManagePermissions       CreateSkillJSONBodyInitialGrantsActions = "manage-permissions"
 	CreateSkillJSONBodyInitialGrantsActionsRead                    CreateSkillJSONBodyInitialGrantsActions = "read"
 	CreateSkillJSONBodyInitialGrantsActionsUpdate                  CreateSkillJSONBodyInitialGrantsActions = "update"
@@ -40798,6 +41230,18 @@ func (e CreateSkillJSONBodyInitialGrantsActions) Valid() bool {
 	case CreateSkillJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case CreateSkillJSONBodyInitialGrantsActionsDelete:
+		return true
+	case CreateSkillJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case CreateSkillJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case CreateSkillJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case CreateSkillJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case CreateSkillJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case CreateSkillJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case CreateSkillJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -41156,6 +41600,12 @@ const (
 	ImportGithubSkillsJSONBodyInitialGrantsActionsConfigure               ImportGithubSkillsJSONBodyInitialGrantsActions = "configure"
 	ImportGithubSkillsJSONBodyInitialGrantsActionsConfigureDeploymentSpec ImportGithubSkillsJSONBodyInitialGrantsActions = "configure-deployment-spec"
 	ImportGithubSkillsJSONBodyInitialGrantsActionsDelete                  ImportGithubSkillsJSONBodyInitialGrantsActions = "delete"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsDeployAgent             ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-agent"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsDeployApp               ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-app"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsDeployKnowledgeSource   ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsDeployMcpGateway        ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsDeployMcpRegistry       ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsDeploySkill             ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-skill"
 	ImportGithubSkillsJSONBodyInitialGrantsActionsManagePermissions       ImportGithubSkillsJSONBodyInitialGrantsActions = "manage-permissions"
 	ImportGithubSkillsJSONBodyInitialGrantsActionsRead                    ImportGithubSkillsJSONBodyInitialGrantsActions = "read"
 	ImportGithubSkillsJSONBodyInitialGrantsActionsUpdate                  ImportGithubSkillsJSONBodyInitialGrantsActions = "update"
@@ -41170,6 +41620,18 @@ func (e ImportGithubSkillsJSONBodyInitialGrantsActions) Valid() bool {
 	case ImportGithubSkillsJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
 		return true
 	case ImportGithubSkillsJSONBodyInitialGrantsActionsDelete:
+		return true
+	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeployAgent:
+		return true
+	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeployApp:
+		return true
+	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+		return true
+	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeployMcpGateway:
+		return true
+	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeployMcpRegistry:
+		return true
+	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeploySkill:
 		return true
 	case ImportGithubSkillsJSONBodyInitialGrantsActionsManagePermissions:
 		return true
@@ -42152,16 +42614,16 @@ func (e UpdateSkillGithubSyncJSONBodySyncNow) Valid() bool {
 
 // Defines values for UpdateSkillGithubSync200JSONResponseBodyCreatedByType.
 const (
-	ServiceAccount UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "service_account"
-	User           UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "user"
+	UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeServiceAccount UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "service_account"
+	UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeUser           UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "user"
 )
 
 // Valid indicates whether the value is a known member of the UpdateSkillGithubSync200JSONResponseBodyCreatedByType enum.
 func (e UpdateSkillGithubSync200JSONResponseBodyCreatedByType) Valid() bool {
 	switch e {
-	case ServiceAccount:
+	case UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeServiceAccount:
 		return true
-	case User:
+	case UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeUser:
 		return true
 	default:
 		return false
@@ -47706,6 +48168,9 @@ type ListEnvironmentsParams struct {
 	// Labels Filter by labels. Format: key1:val1|val2;key2:val3. AND across keys, OR within values.
 	Labels *string `form:"labels,omitempty" json:"labels,omitempty"`
 }
+
+// ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds defines parameters for ListEnvironments.
+type ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds string
 
 // ListEnvironments200JSONResponseBodyEnvironmentsNetworkPolicyDomainPreset defines parameters for ListEnvironments.
 type ListEnvironments200JSONResponseBodyEnvironmentsNetworkPolicyDomainPreset string
@@ -83977,11 +84442,12 @@ type ListEnvironmentsResponse struct {
 	JSON200      *struct {
 		DefaultAssignedCatalogCount int `json:"defaultAssignedCatalogCount"`
 		Environments                []struct {
-			AssignedCatalogCount int                `json:"assignedCatalogCount"`
-			CanDeploy            bool               `json:"canDeploy"`
-			CreatedAt            time.Time          `json:"createdAt"`
-			Description          *string            `json:"description"`
-			Id                   openapi_types.UUID `json:"id"`
+			AssignedCatalogCount int                                                          `json:"assignedCatalogCount"`
+			CanDeploy            bool                                                         `json:"canDeploy"`
+			CreatedAt            time.Time                                                    `json:"createdAt"`
+			DeployKinds          []ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds `json:"deployKinds"`
+			Description          *string                                                      `json:"description"`
+			Id                   openapi_types.UUID                                           `json:"id"`
 			Labels               []struct {
 				Key     string              `json:"key"`
 				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
@@ -111328,11 +111794,12 @@ func ParseListEnvironmentsResponse(rsp *http.Response) (*ListEnvironmentsRespons
 		var dest struct {
 			DefaultAssignedCatalogCount int `json:"defaultAssignedCatalogCount"`
 			Environments                []struct {
-				AssignedCatalogCount int                `json:"assignedCatalogCount"`
-				CanDeploy            bool               `json:"canDeploy"`
-				CreatedAt            time.Time          `json:"createdAt"`
-				Description          *string            `json:"description"`
-				Id                   openapi_types.UUID `json:"id"`
+				AssignedCatalogCount int                                                          `json:"assignedCatalogCount"`
+				CanDeploy            bool                                                         `json:"canDeploy"`
+				CreatedAt            time.Time                                                    `json:"createdAt"`
+				DeployKinds          []ListEnvironments200JSONResponseBodyEnvironmentsDeployKinds `json:"deployKinds"`
+				Description          *string                                                      `json:"description"`
+				Id                   openapi_types.UUID                                           `json:"id"`
 				Labels               []struct {
 					Key     string              `json:"key"`
 					KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
