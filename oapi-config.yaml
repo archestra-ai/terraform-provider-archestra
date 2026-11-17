@@ -40,6 +40,7 @@ output-options:
     - getAgent
     - getAgents
     - getEnvironment
+    - getOrganizationMember
     - getAgentDelegations
     - getAgentActivationSkillPolicy
     - patchAgentActivationSkillPolicy
@@ -58,6 +59,7 @@ output-options:
     - getInternalMcpCatalogItem
     - getLimit
     - getLlmProviderApiKey
+    - getLlmProviderApiKeys
     - getMcpServer
     - getMcpServerInstallationStatus
     - getMcpServerTools
@@ -74,6 +76,7 @@ output-options:
     - getOrganization
     - getResourcePermissions
     - getTeam
+    - getTeams
     - getTeamExternalGroups
     - getTeamMembers
     - getToolsWithAssignments
@@ -147,6 +150,7 @@ output-options:
     - getKnowledgeDirectories
     - createServiceAccount
     - getServiceAccount
+    - getServiceAccounts
     - updateServiceAccount
     - deleteServiceAccount
     - createServiceAccountToken

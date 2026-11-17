@@ -36,16 +36,18 @@ func (d *TeamDataSource) Metadata(ctx context.Context, req datasource.MetadataRe
 
 func (d *TeamDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Fetches an Archestra team by ID.",
+		MarkdownDescription: "Fetches an Archestra team by `id` or by its exact `name`. Set one of the two.",
 
 		Attributes: map[string]schema.Attribute{
 			"external_group_ids": schema.SetAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "SSO groups mapped to this team, when visible and Team Sync is available."},
 			"id": schema.StringAttribute{
-				MarkdownDescription: "Team identifier",
-				Required:            true,
+				MarkdownDescription: "Team identifier. Set this or `name`.",
+				Optional:            true,
+				Computed:            true,
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "The name of the team",
+				MarkdownDescription: "The name of the team. Set it to find the team by its exact name instead of by `id`.",
+				Optional:            true,
 				Computed:            true,
 			},
 			"description": schema.StringAttribute{
@@ -105,6 +107,14 @@ func (d *TeamDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
+	if data.ID.ValueString() == "" {
+		id, ok := d.teamIDByName(ctx, data.Name.ValueString(), resp)
+		if !ok {
+			return
+		}
+		data.ID = types.StringValue(id)
+	}
+
 	// Get team data
 	teamResp, err := d.client.GetTeamWithResponse(ctx, data.ID.ValueString(), nil)
 	if err != nil {
@@ -159,4 +169,44 @@ func (d *TeamDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	}
 	data.ExternalGroupIDs = view.ExternalGroupIDs
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+// teamIDByName finds the one team with exactly this name. The API's name
+// filter matches part of a name, so the exact match is made here.
+func (d *TeamDataSource) teamIDByName(ctx context.Context, name string, resp *datasource.ReadResponse) (string, bool) {
+	if name == "" {
+		resp.Diagnostics.AddError("Missing Lookup", "Set id or name.")
+		return "", false
+	}
+	limit, includeRelations := 100, false
+	found := ""
+	for offset := 0; ; offset += limit {
+		teams, err := d.client.GetTeamsWithResponse(ctx, &client.GetTeamsParams{Name: &name, Limit: &limit, Offset: &offset, IncludeRelations: &includeRelations})
+		if err != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list teams: %s", err))
+			return "", false
+		}
+		if teams.JSON200 == nil {
+			resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", teams.StatusCode()))
+			return "", false
+		}
+		for _, team := range teams.JSON200.Data {
+			if team.Name != name {
+				continue
+			}
+			if found != "" {
+				resp.Diagnostics.AddError("Ambiguous Team", fmt.Sprintf("Several teams are named %q. Look the team up by id.", name))
+				return "", false
+			}
+			found = team.Id
+		}
+		if len(teams.JSON200.Data) < limit {
+			break
+		}
+	}
+	if found == "" {
+		resp.Diagnostics.AddError("Team Not Found", fmt.Sprintf("No team visible to this API key is named %q.", name))
+		return "", false
+	}
+	return found, true
 }
