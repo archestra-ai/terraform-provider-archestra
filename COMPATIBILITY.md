@@ -22,12 +22,17 @@ Two features need 1.5.0-rc.1 or later:
   created, on import or refresh. Older releases return 403, so `value` stays
   null. Users can recover keys they created on every supported release.
 
-Two settings need a later release. Leave them unset on older releases:
+Some settings need a later release. Leave them unset on older releases:
 
 - `identity_bindings` on `archestra_agent` and `archestra_mcp_gateway` needs
   1.5.0-rc.35 or later. Setting it on an older release fails with an error.
 - `connection_page_hidden` on `archestra_organization_settings` needs
   1.5.0-rc.31 or later.
+- The per-kind deploy actions (`deploy-agent`, `deploy-mcp-gateway`,
+  `deploy-mcp-registry`, `deploy-skill`, `deploy-app`,
+  `deploy-knowledge-source`) in `archestra_environment` permissions and in
+  `default_permissions.environments` on `archestra_organization_settings` need
+  1.5.0-rc.37 or later. Older releases reject them.
 
 Newer resources and nested settings need these releases. Acceptance tests skip
 them on older releases:

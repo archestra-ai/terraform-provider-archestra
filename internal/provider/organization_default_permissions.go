@@ -32,6 +32,9 @@ func defaultPermissionsAttribute() schema.SingleNestedAttribute {
 		actions, _ := value.NestedObject.Attributes["actions"].(schema.SetAttribute)
 		actions.MarkdownDescription = "Actions granted to the principal; keep manage-permissions on at least one grant in each policy."
 		value.NestedObject.Attributes["actions"] = actions
+		if name == "environments" {
+			value = withEnvironmentDeployActions(value)
+		}
 		attributes[name] = value
 	}
 	return schema.SingleNestedAttribute{Optional: true, Computed: true, Attributes: attributes, PlanModifiers: []planmodifier.Object{objectplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Default access policies from organization Settings. Manage each object type independently: omit a field to leave its policy unmanaged, or set [] to clear that type's direct organization-wide grants. Changing these policies affects existing and future objects. Organization-settings deletion leaves them intact. The API rejects any change, including [], that leaves a policy without a grant that includes manage-permissions."}

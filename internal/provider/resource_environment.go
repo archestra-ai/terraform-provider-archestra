@@ -67,7 +67,7 @@ func (r *EnvironmentResource) Metadata(_ context.Context, req resource.MetadataR
 }
 func (r *EnvironmentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{MarkdownDescription: "Deployment environment and its network and container registry policies. Destroy deletes the environment; the API rejects deletion while resources remain assigned. Sharing is managed through permissions on this object. Requires an Archestra release containing GET /api/environments/{id}.", Attributes: map[string]schema.Attribute{
-		"permissions":              nonAtomicPermissionsAttribute(),
+		"permissions":              withEnvironmentDeployActions(nonAtomicPermissionsAttribute()),
 		"id":                       schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 		"name":                     schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 50)}},
 		"description":              schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.LengthAtMost(500)}},
