@@ -71,6 +71,14 @@ data "archestra_environment" "test" {
 				ExpectError: regexp.MustCompile(`Environment Not Found`),
 			},
 			{
+				Config:      created + `data "archestra_mcp_server" "missing" { name = "tf-acc-no-such-installation" }`,
+				ExpectError: regexp.MustCompile(`MCP Server Not Found`),
+			},
+			{
+				Config:      created + `data "archestra_mcp_server" "empty" {}`,
+				ExpectError: regexp.MustCompile(`Missing Lookup`),
+			},
+			{
 				Config:      created + `data "archestra_user" "missing" { email = "tf-acc-nobody@example.invalid" }`,
 				ExpectError: regexp.MustCompile(`User Not Found`),
 			},
