@@ -33,6 +33,9 @@ Some settings need a later release. Leave them unset on older releases:
   `deploy-knowledge-source`) in `archestra_environment` permissions and in
   `default_permissions.environments` on `archestra_organization_settings` need
   1.5.0-rc.37 or later. Older releases reject them.
+- The `custom-image` key in `popular_agent_overrides` on
+  `archestra_organization_settings` needs 1.5.0-rc.38 or later. Older releases
+  reject it.
 
 Newer resources and nested settings need these releases. Acceptance tests skip
 them on older releases:
