@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.4.0...v3.5.0) (2026-11-17)
+
+
+### Features
+
+* look up existing objects by name with data sources ([#259](https://github.com/archestra-ai/terraform-provider-archestra/issues/259)) ([26c2aac](https://github.com/archestra-ai/terraform-provider-archestra/commit/26c2aac23d34fbb9c0b85e76464f5f24828e8d64))
+* per-kind deploy grants on environments; sync platform API to 1.5.0-rc.37 ([#258](https://github.com/archestra-ai/terraform-provider-archestra/issues/258)) ([712414b](https://github.com/archestra-ai/terraform-provider-archestra/commit/712414ba2502305e50845beabc3d7ccf75ddb37c))
+
 ## [3.4.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.3.0...v3.4.0) (2026-11-16)
 
 
