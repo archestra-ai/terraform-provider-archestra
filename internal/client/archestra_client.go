@@ -52827,6 +52827,9 @@ type UpdateIntegrationSettingsJSONBody struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
 		} `json:"copilot,omitempty"`
+		CustomImage *struct {
+			Hidden *bool `json:"hidden,omitempty"`
+		} `json:"custom-image,omitempty"`
 		Grok *struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`

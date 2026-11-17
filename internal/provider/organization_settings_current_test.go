@@ -1,6 +1,8 @@
 package provider
 
 import (
+	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -49,6 +51,27 @@ func TestAccOrganizationSettingsCurrentDomains(t *testing.T) {
 		{Config: initial, PlanOnly: true},
 		{Config: updated, Check: resource.ComposeTestCheckFunc(resource.TestCheckResourceAttr("archestra_organization_settings.test", "connection_plugins_enabled", "true"), resource.TestCheckResourceAttr("archestra_organization_settings.test", "default_environment_description", "Updated local environment"))},
 		{Config: updated, PlanOnly: true},
+	}})
+}
+
+func TestAccOrganizationSettingsCustomImageOverride(t *testing.T) {
+	if os.Getenv("TF_ACC") != "" {
+		testAccPreCheck(t)
+		if !testAccAPIVersionAtLeast(t, "1.5.0-rc.38") {
+			t.Skip("The custom-image popular agent override requires API 1.5.0-rc.38")
+		}
+	}
+	config := func(hidden bool) string {
+		return fmt.Sprintf(`resource "archestra_organization_settings" "test" {
+ popular_agent_overrides = jsonencode({codex={hidden=false,position=1},"custom-image"={hidden=%t}})
+}`, hidden)
+	}
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+		{Config: config(true), Check: resource.TestCheckResourceAttr("archestra_organization_settings.test", "popular_agent_overrides", `{"codex":{"hidden":false,"position":1},"custom-image":{"hidden":true}}`)},
+		{ResourceName: "archestra_organization_settings.test", ImportState: true, ImportStateVerify: true},
+		{Config: config(true), PlanOnly: true},
+		{Config: config(false), Check: resource.TestCheckResourceAttr("archestra_organization_settings.test", "popular_agent_overrides", `{"codex":{"hidden":false,"position":1},"custom-image":{"hidden":false}}`)},
+		{Config: config(false), PlanOnly: true},
 	}})
 }
 
