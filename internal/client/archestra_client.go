@@ -24195,6 +24195,354 @@ func (e GetMcpToolCalls500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetMcpServersParamsAssignmentScope.
+const (
+	GetMcpServersParamsAssignmentScopeOrg      GetMcpServersParamsAssignmentScope = "org"
+	GetMcpServersParamsAssignmentScopePersonal GetMcpServersParamsAssignmentScope = "personal"
+	GetMcpServersParamsAssignmentScopeTeam     GetMcpServersParamsAssignmentScope = "team"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServersParamsAssignmentScope enum.
+func (e GetMcpServersParamsAssignmentScope) Valid() bool {
+	switch e {
+	case GetMcpServersParamsAssignmentScopeOrg:
+		return true
+	case GetMcpServersParamsAssignmentScopePersonal:
+		return true
+	case GetMcpServersParamsAssignmentScopeTeam:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServersParamsStatus.
+const (
+	GetMcpServersParamsStatusActive  GetMcpServersParamsStatus = "active"
+	GetMcpServersParamsStatusDeleted GetMcpServersParamsStatus = "deleted"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServersParamsStatus enum.
+func (e GetMcpServersParamsStatus) Valid() bool {
+	switch e {
+	case GetMcpServersParamsStatusActive:
+		return true
+	case GetMcpServersParamsStatusDeleted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers200JSONResponseBodyAlertMutesIssueKind.
+const (
+	FailedToStart GetMcpServers200JSONResponseBodyAlertMutesIssueKind = "failed-to-start"
+	NeedsReauth   GetMcpServers200JSONResponseBodyAlertMutesIssueKind = "needs-reauth"
+	NotRunning    GetMcpServers200JSONResponseBodyAlertMutesIssueKind = "not-running"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers200JSONResponseBodyAlertMutesIssueKind enum.
+func (e GetMcpServers200JSONResponseBodyAlertMutesIssueKind) Valid() bool {
+	switch e {
+	case FailedToStart:
+		return true
+	case NeedsReauth:
+		return true
+	case NotRunning:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers200JSONResponseBodyAssignedAgentsAgentType.
+const (
+	GetMcpServers200JSONResponseBodyAssignedAgentsAgentTypeAgent      GetMcpServers200JSONResponseBodyAssignedAgentsAgentType = "agent"
+	GetMcpServers200JSONResponseBodyAssignedAgentsAgentTypeLlmProxy   GetMcpServers200JSONResponseBodyAssignedAgentsAgentType = "llm_proxy"
+	GetMcpServers200JSONResponseBodyAssignedAgentsAgentTypeMcpGateway GetMcpServers200JSONResponseBodyAssignedAgentsAgentType = "mcp_gateway"
+	GetMcpServers200JSONResponseBodyAssignedAgentsAgentTypeProfile    GetMcpServers200JSONResponseBodyAssignedAgentsAgentType = "profile"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers200JSONResponseBodyAssignedAgentsAgentType enum.
+func (e GetMcpServers200JSONResponseBodyAssignedAgentsAgentType) Valid() bool {
+	switch e {
+	case GetMcpServers200JSONResponseBodyAssignedAgentsAgentTypeAgent:
+		return true
+	case GetMcpServers200JSONResponseBodyAssignedAgentsAgentTypeLlmProxy:
+		return true
+	case GetMcpServers200JSONResponseBodyAssignedAgentsAgentTypeMcpGateway:
+		return true
+	case GetMcpServers200JSONResponseBodyAssignedAgentsAgentTypeProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers200JSONResponseBodyAssignedAgentsScope.
+const (
+	GetMcpServers200JSONResponseBodyAssignedAgentsScopeOrg      GetMcpServers200JSONResponseBodyAssignedAgentsScope = "org"
+	GetMcpServers200JSONResponseBodyAssignedAgentsScopePersonal GetMcpServers200JSONResponseBodyAssignedAgentsScope = "personal"
+	GetMcpServers200JSONResponseBodyAssignedAgentsScopeTeam     GetMcpServers200JSONResponseBodyAssignedAgentsScope = "team"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers200JSONResponseBodyAssignedAgentsScope enum.
+func (e GetMcpServers200JSONResponseBodyAssignedAgentsScope) Valid() bool {
+	switch e {
+	case GetMcpServers200JSONResponseBodyAssignedAgentsScopeOrg:
+		return true
+	case GetMcpServers200JSONResponseBodyAssignedAgentsScopePersonal:
+		return true
+	case GetMcpServers200JSONResponseBodyAssignedAgentsScopeTeam:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers200JSONResponseBodyHibernationMode.
+const (
+	GetMcpServers200JSONResponseBodyHibernationModeDisabled GetMcpServers200JSONResponseBodyHibernationMode = "disabled"
+	GetMcpServers200JSONResponseBodyHibernationModeEnabled  GetMcpServers200JSONResponseBodyHibernationMode = "enabled"
+	GetMcpServers200JSONResponseBodyHibernationModeInherit  GetMcpServers200JSONResponseBodyHibernationMode = "inherit"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers200JSONResponseBodyHibernationMode enum.
+func (e GetMcpServers200JSONResponseBodyHibernationMode) Valid() bool {
+	switch e {
+	case GetMcpServers200JSONResponseBodyHibernationModeDisabled:
+		return true
+	case GetMcpServers200JSONResponseBodyHibernationModeEnabled:
+		return true
+	case GetMcpServers200JSONResponseBodyHibernationModeInherit:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers200JSONResponseBodyLocalInstallationStatus.
+const (
+	GetMcpServers200JSONResponseBodyLocalInstallationStatusDiscoveringTools GetMcpServers200JSONResponseBodyLocalInstallationStatus = "discovering-tools"
+	GetMcpServers200JSONResponseBodyLocalInstallationStatusError            GetMcpServers200JSONResponseBodyLocalInstallationStatus = "error"
+	GetMcpServers200JSONResponseBodyLocalInstallationStatusIdle             GetMcpServers200JSONResponseBodyLocalInstallationStatus = "idle"
+	GetMcpServers200JSONResponseBodyLocalInstallationStatusPending          GetMcpServers200JSONResponseBodyLocalInstallationStatus = "pending"
+	GetMcpServers200JSONResponseBodyLocalInstallationStatusSuccess          GetMcpServers200JSONResponseBodyLocalInstallationStatus = "success"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers200JSONResponseBodyLocalInstallationStatus enum.
+func (e GetMcpServers200JSONResponseBodyLocalInstallationStatus) Valid() bool {
+	switch e {
+	case GetMcpServers200JSONResponseBodyLocalInstallationStatusDiscoveringTools:
+		return true
+	case GetMcpServers200JSONResponseBodyLocalInstallationStatusError:
+		return true
+	case GetMcpServers200JSONResponseBodyLocalInstallationStatusIdle:
+		return true
+	case GetMcpServers200JSONResponseBodyLocalInstallationStatusPending:
+		return true
+	case GetMcpServers200JSONResponseBodyLocalInstallationStatusSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers200JSONResponseBodyOauthRefreshError.
+const (
+	GetMcpServers200JSONResponseBodyOauthRefreshErrorNoRefreshToken GetMcpServers200JSONResponseBodyOauthRefreshError = "no_refresh_token"
+	GetMcpServers200JSONResponseBodyOauthRefreshErrorRefreshFailed  GetMcpServers200JSONResponseBodyOauthRefreshError = "refresh_failed"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers200JSONResponseBodyOauthRefreshError enum.
+func (e GetMcpServers200JSONResponseBodyOauthRefreshError) Valid() bool {
+	switch e {
+	case GetMcpServers200JSONResponseBodyOauthRefreshErrorNoRefreshToken:
+		return true
+	case GetMcpServers200JSONResponseBodyOauthRefreshErrorRefreshFailed:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers200JSONResponseBodyReinstallReason.
+const (
+	GetMcpServers200JSONResponseBodyReinstallReasonNewInput GetMcpServers200JSONResponseBodyReinstallReason = "new-input"
+	GetMcpServers200JSONResponseBodyReinstallReasonRestart  GetMcpServers200JSONResponseBodyReinstallReason = "restart"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers200JSONResponseBodyReinstallReason enum.
+func (e GetMcpServers200JSONResponseBodyReinstallReason) Valid() bool {
+	switch e {
+	case GetMcpServers200JSONResponseBodyReinstallReasonNewInput:
+		return true
+	case GetMcpServers200JSONResponseBodyReinstallReasonRestart:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers200JSONResponseBodyScope.
+const (
+	GetMcpServers200JSONResponseBodyScopeOrg      GetMcpServers200JSONResponseBodyScope = "org"
+	GetMcpServers200JSONResponseBodyScopePersonal GetMcpServers200JSONResponseBodyScope = "personal"
+	GetMcpServers200JSONResponseBodyScopeTeam     GetMcpServers200JSONResponseBodyScope = "team"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers200JSONResponseBodyScope enum.
+func (e GetMcpServers200JSONResponseBodyScope) Valid() bool {
+	switch e {
+	case GetMcpServers200JSONResponseBodyScopeOrg:
+		return true
+	case GetMcpServers200JSONResponseBodyScopePersonal:
+		return true
+	case GetMcpServers200JSONResponseBodyScopeTeam:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers200JSONResponseBodySecretStorageType.
+const (
+	GetMcpServers200JSONResponseBodySecretStorageTypeDatabase GetMcpServers200JSONResponseBodySecretStorageType = "database"
+	GetMcpServers200JSONResponseBodySecretStorageTypeNone     GetMcpServers200JSONResponseBodySecretStorageType = "none"
+	GetMcpServers200JSONResponseBodySecretStorageTypeVault    GetMcpServers200JSONResponseBodySecretStorageType = "vault"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers200JSONResponseBodySecretStorageType enum.
+func (e GetMcpServers200JSONResponseBodySecretStorageType) Valid() bool {
+	switch e {
+	case GetMcpServers200JSONResponseBodySecretStorageTypeDatabase:
+		return true
+	case GetMcpServers200JSONResponseBodySecretStorageTypeNone:
+		return true
+	case GetMcpServers200JSONResponseBodySecretStorageTypeVault:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers200JSONResponseBodyServerType.
+const (
+	GetMcpServers200JSONResponseBodyServerTypeApp        GetMcpServers200JSONResponseBodyServerType = "app"
+	GetMcpServers200JSONResponseBodyServerTypeBuiltin    GetMcpServers200JSONResponseBodyServerType = "builtin"
+	GetMcpServers200JSONResponseBodyServerTypeDesktopMcp GetMcpServers200JSONResponseBodyServerType = "desktop_mcp"
+	GetMcpServers200JSONResponseBodyServerTypeLocal      GetMcpServers200JSONResponseBodyServerType = "local"
+	GetMcpServers200JSONResponseBodyServerTypeRemote     GetMcpServers200JSONResponseBodyServerType = "remote"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers200JSONResponseBodyServerType enum.
+func (e GetMcpServers200JSONResponseBodyServerType) Valid() bool {
+	switch e {
+	case GetMcpServers200JSONResponseBodyServerTypeApp:
+		return true
+	case GetMcpServers200JSONResponseBodyServerTypeBuiltin:
+		return true
+	case GetMcpServers200JSONResponseBodyServerTypeDesktopMcp:
+		return true
+	case GetMcpServers200JSONResponseBodyServerTypeLocal:
+		return true
+	case GetMcpServers200JSONResponseBodyServerTypeRemote:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers400JSONResponseBodyErrorType.
+const (
+	GetMcpServers400JSONResponseBodyErrorTypeApiValidationError GetMcpServers400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers400JSONResponseBodyErrorType enum.
+func (e GetMcpServers400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpServers400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers401JSONResponseBodyErrorType.
+const (
+	GetMcpServers401JSONResponseBodyErrorTypeApiAuthenticationError GetMcpServers401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers401JSONResponseBodyErrorType enum.
+func (e GetMcpServers401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpServers401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers403JSONResponseBodyErrorType.
+const (
+	GetMcpServers403JSONResponseBodyErrorTypeApiAuthorizationError GetMcpServers403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers403JSONResponseBodyErrorType enum.
+func (e GetMcpServers403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpServers403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers404JSONResponseBodyErrorType.
+const (
+	GetMcpServers404JSONResponseBodyErrorTypeApiNotFoundError GetMcpServers404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers404JSONResponseBodyErrorType enum.
+func (e GetMcpServers404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpServers404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers409JSONResponseBodyErrorType.
+const (
+	GetMcpServers409JSONResponseBodyErrorTypeApiConflictError GetMcpServers409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers409JSONResponseBodyErrorType enum.
+func (e GetMcpServers409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpServers409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpServers500JSONResponseBodyErrorType.
+const (
+	GetMcpServers500JSONResponseBodyErrorTypeApiInternalServerError GetMcpServers500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpServers500JSONResponseBodyErrorType enum.
+func (e GetMcpServers500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpServers500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for InstallMcpServerJSONBodyLocalInstallationStatus.
 const (
 	InstallMcpServerJSONBodyLocalInstallationStatusDiscoveringTools InstallMcpServerJSONBodyLocalInstallationStatus = "discovering-tools"
@@ -25094,19 +25442,19 @@ func (e ReinstallMcpServer200JSONResponseBodyAssignedAgentsScope) Valid() bool {
 
 // Defines values for ReinstallMcpServer200JSONResponseBodyHibernationMode.
 const (
-	Disabled ReinstallMcpServer200JSONResponseBodyHibernationMode = "disabled"
-	Enabled  ReinstallMcpServer200JSONResponseBodyHibernationMode = "enabled"
-	Inherit  ReinstallMcpServer200JSONResponseBodyHibernationMode = "inherit"
+	ReinstallMcpServer200JSONResponseBodyHibernationModeDisabled ReinstallMcpServer200JSONResponseBodyHibernationMode = "disabled"
+	ReinstallMcpServer200JSONResponseBodyHibernationModeEnabled  ReinstallMcpServer200JSONResponseBodyHibernationMode = "enabled"
+	ReinstallMcpServer200JSONResponseBodyHibernationModeInherit  ReinstallMcpServer200JSONResponseBodyHibernationMode = "inherit"
 )
 
 // Valid indicates whether the value is a known member of the ReinstallMcpServer200JSONResponseBodyHibernationMode enum.
 func (e ReinstallMcpServer200JSONResponseBodyHibernationMode) Valid() bool {
 	switch e {
-	case Disabled:
+	case ReinstallMcpServer200JSONResponseBodyHibernationModeDisabled:
 		return true
-	case Enabled:
+	case ReinstallMcpServer200JSONResponseBodyHibernationModeEnabled:
 		return true
-	case Inherit:
+	case ReinstallMcpServer200JSONResponseBodyHibernationModeInherit:
 		return true
 	default:
 		return false
@@ -25115,25 +25463,25 @@ func (e ReinstallMcpServer200JSONResponseBodyHibernationMode) Valid() bool {
 
 // Defines values for ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus.
 const (
-	ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusDiscoveringTools ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "discovering-tools"
-	ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusError            ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "error"
-	ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusIdle             ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "idle"
-	ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusPending          ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "pending"
-	ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusSuccess          ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "success"
+	DiscoveringTools ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "discovering-tools"
+	Error            ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "error"
+	Idle             ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "idle"
+	Pending          ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "pending"
+	Success          ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus = "success"
 )
 
 // Valid indicates whether the value is a known member of the ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus enum.
 func (e ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus) Valid() bool {
 	switch e {
-	case ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusDiscoveringTools:
+	case DiscoveringTools:
 		return true
-	case ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusError:
+	case Error:
 		return true
-	case ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusIdle:
+	case Idle:
 		return true
-	case ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusPending:
+	case Pending:
 		return true
-	case ReinstallMcpServer200JSONResponseBodyLocalInstallationStatusSuccess:
+	case Success:
 		return true
 	default:
 		return false
@@ -25142,16 +25490,16 @@ func (e ReinstallMcpServer200JSONResponseBodyLocalInstallationStatus) Valid() bo
 
 // Defines values for ReinstallMcpServer200JSONResponseBodyOauthRefreshError.
 const (
-	NoRefreshToken ReinstallMcpServer200JSONResponseBodyOauthRefreshError = "no_refresh_token"
-	RefreshFailed  ReinstallMcpServer200JSONResponseBodyOauthRefreshError = "refresh_failed"
+	ReinstallMcpServer200JSONResponseBodyOauthRefreshErrorNoRefreshToken ReinstallMcpServer200JSONResponseBodyOauthRefreshError = "no_refresh_token"
+	ReinstallMcpServer200JSONResponseBodyOauthRefreshErrorRefreshFailed  ReinstallMcpServer200JSONResponseBodyOauthRefreshError = "refresh_failed"
 )
 
 // Valid indicates whether the value is a known member of the ReinstallMcpServer200JSONResponseBodyOauthRefreshError enum.
 func (e ReinstallMcpServer200JSONResponseBodyOauthRefreshError) Valid() bool {
 	switch e {
-	case NoRefreshToken:
+	case ReinstallMcpServer200JSONResponseBodyOauthRefreshErrorNoRefreshToken:
 		return true
-	case RefreshFailed:
+	case ReinstallMcpServer200JSONResponseBodyOauthRefreshErrorRefreshFailed:
 		return true
 	default:
 		return false
@@ -25160,16 +25508,16 @@ func (e ReinstallMcpServer200JSONResponseBodyOauthRefreshError) Valid() bool {
 
 // Defines values for ReinstallMcpServer200JSONResponseBodyReinstallReason.
 const (
-	NewInput ReinstallMcpServer200JSONResponseBodyReinstallReason = "new-input"
-	Restart  ReinstallMcpServer200JSONResponseBodyReinstallReason = "restart"
+	ReinstallMcpServer200JSONResponseBodyReinstallReasonNewInput ReinstallMcpServer200JSONResponseBodyReinstallReason = "new-input"
+	ReinstallMcpServer200JSONResponseBodyReinstallReasonRestart  ReinstallMcpServer200JSONResponseBodyReinstallReason = "restart"
 )
 
 // Valid indicates whether the value is a known member of the ReinstallMcpServer200JSONResponseBodyReinstallReason enum.
 func (e ReinstallMcpServer200JSONResponseBodyReinstallReason) Valid() bool {
 	switch e {
-	case NewInput:
+	case ReinstallMcpServer200JSONResponseBodyReinstallReasonNewInput:
 		return true
-	case Restart:
+	case ReinstallMcpServer200JSONResponseBodyReinstallReasonRestart:
 		return true
 	default:
 		return false
@@ -27008,19 +27356,19 @@ func (e RotateOauthClientSecret200JSONResponseBodyProviderApiKeysProvider) Valid
 
 // Defines values for RotateOauthClientSecret200JSONResponseBodyScopes.
 const (
-	RotateOauthClientSecret200JSONResponseBodyScopesA2a      RotateOauthClientSecret200JSONResponseBodyScopes = "a2a"
-	RotateOauthClientSecret200JSONResponseBodyScopesLlmProxy RotateOauthClientSecret200JSONResponseBodyScopes = "llm:proxy"
-	RotateOauthClientSecret200JSONResponseBodyScopesMcp      RotateOauthClientSecret200JSONResponseBodyScopes = "mcp"
+	A2a      RotateOauthClientSecret200JSONResponseBodyScopes = "a2a"
+	LlmProxy RotateOauthClientSecret200JSONResponseBodyScopes = "llm:proxy"
+	Mcp      RotateOauthClientSecret200JSONResponseBodyScopes = "mcp"
 )
 
 // Valid indicates whether the value is a known member of the RotateOauthClientSecret200JSONResponseBodyScopes enum.
 func (e RotateOauthClientSecret200JSONResponseBodyScopes) Valid() bool {
 	switch e {
-	case RotateOauthClientSecret200JSONResponseBodyScopesA2a:
+	case A2a:
 		return true
-	case RotateOauthClientSecret200JSONResponseBodyScopesLlmProxy:
+	case LlmProxy:
 		return true
-	case RotateOauthClientSecret200JSONResponseBodyScopesMcp:
+	case Mcp:
 		return true
 	default:
 		return false
@@ -33542,19 +33890,19 @@ func (e UpdateSkillsSettings200JSONResponseBodyDefaultLlmProvider) Valid() bool 
 
 // Defines values for UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset.
 const (
-	CommonDependencies UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "common_dependencies"
-	None               UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "none"
-	PackageManagers    UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "package_managers"
+	UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetCommonDependencies UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "common_dependencies"
+	UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetNone               UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "none"
+	UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetPackageManagers    UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "package_managers"
 )
 
 // Valid indicates whether the value is a known member of the UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset enum.
 func (e UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset) Valid() bool {
 	switch e {
-	case CommonDependencies:
+	case UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetCommonDependencies:
 		return true
-	case None:
+	case UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetNone:
 		return true
-	case PackageManagers:
+	case UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetPackageManagers:
 		return true
 	default:
 		return false
@@ -40988,19 +41336,19 @@ func (e CreateSkillShareLinkJSONBodyPluginPlatform) Valid() bool {
 
 // Defines values for CreateSkillShareLink200JSONResponseBodyLinkStatus.
 const (
-	Active  CreateSkillShareLink200JSONResponseBodyLinkStatus = "active"
-	Expired CreateSkillShareLink200JSONResponseBodyLinkStatus = "expired"
-	Revoked CreateSkillShareLink200JSONResponseBodyLinkStatus = "revoked"
+	CreateSkillShareLink200JSONResponseBodyLinkStatusActive  CreateSkillShareLink200JSONResponseBodyLinkStatus = "active"
+	CreateSkillShareLink200JSONResponseBodyLinkStatusExpired CreateSkillShareLink200JSONResponseBodyLinkStatus = "expired"
+	CreateSkillShareLink200JSONResponseBodyLinkStatusRevoked CreateSkillShareLink200JSONResponseBodyLinkStatus = "revoked"
 )
 
 // Valid indicates whether the value is a known member of the CreateSkillShareLink200JSONResponseBodyLinkStatus enum.
 func (e CreateSkillShareLink200JSONResponseBodyLinkStatus) Valid() bool {
 	switch e {
-	case Active:
+	case CreateSkillShareLink200JSONResponseBodyLinkStatusActive:
 		return true
-	case Expired:
+	case CreateSkillShareLink200JSONResponseBodyLinkStatusExpired:
 		return true
-	case Revoked:
+	case CreateSkillShareLink200JSONResponseBodyLinkStatusRevoked:
 		return true
 	default:
 		return false
@@ -44219,13 +44567,13 @@ func (e GetToolsWithAssignments200JSONResponseBodyDataDelegateToAgentScope) Vali
 
 // Defines values for GetToolsWithAssignments400JSONResponseBodyErrorType.
 const (
-	ApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
+	GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments400JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiValidationError:
+	case GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError:
 		return true
 	default:
 		return false
@@ -44234,13 +44582,13 @@ func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments401JSONResponseBodyErrorType.
 const (
-	ApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
+	GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments401JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiAuthenticationError:
+	case GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError:
 		return true
 	default:
 		return false
@@ -44249,13 +44597,13 @@ func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments403JSONResponseBodyErrorType.
 const (
-	ApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
+	GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments403JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiAuthorizationError:
+	case GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError:
 		return true
 	default:
 		return false
@@ -44264,13 +44612,13 @@ func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments404JSONResponseBodyErrorType.
 const (
-	ApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
+	GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments404JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiNotFoundError:
+	case GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError:
 		return true
 	default:
 		return false
@@ -44279,13 +44627,13 @@ func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments409JSONResponseBodyErrorType.
 const (
-	ApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
+	GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments409JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiConflictError:
+	case GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError:
 		return true
 	default:
 		return false
@@ -44294,13 +44642,13 @@ func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments500JSONResponseBodyErrorType.
 const (
-	ApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
+	GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments500JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiInternalServerError:
+	case GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError:
 		return true
 	default:
 		return false
@@ -51236,6 +51584,79 @@ type GetMcpToolCalls409JSONResponseBodyErrorType string
 
 // GetMcpToolCalls500JSONResponseBodyErrorType defines parameters for GetMcpToolCalls.
 type GetMcpToolCalls500JSONResponseBodyErrorType string
+
+// GetMcpServersParams defines parameters for GetMcpServers.
+type GetMcpServersParams struct {
+	CatalogId *string `form:"catalogId,omitempty" json:"catalogId,omitempty"`
+
+	// CatalogIds Only installs of these catalog items (comma-separated, at most 100).
+	CatalogIds *[]openapi_types.UUID `form:"catalogIds,omitempty" json:"catalogIds,omitempty"`
+
+	// CatalogSlug Only installs of catalog items whose name, slugified as in tool names (lowercase, spaces as _, other characters dropped), is this.
+	CatalogSlug *string `form:"catalogSlug,omitempty" json:"catalogSlug,omitempty"`
+
+	// IncludeAssignedAgents Include each listed install's assigned agents. Defaults to false, which returns an empty `assignedAgents` for every install. The lookup covers every install in the response, so narrow the list with `catalogId` when you need only some. GET /api/mcp_server/{id} returns the agents of one install.
+	IncludeAssignedAgents *bool                               `form:"includeAssignedAgents,omitempty" json:"includeAssignedAgents,omitempty"`
+	AssignmentScope       *GetMcpServersParamsAssignmentScope `form:"assignmentScope,omitempty" json:"assignmentScope,omitempty"`
+	AssignmentTeamIds     *[]string                           `form:"assignmentTeamIds,omitempty" json:"assignmentTeamIds,omitempty"`
+
+	// Status Filter by lifecycle status. `deleted` lists soft-deleted (uninstalled) installs and requires delete permission and is limited to connections you can uninstall.
+	Status *GetMcpServersParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+}
+
+// GetMcpServersParamsAssignmentScope defines parameters for GetMcpServers.
+type GetMcpServersParamsAssignmentScope string
+
+// GetMcpServersParamsStatus defines parameters for GetMcpServers.
+type GetMcpServersParamsStatus string
+
+// GetMcpServers200JSONResponseBodyAlertMutesIssueKind defines parameters for GetMcpServers.
+type GetMcpServers200JSONResponseBodyAlertMutesIssueKind string
+
+// GetMcpServers200JSONResponseBodyAssignedAgentsAgentType defines parameters for GetMcpServers.
+type GetMcpServers200JSONResponseBodyAssignedAgentsAgentType string
+
+// GetMcpServers200JSONResponseBodyAssignedAgentsScope defines parameters for GetMcpServers.
+type GetMcpServers200JSONResponseBodyAssignedAgentsScope string
+
+// GetMcpServers200JSONResponseBodyHibernationMode defines parameters for GetMcpServers.
+type GetMcpServers200JSONResponseBodyHibernationMode string
+
+// GetMcpServers200JSONResponseBodyLocalInstallationStatus defines parameters for GetMcpServers.
+type GetMcpServers200JSONResponseBodyLocalInstallationStatus string
+
+// GetMcpServers200JSONResponseBodyOauthRefreshError defines parameters for GetMcpServers.
+type GetMcpServers200JSONResponseBodyOauthRefreshError string
+
+// GetMcpServers200JSONResponseBodyReinstallReason defines parameters for GetMcpServers.
+type GetMcpServers200JSONResponseBodyReinstallReason string
+
+// GetMcpServers200JSONResponseBodyScope defines parameters for GetMcpServers.
+type GetMcpServers200JSONResponseBodyScope string
+
+// GetMcpServers200JSONResponseBodySecretStorageType defines parameters for GetMcpServers.
+type GetMcpServers200JSONResponseBodySecretStorageType string
+
+// GetMcpServers200JSONResponseBodyServerType defines parameters for GetMcpServers.
+type GetMcpServers200JSONResponseBodyServerType string
+
+// GetMcpServers400JSONResponseBodyErrorType defines parameters for GetMcpServers.
+type GetMcpServers400JSONResponseBodyErrorType string
+
+// GetMcpServers401JSONResponseBodyErrorType defines parameters for GetMcpServers.
+type GetMcpServers401JSONResponseBodyErrorType string
+
+// GetMcpServers403JSONResponseBodyErrorType defines parameters for GetMcpServers.
+type GetMcpServers403JSONResponseBodyErrorType string
+
+// GetMcpServers404JSONResponseBodyErrorType defines parameters for GetMcpServers.
+type GetMcpServers404JSONResponseBodyErrorType string
+
+// GetMcpServers409JSONResponseBodyErrorType defines parameters for GetMcpServers.
+type GetMcpServers409JSONResponseBodyErrorType string
+
+// GetMcpServers500JSONResponseBodyErrorType defines parameters for GetMcpServers.
+type GetMcpServers500JSONResponseBodyErrorType string
 
 // InstallMcpServerJSONBody defines parameters for InstallMcpServer.
 type InstallMcpServerJSONBody struct {
@@ -63093,6 +63514,9 @@ type ClientInterface interface {
 	// GetMcpToolCalls request
 	GetMcpToolCalls(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetMcpServers request
+	GetMcpServers(ctx context.Context, params *GetMcpServersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// InstallMcpServerWithBody request with any body
 	InstallMcpServerWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -65588,6 +66012,18 @@ func (c *Client) GetVirtualApiKeyValue(ctx context.Context, id openapi_types.UUI
 
 func (c *Client) GetMcpToolCalls(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetMcpToolCallsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMcpServers(ctx context.Context, params *GetMcpServersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMcpServersRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -72934,6 +73370,132 @@ func NewGetMcpToolCallsRequest(server string, params *GetMcpToolCallsParams) (*h
 	return req, nil
 }
 
+// NewGetMcpServersRequest generates requests for GetMcpServers
+func NewGetMcpServersRequest(server string, params *GetMcpServersParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.CatalogId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "catalogId", *params.CatalogId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CatalogIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "catalogIds", *params.CatalogIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CatalogSlug != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "catalogSlug", *params.CatalogSlug, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.IncludeAssignedAgents != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "includeAssignedAgents", *params.IncludeAssignedAgents, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.AssignmentScope != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "assignmentScope", *params.AssignmentScope, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.AssignmentTeamIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "assignmentTeamIds", *params.AssignmentTeamIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewInstallMcpServerRequest calls the generic InstallMcpServer builder with application/json body
 func NewInstallMcpServerRequest(server string, body InstallMcpServerJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -77503,6 +78065,9 @@ type ClientWithResponsesInterface interface {
 
 	// GetMcpToolCallsWithResponse request
 	GetMcpToolCallsWithResponse(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*GetMcpToolCallsResponse, error)
+
+	// GetMcpServersWithResponse request
+	GetMcpServersWithResponse(ctx context.Context, params *GetMcpServersParams, reqEditors ...RequestEditorFn) (*GetMcpServersResponse, error)
 
 	// InstallMcpServerWithBodyWithResponse request with any body
 	InstallMcpServerWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*InstallMcpServerResponse, error)
@@ -90286,6 +90851,141 @@ func (r GetMcpToolCallsResponse) ContentType() string {
 	return ""
 }
 
+type GetMcpServersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		AlertMutes []struct {
+			CatalogId        string                                              `json:"catalogId"`
+			IssueFingerprint string                                              `json:"issueFingerprint"`
+			IssueKind        GetMcpServers200JSONResponseBodyAlertMutesIssueKind `json:"issueKind"`
+			McpServerId      *string                                             `json:"mcpServerId"`
+			MutedAt          time.Time                                           `json:"mutedAt"`
+			Reason           string                                              `json:"reason"`
+		} `json:"alertMutes"`
+		AssignedAgents *[]struct {
+			AccessAllTools *bool                                                   `json:"accessAllTools,omitempty"`
+			AgentType      GetMcpServers200JSONResponseBodyAssignedAgentsAgentType `json:"agentType"`
+			Id             string                                                  `json:"id"`
+			Name           string                                                  `json:"name"`
+			OrganizationId *string                                                 `json:"organizationId,omitempty"`
+			OwnerEmail     *string                                                 `json:"ownerEmail"`
+			OwnerId        *string                                                 `json:"ownerId"`
+			Pinned         bool                                                    `json:"pinned"`
+			Scope          GetMcpServers200JSONResponseBodyAssignedAgentsScope     `json:"scope"`
+		} `json:"assignedAgents,omitempty"`
+
+		// CanUseCredential Whether the caller may present this install's stored credential to the upstream — their own connection, or one shared with them. False for another member's personal connection, which the listing still returns to installation admins so they can manage it.
+		CanUseCredential             bool                                                    `json:"canUseCredential"`
+		CatalogId                    openapi_types.UUID                                      `json:"catalogId"`
+		CatalogName                  *string                                                 `json:"catalogName,omitempty"`
+		CreatedAt                    time.Time                                               `json:"createdAt"`
+		CreatedByServiceAccountId    *openapi_types.UUID                                     `json:"createdByServiceAccountId"`
+		DeletedAt                    *time.Time                                              `json:"deletedAt"`
+		DeploymentName               *string                                                 `json:"deploymentName"`
+		DesktopArguments             *[]string                                               `json:"desktopArguments"`
+		EnvironmentValues            interface{}                                             `json:"environmentValues"`
+		HibernationMode              GetMcpServers200JSONResponseBodyHibernationMode         `json:"hibernationMode"`
+		Id                           openapi_types.UUID                                      `json:"id"`
+		LastUsedAt                   *time.Time                                              `json:"lastUsedAt"`
+		LocalInstallationError       *string                                                 `json:"localInstallationError"`
+		LocalInstallationStatus      GetMcpServers200JSONResponseBodyLocalInstallationStatus `json:"localInstallationStatus"`
+		Name                         string                                                  `json:"name"`
+		OauthRefreshError            *GetMcpServers200JSONResponseBodyOauthRefreshError      `json:"oauthRefreshError"`
+		OauthRefreshErrorDescription *string                                                 `json:"oauthRefreshErrorDescription"`
+		OauthRefreshErrorMessage     *string                                                 `json:"oauthRefreshErrorMessage"`
+		OauthRefreshFailedAt         *time.Time                                              `json:"oauthRefreshFailedAt"`
+		OwnerEmail                   *string                                                 `json:"ownerEmail,omitempty"`
+		OwnerId                      *string                                                 `json:"ownerId"`
+		ReinstallReason              *GetMcpServers200JSONResponseBodyReinstallReason        `json:"reinstallReason"`
+		ReinstallRequired            bool                                                    `json:"reinstallRequired"`
+		Scope                        GetMcpServers200JSONResponseBodyScope                   `json:"scope"`
+		SecretId                     *openapi_types.UUID                                     `json:"secretId"`
+		SecretStorageType            *GetMcpServers200JSONResponseBodySecretStorageType      `json:"secretStorageType,omitempty"`
+		ServerType                   GetMcpServers200JSONResponseBodyServerType              `json:"serverType"`
+		TeamDetails                  *struct {
+			CreatedAt time.Time `json:"createdAt"`
+			Name      string    `json:"name"`
+			TeamId    string    `json:"teamId"`
+		} `json:"teamDetails,omitempty"`
+		TeamId      *string   `json:"teamId"`
+		UpdatedAt   time.Time `json:"updatedAt"`
+		UserDetails *[]struct {
+			CreatedAt time.Time `json:"createdAt"`
+			Email     string    `json:"email"`
+			UserId    string    `json:"userId"`
+		} `json:"userDetails,omitempty"`
+		Users *[]string `json:"users,omitempty"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetMcpServers400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetMcpServers401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                   `json:"details,omitempty"`
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetMcpServers403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetMcpServers404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetMcpServers409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetMcpServers500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMcpServersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMcpServersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetMcpServersResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type InstallMcpServerResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -101871,6 +102571,15 @@ func (c *ClientWithResponses) GetMcpToolCallsWithResponse(ctx context.Context, p
 		return nil, err
 	}
 	return ParseGetMcpToolCallsResponse(rsp)
+}
+
+// GetMcpServersWithResponse request returning *GetMcpServersResponse
+func (c *ClientWithResponses) GetMcpServersWithResponse(ctx context.Context, params *GetMcpServersParams, reqEditors ...RequestEditorFn) (*GetMcpServersResponse, error) {
+	rsp, err := c.GetMcpServers(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMcpServersResponse(rsp)
 }
 
 // InstallMcpServerWithBodyWithResponse request with arbitrary body returning *InstallMcpServerResponse
@@ -119361,6 +120070,173 @@ func ParseGetMcpToolCallsResponse(rsp *http.Response) (*GetMcpToolCallsResponse,
 				InternalCode *string                                     `json:"internal_code,omitempty"`
 				Message      string                                      `json:"message"`
 				Type         GetMcpToolCalls500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMcpServersResponse parses an HTTP response from a GetMcpServersWithResponse call
+func ParseGetMcpServersResponse(rsp *http.Response) (*GetMcpServersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMcpServersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			AlertMutes []struct {
+				CatalogId        string                                              `json:"catalogId"`
+				IssueFingerprint string                                              `json:"issueFingerprint"`
+				IssueKind        GetMcpServers200JSONResponseBodyAlertMutesIssueKind `json:"issueKind"`
+				McpServerId      *string                                             `json:"mcpServerId"`
+				MutedAt          time.Time                                           `json:"mutedAt"`
+				Reason           string                                              `json:"reason"`
+			} `json:"alertMutes"`
+			AssignedAgents *[]struct {
+				AccessAllTools *bool                                                   `json:"accessAllTools,omitempty"`
+				AgentType      GetMcpServers200JSONResponseBodyAssignedAgentsAgentType `json:"agentType"`
+				Id             string                                                  `json:"id"`
+				Name           string                                                  `json:"name"`
+				OrganizationId *string                                                 `json:"organizationId,omitempty"`
+				OwnerEmail     *string                                                 `json:"ownerEmail"`
+				OwnerId        *string                                                 `json:"ownerId"`
+				Pinned         bool                                                    `json:"pinned"`
+				Scope          GetMcpServers200JSONResponseBodyAssignedAgentsScope     `json:"scope"`
+			} `json:"assignedAgents,omitempty"`
+
+			// CanUseCredential Whether the caller may present this install's stored credential to the upstream — their own connection, or one shared with them. False for another member's personal connection, which the listing still returns to installation admins so they can manage it.
+			CanUseCredential             bool                                                    `json:"canUseCredential"`
+			CatalogId                    openapi_types.UUID                                      `json:"catalogId"`
+			CatalogName                  *string                                                 `json:"catalogName,omitempty"`
+			CreatedAt                    time.Time                                               `json:"createdAt"`
+			CreatedByServiceAccountId    *openapi_types.UUID                                     `json:"createdByServiceAccountId"`
+			DeletedAt                    *time.Time                                              `json:"deletedAt"`
+			DeploymentName               *string                                                 `json:"deploymentName"`
+			DesktopArguments             *[]string                                               `json:"desktopArguments"`
+			EnvironmentValues            interface{}                                             `json:"environmentValues"`
+			HibernationMode              GetMcpServers200JSONResponseBodyHibernationMode         `json:"hibernationMode"`
+			Id                           openapi_types.UUID                                      `json:"id"`
+			LastUsedAt                   *time.Time                                              `json:"lastUsedAt"`
+			LocalInstallationError       *string                                                 `json:"localInstallationError"`
+			LocalInstallationStatus      GetMcpServers200JSONResponseBodyLocalInstallationStatus `json:"localInstallationStatus"`
+			Name                         string                                                  `json:"name"`
+			OauthRefreshError            *GetMcpServers200JSONResponseBodyOauthRefreshError      `json:"oauthRefreshError"`
+			OauthRefreshErrorDescription *string                                                 `json:"oauthRefreshErrorDescription"`
+			OauthRefreshErrorMessage     *string                                                 `json:"oauthRefreshErrorMessage"`
+			OauthRefreshFailedAt         *time.Time                                              `json:"oauthRefreshFailedAt"`
+			OwnerEmail                   *string                                                 `json:"ownerEmail,omitempty"`
+			OwnerId                      *string                                                 `json:"ownerId"`
+			ReinstallReason              *GetMcpServers200JSONResponseBodyReinstallReason        `json:"reinstallReason"`
+			ReinstallRequired            bool                                                    `json:"reinstallRequired"`
+			Scope                        GetMcpServers200JSONResponseBodyScope                   `json:"scope"`
+			SecretId                     *openapi_types.UUID                                     `json:"secretId"`
+			SecretStorageType            *GetMcpServers200JSONResponseBodySecretStorageType      `json:"secretStorageType,omitempty"`
+			ServerType                   GetMcpServers200JSONResponseBodyServerType              `json:"serverType"`
+			TeamDetails                  *struct {
+				CreatedAt time.Time `json:"createdAt"`
+				Name      string    `json:"name"`
+				TeamId    string    `json:"teamId"`
+			} `json:"teamDetails,omitempty"`
+			TeamId      *string   `json:"teamId"`
+			UpdatedAt   time.Time `json:"updatedAt"`
+			UserDetails *[]struct {
+				CreatedAt time.Time `json:"createdAt"`
+				Email     string    `json:"email"`
+				UserId    string    `json:"userId"`
+			} `json:"userDetails,omitempty"`
+			Users *[]string `json:"users,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetMcpServers400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetMcpServers401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                   `json:"details,omitempty"`
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetMcpServers403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetMcpServers404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetMcpServers409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetMcpServers500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

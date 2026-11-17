@@ -63,6 +63,7 @@ output-options:
     - getMcpServer
     - getMcpServerInstallationStatus
     - getMcpServerTools
+    - getMcpServers
     - getMcpToolCalls
     - getModelsWithApiKeys
     - listBlobProviders

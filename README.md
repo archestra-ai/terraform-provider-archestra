@@ -69,7 +69,8 @@ The data sources are `archestra_agent`, `archestra_tool`,
 (both looked up by name), and the lookups that find an object made outside
 Terraform so configuration needs no pasted ID: `archestra_team` (by ID or
 name), `archestra_user` (by email), `archestra_service_account`,
-`archestra_environment`, `archestra_model` and `archestra_model_provider`. Tool lookup accepts an optional MCP server filter;
+`archestra_environment`, `archestra_mcp_server`, `archestra_model` and
+`archestra_model_provider`. Tool lookup accepts an optional MCP server filter;
 agent lookup includes its relationships. Data sources read existing state.
 
 Crossplane resources use `<group>.archestra.crossplane.io` in cluster scope and
