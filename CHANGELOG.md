@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.5.0...v3.6.0) (2026-11-17)
+
+
+### Features
+
+* look up an installed MCP server with a data source ([#261](https://github.com/archestra-ai/terraform-provider-archestra/issues/261)) ([ce8c6da](https://github.com/archestra-ai/terraform-provider-archestra/commit/ce8c6dadbb357af1d59ec98d58553d07da173251))
+
 ## [3.5.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.4.0...v3.5.0) (2026-11-17)
 
 
