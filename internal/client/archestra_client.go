@@ -20925,6 +20925,378 @@ func (e UpdateModel500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetLlmProviderApiKeysParamsProvider.
+const (
+	GetLlmProviderApiKeysParamsProviderAnthropic           GetLlmProviderApiKeysParamsProvider = "anthropic"
+	GetLlmProviderApiKeysParamsProviderArchestra           GetLlmProviderApiKeysParamsProvider = "archestra"
+	GetLlmProviderApiKeysParamsProviderAzure               GetLlmProviderApiKeysParamsProvider = "azure"
+	GetLlmProviderApiKeysParamsProviderBedrock             GetLlmProviderApiKeysParamsProvider = "bedrock"
+	GetLlmProviderApiKeysParamsProviderCerebras            GetLlmProviderApiKeysParamsProvider = "cerebras"
+	GetLlmProviderApiKeysParamsProviderCohere              GetLlmProviderApiKeysParamsProvider = "cohere"
+	GetLlmProviderApiKeysParamsProviderDeepseek            GetLlmProviderApiKeysParamsProvider = "deepseek"
+	GetLlmProviderApiKeysParamsProviderGemini              GetLlmProviderApiKeysParamsProvider = "gemini"
+	GetLlmProviderApiKeysParamsProviderGithubCopilot       GetLlmProviderApiKeysParamsProvider = "github-copilot"
+	GetLlmProviderApiKeysParamsProviderGroq                GetLlmProviderApiKeysParamsProvider = "groq"
+	GetLlmProviderApiKeysParamsProviderJev                 GetLlmProviderApiKeysParamsProvider = "jev"
+	GetLlmProviderApiKeysParamsProviderKimi                GetLlmProviderApiKeysParamsProvider = "kimi"
+	GetLlmProviderApiKeysParamsProviderKimiCode            GetLlmProviderApiKeysParamsProvider = "kimi-code"
+	GetLlmProviderApiKeysParamsProviderMicrosoft365Copilot GetLlmProviderApiKeysParamsProvider = "microsoft-365-copilot"
+	GetLlmProviderApiKeysParamsProviderMinimax             GetLlmProviderApiKeysParamsProvider = "minimax"
+	GetLlmProviderApiKeysParamsProviderMistral             GetLlmProviderApiKeysParamsProvider = "mistral"
+	GetLlmProviderApiKeysParamsProviderOllama              GetLlmProviderApiKeysParamsProvider = "ollama"
+	GetLlmProviderApiKeysParamsProviderOllamaNative        GetLlmProviderApiKeysParamsProvider = "ollama-native"
+	GetLlmProviderApiKeysParamsProviderOpenai              GetLlmProviderApiKeysParamsProvider = "openai"
+	GetLlmProviderApiKeysParamsProviderOpenrouter          GetLlmProviderApiKeysParamsProvider = "openrouter"
+	GetLlmProviderApiKeysParamsProviderPerplexity          GetLlmProviderApiKeysParamsProvider = "perplexity"
+	GetLlmProviderApiKeysParamsProviderVllm                GetLlmProviderApiKeysParamsProvider = "vllm"
+	GetLlmProviderApiKeysParamsProviderVoyage              GetLlmProviderApiKeysParamsProvider = "voyage"
+	GetLlmProviderApiKeysParamsProviderXai                 GetLlmProviderApiKeysParamsProvider = "xai"
+	GetLlmProviderApiKeysParamsProviderZhipuai             GetLlmProviderApiKeysParamsProvider = "zhipuai"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeysParamsProvider enum.
+func (e GetLlmProviderApiKeysParamsProvider) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeysParamsProviderAnthropic:
+		return true
+	case GetLlmProviderApiKeysParamsProviderArchestra:
+		return true
+	case GetLlmProviderApiKeysParamsProviderAzure:
+		return true
+	case GetLlmProviderApiKeysParamsProviderBedrock:
+		return true
+	case GetLlmProviderApiKeysParamsProviderCerebras:
+		return true
+	case GetLlmProviderApiKeysParamsProviderCohere:
+		return true
+	case GetLlmProviderApiKeysParamsProviderDeepseek:
+		return true
+	case GetLlmProviderApiKeysParamsProviderGemini:
+		return true
+	case GetLlmProviderApiKeysParamsProviderGithubCopilot:
+		return true
+	case GetLlmProviderApiKeysParamsProviderGroq:
+		return true
+	case GetLlmProviderApiKeysParamsProviderJev:
+		return true
+	case GetLlmProviderApiKeysParamsProviderKimi:
+		return true
+	case GetLlmProviderApiKeysParamsProviderKimiCode:
+		return true
+	case GetLlmProviderApiKeysParamsProviderMicrosoft365Copilot:
+		return true
+	case GetLlmProviderApiKeysParamsProviderMinimax:
+		return true
+	case GetLlmProviderApiKeysParamsProviderMistral:
+		return true
+	case GetLlmProviderApiKeysParamsProviderOllama:
+		return true
+	case GetLlmProviderApiKeysParamsProviderOllamaNative:
+		return true
+	case GetLlmProviderApiKeysParamsProviderOpenai:
+		return true
+	case GetLlmProviderApiKeysParamsProviderOpenrouter:
+		return true
+	case GetLlmProviderApiKeysParamsProviderPerplexity:
+		return true
+	case GetLlmProviderApiKeysParamsProviderVllm:
+		return true
+	case GetLlmProviderApiKeysParamsProviderVoyage:
+		return true
+	case GetLlmProviderApiKeysParamsProviderXai:
+		return true
+	case GetLlmProviderApiKeysParamsProviderZhipuai:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeysParamsAccess.
+const (
+	GetLlmProviderApiKeysParamsAccessMine   GetLlmProviderApiKeysParamsAccess = "mine"
+	GetLlmProviderApiKeysParamsAccessOrg    GetLlmProviderApiKeysParamsAccess = "org"
+	GetLlmProviderApiKeysParamsAccessOthers GetLlmProviderApiKeysParamsAccess = "others"
+	GetLlmProviderApiKeysParamsAccessShared GetLlmProviderApiKeysParamsAccess = "shared"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeysParamsAccess enum.
+func (e GetLlmProviderApiKeysParamsAccess) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeysParamsAccessMine:
+		return true
+	case GetLlmProviderApiKeysParamsAccessOrg:
+		return true
+	case GetLlmProviderApiKeysParamsAccessOthers:
+		return true
+	case GetLlmProviderApiKeysParamsAccessShared:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeys200JSONResponseBodyCreatedByType.
+const (
+	GetLlmProviderApiKeys200JSONResponseBodyCreatedByTypeServiceAccount GetLlmProviderApiKeys200JSONResponseBodyCreatedByType = "service_account"
+	GetLlmProviderApiKeys200JSONResponseBodyCreatedByTypeUser           GetLlmProviderApiKeys200JSONResponseBodyCreatedByType = "user"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys200JSONResponseBodyCreatedByType enum.
+func (e GetLlmProviderApiKeys200JSONResponseBodyCreatedByType) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys200JSONResponseBodyCreatedByTypeServiceAccount:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyCreatedByTypeUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeys200JSONResponseBodyProvider.
+const (
+	GetLlmProviderApiKeys200JSONResponseBodyProviderAnthropic           GetLlmProviderApiKeys200JSONResponseBodyProvider = "anthropic"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderArchestra           GetLlmProviderApiKeys200JSONResponseBodyProvider = "archestra"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderAzure               GetLlmProviderApiKeys200JSONResponseBodyProvider = "azure"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderBedrock             GetLlmProviderApiKeys200JSONResponseBodyProvider = "bedrock"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderCerebras            GetLlmProviderApiKeys200JSONResponseBodyProvider = "cerebras"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderCohere              GetLlmProviderApiKeys200JSONResponseBodyProvider = "cohere"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderDeepseek            GetLlmProviderApiKeys200JSONResponseBodyProvider = "deepseek"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderGemini              GetLlmProviderApiKeys200JSONResponseBodyProvider = "gemini"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderGithubCopilot       GetLlmProviderApiKeys200JSONResponseBodyProvider = "github-copilot"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderGroq                GetLlmProviderApiKeys200JSONResponseBodyProvider = "groq"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderJev                 GetLlmProviderApiKeys200JSONResponseBodyProvider = "jev"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderKimi                GetLlmProviderApiKeys200JSONResponseBodyProvider = "kimi"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderKimiCode            GetLlmProviderApiKeys200JSONResponseBodyProvider = "kimi-code"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderMicrosoft365Copilot GetLlmProviderApiKeys200JSONResponseBodyProvider = "microsoft-365-copilot"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderMinimax             GetLlmProviderApiKeys200JSONResponseBodyProvider = "minimax"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderMistral             GetLlmProviderApiKeys200JSONResponseBodyProvider = "mistral"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderOllama              GetLlmProviderApiKeys200JSONResponseBodyProvider = "ollama"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderOllamaNative        GetLlmProviderApiKeys200JSONResponseBodyProvider = "ollama-native"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderOpenai              GetLlmProviderApiKeys200JSONResponseBodyProvider = "openai"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderOpenrouter          GetLlmProviderApiKeys200JSONResponseBodyProvider = "openrouter"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderPerplexity          GetLlmProviderApiKeys200JSONResponseBodyProvider = "perplexity"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderVllm                GetLlmProviderApiKeys200JSONResponseBodyProvider = "vllm"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderVoyage              GetLlmProviderApiKeys200JSONResponseBodyProvider = "voyage"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderXai                 GetLlmProviderApiKeys200JSONResponseBodyProvider = "xai"
+	GetLlmProviderApiKeys200JSONResponseBodyProviderZhipuai             GetLlmProviderApiKeys200JSONResponseBodyProvider = "zhipuai"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys200JSONResponseBodyProvider enum.
+func (e GetLlmProviderApiKeys200JSONResponseBodyProvider) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderAnthropic:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderArchestra:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderAzure:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderBedrock:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderCerebras:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderCohere:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderDeepseek:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderGemini:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderGithubCopilot:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderGroq:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderJev:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderKimi:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderKimiCode:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderMicrosoft365Copilot:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderMinimax:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderMistral:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderOllama:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderOllamaNative:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderOpenai:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderOpenrouter:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderPerplexity:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderVllm:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderVoyage:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderXai:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyProviderZhipuai:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeys200JSONResponseBodyScope.
+const (
+	GetLlmProviderApiKeys200JSONResponseBodyScopeOrg      GetLlmProviderApiKeys200JSONResponseBodyScope = "org"
+	GetLlmProviderApiKeys200JSONResponseBodyScopePersonal GetLlmProviderApiKeys200JSONResponseBodyScope = "personal"
+	GetLlmProviderApiKeys200JSONResponseBodyScopeTeam     GetLlmProviderApiKeys200JSONResponseBodyScope = "team"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys200JSONResponseBodyScope enum.
+func (e GetLlmProviderApiKeys200JSONResponseBodyScope) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys200JSONResponseBodyScopeOrg:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyScopePersonal:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyScopeTeam:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeys200JSONResponseBodySecretStorageType.
+const (
+	GetLlmProviderApiKeys200JSONResponseBodySecretStorageTypeDatabase GetLlmProviderApiKeys200JSONResponseBodySecretStorageType = "database"
+	GetLlmProviderApiKeys200JSONResponseBodySecretStorageTypeNone     GetLlmProviderApiKeys200JSONResponseBodySecretStorageType = "none"
+	GetLlmProviderApiKeys200JSONResponseBodySecretStorageTypeVault    GetLlmProviderApiKeys200JSONResponseBodySecretStorageType = "vault"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys200JSONResponseBodySecretStorageType enum.
+func (e GetLlmProviderApiKeys200JSONResponseBodySecretStorageType) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys200JSONResponseBodySecretStorageTypeDatabase:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodySecretStorageTypeNone:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodySecretStorageTypeVault:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeys200JSONResponseBodySubscriptionKind.
+const (
+	GetLlmProviderApiKeys200JSONResponseBodySubscriptionKindChatgpt             GetLlmProviderApiKeys200JSONResponseBodySubscriptionKind = "chatgpt"
+	GetLlmProviderApiKeys200JSONResponseBodySubscriptionKindGithubCopilot       GetLlmProviderApiKeys200JSONResponseBodySubscriptionKind = "github-copilot"
+	GetLlmProviderApiKeys200JSONResponseBodySubscriptionKindMicrosoft365Copilot GetLlmProviderApiKeys200JSONResponseBodySubscriptionKind = "microsoft-365-copilot"
+	GetLlmProviderApiKeys200JSONResponseBodySubscriptionKindXPremium            GetLlmProviderApiKeys200JSONResponseBodySubscriptionKind = "x-premium"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys200JSONResponseBodySubscriptionKind enum.
+func (e GetLlmProviderApiKeys200JSONResponseBodySubscriptionKind) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys200JSONResponseBodySubscriptionKindChatgpt:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodySubscriptionKindGithubCopilot:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodySubscriptionKindMicrosoft365Copilot:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodySubscriptionKindXPremium:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeys400JSONResponseBodyErrorType.
+const (
+	GetLlmProviderApiKeys400JSONResponseBodyErrorTypeApiValidationError GetLlmProviderApiKeys400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys400JSONResponseBodyErrorType enum.
+func (e GetLlmProviderApiKeys400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeys401JSONResponseBodyErrorType.
+const (
+	GetLlmProviderApiKeys401JSONResponseBodyErrorTypeApiAuthenticationError GetLlmProviderApiKeys401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys401JSONResponseBodyErrorType enum.
+func (e GetLlmProviderApiKeys401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeys403JSONResponseBodyErrorType.
+const (
+	GetLlmProviderApiKeys403JSONResponseBodyErrorTypeApiAuthorizationError GetLlmProviderApiKeys403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys403JSONResponseBodyErrorType enum.
+func (e GetLlmProviderApiKeys403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeys404JSONResponseBodyErrorType.
+const (
+	GetLlmProviderApiKeys404JSONResponseBodyErrorTypeApiNotFoundError GetLlmProviderApiKeys404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys404JSONResponseBodyErrorType enum.
+func (e GetLlmProviderApiKeys404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeys409JSONResponseBodyErrorType.
+const (
+	GetLlmProviderApiKeys409JSONResponseBodyErrorTypeApiConflictError GetLlmProviderApiKeys409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys409JSONResponseBodyErrorType enum.
+func (e GetLlmProviderApiKeys409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetLlmProviderApiKeys500JSONResponseBodyErrorType.
+const (
+	GetLlmProviderApiKeys500JSONResponseBodyErrorTypeApiInternalServerError GetLlmProviderApiKeys500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys500JSONResponseBodyErrorType enum.
+func (e GetLlmProviderApiKeys500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateLlmProviderApiKeyJSONBodyInitialGrantsActions.
 const (
 	CreateLlmProviderApiKeyJSONBodyInitialGrantsActionsConfigure               CreateLlmProviderApiKeyJSONBodyInitialGrantsActions = "configure"
@@ -32852,19 +33224,19 @@ func (e UpdateSkillsSettings200JSONResponseBodyDefaultLlmProvider) Valid() bool 
 
 // Defines values for UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset.
 const (
-	UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetCommonDependencies UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "common_dependencies"
-	UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetNone               UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "none"
-	UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetPackageManagers    UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "package_managers"
+	CommonDependencies UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "common_dependencies"
+	None               UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "none"
+	PackageManagers    UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset = "package_managers"
 )
 
 // Valid indicates whether the value is a known member of the UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset enum.
 func (e UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPreset) Valid() bool {
 	switch e {
-	case UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetCommonDependencies:
+	case CommonDependencies:
 		return true
-	case UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetNone:
+	case None:
 		return true
-	case UpdateSkillsSettings200JSONResponseBodyDefaultNetworkPolicyDomainPresetPackageManagers:
+	case PackageManagers:
 		return true
 	default:
 		return false
@@ -32933,82 +33305,82 @@ func (e UpdateSkillsSettings200JSONResponseBodyDefaultUserLimitCleanupInterval) 
 
 // Defines values for UpdateSkillsSettings200JSONResponseBodyTheme.
 const (
-	AmberMinimal     UpdateSkillsSettings200JSONResponseBodyTheme = "amber-minimal"
-	BoxyMinimalistic UpdateSkillsSettings200JSONResponseBodyTheme = "boxy-minimalistic"
-	Bubblegum        UpdateSkillsSettings200JSONResponseBodyTheme = "bubblegum"
-	Caffeine         UpdateSkillsSettings200JSONResponseBodyTheme = "caffeine"
-	Catppuccin       UpdateSkillsSettings200JSONResponseBodyTheme = "catppuccin"
-	Claude           UpdateSkillsSettings200JSONResponseBodyTheme = "claude"
-	CleanSlate       UpdateSkillsSettings200JSONResponseBodyTheme = "clean-slate"
-	CosmicNight      UpdateSkillsSettings200JSONResponseBodyTheme = "cosmic-night"
-	Doom64           UpdateSkillsSettings200JSONResponseBodyTheme = "doom-64"
-	DraculaDark      UpdateSkillsSettings200JSONResponseBodyTheme = "dracula-dark"
-	GruvboxDark      UpdateSkillsSettings200JSONResponseBodyTheme = "gruvbox-dark"
-	MochaMousse      UpdateSkillsSettings200JSONResponseBodyTheme = "mocha-mousse"
-	ModernMinimal    UpdateSkillsSettings200JSONResponseBodyTheme = "modern-minimal"
-	Mono             UpdateSkillsSettings200JSONResponseBodyTheme = "mono"
-	MonokaiDark      UpdateSkillsSettings200JSONResponseBodyTheme = "monokai-dark"
-	MoonlightDark    UpdateSkillsSettings200JSONResponseBodyTheme = "moonlight-dark"
-	Nature           UpdateSkillsSettings200JSONResponseBodyTheme = "nature"
-	NeoBrutalism     UpdateSkillsSettings200JSONResponseBodyTheme = "neo-brutalism"
-	SolarizedDark    UpdateSkillsSettings200JSONResponseBodyTheme = "solarized-dark"
-	SunsetHorizon    UpdateSkillsSettings200JSONResponseBodyTheme = "sunset-horizon"
-	Tangerine        UpdateSkillsSettings200JSONResponseBodyTheme = "tangerine"
-	Twitter          UpdateSkillsSettings200JSONResponseBodyTheme = "twitter"
-	Vercel           UpdateSkillsSettings200JSONResponseBodyTheme = "vercel"
-	VintagePaper     UpdateSkillsSettings200JSONResponseBodyTheme = "vintage-paper"
+	UpdateSkillsSettings200JSONResponseBodyThemeAmberMinimal     UpdateSkillsSettings200JSONResponseBodyTheme = "amber-minimal"
+	UpdateSkillsSettings200JSONResponseBodyThemeBoxyMinimalistic UpdateSkillsSettings200JSONResponseBodyTheme = "boxy-minimalistic"
+	UpdateSkillsSettings200JSONResponseBodyThemeBubblegum        UpdateSkillsSettings200JSONResponseBodyTheme = "bubblegum"
+	UpdateSkillsSettings200JSONResponseBodyThemeCaffeine         UpdateSkillsSettings200JSONResponseBodyTheme = "caffeine"
+	UpdateSkillsSettings200JSONResponseBodyThemeCatppuccin       UpdateSkillsSettings200JSONResponseBodyTheme = "catppuccin"
+	UpdateSkillsSettings200JSONResponseBodyThemeClaude           UpdateSkillsSettings200JSONResponseBodyTheme = "claude"
+	UpdateSkillsSettings200JSONResponseBodyThemeCleanSlate       UpdateSkillsSettings200JSONResponseBodyTheme = "clean-slate"
+	UpdateSkillsSettings200JSONResponseBodyThemeCosmicNight      UpdateSkillsSettings200JSONResponseBodyTheme = "cosmic-night"
+	UpdateSkillsSettings200JSONResponseBodyThemeDoom64           UpdateSkillsSettings200JSONResponseBodyTheme = "doom-64"
+	UpdateSkillsSettings200JSONResponseBodyThemeDraculaDark      UpdateSkillsSettings200JSONResponseBodyTheme = "dracula-dark"
+	UpdateSkillsSettings200JSONResponseBodyThemeGruvboxDark      UpdateSkillsSettings200JSONResponseBodyTheme = "gruvbox-dark"
+	UpdateSkillsSettings200JSONResponseBodyThemeMochaMousse      UpdateSkillsSettings200JSONResponseBodyTheme = "mocha-mousse"
+	UpdateSkillsSettings200JSONResponseBodyThemeModernMinimal    UpdateSkillsSettings200JSONResponseBodyTheme = "modern-minimal"
+	UpdateSkillsSettings200JSONResponseBodyThemeMono             UpdateSkillsSettings200JSONResponseBodyTheme = "mono"
+	UpdateSkillsSettings200JSONResponseBodyThemeMonokaiDark      UpdateSkillsSettings200JSONResponseBodyTheme = "monokai-dark"
+	UpdateSkillsSettings200JSONResponseBodyThemeMoonlightDark    UpdateSkillsSettings200JSONResponseBodyTheme = "moonlight-dark"
+	UpdateSkillsSettings200JSONResponseBodyThemeNature           UpdateSkillsSettings200JSONResponseBodyTheme = "nature"
+	UpdateSkillsSettings200JSONResponseBodyThemeNeoBrutalism     UpdateSkillsSettings200JSONResponseBodyTheme = "neo-brutalism"
+	UpdateSkillsSettings200JSONResponseBodyThemeSolarizedDark    UpdateSkillsSettings200JSONResponseBodyTheme = "solarized-dark"
+	UpdateSkillsSettings200JSONResponseBodyThemeSunsetHorizon    UpdateSkillsSettings200JSONResponseBodyTheme = "sunset-horizon"
+	UpdateSkillsSettings200JSONResponseBodyThemeTangerine        UpdateSkillsSettings200JSONResponseBodyTheme = "tangerine"
+	UpdateSkillsSettings200JSONResponseBodyThemeTwitter          UpdateSkillsSettings200JSONResponseBodyTheme = "twitter"
+	UpdateSkillsSettings200JSONResponseBodyThemeVercel           UpdateSkillsSettings200JSONResponseBodyTheme = "vercel"
+	UpdateSkillsSettings200JSONResponseBodyThemeVintagePaper     UpdateSkillsSettings200JSONResponseBodyTheme = "vintage-paper"
 )
 
 // Valid indicates whether the value is a known member of the UpdateSkillsSettings200JSONResponseBodyTheme enum.
 func (e UpdateSkillsSettings200JSONResponseBodyTheme) Valid() bool {
 	switch e {
-	case AmberMinimal:
+	case UpdateSkillsSettings200JSONResponseBodyThemeAmberMinimal:
 		return true
-	case BoxyMinimalistic:
+	case UpdateSkillsSettings200JSONResponseBodyThemeBoxyMinimalistic:
 		return true
-	case Bubblegum:
+	case UpdateSkillsSettings200JSONResponseBodyThemeBubblegum:
 		return true
-	case Caffeine:
+	case UpdateSkillsSettings200JSONResponseBodyThemeCaffeine:
 		return true
-	case Catppuccin:
+	case UpdateSkillsSettings200JSONResponseBodyThemeCatppuccin:
 		return true
-	case Claude:
+	case UpdateSkillsSettings200JSONResponseBodyThemeClaude:
 		return true
-	case CleanSlate:
+	case UpdateSkillsSettings200JSONResponseBodyThemeCleanSlate:
 		return true
-	case CosmicNight:
+	case UpdateSkillsSettings200JSONResponseBodyThemeCosmicNight:
 		return true
-	case Doom64:
+	case UpdateSkillsSettings200JSONResponseBodyThemeDoom64:
 		return true
-	case DraculaDark:
+	case UpdateSkillsSettings200JSONResponseBodyThemeDraculaDark:
 		return true
-	case GruvboxDark:
+	case UpdateSkillsSettings200JSONResponseBodyThemeGruvboxDark:
 		return true
-	case MochaMousse:
+	case UpdateSkillsSettings200JSONResponseBodyThemeMochaMousse:
 		return true
-	case ModernMinimal:
+	case UpdateSkillsSettings200JSONResponseBodyThemeModernMinimal:
 		return true
-	case Mono:
+	case UpdateSkillsSettings200JSONResponseBodyThemeMono:
 		return true
-	case MonokaiDark:
+	case UpdateSkillsSettings200JSONResponseBodyThemeMonokaiDark:
 		return true
-	case MoonlightDark:
+	case UpdateSkillsSettings200JSONResponseBodyThemeMoonlightDark:
 		return true
-	case Nature:
+	case UpdateSkillsSettings200JSONResponseBodyThemeNature:
 		return true
-	case NeoBrutalism:
+	case UpdateSkillsSettings200JSONResponseBodyThemeNeoBrutalism:
 		return true
-	case SolarizedDark:
+	case UpdateSkillsSettings200JSONResponseBodyThemeSolarizedDark:
 		return true
-	case SunsetHorizon:
+	case UpdateSkillsSettings200JSONResponseBodyThemeSunsetHorizon:
 		return true
-	case Tangerine:
+	case UpdateSkillsSettings200JSONResponseBodyThemeTangerine:
 		return true
-	case Twitter:
+	case UpdateSkillsSettings200JSONResponseBodyThemeTwitter:
 		return true
-	case Vercel:
+	case UpdateSkillsSettings200JSONResponseBodyThemeVercel:
 		return true
-	case VintagePaper:
+	case UpdateSkillsSettings200JSONResponseBodyThemeVintagePaper:
 		return true
 	default:
 		return false
@@ -41582,16 +41954,16 @@ func (e UpdateSkillGithubSyncJSONBodySyncNow) Valid() bool {
 
 // Defines values for UpdateSkillGithubSync200JSONResponseBodyCreatedByType.
 const (
-	ServiceAccount UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "service_account"
-	User           UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "user"
+	UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeServiceAccount UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "service_account"
+	UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeUser           UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "user"
 )
 
 // Valid indicates whether the value is a known member of the UpdateSkillGithubSync200JSONResponseBodyCreatedByType enum.
 func (e UpdateSkillGithubSync200JSONResponseBodyCreatedByType) Valid() bool {
 	switch e {
-	case ServiceAccount:
+	case UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeServiceAccount:
 		return true
-	case User:
+	case UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeUser:
 		return true
 	default:
 		return false
@@ -43079,13 +43451,13 @@ func (e GetToolsWithAssignments200JSONResponseBodyDataDelegateToAgentScope) Vali
 
 // Defines values for GetToolsWithAssignments400JSONResponseBodyErrorType.
 const (
-	ApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
+	GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments400JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiValidationError:
+	case GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError:
 		return true
 	default:
 		return false
@@ -43094,13 +43466,13 @@ func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments401JSONResponseBodyErrorType.
 const (
-	ApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
+	GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments401JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiAuthenticationError:
+	case GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError:
 		return true
 	default:
 		return false
@@ -43109,13 +43481,13 @@ func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments403JSONResponseBodyErrorType.
 const (
-	ApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
+	GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments403JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiAuthorizationError:
+	case GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError:
 		return true
 	default:
 		return false
@@ -43124,13 +43496,13 @@ func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments404JSONResponseBodyErrorType.
 const (
-	ApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
+	GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments404JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiNotFoundError:
+	case GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError:
 		return true
 	default:
 		return false
@@ -43139,13 +43511,13 @@ func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments409JSONResponseBodyErrorType.
 const (
-	ApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
+	GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments409JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiConflictError:
+	case GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError:
 		return true
 	default:
 		return false
@@ -43154,13 +43526,13 @@ func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments500JSONResponseBodyErrorType.
 const (
-	ApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
+	GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments500JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case ApiInternalServerError:
+	case GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError:
 		return true
 	default:
 		return false
@@ -49478,6 +49850,63 @@ type UpdateModel409JSONResponseBodyErrorType string
 
 // UpdateModel500JSONResponseBodyErrorType defines parameters for UpdateModel.
 type UpdateModel500JSONResponseBodyErrorType string
+
+// GetLlmProviderApiKeysParams defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeysParams struct {
+	Search   *string                              `form:"search,omitempty" json:"search,omitempty"`
+	Provider *GetLlmProviderApiKeysParamsProvider `form:"provider,omitempty" json:"provider,omitempty"`
+
+	// Labels Filter by labels. Format: key1:val1|val2;key2:val3. AND across keys, OR within values.
+	Labels *string `form:"labels,omitempty" json:"labels,omitempty"`
+
+	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
+	Access *[]GetLlmProviderApiKeysParamsAccess `form:"access,omitempty" json:"access,omitempty"`
+
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>, oauthClient:<oauthClientId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
+
+	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
+	Owner *[]string `form:"owner,omitempty" json:"owner,omitempty"`
+}
+
+// GetLlmProviderApiKeysParamsProvider defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeysParamsProvider string
+
+// GetLlmProviderApiKeysParamsAccess defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeysParamsAccess string
+
+// GetLlmProviderApiKeys200JSONResponseBodyCreatedByType defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys200JSONResponseBodyCreatedByType string
+
+// GetLlmProviderApiKeys200JSONResponseBodyProvider defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys200JSONResponseBodyProvider string
+
+// GetLlmProviderApiKeys200JSONResponseBodyScope defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys200JSONResponseBodyScope string
+
+// GetLlmProviderApiKeys200JSONResponseBodySecretStorageType defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys200JSONResponseBodySecretStorageType string
+
+// GetLlmProviderApiKeys200JSONResponseBodySubscriptionKind defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys200JSONResponseBodySubscriptionKind string
+
+// GetLlmProviderApiKeys400JSONResponseBodyErrorType defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys400JSONResponseBodyErrorType string
+
+// GetLlmProviderApiKeys401JSONResponseBodyErrorType defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys401JSONResponseBodyErrorType string
+
+// GetLlmProviderApiKeys403JSONResponseBodyErrorType defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys403JSONResponseBodyErrorType string
+
+// GetLlmProviderApiKeys404JSONResponseBodyErrorType defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys404JSONResponseBodyErrorType string
+
+// GetLlmProviderApiKeys409JSONResponseBodyErrorType defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys409JSONResponseBodyErrorType string
+
+// GetLlmProviderApiKeys500JSONResponseBodyErrorType defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys500JSONResponseBodyErrorType string
 
 // CreateLlmProviderApiKeyJSONBody defines parameters for CreateLlmProviderApiKey.
 type CreateLlmProviderApiKeyJSONBody struct {
@@ -61771,6 +62200,9 @@ type ClientInterface interface {
 
 	UpdateModel(ctx context.Context, id openapi_types.UUID, body UpdateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetLlmProviderApiKeys request
+	GetLlmProviderApiKeys(ctx context.Context, params *GetLlmProviderApiKeysParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CreateLlmProviderApiKeyWithBody request with any body
 	CreateLlmProviderApiKeyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -64115,6 +64547,18 @@ func (c *Client) UpdateModelWithBody(ctx context.Context, id openapi_types.UUID,
 
 func (c *Client) UpdateModel(ctx context.Context, id openapi_types.UUID, body UpdateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateModelRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetLlmProviderApiKeys(ctx context.Context, params *GetLlmProviderApiKeysParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetLlmProviderApiKeysRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -70997,6 +71441,120 @@ func NewUpdateModelRequestWithBody(server string, id openapi_types.UUID, content
 	return req, nil
 }
 
+// NewGetLlmProviderApiKeysRequest generates requests for GetLlmProviderApiKeys
+func NewGetLlmProviderApiKeysRequest(server string, params *GetLlmProviderApiKeysParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-provider-api-keys")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "search", *params.Search, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Provider != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "provider", *params.Provider, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Labels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "labels", *params.Labels, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Access != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "access", *params.Access, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.SharedWith != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "sharedWith", *params.SharedWith, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Owner != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "owner", *params.Owner, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCreateLlmProviderApiKeyRequest calls the generic CreateLlmProviderApiKey builder with application/json body
 func NewCreateLlmProviderApiKeyRequest(server string, body CreateLlmProviderApiKeyJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -75793,6 +76351,9 @@ type ClientWithResponsesInterface interface {
 	UpdateModelWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateModelResponse, error)
 
 	UpdateModelWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateModelResponse, error)
+
+	// GetLlmProviderApiKeysWithResponse request
+	GetLlmProviderApiKeysWithResponse(ctx context.Context, params *GetLlmProviderApiKeysParams, reqEditors ...RequestEditorFn) (*GetLlmProviderApiKeysResponse, error)
 
 	// CreateLlmProviderApiKeyWithBodyWithResponse request with any body
 	CreateLlmProviderApiKeyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateLlmProviderApiKeyResponse, error)
@@ -87458,6 +88019,118 @@ func (r UpdateModelResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateModelResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetLlmProviderApiKeysResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		BaseUrl     *string   `json:"baseUrl"`
+		BestModelId *string   `json:"bestModelId,omitempty"`
+		CreatedAt   time.Time `json:"createdAt"`
+		CreatedBy   *struct {
+			Email *string                                                `json:"email"`
+			Id    string                                                 `json:"id"`
+			Name  *string                                                `json:"name"`
+			Type  *GetLlmProviderApiKeys200JSONResponseBodyCreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		ExtraHeaders              *map[string]string  `json:"extraHeaders"`
+		GithubOrganization        *string             `json:"githubOrganization,omitempty"`
+		GithubOrganizationName    *string             `json:"githubOrganizationName,omitempty"`
+		Id                        openapi_types.UUID  `json:"id"`
+		InferenceBaseUrl          *string             `json:"inferenceBaseUrl"`
+		IsAgentKey                *bool               `json:"isAgentKey,omitempty"`
+		IsGithubAppKey            *bool               `json:"isGithubAppKey,omitempty"`
+		IsPrimary                 bool                `json:"isPrimary"`
+		IsSystem                  bool                `json:"isSystem"`
+		Labels                    *[]struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels,omitempty"`
+		Name                     string                                                     `json:"name"`
+		OrganizationId           string                                                     `json:"organizationId"`
+		Provider                 GetLlmProviderApiKeys200JSONResponseBodyProvider           `json:"provider"`
+		RequiresReauthentication *bool                                                      `json:"requiresReauthentication,omitempty"`
+		Scope                    GetLlmProviderApiKeys200JSONResponseBodyScope              `json:"scope"`
+		SecretId                 *openapi_types.UUID                                        `json:"secretId"`
+		SecretStorageType        *GetLlmProviderApiKeys200JSONResponseBodySecretStorageType `json:"secretStorageType,omitempty"`
+		SubscriptionKind         *GetLlmProviderApiKeys200JSONResponseBodySubscriptionKind  `json:"subscriptionKind,omitempty"`
+		TeamId                   *string                                                    `json:"teamId"`
+		TeamName                 *string                                                    `json:"teamName,omitempty"`
+		UpdatedAt                time.Time                                                  `json:"updatedAt"`
+		UserId                   *string                                                    `json:"userId"`
+		UserName                 *string                                                    `json:"userName,omitempty"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetLlmProviderApiKeys400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetLlmProviderApiKeys401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                           `json:"details,omitempty"`
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetLlmProviderApiKeys403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetLlmProviderApiKeys404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetLlmProviderApiKeys409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetLlmProviderApiKeys500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetLlmProviderApiKeysResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetLlmProviderApiKeysResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetLlmProviderApiKeysResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -99653,6 +100326,15 @@ func (c *ClientWithResponses) UpdateModelWithResponse(ctx context.Context, id op
 		return nil, err
 	}
 	return ParseUpdateModelResponse(rsp)
+}
+
+// GetLlmProviderApiKeysWithResponse request returning *GetLlmProviderApiKeysResponse
+func (c *ClientWithResponses) GetLlmProviderApiKeysWithResponse(ctx context.Context, params *GetLlmProviderApiKeysParams, reqEditors ...RequestEditorFn) (*GetLlmProviderApiKeysResponse, error) {
+	rsp, err := c.GetLlmProviderApiKeys(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetLlmProviderApiKeysResponse(rsp)
 }
 
 // CreateLlmProviderApiKeyWithBodyWithResponse request with arbitrary body returning *CreateLlmProviderApiKeyResponse
@@ -115745,6 +116427,150 @@ func ParseUpdateModelResponse(rsp *http.Response) (*UpdateModelResponse, error) 
 				InternalCode *string                                 `json:"internal_code,omitempty"`
 				Message      string                                  `json:"message"`
 				Type         UpdateModel500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetLlmProviderApiKeysResponse parses an HTTP response from a GetLlmProviderApiKeysWithResponse call
+func ParseGetLlmProviderApiKeysResponse(rsp *http.Response) (*GetLlmProviderApiKeysResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetLlmProviderApiKeysResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			BaseUrl     *string   `json:"baseUrl"`
+			BestModelId *string   `json:"bestModelId,omitempty"`
+			CreatedAt   time.Time `json:"createdAt"`
+			CreatedBy   *struct {
+				Email *string                                                `json:"email"`
+				Id    string                                                 `json:"id"`
+				Name  *string                                                `json:"name"`
+				Type  *GetLlmProviderApiKeys200JSONResponseBodyCreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			ExtraHeaders              *map[string]string  `json:"extraHeaders"`
+			GithubOrganization        *string             `json:"githubOrganization,omitempty"`
+			GithubOrganizationName    *string             `json:"githubOrganizationName,omitempty"`
+			Id                        openapi_types.UUID  `json:"id"`
+			InferenceBaseUrl          *string             `json:"inferenceBaseUrl"`
+			IsAgentKey                *bool               `json:"isAgentKey,omitempty"`
+			IsGithubAppKey            *bool               `json:"isGithubAppKey,omitempty"`
+			IsPrimary                 bool                `json:"isPrimary"`
+			IsSystem                  bool                `json:"isSystem"`
+			Labels                    *[]struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels,omitempty"`
+			Name                     string                                                     `json:"name"`
+			OrganizationId           string                                                     `json:"organizationId"`
+			Provider                 GetLlmProviderApiKeys200JSONResponseBodyProvider           `json:"provider"`
+			RequiresReauthentication *bool                                                      `json:"requiresReauthentication,omitempty"`
+			Scope                    GetLlmProviderApiKeys200JSONResponseBodyScope              `json:"scope"`
+			SecretId                 *openapi_types.UUID                                        `json:"secretId"`
+			SecretStorageType        *GetLlmProviderApiKeys200JSONResponseBodySecretStorageType `json:"secretStorageType,omitempty"`
+			SubscriptionKind         *GetLlmProviderApiKeys200JSONResponseBodySubscriptionKind  `json:"subscriptionKind,omitempty"`
+			TeamId                   *string                                                    `json:"teamId"`
+			TeamName                 *string                                                    `json:"teamName,omitempty"`
+			UpdatedAt                time.Time                                                  `json:"updatedAt"`
+			UserId                   *string                                                    `json:"userId"`
+			UserName                 *string                                                    `json:"userName,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetLlmProviderApiKeys400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetLlmProviderApiKeys401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                           `json:"details,omitempty"`
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetLlmProviderApiKeys403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetLlmProviderApiKeys404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetLlmProviderApiKeys409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetLlmProviderApiKeys500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

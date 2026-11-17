@@ -64,9 +64,11 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_team` | `team` / `Team` |
 | `archestra_virtual_key` | `llm` / `VirtualKey` |
 
-The six data sources are `archestra_agent`, `archestra_team`, `archestra_tool`,
+The eight data sources are `archestra_agent`, `archestra_team`, `archestra_tool`,
 `archestra_mcp_tool_calls`, `archestra_blob_provider` and `archestra_auto_router`
-(both looked up by name). Tool lookup accepts an optional MCP server filter;
+(both looked up by name), and `archestra_model` and `archestra_model_provider`,
+which find a discovered model or an existing provider key so configuration
+pins them without a pasted ID. Tool lookup accepts an optional MCP server filter;
 agent lookup includes its relationships. Data sources read existing state.
 
 Crossplane resources use `<group>.archestra.crossplane.io` in cluster scope and

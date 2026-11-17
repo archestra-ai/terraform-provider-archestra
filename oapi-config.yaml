@@ -58,6 +58,7 @@ output-options:
     - getInternalMcpCatalogItem
     - getLimit
     - getLlmProviderApiKey
+    - getLlmProviderApiKeys
     - getMcpServer
     - getMcpServerInstallationStatus
     - getMcpServerTools
