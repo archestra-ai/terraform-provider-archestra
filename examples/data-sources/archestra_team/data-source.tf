@@ -20,3 +20,8 @@ output "team_name" {
 output "team_admins" {
   value = [for m in data.archestra_team.engineering.members : m.user_id if m.role == "admin"]
 }
+
+# A team can also be found by its exact name, when its ID is not at hand.
+data "archestra_team" "platform" {
+  name = "Platform"
+}

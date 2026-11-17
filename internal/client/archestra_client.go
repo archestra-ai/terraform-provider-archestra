@@ -32559,6 +32559,96 @@ func (e UpdateMcpSettings500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetOrganizationMember400JSONResponseBodyErrorType.
+const (
+	GetOrganizationMember400JSONResponseBodyErrorTypeApiValidationError GetOrganizationMember400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOrganizationMember400JSONResponseBodyErrorType enum.
+func (e GetOrganizationMember400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOrganizationMember400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOrganizationMember401JSONResponseBodyErrorType.
+const (
+	GetOrganizationMember401JSONResponseBodyErrorTypeApiAuthenticationError GetOrganizationMember401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOrganizationMember401JSONResponseBodyErrorType enum.
+func (e GetOrganizationMember401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOrganizationMember401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOrganizationMember403JSONResponseBodyErrorType.
+const (
+	GetOrganizationMember403JSONResponseBodyErrorTypeApiAuthorizationError GetOrganizationMember403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOrganizationMember403JSONResponseBodyErrorType enum.
+func (e GetOrganizationMember403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOrganizationMember403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOrganizationMember404JSONResponseBodyErrorType.
+const (
+	GetOrganizationMember404JSONResponseBodyErrorTypeApiNotFoundError GetOrganizationMember404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOrganizationMember404JSONResponseBodyErrorType enum.
+func (e GetOrganizationMember404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOrganizationMember404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOrganizationMember409JSONResponseBodyErrorType.
+const (
+	GetOrganizationMember409JSONResponseBodyErrorTypeApiConflictError GetOrganizationMember409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOrganizationMember409JSONResponseBodyErrorType enum.
+func (e GetOrganizationMember409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOrganizationMember409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOrganizationMember500JSONResponseBodyErrorType.
+const (
+	GetOrganizationMember500JSONResponseBodyErrorTypeApiInternalServerError GetOrganizationMember500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOrganizationMember500JSONResponseBodyErrorType enum.
+func (e GetOrganizationMember500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOrganizationMember500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for UpdateSecuritySettings200JSONResponseBodyConnectionClientProviderKeysProvider.
 const (
 	UpdateSecuritySettings200JSONResponseBodyConnectionClientProviderKeysProviderAnthropic           UpdateSecuritySettings200JSONResponseBodyConnectionClientProviderKeysProvider = "anthropic"
@@ -38841,6 +38931,114 @@ func (e UpdateScheduleTrigger500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetServiceAccounts200JSONResponseBodyCreatedByType.
+const (
+	GetServiceAccounts200JSONResponseBodyCreatedByTypeServiceAccount GetServiceAccounts200JSONResponseBodyCreatedByType = "service_account"
+	GetServiceAccounts200JSONResponseBodyCreatedByTypeUser           GetServiceAccounts200JSONResponseBodyCreatedByType = "user"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccounts200JSONResponseBodyCreatedByType enum.
+func (e GetServiceAccounts200JSONResponseBodyCreatedByType) Valid() bool {
+	switch e {
+	case GetServiceAccounts200JSONResponseBodyCreatedByTypeServiceAccount:
+		return true
+	case GetServiceAccounts200JSONResponseBodyCreatedByTypeUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetServiceAccounts400JSONResponseBodyErrorType.
+const (
+	GetServiceAccounts400JSONResponseBodyErrorTypeApiValidationError GetServiceAccounts400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccounts400JSONResponseBodyErrorType enum.
+func (e GetServiceAccounts400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccounts400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetServiceAccounts401JSONResponseBodyErrorType.
+const (
+	GetServiceAccounts401JSONResponseBodyErrorTypeApiAuthenticationError GetServiceAccounts401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccounts401JSONResponseBodyErrorType enum.
+func (e GetServiceAccounts401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccounts401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetServiceAccounts403JSONResponseBodyErrorType.
+const (
+	GetServiceAccounts403JSONResponseBodyErrorTypeApiAuthorizationError GetServiceAccounts403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccounts403JSONResponseBodyErrorType enum.
+func (e GetServiceAccounts403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccounts403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetServiceAccounts404JSONResponseBodyErrorType.
+const (
+	GetServiceAccounts404JSONResponseBodyErrorTypeApiNotFoundError GetServiceAccounts404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccounts404JSONResponseBodyErrorType enum.
+func (e GetServiceAccounts404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccounts404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetServiceAccounts409JSONResponseBodyErrorType.
+const (
+	GetServiceAccounts409JSONResponseBodyErrorTypeApiConflictError GetServiceAccounts409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccounts409JSONResponseBodyErrorType enum.
+func (e GetServiceAccounts409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccounts409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetServiceAccounts500JSONResponseBodyErrorType.
+const (
+	GetServiceAccounts500JSONResponseBodyErrorTypeApiInternalServerError GetServiceAccounts500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetServiceAccounts500JSONResponseBodyErrorType enum.
+func (e GetServiceAccounts500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetServiceAccounts500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateServiceAccountJSONBodyInitialGrantsActions.
 const (
 	CreateServiceAccountJSONBodyInitialGrantsActionsConfigure               CreateServiceAccountJSONBodyInitialGrantsActions = "configure"
@@ -41954,16 +42152,16 @@ func (e UpdateSkillGithubSyncJSONBodySyncNow) Valid() bool {
 
 // Defines values for UpdateSkillGithubSync200JSONResponseBodyCreatedByType.
 const (
-	UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeServiceAccount UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "service_account"
-	UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeUser           UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "user"
+	ServiceAccount UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "service_account"
+	User           UpdateSkillGithubSync200JSONResponseBodyCreatedByType = "user"
 )
 
 // Valid indicates whether the value is a known member of the UpdateSkillGithubSync200JSONResponseBodyCreatedByType enum.
 func (e UpdateSkillGithubSync200JSONResponseBodyCreatedByType) Valid() bool {
 	switch e {
-	case UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeServiceAccount:
+	case ServiceAccount:
 		return true
-	case UpdateSkillGithubSync200JSONResponseBodyCreatedByTypeUser:
+	case User:
 		return true
 	default:
 		return false
@@ -42180,6 +42378,114 @@ const (
 func (e UpdateSkillGithubSync500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
 	case UpdateSkillGithubSync500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTeams200JSONResponseBodyDataMyRole.
+const (
+	GetTeams200JSONResponseBodyDataMyRoleAdmin  GetTeams200JSONResponseBodyDataMyRole = "admin"
+	GetTeams200JSONResponseBodyDataMyRoleMember GetTeams200JSONResponseBodyDataMyRole = "member"
+)
+
+// Valid indicates whether the value is a known member of the GetTeams200JSONResponseBodyDataMyRole enum.
+func (e GetTeams200JSONResponseBodyDataMyRole) Valid() bool {
+	switch e {
+	case GetTeams200JSONResponseBodyDataMyRoleAdmin:
+		return true
+	case GetTeams200JSONResponseBodyDataMyRoleMember:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTeams400JSONResponseBodyErrorType.
+const (
+	GetTeams400JSONResponseBodyErrorTypeApiValidationError GetTeams400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTeams400JSONResponseBodyErrorType enum.
+func (e GetTeams400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTeams400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTeams401JSONResponseBodyErrorType.
+const (
+	GetTeams401JSONResponseBodyErrorTypeApiAuthenticationError GetTeams401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTeams401JSONResponseBodyErrorType enum.
+func (e GetTeams401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTeams401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTeams403JSONResponseBodyErrorType.
+const (
+	GetTeams403JSONResponseBodyErrorTypeApiAuthorizationError GetTeams403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTeams403JSONResponseBodyErrorType enum.
+func (e GetTeams403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTeams403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTeams404JSONResponseBodyErrorType.
+const (
+	GetTeams404JSONResponseBodyErrorTypeApiNotFoundError GetTeams404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTeams404JSONResponseBodyErrorType enum.
+func (e GetTeams404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTeams404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTeams409JSONResponseBodyErrorType.
+const (
+	GetTeams409JSONResponseBodyErrorTypeApiConflictError GetTeams409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTeams409JSONResponseBodyErrorType enum.
+func (e GetTeams409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTeams409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTeams500JSONResponseBodyErrorType.
+const (
+	GetTeams500JSONResponseBodyErrorTypeApiInternalServerError GetTeams500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTeams500JSONResponseBodyErrorType enum.
+func (e GetTeams500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTeams500JSONResponseBodyErrorTypeApiInternalServerError:
 		return true
 	default:
 		return false
@@ -43214,16 +43520,16 @@ func (e RemoveTeamMember500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for UpdateTeamMemberJSONBodyRole.
 const (
-	UpdateTeamMemberJSONBodyRoleAdmin  UpdateTeamMemberJSONBodyRole = "admin"
-	UpdateTeamMemberJSONBodyRoleMember UpdateTeamMemberJSONBodyRole = "member"
+	Admin  UpdateTeamMemberJSONBodyRole = "admin"
+	Member UpdateTeamMemberJSONBodyRole = "member"
 )
 
 // Valid indicates whether the value is a known member of the UpdateTeamMemberJSONBodyRole enum.
 func (e UpdateTeamMemberJSONBodyRole) Valid() bool {
 	switch e {
-	case UpdateTeamMemberJSONBodyRoleAdmin:
+	case Admin:
 		return true
-	case UpdateTeamMemberJSONBodyRoleMember:
+	case Member:
 		return true
 	default:
 		return false
@@ -43451,13 +43757,13 @@ func (e GetToolsWithAssignments200JSONResponseBodyDataDelegateToAgentScope) Vali
 
 // Defines values for GetToolsWithAssignments400JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
+	ApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments400JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError:
+	case ApiValidationError:
 		return true
 	default:
 		return false
@@ -43466,13 +43772,13 @@ func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments401JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
+	ApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments401JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError:
+	case ApiAuthenticationError:
 		return true
 	default:
 		return false
@@ -43481,13 +43787,13 @@ func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments403JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
+	ApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments403JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError:
+	case ApiAuthorizationError:
 		return true
 	default:
 		return false
@@ -43496,13 +43802,13 @@ func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments404JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
+	ApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments404JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError:
+	case ApiNotFoundError:
 		return true
 	default:
 		return false
@@ -43511,13 +43817,13 @@ func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments409JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
+	ApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments409JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError:
+	case ApiConflictError:
 		return true
 	default:
 		return false
@@ -43526,13 +43832,13 @@ func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments500JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
+	ApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments500JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError:
+	case ApiInternalServerError:
 		return true
 	default:
 		return false
@@ -51795,6 +52101,24 @@ type UpdateMcpSettings409JSONResponseBodyErrorType string
 // UpdateMcpSettings500JSONResponseBodyErrorType defines parameters for UpdateMcpSettings.
 type UpdateMcpSettings500JSONResponseBodyErrorType string
 
+// GetOrganizationMember400JSONResponseBodyErrorType defines parameters for GetOrganizationMember.
+type GetOrganizationMember400JSONResponseBodyErrorType string
+
+// GetOrganizationMember401JSONResponseBodyErrorType defines parameters for GetOrganizationMember.
+type GetOrganizationMember401JSONResponseBodyErrorType string
+
+// GetOrganizationMember403JSONResponseBodyErrorType defines parameters for GetOrganizationMember.
+type GetOrganizationMember403JSONResponseBodyErrorType string
+
+// GetOrganizationMember404JSONResponseBodyErrorType defines parameters for GetOrganizationMember.
+type GetOrganizationMember404JSONResponseBodyErrorType string
+
+// GetOrganizationMember409JSONResponseBodyErrorType defines parameters for GetOrganizationMember.
+type GetOrganizationMember409JSONResponseBodyErrorType string
+
+// GetOrganizationMember500JSONResponseBodyErrorType defines parameters for GetOrganizationMember.
+type GetOrganizationMember500JSONResponseBodyErrorType string
+
 // UpdateSecuritySettingsJSONBody defines parameters for UpdateSecuritySettings.
 type UpdateSecuritySettingsJSONBody struct {
 	AllowChatFileUploads                 *bool `json:"allowChatFileUploads,omitempty"`
@@ -53385,6 +53709,33 @@ type UpdateScheduleTrigger409JSONResponseBodyErrorType string
 // UpdateScheduleTrigger500JSONResponseBodyErrorType defines parameters for UpdateScheduleTrigger.
 type UpdateScheduleTrigger500JSONResponseBodyErrorType string
 
+// GetServiceAccountsParams defines parameters for GetServiceAccounts.
+type GetServiceAccountsParams struct {
+	// Labels Filter by labels. Format: key1:val1|val2;key2:val3. AND across keys, OR within values.
+	Labels *string `form:"labels,omitempty" json:"labels,omitempty"`
+}
+
+// GetServiceAccounts200JSONResponseBodyCreatedByType defines parameters for GetServiceAccounts.
+type GetServiceAccounts200JSONResponseBodyCreatedByType string
+
+// GetServiceAccounts400JSONResponseBodyErrorType defines parameters for GetServiceAccounts.
+type GetServiceAccounts400JSONResponseBodyErrorType string
+
+// GetServiceAccounts401JSONResponseBodyErrorType defines parameters for GetServiceAccounts.
+type GetServiceAccounts401JSONResponseBodyErrorType string
+
+// GetServiceAccounts403JSONResponseBodyErrorType defines parameters for GetServiceAccounts.
+type GetServiceAccounts403JSONResponseBodyErrorType string
+
+// GetServiceAccounts404JSONResponseBodyErrorType defines parameters for GetServiceAccounts.
+type GetServiceAccounts404JSONResponseBodyErrorType string
+
+// GetServiceAccounts409JSONResponseBodyErrorType defines parameters for GetServiceAccounts.
+type GetServiceAccounts409JSONResponseBodyErrorType string
+
+// GetServiceAccounts500JSONResponseBodyErrorType defines parameters for GetServiceAccounts.
+type GetServiceAccounts500JSONResponseBodyErrorType string
+
 // CreateServiceAccountJSONBody defines parameters for CreateServiceAccount.
 type CreateServiceAccountJSONBody struct {
 	Icon          *string `json:"icon,omitempty"`
@@ -54322,6 +54673,42 @@ type UpdateSkillGithubSync409JSONResponseBodyErrorType string
 
 // UpdateSkillGithubSync500JSONResponseBodyErrorType defines parameters for UpdateSkillGithubSync.
 type UpdateSkillGithubSync500JSONResponseBodyErrorType string
+
+// GetTeamsParams defines parameters for GetTeams.
+type GetTeamsParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int    `form:"offset,omitempty" json:"offset,omitempty"`
+	Name   *string `form:"name,omitempty" json:"name,omitempty"`
+
+	// IncludeRelations Include team members, labels and descendant teams (default true). Set to false to get only the team fields and memberCount.
+	IncludeRelations *bool `form:"includeRelations,omitempty" json:"includeRelations,omitempty"`
+
+	// IncludeMembers Include the members array of each team (default true). Set to false to get labels and descendant teams without members. Use memberCount for the number of members.
+	IncludeMembers *bool   `form:"includeMembers,omitempty" json:"includeMembers,omitempty"`
+	Labels         *string `form:"labels,omitempty" json:"labels,omitempty"`
+	Mine           *bool   `form:"mine,omitempty" json:"mine,omitempty"`
+}
+
+// GetTeams200JSONResponseBodyDataMyRole defines parameters for GetTeams.
+type GetTeams200JSONResponseBodyDataMyRole string
+
+// GetTeams400JSONResponseBodyErrorType defines parameters for GetTeams.
+type GetTeams400JSONResponseBodyErrorType string
+
+// GetTeams401JSONResponseBodyErrorType defines parameters for GetTeams.
+type GetTeams401JSONResponseBodyErrorType string
+
+// GetTeams403JSONResponseBodyErrorType defines parameters for GetTeams.
+type GetTeams403JSONResponseBodyErrorType string
+
+// GetTeams404JSONResponseBodyErrorType defines parameters for GetTeams.
+type GetTeams404JSONResponseBodyErrorType string
+
+// GetTeams409JSONResponseBodyErrorType defines parameters for GetTeams.
+type GetTeams409JSONResponseBodyErrorType string
+
+// GetTeams500JSONResponseBodyErrorType defines parameters for GetTeams.
+type GetTeams500JSONResponseBodyErrorType string
 
 // CreateTeamJSONBody defines parameters for CreateTeam.
 type CreateTeamJSONBody struct {
@@ -62349,6 +62736,9 @@ type ClientInterface interface {
 
 	UpdateMcpSettings(ctx context.Context, body UpdateMcpSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetOrganizationMember request
+	GetOrganizationMember(ctx context.Context, idOrEmail string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// UpdateSecuritySettingsWithBody request with any body
 	UpdateSecuritySettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -62461,6 +62851,9 @@ type ClientInterface interface {
 
 	UpdateScheduleTrigger(ctx context.Context, id openapi_types.UUID, body UpdateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetServiceAccounts request
+	GetServiceAccounts(ctx context.Context, params *GetServiceAccountsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CreateServiceAccountWithBody request with any body
 	CreateServiceAccountWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -62553,6 +62946,9 @@ type ClientInterface interface {
 	UpdateSkillGithubSyncWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateSkillGithubSync(ctx context.Context, id openapi_types.UUID, body UpdateSkillGithubSyncJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetTeams request
+	GetTeams(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateTeamWithBody request with any body
 	CreateTeamWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -65229,6 +65625,18 @@ func (c *Client) UpdateMcpSettings(ctx context.Context, body UpdateMcpSettingsJS
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetOrganizationMember(ctx context.Context, idOrEmail string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOrganizationMemberRequest(c.Server, idOrEmail)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) UpdateSecuritySettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateSecuritySettingsRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -65733,6 +66141,18 @@ func (c *Client) UpdateScheduleTrigger(ctx context.Context, id openapi_types.UUI
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetServiceAccounts(ctx context.Context, params *GetServiceAccountsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetServiceAccountsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) CreateServiceAccountWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateServiceAccountRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -66143,6 +66563,18 @@ func (c *Client) UpdateSkillGithubSyncWithBody(ctx context.Context, id openapi_t
 
 func (c *Client) UpdateSkillGithubSync(ctx context.Context, id openapi_types.UUID, body UpdateSkillGithubSyncJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateSkillGithubSyncRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetTeams(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTeamsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -73158,6 +73590,40 @@ func NewUpdateMcpSettingsRequestWithBody(server string, contentType string, body
 	return req, nil
 }
 
+// NewGetOrganizationMemberRequest generates requests for GetOrganizationMember
+func NewGetOrganizationMemberRequest(server string, idOrEmail string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "idOrEmail", idOrEmail, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/organization/members/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewUpdateSecuritySettingsRequest calls the generic UpdateSecuritySettings builder with application/json body
 func NewUpdateSecuritySettingsRequest(server string, body UpdateSecuritySettingsJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -74271,6 +74737,60 @@ func NewUpdateScheduleTriggerRequestWithBody(server string, id openapi_types.UUI
 	return req, nil
 }
 
+// NewGetServiceAccountsRequest generates requests for GetServiceAccounts
+func NewGetServiceAccountsRequest(server string, params *GetServiceAccountsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/service-accounts")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Labels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "labels", *params.Labels, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCreateServiceAccountRequest calls the generic CreateServiceAccount builder with application/json body
 func NewCreateServiceAccountRequest(server string, body CreateServiceAccountJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -75225,6 +75745,132 @@ func NewUpdateSkillGithubSyncRequestWithBody(server string, id openapi_types.UUI
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetTeamsRequest generates requests for GetTeams
+func NewGetTeamsRequest(server string, params *GetTeamsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/teams")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Name != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "name", *params.Name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.IncludeRelations != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "includeRelations", *params.IncludeRelations, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.IncludeMembers != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "includeMembers", *params.IncludeMembers, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Labels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "labels", *params.Labels, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Mine != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "mine", *params.Mine, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -76501,6 +77147,9 @@ type ClientWithResponsesInterface interface {
 
 	UpdateMcpSettingsWithResponse(ctx context.Context, body UpdateMcpSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMcpSettingsResponse, error)
 
+	// GetOrganizationMemberWithResponse request
+	GetOrganizationMemberWithResponse(ctx context.Context, idOrEmail string, reqEditors ...RequestEditorFn) (*GetOrganizationMemberResponse, error)
+
 	// UpdateSecuritySettingsWithBodyWithResponse request with any body
 	UpdateSecuritySettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSecuritySettingsResponse, error)
 
@@ -76613,6 +77262,9 @@ type ClientWithResponsesInterface interface {
 
 	UpdateScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateScheduleTriggerResponse, error)
 
+	// GetServiceAccountsWithResponse request
+	GetServiceAccountsWithResponse(ctx context.Context, params *GetServiceAccountsParams, reqEditors ...RequestEditorFn) (*GetServiceAccountsResponse, error)
+
 	// CreateServiceAccountWithBodyWithResponse request with any body
 	CreateServiceAccountWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateServiceAccountResponse, error)
 
@@ -76705,6 +77357,9 @@ type ClientWithResponsesInterface interface {
 	UpdateSkillGithubSyncWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSkillGithubSyncResponse, error)
 
 	UpdateSkillGithubSyncWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateSkillGithubSyncJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSkillGithubSyncResponse, error)
+
+	// GetTeamsWithResponse request
+	GetTeamsWithResponse(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*GetTeamsResponse, error)
 
 	// CreateTeamWithBodyWithResponse request with any body
 	CreateTeamWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTeamResponse, error)
@@ -92821,6 +93476,84 @@ func (r UpdateMcpSettingsResponse) ContentType() string {
 	return ""
 }
 
+type GetOrganizationMemberResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Email string `json:"email"`
+		Id    string `json:"id"`
+		Name  string `json:"name"`
+		Role  string `json:"role"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetOrganizationMember400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetOrganizationMember401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                           `json:"details,omitempty"`
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetOrganizationMember403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetOrganizationMember404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetOrganizationMember409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetOrganizationMember500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOrganizationMemberResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOrganizationMemberResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetOrganizationMemberResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type UpdateSecuritySettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -95650,6 +96383,106 @@ func (r UpdateScheduleTriggerResponse) ContentType() string {
 	return ""
 }
 
+type GetServiceAccountsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		ActiveTokenCount int       `json:"activeTokenCount"`
+		CreatedAt        time.Time `json:"createdAt"`
+		CreatedBy        *struct {
+			Email *string                                             `json:"email"`
+			Id    string                                              `json:"id"`
+			Name  *string                                             `json:"name"`
+			Type  *GetServiceAccounts200JSONResponseBodyCreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		Disabled                 bool               `json:"disabled"`
+		FederatedCredentialCount int                `json:"federatedCredentialCount"`
+		Icon                     *string            `json:"icon"`
+		Id                       openapi_types.UUID `json:"id"`
+		Labels                   []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastUsedAt      *time.Time `json:"lastUsedAt"`
+		Name            string     `json:"name"`
+		OrganizationId  string     `json:"organizationId"`
+		Role            string     `json:"role"`
+		SoonestExpiryAt *time.Time `json:"soonestExpiryAt"`
+		TeamId          *string    `json:"teamId"`
+		TokenCount      int        `json:"tokenCount"`
+		UpdatedAt       time.Time  `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetServiceAccounts400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetServiceAccounts401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                        `json:"details,omitempty"`
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetServiceAccounts403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetServiceAccounts404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetServiceAccounts409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetServiceAccounts500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetServiceAccountsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetServiceAccountsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetServiceAccountsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type CreateServiceAccountResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -97842,6 +98675,121 @@ func (r UpdateSkillGithubSyncResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateSkillGithubSyncResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetTeamsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			CreatedAt                 time.Time           `json:"createdAt"`
+			CreatedBy                 *string             `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DescendantTeams           *[]struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"descendantTeams,omitempty"`
+			Description *string `json:"description"`
+			Id          string  `json:"id"`
+			Labels      *[]struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels,omitempty"`
+			MemberCount int `json:"memberCount"`
+			Members     *[]struct {
+				CreatedAt         time.Time `json:"createdAt"`
+				Id                string    `json:"id"`
+				Role              string    `json:"role"`
+				RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+				SyncedFromSso     bool      `json:"syncedFromSso"`
+				TeamId            string    `json:"teamId"`
+				UserId            string    `json:"userId"`
+			} `json:"members,omitempty"`
+			MyRole         *GetTeams200JSONResponseBodyDataMyRole `json:"myRole,omitempty"`
+			Name           string                                 `json:"name"`
+			OrganizationId string                                 `json:"organizationId"`
+			ParentId       *string                                `json:"parentId"`
+			Roles          []string                               `json:"roles"`
+			UpdatedAt      time.Time                              `json:"updatedAt"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetTeams400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetTeams401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}              `json:"details,omitempty"`
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetTeams403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetTeams404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetTeams409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetTeams500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetTeamsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTeamsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetTeamsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -100813,6 +101761,15 @@ func (c *ClientWithResponses) UpdateMcpSettingsWithResponse(ctx context.Context,
 	return ParseUpdateMcpSettingsResponse(rsp)
 }
 
+// GetOrganizationMemberWithResponse request returning *GetOrganizationMemberResponse
+func (c *ClientWithResponses) GetOrganizationMemberWithResponse(ctx context.Context, idOrEmail string, reqEditors ...RequestEditorFn) (*GetOrganizationMemberResponse, error) {
+	rsp, err := c.GetOrganizationMember(ctx, idOrEmail, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOrganizationMemberResponse(rsp)
+}
+
 // UpdateSecuritySettingsWithBodyWithResponse request with arbitrary body returning *UpdateSecuritySettingsResponse
 func (c *ClientWithResponses) UpdateSecuritySettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSecuritySettingsResponse, error) {
 	rsp, err := c.UpdateSecuritySettingsWithBody(ctx, contentType, body, reqEditors...)
@@ -101177,6 +102134,15 @@ func (c *ClientWithResponses) UpdateScheduleTriggerWithResponse(ctx context.Cont
 	return ParseUpdateScheduleTriggerResponse(rsp)
 }
 
+// GetServiceAccountsWithResponse request returning *GetServiceAccountsResponse
+func (c *ClientWithResponses) GetServiceAccountsWithResponse(ctx context.Context, params *GetServiceAccountsParams, reqEditors ...RequestEditorFn) (*GetServiceAccountsResponse, error) {
+	rsp, err := c.GetServiceAccounts(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetServiceAccountsResponse(rsp)
+}
+
 // CreateServiceAccountWithBodyWithResponse request with arbitrary body returning *CreateServiceAccountResponse
 func (c *ClientWithResponses) CreateServiceAccountWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateServiceAccountResponse, error) {
 	rsp, err := c.CreateServiceAccountWithBody(ctx, contentType, body, reqEditors...)
@@ -101478,6 +102444,15 @@ func (c *ClientWithResponses) UpdateSkillGithubSyncWithResponse(ctx context.Cont
 		return nil, err
 	}
 	return ParseUpdateSkillGithubSyncResponse(rsp)
+}
+
+// GetTeamsWithResponse request returning *GetTeamsResponse
+func (c *ClientWithResponses) GetTeamsWithResponse(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*GetTeamsResponse, error) {
+	rsp, err := c.GetTeams(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTeamsResponse(rsp)
 }
 
 // CreateTeamWithBodyWithResponse request with arbitrary body returning *CreateTeamResponse
@@ -122419,6 +123394,116 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 	return response, nil
 }
 
+// ParseGetOrganizationMemberResponse parses an HTTP response from a GetOrganizationMemberWithResponse call
+func ParseGetOrganizationMemberResponse(rsp *http.Response) (*GetOrganizationMemberResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOrganizationMemberResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+			Role  string `json:"role"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetOrganizationMember400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetOrganizationMember401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                           `json:"details,omitempty"`
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetOrganizationMember403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetOrganizationMember404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetOrganizationMember409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetOrganizationMember500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseUpdateSecuritySettingsResponse parses an HTTP response from a UpdateSecuritySettingsWithResponse call
 func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySettingsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -126144,6 +127229,138 @@ func ParseUpdateScheduleTriggerResponse(rsp *http.Response) (*UpdateScheduleTrig
 	return response, nil
 }
 
+// ParseGetServiceAccountsResponse parses an HTTP response from a GetServiceAccountsWithResponse call
+func ParseGetServiceAccountsResponse(rsp *http.Response) (*GetServiceAccountsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetServiceAccountsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			ActiveTokenCount int       `json:"activeTokenCount"`
+			CreatedAt        time.Time `json:"createdAt"`
+			CreatedBy        *struct {
+				Email *string                                             `json:"email"`
+				Id    string                                              `json:"id"`
+				Name  *string                                             `json:"name"`
+				Type  *GetServiceAccounts200JSONResponseBodyCreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			Disabled                 bool               `json:"disabled"`
+			FederatedCredentialCount int                `json:"federatedCredentialCount"`
+			Icon                     *string            `json:"icon"`
+			Id                       openapi_types.UUID `json:"id"`
+			Labels                   []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastUsedAt      *time.Time `json:"lastUsedAt"`
+			Name            string     `json:"name"`
+			OrganizationId  string     `json:"organizationId"`
+			Role            string     `json:"role"`
+			SoonestExpiryAt *time.Time `json:"soonestExpiryAt"`
+			TeamId          *string    `json:"teamId"`
+			TokenCount      int        `json:"tokenCount"`
+			UpdatedAt       time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetServiceAccounts400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetServiceAccounts401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                        `json:"details,omitempty"`
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetServiceAccounts403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetServiceAccounts404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetServiceAccounts409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetServiceAccounts500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseCreateServiceAccountResponse parses an HTTP response from a CreateServiceAccountWithResponse call
 func ParseCreateServiceAccountResponse(rsp *http.Response) (*CreateServiceAccountResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -129021,6 +130238,153 @@ func ParseUpdateSkillGithubSyncResponse(rsp *http.Response) (*UpdateSkillGithubS
 				InternalCode *string                                           `json:"internal_code,omitempty"`
 				Message      string                                            `json:"message"`
 				Type         UpdateSkillGithubSync500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetTeamsResponse parses an HTTP response from a GetTeamsWithResponse call
+func ParseGetTeamsResponse(rsp *http.Response) (*GetTeamsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTeamsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				CreatedAt                 time.Time           `json:"createdAt"`
+				CreatedBy                 *string             `json:"createdBy"`
+				CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+				DescendantTeams           *[]struct {
+					Id   string `json:"id"`
+					Name string `json:"name"`
+				} `json:"descendantTeams,omitempty"`
+				Description *string `json:"description"`
+				Id          string  `json:"id"`
+				Labels      *[]struct {
+					Key     string              `json:"key"`
+					KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+					Value   string              `json:"value"`
+					ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+				} `json:"labels,omitempty"`
+				MemberCount int `json:"memberCount"`
+				Members     *[]struct {
+					CreatedAt         time.Time `json:"createdAt"`
+					Id                string    `json:"id"`
+					Role              string    `json:"role"`
+					RoleSyncedFromSso bool      `json:"roleSyncedFromSso"`
+					SyncedFromSso     bool      `json:"syncedFromSso"`
+					TeamId            string    `json:"teamId"`
+					UserId            string    `json:"userId"`
+				} `json:"members,omitempty"`
+				MyRole         *GetTeams200JSONResponseBodyDataMyRole `json:"myRole,omitempty"`
+				Name           string                                 `json:"name"`
+				OrganizationId string                                 `json:"organizationId"`
+				ParentId       *string                                `json:"parentId"`
+				Roles          []string                               `json:"roles"`
+				UpdatedAt      time.Time                              `json:"updatedAt"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetTeams400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetTeams401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}              `json:"details,omitempty"`
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetTeams403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetTeams404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetTeams409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetTeams500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

@@ -71,15 +71,7 @@ func (d *LlmModelDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 }
 
 func (d *LlmModelDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if req.ProviderData == nil {
-		return
-	}
-	apiClient, ok := req.ProviderData.(*client.ClientWithResponses)
-	if !ok {
-		resp.Diagnostics.AddError("Unexpected Data Source Configure Type", fmt.Sprintf("Expected *client.ClientWithResponses, got: %T", req.ProviderData))
-		return
-	}
-	d.client = apiClient
+	d.client = dataSourceClient(req, resp)
 }
 
 func (d *LlmModelDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {

@@ -78,15 +78,7 @@ func (d *ModelProviderDataSource) Schema(ctx context.Context, req datasource.Sch
 }
 
 func (d *ModelProviderDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if req.ProviderData == nil {
-		return
-	}
-	apiClient, ok := req.ProviderData.(*client.ClientWithResponses)
-	if !ok {
-		resp.Diagnostics.AddError("Unexpected Data Source Configure Type", fmt.Sprintf("Expected *client.ClientWithResponses, got: %T", req.ProviderData))
-		return
-	}
-	d.client = apiClient
+	d.client = dataSourceClient(req, resp)
 }
 
 func (d *ModelProviderDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {

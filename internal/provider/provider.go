@@ -235,6 +235,9 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewAutoRouterDataSource,
 		NewLlmModelDataSource,
 		NewModelProviderDataSource,
+		NewUserDataSource,
+		NewServiceAccountDataSource,
+		NewEnvironmentDataSource,
 	}
 }
 
