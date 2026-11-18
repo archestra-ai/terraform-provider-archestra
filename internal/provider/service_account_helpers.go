@@ -6,6 +6,7 @@ var serviceAccountAttrSpec = []AttrSpec{
 	initialGrantsAttrSpec,
 	{TFName: "team_id", JSONName: "teamId", Kind: Scalar},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
+	{TFName: "description", JSONName: "description", Kind: Scalar},
 	{TFName: "icon", JSONName: "icon", Kind: Scalar},
 	{TFName: "role", JSONName: "role", Kind: Scalar},
 	{TFName: "disabled", JSONName: "disabled", Kind: Scalar, OmitOnNull: true},

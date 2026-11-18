@@ -103,3 +103,26 @@ func TestMcpToolCallAcceptsPolymorphicPayload(t *testing.T) {
 		t.Fatal("polymorphic payload was not preserved")
 	}
 }
+
+func TestMcpToolCallServiceAccountID(t *testing.T) {
+	serviceAccountID := "00000000-0000-0000-0000-000000000002"
+	for _, tc := range []struct {
+		name string
+		raw  map[string]any
+		want *string
+	}{
+		{"service account caller", map[string]any{"id": "00000000-0000-0000-0000-000000000001", "serviceAccountId": serviceAccountID}, &serviceAccountID},
+		{"older API without the field", map[string]any{"id": "00000000-0000-0000-0000-000000000001"}, nil},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			value, ds := flattenMcpToolCall(tc.raw)
+			if ds.HasError() {
+				t.Fatal(ds)
+			}
+			got := asString(t, asObject(t, value).Attributes()["service_account_id"])
+			if (tc.want == nil) != got.IsNull() || (tc.want != nil && got.ValueString() != *tc.want) {
+				t.Fatalf("service_account_id = %s", got)
+			}
+		})
+	}
+}

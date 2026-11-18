@@ -20,8 +20,9 @@ release in `required_providers.archestra.version` according to your version poli
 and commit `.terraform.lock.hcl` to pin the exact installed provider and checksums.
 Provider and application version numbers are independent.
 
-The current API contract first shipped in **Archestra 1.5.0-rc.12**. Enable
-`ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` on that deployment, or enable
+The current API contract first shipped in **Archestra 1.5.0-rc.12**. From
+1.5.0-rc.39 model pools are always on. On earlier releases, enable
+`ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` on the deployment, or enable
 `ARCHESTRA_BETA` without explicitly disabling model pools. Official rc.11 uses an
 older grant-replacing contract that the provider refuses; stable 1.4.8 has no
 model-pool API. Check [API compatibility](api-compatibility.md) before choosing a

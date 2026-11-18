@@ -14,8 +14,9 @@ Non-human organization identity with a role and explicit permission grants; cred
 
 ```terraform
 resource "archestra_service_account" "example" {
-  name = "Deployment automation"
-  role = "member"
+  name        = "Deployment automation"
+  description = "Deploys agents from CI"
+  role        = "member"
 }
 ```
 
@@ -29,6 +30,7 @@ resource "archestra_service_account" "example" {
 
 ### Optional
 
+- `description` (String) What the service account is for. Requires API 1.5.0-rc.39 or later.
 - `disabled` (Boolean) Whether the identity is disabled.
 - `icon` (String) Emoji or image icon.
 - `labels` (Attributes Set) Service-account labels. (see [below for nested schema](#nestedatt--labels))

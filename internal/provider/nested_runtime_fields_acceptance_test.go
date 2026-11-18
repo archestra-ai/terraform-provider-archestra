@@ -81,14 +81,14 @@ func TestAccGatewaySubagentLoadBalancing(t *testing.T) {
 	}})
 }
 
-// TestAccRegistryEntryDesktopConfig needs a stack with ARCHESTRA_BETA=true,
-// which desktop MCP servers require; set ARCHESTRA_TEST_DESKTOP_MCP=true.
+// TestAccRegistryEntryDesktopConfig needs ARCHESTRA_BETA=true on releases before
+// 1.5.0-rc.39; on those, set ARCHESTRA_TEST_DESKTOP_MCP=true to run it.
 func TestAccRegistryEntryDesktopConfig(t *testing.T) {
 	if os.Getenv("TF_ACC") != "" {
 		if !testAccAPIVersionAtLeast(t, "1.5.0-rc.32") {
 			t.Skip("Desktop MCP registry entries require API 1.5.0-rc.32")
 		}
-		if os.Getenv("ARCHESTRA_TEST_DESKTOP_MCP") != "true" {
+		if !testAccAPIVersionAtLeast(t, "1.5.0-rc.39") && os.Getenv("ARCHESTRA_TEST_DESKTOP_MCP") != "true" {
 			t.Skip("set ARCHESTRA_TEST_DESKTOP_MCP=true on a stack with ARCHESTRA_BETA=true")
 		}
 	}

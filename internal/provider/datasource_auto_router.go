@@ -28,7 +28,7 @@ func (d *AutoRouterDataSource) Schema(_ context.Context, _ datasource.SchemaRequ
 		}}
 	}
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "ALPHA. Looks up an auto router by the model name clients request (`auto` or `auto:<name>`), for example to reference a router created in the UI. Requires API 1.5.0-rc.29 or later with `ARCHESTRA_AUTO_ROUTING_ENABLED=true` (or `ARCHESTRA_BETA=true`).",
+		MarkdownDescription: "ALPHA. Looks up an auto router by the model name clients request (`auto` or `auto:<name>`), for example to reference a router created in the UI. Requires API 1.5.0-rc.29 or later; before 1.5.0-rc.39 also `ARCHESTRA_AUTO_ROUTING_ENABLED=true` (or `ARCHESTRA_BETA=true`).",
 		Attributes: map[string]schema.Attribute{
 			"name":               schema.StringAttribute{Required: true, MarkdownDescription: "Router model name: `auto` or `auto:<name>`."},
 			"id":                 schema.StringAttribute{Computed: true, MarkdownDescription: "Auto router UUID."},

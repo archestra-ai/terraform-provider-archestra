@@ -36,6 +36,11 @@ Some settings need a later release. Leave them unset on older releases:
 - The `custom-image` key in `popular_agent_overrides` on
   `archestra_organization_settings` needs 1.5.0-rc.38 or later. Older releases
   reject it.
+- `description` on `archestra_service_account` needs 1.5.0-rc.39 or later.
+  Older releases do not store it, so applying it fails with an inconsistent
+  result.
+- Fixed role identifiers such as `fixed:agents:reader`, in any role attribute
+  and in identity-provider role mappings, need 1.5.0-rc.39 or later.
 
 Newer resources and nested settings need these releases. Acceptance tests skip
 them on older releases:
@@ -47,13 +52,14 @@ them on older releases:
 | `network_policy` on `archestra_agent` | 1.5.0-rc.20 |
 | `subagent_load_balancing` on `archestra_mcp_gateway` | 1.5.0-rc.23 |
 | `archestra_service_account_federated_credential` | 1.5.0-rc.26, with an Enterprise license |
-| `archestra_auto_router` (ALPHA) and the `auto_router_id` / `auto_router_ids` / `default_auto_router_id` settings | 1.5.0-rc.29, with `ARCHESTRA_AUTO_ROUTING_ENABLED=true` (or `ARCHESTRA_BETA=true`) |
+| `archestra_auto_router` (ALPHA) and the `auto_router_id` / `auto_router_ids` / `default_auto_router_id` settings | 1.5.0-rc.29; before 1.5.0-rc.39 also `ARCHESTRA_AUTO_ROUTING_ENABLED=true` (or `ARCHESTRA_BETA=true`) |
 | `archestra_blob_provider` and `archestra_cost_export` | 1.5.0-rc.30 |
-| `desktop_config` on `archestra_mcp_registry_entry` | 1.5.0-rc.32, with `ARCHESTRA_BETA=true` |
+| `desktop_config` on `archestra_mcp_registry_entry` | 1.5.0-rc.32; before 1.5.0-rc.39 also `ARCHESTRA_BETA=true` |
 
 `archestra_model_pool` additionally requires the model-pools CRUD API introduced
 in [Archestra PR #9681](https://github.com/archestra-ai/archestra/pull/9681), with
-`ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` or `ARCHESTRA_BETA=true`. It additionally
+`ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` or `ARCHESTRA_BETA=true` on releases before
+1.5.0-rc.39; from 1.5.0-rc.39 model pools are always on. It additionally
 requires the credential-owned grant contract first published in
 [Archestra 1.5.0-rc.12](https://github.com/archestra-ai/archestra/releases/tag/platform-v1.5.0-rc.12):
 OpenAPI must accept `name` and `members` without writable `virtualApiKeyIds`.

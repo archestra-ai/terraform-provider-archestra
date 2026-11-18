@@ -3,12 +3,12 @@
 page_title: "archestra_auto_router Data Source - archestra"
 subcategory: ""
 description: |-
-  ALPHA. Looks up an auto router by the model name clients request (auto or auto:<name>), for example to reference a router created in the UI. Requires API 1.5.0-rc.29 or later with ARCHESTRA_AUTO_ROUTING_ENABLED=true (or ARCHESTRA_BETA=true).
+  ALPHA. Looks up an auto router by the model name clients request (auto or auto:<name>), for example to reference a router created in the UI. Requires API 1.5.0-rc.29 or later; before 1.5.0-rc.39 also ARCHESTRA_AUTO_ROUTING_ENABLED=true (or ARCHESTRA_BETA=true).
 ---
 
 # archestra_auto_router (Data Source)
 
-ALPHA. Looks up an auto router by the model name clients request (`auto` or `auto:<name>`), for example to reference a router created in the UI. Requires API 1.5.0-rc.29 or later with `ARCHESTRA_AUTO_ROUTING_ENABLED=true` (or `ARCHESTRA_BETA=true`).
+ALPHA. Looks up an auto router by the model name clients request (`auto` or `auto:<name>`), for example to reference a router created in the UI. Requires API 1.5.0-rc.29 or later; before 1.5.0-rc.39 also `ARCHESTRA_AUTO_ROUTING_ENABLED=true` (or `ARCHESTRA_BETA=true`).
 
 ## Example Usage
 

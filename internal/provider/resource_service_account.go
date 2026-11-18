@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"time"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
@@ -39,6 +40,7 @@ type ServiceAccountResourceModel struct {
 	CreatedBy                types.String      `tfsdk:"created_by"`
 	ID                       types.String      `tfsdk:"id"`
 	Name                     types.String      `tfsdk:"name"`
+	Description              types.String      `tfsdk:"description"`
 	Icon                     types.String      `tfsdk:"icon"`
 	Role                     types.String      `tfsdk:"role"`
 	Disabled                 types.Bool        `tfsdk:"disabled"`
@@ -74,6 +76,15 @@ func (r *ServiceAccountResource) Schema(_ context.Context, _ resource.SchemaRequ
 				Validators: []validator.String{
 					// Mirrors backend `z.string().min(1)`; no upper bound.
 					stringvalidator.LengthBetween(1, 256),
+				},
+			},
+			"description": schema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "What the service account is for. Requires API 1.5.0-rc.39 or later.",
+				// The backend trims the value and stores a blank one as null.
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 1000),
+					stringvalidator.RegexMatches(regexp.MustCompile(`(?s)^\S(?:.*\S)?$`), "Must not start or end with whitespace."),
 				},
 			},
 			"icon": schema.StringAttribute{
@@ -358,6 +369,7 @@ func mapServiceAccountResponse(data *ServiceAccountResourceModel, body []byte) e
 		TeamID                   *string        `json:"teamId"`
 		CreatedBy                map[string]any `json:"createdBy"`
 		CreatedAt                time.Time      `json:"createdAt"`
+		Description              *string        `json:"description"`
 		Icon                     *string        `json:"icon"`
 		Role                     string         `json:"role"`
 		Id                       uuid.UUID      `json:"id"`
@@ -384,6 +396,7 @@ func mapServiceAccountResponse(data *ServiceAccountResourceModel, body []byte) e
 	}
 	data.ID = types.StringValue(src.Id.String())
 	data.Name = types.StringValue(src.Name)
+	data.Description = types.StringPointerValue(src.Description)
 	data.Icon = types.StringPointerValue(src.Icon)
 	data.Role = types.StringValue(src.Role)
 	data.TeamID = types.StringPointerValue(src.TeamID)
