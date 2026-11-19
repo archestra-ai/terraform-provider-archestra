@@ -36,7 +36,7 @@ jobs:
     name: Release Please
     # Single-package manifest mode -> release outputs are flat (no `<path>--` prefix).
     permissions: {} # The shared workflow writes with the archestra-releaser App token only.
-    uses: archestra-ai/.github/.github/workflows/release-please.yml@dc1baa65f528a62f6623c86a748824c9c4c925a7 # v1.17.0
+    uses: archestra-ai/.github/.github/workflows/release-please.yml@7cf2603035c4049f674ce8b63bbf9a275c3dfde2 # v1.32.0
     with:
       # The archestra-releaser App's key lives only in this environment, which
       # only main can deploy to.
@@ -276,7 +276,7 @@ jobs:
     permissions:
       attestations: write # store the build provenance attestation
       id-token: write # sign the build provenance attestation
-    uses: archestra-ai/.github/.github/workflows/attest-provenance.yml@0bd6a54bf206174fd0cebc3222def111651e91bb # v1.31.1
+    uses: archestra-ai/.github/.github/workflows/attest-provenance.yml@7cf2603035c4049f674ce8b63bbf9a275c3dfde2 # v1.32.0
     with:
       subjects: ${{ needs.release-subjects.outputs.subjects }}
 
@@ -292,7 +292,7 @@ jobs:
       id-token: write # sign the image contents attestations (release-publish.yml)
       attestations: write # store them
       packages: read # pull the staged images to scan them
-    uses: archestra-ai/.github/.github/workflows/release-publish.yml@7e99001200cbd9510a90930f78fd79d6b79cb94c # v1.28.0
+    uses: archestra-ai/.github/.github/workflows/release-publish.yml@7cf2603035c4049f674ce8b63bbf9a275c3dfde2 # v1.32.0
     with:
       # Holds the archestra-releaser App's key; main only.
       environment: releaser
