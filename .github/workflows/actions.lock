@@ -23,6 +23,7 @@ workflows:
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e'
         - 'archestra-ai/.github@v1.24.0'
+        - 'archestra-ai/.github@v1.33.0'
         - 'golangci/golangci-lint-action@v9.3.0'
         - 'hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e'
     '.github/workflows/provider-audit.yml':
@@ -93,6 +94,11 @@ dependencies:
         repo_id: 1192166927
         uses:
             - 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510'
+    'archestra-ai/.github@v1.33.0':
+        ref: 'v1.33.0'
+        commit: 'sha1-1bf4a7d38b15e9a4f48a1d4ad476ad4e4b932e00'
+        owner_id: 216022683
+        repo_id: 1192166927
     'docker/setup-buildx-action@v4.4.1':
         ref: 'v4.4.1'
         commit: 'sha1-f87e5991a6d7451dcb8d9637bfbc97413f497069'
