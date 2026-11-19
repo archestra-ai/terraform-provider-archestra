@@ -84,7 +84,7 @@ func (r *VirtualAPIKeyResource) Schema(_ context.Context, _ resource.SchemaReque
 		"permissions":              initialGrantsAttribute(),
 		"auto_router_ids":          virtualKeyAutoRouterIDsAttribute(),
 		"rotation_nonce":           schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{rotationNonceRequiresReplace()}, MarkdownDescription: "Change this value to replace the key and revoke its old credential; a first value set after import is recorded without rotation."},
-		"value":                    schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Bearer credential returned on creation or revealed to its creator on import and refresh, retained in sensitive state; service-account creators need API 1.5.0-rc.1 or later."},
+		"value":                    schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Bearer credential returned on creation or revealed to its creator on import and refresh, retained in sensitive state."},
 	}}
 }
 func (r *VirtualAPIKeyResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {

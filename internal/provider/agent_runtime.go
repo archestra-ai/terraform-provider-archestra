@@ -73,8 +73,8 @@ func runtimeSchema() schema.SingleNestedAttribute {
 					},
 				},
 			},
-			"tier":     schema.StringAttribute{Optional: true, MarkdownDescription: "Organization-defined default runtime tier (API 1.5.0-rc.19 or later)."},
-			"max_tier": schema.StringAttribute{Optional: true, MarkdownDescription: "Largest organization-defined tier a run may request (API 1.5.0-rc.19 or later)."},
+			"tier":     schema.StringAttribute{Optional: true, MarkdownDescription: "Organization-defined default runtime tier."},
+			"max_tier": schema.StringAttribute{Optional: true, MarkdownDescription: "Largest organization-defined tier a run may request."},
 			"resources": schema.SingleNestedAttribute{
 				DeprecationMessage:  "Legacy sizing for older APIs; use tier and max_tier on API 1.5.0-rc.19 or later.",
 				Optional:            true,

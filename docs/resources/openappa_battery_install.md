@@ -3,17 +3,17 @@
 page_title: "archestra_openappa_battery_install Resource - archestra"
 subcategory: ""
 description: |-
-  Includes an OpenAPPA guardrails battery in the organization's policy and, for a battery that governs MCP servers, attaches it to one registry entry. A battery made of annotators alone governs the whole organization and is installed without catalog_id. Writes edit the organization's policy text, so they fail while a GitHub repository owns that text. Credential bindings are managed separately and are read-only here. Import an existing install by UUID. Requires API 1.5.0-rc.1 or later.
+  Includes an OpenAPPA guardrails battery in the organization's policy and, for a battery that governs MCP servers, attaches it to one registry entry. A battery made of annotators alone governs the whole organization and is installed without catalog_id. Writes edit the organization's policy text, so they fail while a GitHub repository owns that text. Credential bindings are managed separately and are read-only here. Import an existing install by UUID.
 ---
 
 # archestra_openappa_battery_install (Resource)
 
-Includes an OpenAPPA guardrails battery in the organization's policy and, for a battery that governs MCP servers, attaches it to one registry entry. A battery made of annotators alone governs the whole organization and is installed without `catalog_id`. Writes edit the organization's policy text, so they fail while a GitHub repository owns that text. Credential bindings are managed separately and are read-only here. Import an existing install by UUID. Requires API 1.5.0-rc.1 or later.
+Includes an OpenAPPA guardrails battery in the organization's policy and, for a battery that governs MCP servers, attaches it to one registry entry. A battery made of annotators alone governs the whole organization and is installed without `catalog_id`. Writes edit the organization's policy text, so they fail while a GitHub repository owns that text. Credential bindings are managed separately and are read-only here. Import an existing install by UUID.
 
 ## Example Usage
 
 ```terraform
-# Requires Archestra 1.5.0-rc.1 or later with OpenAPPA guardrails enabled.
+# Requires OpenAPPA guardrails to be enabled.
 # Installs edit the organization's policy text, so they fail while a GitHub
 # repository owns that text.
 resource "archestra_mcp_registry_entry" "github" {

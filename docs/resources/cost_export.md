@@ -3,12 +3,12 @@
 page_title: "archestra_cost_export Resource - archestra"
 subcategory: ""
 description: |-
-  Scheduled export of LLM cost data as FOCUS CSV files to an archestra_blob_provider (API 1.5.0-rc.30 or later). The platform writes a file per completed period; run state (last run, errors, retries) stays in the UI.
+  Scheduled export of LLM cost data as FOCUS CSV files to an archestra_blob_provider. The platform writes a file per completed period; run state (last run, errors, retries) stays in the UI.
 ---
 
 # archestra_cost_export (Resource)
 
-Scheduled export of LLM cost data as FOCUS CSV files to an `archestra_blob_provider` (API 1.5.0-rc.30 or later). The platform writes a file per completed period; run state (last run, errors, retries) stays in the UI.
+Scheduled export of LLM cost data as FOCUS CSV files to an `archestra_blob_provider`. The platform writes a file per completed period; run state (last run, errors, retries) stays in the UI.
 
 ## Example Usage
 

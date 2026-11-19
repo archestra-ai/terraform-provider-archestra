@@ -54627,6 +54627,7 @@ type GetServiceAccounts500JSONResponseBodyErrorType string
 
 // CreateServiceAccountJSONBody defines parameters for CreateServiceAccount.
 type CreateServiceAccountJSONBody struct {
+	Description   *string `json:"description,omitempty"`
 	Icon          *string `json:"icon,omitempty"`
 	InitialGrants *[]struct {
 		Actions []CreateServiceAccountJSONBodyInitialGrantsActions `json:"actions"`
@@ -54770,9 +54771,10 @@ type GetServiceAccount500JSONResponseBodyErrorType string
 
 // UpdateServiceAccountJSONBody defines parameters for UpdateServiceAccount.
 type UpdateServiceAccountJSONBody struct {
-	Disabled *bool   `json:"disabled,omitempty"`
-	Icon     *string `json:"icon,omitempty"`
-	Labels   *[]struct {
+	Description *string `json:"description,omitempty"`
+	Disabled    *bool   `json:"disabled,omitempty"`
+	Icon        *string `json:"icon,omitempty"`
+	Labels      *[]struct {
 		Key     string              `json:"key"`
 		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
 		Value   string              `json:"value"`
@@ -90772,6 +90774,7 @@ type GetMcpToolCallsResponse struct {
 			OauthClientId           *string                                                     `json:"oauthClientId"`
 			OwnerType               string                                                      `json:"ownerType"`
 			RunId                   *string                                                     `json:"runId"`
+			ServiceAccountId        *openapi_types.UUID                                         `json:"serviceAccountId"`
 			SessionId               *string                                                     `json:"sessionId"`
 			Source                  *GetMcpToolCalls200JSONResponseBodyDataSource               `json:"source"`
 			ToolCall                interface{}                                                 `json:"toolCall"`
@@ -97564,6 +97567,7 @@ type GetServiceAccountsResponse struct {
 			Name  *string                                             `json:"name"`
 			Type  *GetServiceAccounts200JSONResponseBodyCreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
+		Description              *string            `json:"description"`
 		Disabled                 bool               `json:"disabled"`
 		FederatedCredentialCount int                `json:"federatedCredentialCount"`
 		Icon                     *string            `json:"icon"`
@@ -97664,6 +97668,7 @@ type CreateServiceAccountResponse struct {
 			Name  *string                                               `json:"name"`
 			Type  *CreateServiceAccount200JSONResponseBodyCreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
+		Description              *string            `json:"description"`
 		Disabled                 bool               `json:"disabled"`
 		FederatedCredentialCount int                `json:"federatedCredentialCount"`
 		Icon                     *string            `json:"icon"`
@@ -97848,6 +97853,7 @@ type GetServiceAccountResponse struct {
 			Name  *string                                            `json:"name"`
 			Type  *GetServiceAccount200JSONResponseBodyCreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
+		Description              *string            `json:"description"`
 		Disabled                 bool               `json:"disabled"`
 		FederatedCredentialCount int                `json:"federatedCredentialCount"`
 		Icon                     *string            `json:"icon"`
@@ -97957,6 +97963,7 @@ type UpdateServiceAccountResponse struct {
 			Name  *string                                               `json:"name"`
 			Type  *UpdateServiceAccount200JSONResponseBodyCreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
+		Description              *string            `json:"description"`
 		Disabled                 bool               `json:"disabled"`
 		FederatedCredentialCount int                `json:"federatedCredentialCount"`
 		Icon                     *string            `json:"icon"`
@@ -119983,6 +119990,7 @@ func ParseGetMcpToolCallsResponse(rsp *http.Response) (*GetMcpToolCallsResponse,
 				OauthClientId           *string                                                     `json:"oauthClientId"`
 				OwnerType               string                                                      `json:"ownerType"`
 				RunId                   *string                                                     `json:"runId"`
+				ServiceAccountId        *openapi_types.UUID                                         `json:"serviceAccountId"`
 				SessionId               *string                                                     `json:"sessionId"`
 				Source                  *GetMcpToolCalls200JSONResponseBodyDataSource               `json:"source"`
 				ToolCall                interface{}                                                 `json:"toolCall"`
@@ -128599,6 +128607,7 @@ func ParseGetServiceAccountsResponse(rsp *http.Response) (*GetServiceAccountsRes
 				Name  *string                                             `json:"name"`
 				Type  *GetServiceAccounts200JSONResponseBodyCreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
+			Description              *string            `json:"description"`
 			Disabled                 bool               `json:"disabled"`
 			FederatedCredentialCount int                `json:"federatedCredentialCount"`
 			Icon                     *string            `json:"icon"`
@@ -128731,6 +128740,7 @@ func ParseCreateServiceAccountResponse(rsp *http.Response) (*CreateServiceAccoun
 				Name  *string                                               `json:"name"`
 				Type  *CreateServiceAccount200JSONResponseBodyCreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
+			Description              *string            `json:"description"`
 			Disabled                 bool               `json:"disabled"`
 			FederatedCredentialCount int                `json:"federatedCredentialCount"`
 			Icon                     *string            `json:"icon"`
@@ -128979,6 +128989,7 @@ func ParseGetServiceAccountResponse(rsp *http.Response) (*GetServiceAccountRespo
 				Name  *string                                            `json:"name"`
 				Type  *GetServiceAccount200JSONResponseBodyCreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
+			Description              *string            `json:"description"`
 			Disabled                 bool               `json:"disabled"`
 			FederatedCredentialCount int                `json:"federatedCredentialCount"`
 			Icon                     *string            `json:"icon"`
@@ -129120,6 +129131,7 @@ func ParseUpdateServiceAccountResponse(rsp *http.Response) (*UpdateServiceAccoun
 				Name  *string                                               `json:"name"`
 				Type  *UpdateServiceAccount200JSONResponseBodyCreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
+			Description              *string            `json:"description"`
 			Disabled                 bool               `json:"disabled"`
 			FederatedCredentialCount int                `json:"federatedCredentialCount"`
 			Icon                     *string            `json:"icon"`

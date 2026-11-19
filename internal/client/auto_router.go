@@ -58,8 +58,8 @@ type AutoRouter struct {
 // GetAutoRouterResponse is the API shape the provider's coverage test walks.
 type GetAutoRouterResponse struct{ JSON200 *AutoRouter }
 
-// ErrAutoRoutingDisabled reports a deployment without ARCHESTRA_AUTO_ROUTING_ENABLED.
-var ErrAutoRoutingDisabled = fmt.Errorf("auto routing is not enabled on this Archestra deployment; set ARCHESTRA_AUTO_ROUTING_ENABLED=true (or ARCHESTRA_BETA=true)")
+// ErrAutoRoutingDisabled reports a release before 1.5.0-rc.39 without ARCHESTRA_AUTO_ROUTING_ENABLED.
+var ErrAutoRoutingDisabled = fmt.Errorf("auto routing is not enabled on this Archestra deployment; on releases before 1.5.0-rc.39, set ARCHESTRA_AUTO_ROUTING_ENABLED=true (or ARCHESTRA_BETA=true)")
 
 func NewAutoRouterClient(api *ClientWithResponses) (*AutoRouterClient, error) {
 	base, ok := api.ClientInterface.(*Client)

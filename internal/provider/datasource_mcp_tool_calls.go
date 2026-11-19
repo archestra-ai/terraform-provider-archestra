@@ -52,25 +52,26 @@ const defaultMcpToolCallsMaxRecords int64 = 1000
 // wire as closely as is HCL-friendly: arguments and result come back as
 // JSON strings (use `jsondecode` to introspect), the rest are flat.
 var mcpToolCallObjectType = types.ObjectType{AttrTypes: map[string]attr.Type{
-	"app_id":          types.StringType,
-	"app_name":        types.StringType,
-	"oauth_client_id": types.StringType,
-	"owner_type":      types.StringType,
-	"run_id":          types.StringType,
-	"source":          types.StringType,
-	"tool_call_json":  types.StringType,
-	"id":              types.StringType,
-	"agent_id":        types.StringType,
-	"mcp_server_name": types.StringType,
-	"method":          types.StringType,
-	"tool_name":       types.StringType,
-	"tool_call_id":    types.StringType,
-	"arguments":       types.StringType,
-	"result":          types.StringType,
-	"auth_method":     types.StringType,
-	"user_id":         types.StringType,
-	"user_name":       types.StringType,
-	"created_at":      types.StringType,
+	"app_id":             types.StringType,
+	"app_name":           types.StringType,
+	"oauth_client_id":    types.StringType,
+	"owner_type":         types.StringType,
+	"run_id":             types.StringType,
+	"source":             types.StringType,
+	"tool_call_json":     types.StringType,
+	"id":                 types.StringType,
+	"agent_id":           types.StringType,
+	"mcp_server_name":    types.StringType,
+	"method":             types.StringType,
+	"tool_name":          types.StringType,
+	"tool_call_id":       types.StringType,
+	"arguments":          types.StringType,
+	"result":             types.StringType,
+	"auth_method":        types.StringType,
+	"user_id":            types.StringType,
+	"user_name":          types.StringType,
+	"service_account_id": types.StringType,
+	"created_at":         types.StringType,
 }}
 
 func (d *McpToolCallsDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -118,25 +119,26 @@ func (d *McpToolCallsDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"app_id":          schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "App UUID when invoked by an app."},
-						"app_name":        schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "App display name."},
-						"oauth_client_id": schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "OAuth client ID."},
-						"owner_type":      schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "Owning principal type."},
-						"run_id":          schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "Agent run ID."},
-						"source":          schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "Invocation source."},
-						"tool_call_json":  schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Complete tool-call payload as JSON, including extension fields."},
-						"id":              schema.StringAttribute{Computed: true, MarkdownDescription: "Call UUID."},
-						"agent_id":        schema.StringAttribute{Computed: true, MarkdownDescription: "UUID of the agent that initiated the call. Null for calls outside an agent context."},
-						"mcp_server_name": schema.StringAttribute{Computed: true, MarkdownDescription: "Display name of the MCP server that served the call."},
-						"method":          schema.StringAttribute{Computed: true, MarkdownDescription: "MCP method name (e.g. `tools/call`)."},
-						"tool_name":       schema.StringAttribute{Computed: true, MarkdownDescription: "Name of the tool invoked. Null if the call wasn't a tool/call."},
-						"tool_call_id":    schema.StringAttribute{Computed: true, MarkdownDescription: "Provider-generated correlation ID inside `toolCall`. Null if absent."},
-						"arguments":       schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Tool-call arguments encoded as a JSON string. Use `jsondecode(call.arguments)` to introspect. Null if absent."},
-						"result":          schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Tool result encoded as a JSON string (the wire shape is polymorphic — use `jsondecode`). Null if absent."},
-						"auth_method":     schema.StringAttribute{Computed: true, MarkdownDescription: "How the agent authenticated the call (`oauth`, `user_token`, `org_token`, `team_token`, `external_idp`, `session`). Null if absent."},
-						"user_id":         schema.StringAttribute{Computed: true, MarkdownDescription: "UUID of the user the call ran on behalf of. Null for org-wide calls."},
-						"user_name":       schema.StringAttribute{Computed: true, MarkdownDescription: "Display name of the user. Null when `user_id` is null."},
-						"created_at":      schema.StringAttribute{Computed: true, MarkdownDescription: "RFC 3339 timestamp of when the call was recorded."},
+						"app_id":             schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "App UUID when invoked by an app."},
+						"app_name":           schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "App display name."},
+						"oauth_client_id":    schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "OAuth client ID."},
+						"owner_type":         schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "Owning principal type."},
+						"run_id":             schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "Agent run ID."},
+						"source":             schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "Invocation source."},
+						"tool_call_json":     schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Complete tool-call payload as JSON, including extension fields."},
+						"id":                 schema.StringAttribute{Computed: true, MarkdownDescription: "Call UUID."},
+						"agent_id":           schema.StringAttribute{Computed: true, MarkdownDescription: "UUID of the agent that initiated the call. Null for calls outside an agent context."},
+						"mcp_server_name":    schema.StringAttribute{Computed: true, MarkdownDescription: "Display name of the MCP server that served the call."},
+						"method":             schema.StringAttribute{Computed: true, MarkdownDescription: "MCP method name (e.g. `tools/call`)."},
+						"tool_name":          schema.StringAttribute{Computed: true, MarkdownDescription: "Name of the tool invoked. Null if the call wasn't a tool/call."},
+						"tool_call_id":       schema.StringAttribute{Computed: true, MarkdownDescription: "Provider-generated correlation ID inside `toolCall`. Null if absent."},
+						"arguments":          schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Tool-call arguments encoded as a JSON string. Use `jsondecode(call.arguments)` to introspect. Null if absent."},
+						"result":             schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Tool result encoded as a JSON string (the wire shape is polymorphic — use `jsondecode`). Null if absent."},
+						"auth_method":        schema.StringAttribute{Computed: true, MarkdownDescription: "How the agent authenticated the call (`oauth`, `user_token`, `org_token`, `team_token`, `external_idp`, `session`). Null if absent."},
+						"user_id":            schema.StringAttribute{Computed: true, MarkdownDescription: "UUID of the user the call ran on behalf of. Null for org-wide calls."},
+						"user_name":          schema.StringAttribute{Computed: true, MarkdownDescription: "Display name of the user. Null when `user_id` is null."},
+						"service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "UUID of the service account that made the call. Null for other callers."},
+						"created_at":         schema.StringAttribute{Computed: true, MarkdownDescription: "RFC 3339 timestamp of when the call was recorded."},
 					},
 				},
 			},
@@ -277,15 +279,16 @@ type mcpToolCallWire struct {
 	Source        *string         `json:"source"`
 	ToolCall      json.RawMessage `json:"toolCall"`
 
-	AgentId       *openapi_types.UUID                                      `json:"agentId"`
-	AuthMethod    *client.GetMcpToolCalls200JSONResponseBodyDataAuthMethod `json:"authMethod"`
-	CreatedAt     time.Time                                                `json:"createdAt"`
-	Id            openapi_types.UUID                                       `json:"id"`
-	McpServerName string                                                   `json:"mcpServerName"`
-	Method        string                                                   `json:"method"`
-	ToolResult    interface{}                                              `json:"toolResult"`
-	UserId        *string                                                  `json:"userId"`
-	UserName      *string                                                  `json:"userName"`
+	AgentId          *openapi_types.UUID                                      `json:"agentId"`
+	AuthMethod       *client.GetMcpToolCalls200JSONResponseBodyDataAuthMethod `json:"authMethod"`
+	CreatedAt        time.Time                                                `json:"createdAt"`
+	Id               openapi_types.UUID                                       `json:"id"`
+	McpServerName    string                                                   `json:"mcpServerName"`
+	Method           string                                                   `json:"method"`
+	ToolResult       interface{}                                              `json:"toolResult"`
+	UserId           *string                                                  `json:"userId"`
+	UserName         *string                                                  `json:"userName"`
+	ServiceAccountId *string                                                  `json:"serviceAccountId"`
 }
 
 func flattenMcpToolCall(raw any) (attr.Value, diag.Diagnostics) {
@@ -347,24 +350,25 @@ func flattenMcpToolCall(raw any) (attr.Value, diag.Diagnostics) {
 	}
 
 	return types.ObjectValue(mcpToolCallObjectType.AttrTypes, map[string]attr.Value{
-		"app_id":          strPtrOrNull(c.AppID),
-		"app_name":        strPtrOrNull(c.AppName),
-		"oauth_client_id": strPtrOrNull(c.OAuthClientID),
-		"owner_type":      types.StringValue(c.OwnerType),
-		"run_id":          strPtrOrNull(c.RunID),
-		"source":          strPtrOrNull(c.Source),
-		"tool_call_json":  toolCallJSON,
-		"id":              types.StringValue(c.Id.String()),
-		"agent_id":        agentID,
-		"mcp_server_name": types.StringValue(c.McpServerName),
-		"method":          types.StringValue(c.Method),
-		"tool_name":       toolName,
-		"tool_call_id":    toolCallID,
-		"arguments":       arguments,
-		"result":          jsonOrNull(c.ToolResult),
-		"auth_method":     authMethod,
-		"user_id":         strPtrOrNull(c.UserId),
-		"user_name":       strPtrOrNull(c.UserName),
-		"created_at":      types.StringValue(c.CreatedAt.Format(time.RFC3339)),
+		"app_id":             strPtrOrNull(c.AppID),
+		"app_name":           strPtrOrNull(c.AppName),
+		"oauth_client_id":    strPtrOrNull(c.OAuthClientID),
+		"owner_type":         types.StringValue(c.OwnerType),
+		"run_id":             strPtrOrNull(c.RunID),
+		"source":             strPtrOrNull(c.Source),
+		"tool_call_json":     toolCallJSON,
+		"id":                 types.StringValue(c.Id.String()),
+		"agent_id":           agentID,
+		"mcp_server_name":    types.StringValue(c.McpServerName),
+		"method":             types.StringValue(c.Method),
+		"tool_name":          toolName,
+		"tool_call_id":       toolCallID,
+		"arguments":          arguments,
+		"result":             jsonOrNull(c.ToolResult),
+		"auth_method":        authMethod,
+		"user_id":            strPtrOrNull(c.UserId),
+		"user_name":          strPtrOrNull(c.UserName),
+		"service_account_id": strPtrOrNull(c.ServiceAccountId),
+		"created_at":         types.StringValue(c.CreatedAt.Format(time.RFC3339)),
 	})
 }

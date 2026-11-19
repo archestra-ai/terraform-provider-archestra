@@ -76,7 +76,7 @@ resource "archestra_mcp_gateway" "engineering" {
 - `excluded_tool_ids` (Set of String) Tools excluded from automatic tool access; omit to preserve or set an empty set to clear.
 - `github_actions_access` (Attributes) GitHub Actions token exchange access for this gateway. (see [below for nested schema](#nestedatt--github_actions_access))
 - `icon` (String) Emoji or base64 image data URL
-- `identity_bindings` (Attributes Set) Identities this agent acts as at identity providers, such as its Microsoft Entra agent identity or Okta AI agent; omit to preserve or set an empty set to clear. Requires Archestra 1.5.0-rc.35 or later. (see [below for nested schema](#nestedatt--identity_bindings))
+- `identity_bindings` (Attributes Set) Identities this agent acts as at identity providers, such as its Microsoft Entra agent identity or Okta AI agent; omit to preserve or set an empty set to clear. (see [below for nested schema](#nestedatt--identity_bindings))
 - `identity_provider_id` (String) Identity provider used to validate inbound JWTs. Reference an `archestra_identity_provider`. Omit to disable JWT auth.
 - `is_default` (Boolean) Whether this is the default MCP gateway
 - `knowledge_base_ids` (List of String) Knowledge base IDs the gateway has access to
@@ -87,14 +87,14 @@ resource "archestra_mcp_gateway" "engineering" {
 - `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `skills` (Attributes) Skills published through this gateway; omit to preserve existing publication settings. (see [below for nested schema](#nestedatt--skills))
 - `subagent_ids` (Set of String) Local agents available as subagents; omit to preserve assignments or set an empty set to clear them.
-- `subagent_load_balancing` (Attributes) How the gateway spreads delegated requests across its assigned subagents and retries failures. Omit for the default (no load balancing); removing it later clears the setting. Requires API 1.5.0-rc.23 or later. (see [below for nested schema](#nestedatt--subagent_load_balancing))
+- `subagent_load_balancing` (Attributes) How the gateway spreads delegated requests across its assigned subagents and retries failures. Omit for the default (no load balancing); removing it later clears the setting. (see [below for nested schema](#nestedatt--subagent_load_balancing))
 - `tool_exposure_mode` (String) How assigned tools are exposed to clients. `full` lists every assigned tool; `search_and_run_only` (progressive tool loading) lists only `search_tools` and `run_tool` and resolves the rest on demand, which keeps a large tool set out of the client's context window.
 - `tools` (Attributes Set) Complete explicit MCP tool assignments; omit to preserve or set an empty set to clear, preserving local/remote subagents and platform-required recovery tools. (see [below for nested schema](#nestedatt--tools))
 
 ### Read-Only
 
 - `author_email` (String) Server-reported author email.
-- `auto_router_id` (String) Server-reported auto router identifier on the shared agent record (API 1.5.0-rc.29 or later).
+- `auto_router_id` (String) Server-reported auto router identifier on the shared agent record.
 - `created_by` (String) Creator identity metadata as JSON.
 - `created_by_service_account_id` (String) Server-reported created by service account id.
 - `deleted_at` (String) Server-reported deleted at.

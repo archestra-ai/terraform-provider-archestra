@@ -46,7 +46,7 @@ func agentNetworkPolicyAttribute() schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{
 		Optional: true,
 		MarkdownDescription: "Egress override for this agent's Agent Runtime and Code Sandbox. Omit to inherit the environment's policy; " +
-			"removing it later returns the agent to that policy. Requires API 1.5.0-rc.20 or later.",
+			"removing it later returns the agent to that policy.",
 		Attributes: map[string]schema.Attribute{
 			"egress_mode": schema.StringAttribute{
 				Optional: true, Computed: true, Default: stringdefault.StaticString("restricted"),

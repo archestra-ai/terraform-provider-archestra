@@ -3,12 +3,12 @@
 page_title: "archestra_service_account_federated_credential Resource - archestra"
 subcategory: ""
 description: |-
-  Workload identity federation trust for a service account: an OIDC token whose issuer, audience, subject and listed claims all match exactly can be exchanged at /api/workload-identity/token for a short-lived token of the account, so a CI job or workload holds no API key. Changing the issuer, audience, subject or claim conditions revokes the tokens the credential already issued, as does destroying it. Requires API 1.5.0-rc.26 or later with an Enterprise license.
+  Workload identity federation trust for a service account: an OIDC token whose issuer, audience, subject and listed claims all match exactly can be exchanged at /api/workload-identity/token for a short-lived token of the account, so a CI job or workload holds no API key. Changing the issuer, audience, subject or claim conditions revokes the tokens the credential already issued, as does destroying it. Requires an Enterprise license.
 ---
 
 # archestra_service_account_federated_credential (Resource)
 
-Workload identity federation trust for a service account: an OIDC token whose issuer, audience, subject and listed claims all match exactly can be exchanged at `/api/workload-identity/token` for a short-lived token of the account, so a CI job or workload holds no API key. Changing the issuer, audience, subject or claim conditions revokes the tokens the credential already issued, as does destroying it. Requires API 1.5.0-rc.26 or later with an Enterprise license.
+Workload identity federation trust for a service account: an OIDC token whose issuer, audience, subject and listed claims all match exactly can be exchanged at `/api/workload-identity/token` for a short-lived token of the account, so a CI job or workload holds no API key. Changing the issuer, audience, subject or claim conditions revokes the tokens the credential already issued, as does destroying it. Requires an Enterprise license.
 
 ## Example Usage
 

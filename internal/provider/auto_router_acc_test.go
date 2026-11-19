@@ -45,7 +45,7 @@ func testAccAutoRouterFixtures(t *testing.T) (keyID, modelID string) {
 		t.Fatal(err)
 	}
 	if !enabled {
-		t.Skip("Auto routing is disabled; set ARCHESTRA_AUTO_ROUTING_ENABLED=true on the API")
+		t.Skip("Auto routing is disabled; set ARCHESTRA_AUTO_ROUTING_ENABLED=true on API releases before 1.5.0-rc.39")
 	}
 	parsed, err := url.Parse(os.Getenv("ARCHESTRA_BASE_URL"))
 	if err != nil || parsed.Scheme != "http" || (parsed.Hostname() != "localhost" && parsed.Hostname() != "127.0.0.1" && parsed.Hostname() != "::1") {

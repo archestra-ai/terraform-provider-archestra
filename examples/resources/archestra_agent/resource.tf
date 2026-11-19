@@ -102,7 +102,7 @@ resource "archestra_agent" "worker" {
     steer_mode         = "tmux_keys"
     privileged         = true
 
-    # API 1.5.0-rc.19+: choose organization-defined runtime tiers.
+    # Choose organization-defined runtime tiers.
     tier     = "S"
     max_tier = "L"
 

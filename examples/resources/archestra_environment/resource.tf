@@ -12,7 +12,7 @@ resource "archestra_environment" "staging" {
   }
 
   # "use" deploys every kind of object. "read" plus deploy-* actions limits a
-  # grant to those kinds (requires Archestra 1.5.0-rc.37 or later).
+  # grant to those kinds.
   permissions = [{
     subject_type = "role"
     subject_id   = "member"

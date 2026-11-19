@@ -117,7 +117,7 @@ resource "archestra_agent" "worker" {
     steer_mode         = "tmux_keys"
     privileged         = true
 
-    # API 1.5.0-rc.19+: choose organization-defined runtime tiers.
+    # Choose organization-defined runtime tiers.
     tier     = "S"
     max_tier = "L"
 
@@ -150,7 +150,7 @@ resource "archestra_agent" "worker" {
 
 - `access_all_subagents` (Boolean) Whether all accessible subagents can be delegated to.
 - `access_all_tools` (Boolean) Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Use excluded_tool_ids to exclude tools. Defaults to `false`.
-- `auto_router_id` (String) ALPHA. `archestra_auto_router` the agent runs on instead of a fixed model, key or pool. Requires API 1.5.0-rc.29 or later with auto routing enabled; Agent Runtime and built-in agents cannot use one.
+- `auto_router_id` (String) ALPHA. `archestra_auto_router` the agent runs on instead of a fixed model, key or pool. Requires auto routing to be enabled; Agent Runtime and built-in agents cannot use one.
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
 - `description` (String) Human-readable description
 - `environment_id` (String) Environment UUID scoping which MCP servers and connections the agent resolves against; omit for the default environment
@@ -160,7 +160,7 @@ resource "archestra_agent" "worker" {
 - `fast_model_id` (String) Database UUID of a faster tool-capable chat model on the agent's `llm_api_key_id`, used when the agent forks a subagent on the `fast` tier; null falls back to the organization's `default_fast_model_id`, then the provider default
 - `hooks` (Attributes Set) Complete event hook configuration; omit to preserve hooks or set an empty set to remove them. (see [below for nested schema](#nestedatt--hooks))
 - `icon` (String) Emoji or base64 image data URL
-- `identity_bindings` (Attributes Set) Identities this agent acts as at identity providers, such as its Microsoft Entra agent identity or Okta AI agent; omit to preserve or set an empty set to clear. Requires Archestra 1.5.0-rc.35 or later. (see [below for nested schema](#nestedatt--identity_bindings))
+- `identity_bindings` (Attributes Set) Identities this agent acts as at identity providers, such as its Microsoft Entra agent identity or Okta AI agent; omit to preserve or set an empty set to clear. (see [below for nested schema](#nestedatt--identity_bindings))
 - `incoming_email_allowed_domain` (String) Allowed sender domain when `incoming_email_security_mode = "internal"`
 - `incoming_email_enabled` (Boolean) Whether incoming-email invocation is enabled
 - `incoming_email_security_mode` (String) Email-trigger security mode. One of `private` (only the agent owner can email it), `internal` (any sender from `incoming_email_allowed_domain` can), or `public` (any sender). Defaults to `private`.
@@ -172,7 +172,7 @@ resource "archestra_agent" "worker" {
 - `missing_credential_behavior` (String) What happens when a caller lacks a connection the agent's tools need: `allow` (fail only at invocation, default), `warn` (surface missing connections up front), or `block` (agent unusable until connected)
 - `model_id` (String) Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`
 - `model_pool_id` (String) Model pool used for the agent; the API resolves its model and provider key.
-- `network_policy` (Attributes) Egress override for this agent's Agent Runtime and Code Sandbox. Omit to inherit the environment's policy; removing it later returns the agent to that policy. Requires API 1.5.0-rc.20 or later. (see [below for nested schema](#nestedatt--network_policy))
+- `network_policy` (Attributes) Egress override for this agent's Agent Runtime and Code Sandbox. Omit to inherit the environment's policy; removing it later returns the agent to that policy. (see [below for nested schema](#nestedatt--network_policy))
 - `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `runtime` (Attributes) Dedicated runtime used for interactive, delegated, and long-running work. Requires an Agent Runtime backend on the platform (e.g. the Kubernetes orchestrator). (see [below for nested schema](#nestedatt--runtime))
@@ -274,10 +274,10 @@ Optional:
 - `environment` (Attributes List) Plain (non-secret) environment variables injected into the run (see [below for nested schema](#nestedatt--runtime--environment))
 - `idle_timeout_minutes` (Number) Minutes of inactivity after which the run is paused (1–1440); omit for no idle timeout
 - `max_cost_usd` (Number) Hard LLM spend ceiling in USD for the short-lived virtual key backing one run; omit for no ceiling
-- `max_tier` (String) Largest organization-defined tier a run may request (API 1.5.0-rc.19 or later).
+- `max_tier` (String) Largest organization-defined tier a run may request.
 - `privileged` (Boolean) Whether the container runs privileged (default `false`)
 - `resources` (Attributes, Deprecated) Kubernetes-style resource requests/limits for the run (see [below for nested schema](#nestedatt--runtime--resources))
-- `tier` (String) Organization-defined default runtime tier (API 1.5.0-rc.19 or later).
+- `tier` (String) Organization-defined default runtime tier.
 - `ttl_hours` (Number) Hard lifetime cap for a run in hours (1–720); omit for no cap
 
 <a id="nestedatt--runtime--claude_code"></a>

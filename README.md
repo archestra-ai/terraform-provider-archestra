@@ -14,7 +14,7 @@ schema and shipped together on every `vX.Y.Z` tag:
 End users install from those. This README walks a new contributor
 through extending the provider.
 
-API versions are independent of provider versions. See the [compatibility matrix](COMPATIBILITY.md) for the required API capability floor and exact tested releases.
+API versions are independent of provider versions. See [API compatibility](COMPATIBILITY.md) for the required API capability floor and the tested release.
 
 Release evidence (native acceptance, both-scope Crossplane reconciliation and package checks) is recorded in [the audit](audit/README.md).
 

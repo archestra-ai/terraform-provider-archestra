@@ -1,5 +1,4 @@
-# ALPHA. Requires Archestra 1.5.0-rc.29 or later with
-# ARCHESTRA_AUTO_ROUTING_ENABLED=true (or ARCHESTRA_BETA=true).
+# ALPHA.
 # Clients request the router's name as the model ("auto" or "auto:<name>").
 variable "openai_provider_key_id" {
   type = string

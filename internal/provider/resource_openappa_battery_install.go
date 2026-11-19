@@ -78,7 +78,7 @@ func (r *OpenappaBatteryInstallResource) Schema(_ context.Context, _ resource.Sc
 		MarkdownDescription: "Includes an OpenAPPA guardrails battery in the organization's policy and, for a battery that governs MCP servers, attaches it to one registry entry. " +
 			"A battery made of annotators alone governs the whole organization and is installed without `catalog_id`. " +
 			"Writes edit the organization's policy text, so they fail while a GitHub repository owns that text. " +
-			"Credential bindings are managed separately and are read-only here. Import an existing install by UUID. Requires API 1.5.0-rc.1 or later.",
+			"Credential bindings are managed separately and are read-only here. Import an existing install by UUID.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true, MarkdownDescription: "Battery install UUID.",

@@ -69,6 +69,7 @@ Read-Only:
 - `owner_type` (String) Owning principal type.
 - `result` (String, Sensitive) Tool result encoded as a JSON string (the wire shape is polymorphic — use `jsondecode`). Null if absent.
 - `run_id` (String) Agent run ID.
+- `service_account_id` (String) UUID of the service account that made the call. Null for other callers.
 - `source` (String) Invocation source.
 - `tool_call_id` (String) Provider-generated correlation ID inside `toolCall`. Null if absent.
 - `tool_call_json` (String, Sensitive) Complete tool-call payload as JSON, including extension fields.

@@ -3,12 +3,12 @@
 page_title: "archestra_blob_provider Data Source - archestra"
 subcategory: ""
 description: |-
-  Looks up a blob provider by name (API 1.5.0-rc.30 or later). Fails when no provider, or more than one, has the name.
+  Looks up a blob provider by name. Fails when no provider, or more than one, has the name.
 ---
 
 # archestra_blob_provider (Data Source)
 
-Looks up a blob provider by name (API 1.5.0-rc.30 or later). Fails when no provider, or more than one, has the name.
+Looks up a blob provider by name. Fails when no provider, or more than one, has the name.
 
 ## Example Usage
 

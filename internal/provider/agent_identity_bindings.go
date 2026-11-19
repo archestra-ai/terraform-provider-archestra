@@ -40,7 +40,7 @@ func agentIdentityBindingsAttribute() schema.SetNestedAttribute {
 		Computed:            true,
 		PlanModifiers:       []planmodifier.Set{setplanmodifier.UseStateForUnknown()},
 		Validators:          []validator.Set{setvalidator.SizeAtMost(50)},
-		MarkdownDescription: "Identities this agent acts as at identity providers, such as its Microsoft Entra agent identity or Okta AI agent; omit to preserve or set an empty set to clear. Requires Archestra " + identityBindingsMinimumAPIVersion + " or later.",
+		MarkdownDescription: "Identities this agent acts as at identity providers, such as its Microsoft Entra agent identity or Okta AI agent; omit to preserve or set an empty set to clear.",
 		NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
 			"identity_provider_id": schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthAtLeast(1)}, MarkdownDescription: "Identity provider the identity belongs to."},
 			"external_id":          schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 255)}, MarkdownDescription: "The agent's ID at that identity provider, such as an Entra agent identity's application (client) ID."},

@@ -31,7 +31,7 @@ func (d *BlobProviderDataSource) Metadata(_ context.Context, req datasource.Meta
 
 func (d *BlobProviderDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Looks up a blob provider by name (API 1.5.0-rc.30 or later). Fails when no provider, or more than one, has the name.",
+		MarkdownDescription: "Looks up a blob provider by name. Fails when no provider, or more than one, has the name.",
 		Attributes: map[string]schema.Attribute{
 			"name":            schema.StringAttribute{Required: true, MarkdownDescription: "Blob provider name."},
 			"id":              schema.StringAttribute{Computed: true, MarkdownDescription: "Blob provider UUID."},

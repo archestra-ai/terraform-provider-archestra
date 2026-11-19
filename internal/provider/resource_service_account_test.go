@@ -30,6 +30,34 @@ func TestAccServiceAccountResource(t *testing.T) {
 	}})
 }
 
+func TestAccServiceAccountDescriptionAndFixedRole(t *testing.T) {
+	if os.Getenv("TF_ACC") != "" {
+		testAccPreCheck(t)
+		if !testAccAPIVersionAtLeast(t, "1.5.0-rc.39") {
+			t.Skip("Service account descriptions and fixed roles require API 1.5.0-rc.39")
+		}
+	}
+	config := func(description string) string {
+		attr := ""
+		if description != "" {
+			attr = fmt.Sprintf("description=%q", description)
+		}
+		return fmt.Sprintf(`resource "archestra_service_account" "test" {
+ name="tf-service-account-description"
+ role="fixed:agents:reader"
+ %s
+ }`, attr)
+	}
+	const sa = "archestra_service_account.test"
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+		{Config: config("Reads agents for reporting"), Check: resource.ComposeTestCheckFunc(resource.TestCheckResourceAttr(sa, "description", "Reads agents for reporting"), resource.TestCheckResourceAttr(sa, "role", "fixed:agents:reader"))},
+		{ResourceName: sa, ImportState: true, ImportStateVerify: true},
+		{Config: config("Reads agents"), Check: resource.TestCheckResourceAttr(sa, "description", "Reads agents")},
+		{Config: config(""), Check: resource.TestCheckNoResourceAttr(sa, "description")},
+		{Config: config(""), PlanOnly: true},
+	}})
+}
+
 func TestAccServiceAccountTokenResource(t *testing.T) {
 	var first string
 	var issued []string

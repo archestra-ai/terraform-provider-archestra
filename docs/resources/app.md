@@ -3,12 +3,12 @@
 page_title: "archestra_app Resource - archestra"
 subcategory: ""
 description: |-
-  An Archestra App with its HTML, settings, sharing and upstream tools. Content versions are immutable revisions of this App. Omit HTML to preserve the existing content or use the platform starter on creation. Updates use content-version preconditions. Locked Apps must be explicitly unlocked before content changes or destruction. Creating an App does not open a conversation. Requires API 1.4.0-rc.50 or later.
+  An Archestra App with its HTML, settings, sharing and upstream tools. Content versions are immutable revisions of this App. Omit HTML to preserve the existing content or use the platform starter on creation. Updates use content-version preconditions. Locked Apps must be explicitly unlocked before content changes or destruction. Creating an App does not open a conversation.
 ---
 
 # archestra_app (Resource)
 
-An Archestra App with its HTML, settings, sharing and upstream tools. Content versions are immutable revisions of this App. Omit HTML to preserve the existing content or use the platform starter on creation. Updates use content-version preconditions. Locked Apps must be explicitly unlocked before content changes or destruction. Creating an App does not open a conversation. Requires API 1.4.0-rc.50 or later.
+An Archestra App with its HTML, settings, sharing and upstream tools. Content versions are immutable revisions of this App. Omit HTML to preserve the existing content or use the platform starter on creation. Updates use content-version preconditions. Locked Apps must be explicitly unlocked before content changes or destruction. Creating an App does not open a conversation.
 
 ## Example Usage
 

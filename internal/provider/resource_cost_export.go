@@ -75,7 +75,7 @@ func (r *CostExportResource) Metadata(_ context.Context, req resource.MetadataRe
 
 func (r *CostExportResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Scheduled export of LLM cost data as FOCUS CSV files to an `archestra_blob_provider` (API 1.5.0-rc.30 or later). " +
+		MarkdownDescription: "Scheduled export of LLM cost data as FOCUS CSV files to an `archestra_blob_provider`. " +
 			"The platform writes a file per completed period; run state (last run, errors, retries) stays in the UI.",
 		Attributes: map[string]schema.Attribute{
 			"id":               schema.StringAttribute{Computed: true, MarkdownDescription: "Cost export UUID.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},

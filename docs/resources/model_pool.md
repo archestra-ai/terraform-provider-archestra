@@ -3,20 +3,17 @@
 page_title: "archestra_model_pool Resource - archestra"
 subcategory: ""
 description: |-
-  Model name balanced across shared provider keys with priority, weights and server-managed failover. Requires Archestra's model-pools API (PR #9681) and ARCHESTRA_LLM_MODEL_POOLS_ENABLED or ARCHESTRA_BETA. Members are authoritative; grants are managed on credentials, and virtual_api_key_ids is read-only; import an existing pool by UUID before managing it.
+  Model name balanced across shared provider keys with priority, weights and server-managed failover. Members are authoritative; grants are managed on credentials, and virtual_api_key_ids is read-only; import an existing pool by UUID before managing it.
 ---
 
 # archestra_model_pool (Resource)
 
-Model name balanced across shared provider keys with priority, weights and server-managed failover. Requires Archestra's model-pools API (PR #9681) and ARCHESTRA_LLM_MODEL_POOLS_ENABLED or ARCHESTRA_BETA. Members are authoritative; grants are managed on credentials, and virtual_api_key_ids is read-only; import an existing pool by UUID before managing it.
+Model name balanced across shared provider keys with priority, weights and server-managed failover. Members are authoritative; grants are managed on credentials, and virtual_api_key_ids is read-only; import an existing pool by UUID before managing it.
 
 ## Example Usage
 
 ```terraform
-# Requires Archestra 1.5.0-rc.12's credential-owned grant API and
-# ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true (or ARCHESTRA_BETA=true).
-# Use a provider release containing this resource; pin its version in your Terraform configuration
-# and commit .terraform.lock.hcl. See the model-pools guide for setup and import.
+# See the model-pools guide for setup and import.
 # These are existing shared provider-key UUIDs, also available as
 # archestra_model_provider.<name>.id. Personal keys cannot be pooled.
 variable "primary_provider_key_id" {

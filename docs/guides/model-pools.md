@@ -14,18 +14,10 @@ Kubernetes users, not a prerequisite for Terraform.
 
 ## Choose compatible releases
 
-Use a published provider release whose resource reference includes
-`archestra_model_pool`. Provider 3.0.4 does not contain this resource. Select that
-release in `required_providers.archestra.version` according to your version policy
-and commit `.terraform.lock.hcl` to pin the exact installed provider and checksums.
-Provider and application version numbers are independent.
-
-The current API contract first shipped in **Archestra 1.5.0-rc.12**. Enable
-`ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` on that deployment, or enable
-`ARCHESTRA_BETA` without explicitly disabling model pools. Official rc.11 uses an
-older grant-replacing contract that the provider refuses; stable 1.4.8 has no
-model-pool API. Check [API compatibility](api-compatibility.md) before choosing a
-later release rather than assuming all newer versions are compatible.
+Pin the provider in `required_providers.archestra.version` and commit
+`.terraform.lock.hcl`. Check [API compatibility](api-compatibility.md) to match
+the provider release to your Archestra release. The provider refuses pool writes
+against an API whose model-pool contract it does not support.
 
 ## Configure and apply
 
@@ -41,10 +33,6 @@ terraform {
       source = "archestra-ai/archestra"
     }
   }
-}
-
-provider "archestra" {
-  api_version_constraint = "= 1.5.0-rc.12"
 }
 
 variable "shared_provider_key_id" {

@@ -79,7 +79,7 @@ func (r *BlobProviderResource) Metadata(_ context.Context, req resource.Metadata
 func (r *BlobProviderResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	exactlyOne := []validator.Object{objectvalidator.ExactlyOneOf(path.MatchRoot("s3"), path.MatchRoot("gcs"), path.MatchRoot("azure_blob"))}
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Object storage destination that features such as cost exports write files to (API 1.5.0-rc.30 or later). " +
+		MarkdownDescription: "Object storage destination that features such as cost exports write files to. " +
 			"Set exactly one of `s3`, `gcs` or `azure_blob`. By default the API writes and deletes a small test object before saving; set `skip_connection_test` to save without it.",
 		Attributes: map[string]schema.Attribute{
 			"id":              schema.StringAttribute{Computed: true, MarkdownDescription: "Blob provider UUID.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
