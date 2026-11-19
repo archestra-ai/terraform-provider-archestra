@@ -46,7 +46,7 @@ output "support_tools" {
 - `activation_skill_policy_revision` (Number) Server-reported activation skill policy revision.
 - `activation_skills_count` (Number) Server-reported activation skills count.
 - `author_email` (String) Server-reported author email.
-- `auto_router_id` (String) ALPHA. `archestra_auto_router` the agent runs on instead of a fixed model, key or pool. Requires API 1.5.0-rc.29 or later with auto routing enabled; Agent Runtime and built-in agents cannot use one.
+- `auto_router_id` (String) ALPHA. `archestra_auto_router` the agent runs on instead of a fixed model, key or pool. Requires auto routing to be enabled; Agent Runtime and built-in agents cannot use one.
 - `built_in_agent_config` (String) Server-owned built-in agent metadata as JSON.
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
 - `created_by` (String) Creator identity metadata as JSON.
@@ -60,7 +60,7 @@ output "support_tools" {
 - `fast_model_id` (String) Database UUID of a faster tool-capable chat model on the agent's `llm_api_key_id`, used when the agent forks a subagent on the `fast` tier; null falls back to the organization's `default_fast_model_id`, then the provider default
 - `hooks` (Attributes Set) Current event hooks and their file configuration. (see [below for nested schema](#nestedatt--hooks))
 - `icon` (String) Emoji or base64 image data URL
-- `identity_bindings` (Attributes Set) Identities this agent acts as at identity providers, such as its Microsoft Entra agent identity or Okta AI agent; omit to preserve or set an empty set to clear. Requires Archestra 1.5.0-rc.35 or later. (see [below for nested schema](#nestedatt--identity_bindings))
+- `identity_bindings` (Attributes Set) Identities this agent acts as at identity providers, such as its Microsoft Entra agent identity or Okta AI agent; omit to preserve or set an empty set to clear. (see [below for nested schema](#nestedatt--identity_bindings))
 - `incoming_email_allowed_domain` (String) Allowed sender domain when `incoming_email_security_mode = "internal"`
 - `incoming_email_enabled` (Boolean) Whether incoming-email invocation is enabled
 - `incoming_email_security_mode` (String) Email-trigger security mode. One of `private` (only the agent owner can email it), `internal` (any sender from `incoming_email_allowed_domain` can), or `public` (any sender). Defaults to `private`.
@@ -158,11 +158,11 @@ Read-Only:
 - `image` (String) Container image reference the run starts from
 - `inference_protocol` (String) Wire protocol the image uses to reach Archestra's model router: `openai_responses`, `openai_chat`, or `anthropic`
 - `max_cost_usd` (Number) Hard LLM spend ceiling in USD for the short-lived virtual key backing one run; omit for no ceiling
-- `max_tier` (String) Largest organization-defined tier a run may request (API 1.5.0-rc.19 or later).
+- `max_tier` (String) Largest organization-defined tier a run may request.
 - `privileged` (Boolean) Whether the container runs privileged (default `false`)
 - `resources` (Attributes) Kubernetes-style resource requests/limits for the run (see [below for nested schema](#nestedatt--runtime--resources))
 - `steer_mode` (String) How a steer message reaches the running process: `pipe` (runtime-agent FIFO) or `tmux_keys` (typed into the tmux session, for CLIs that own their input loop)
-- `tier` (String) Organization-defined default runtime tier (API 1.5.0-rc.19 or later).
+- `tier` (String) Organization-defined default runtime tier.
 - `ttl_hours` (Number) Hard lifetime cap for a run in hours (1–720); omit for no cap
 
 <a id="nestedatt--runtime--claude_code"></a>

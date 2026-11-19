@@ -60,7 +60,7 @@ func (r *KnowledgeBaseResource) Schema(_ context.Context, _ resource.SchemaReque
 			"created_by":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
 			"created_by_service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Service account that created the knowledge base."},
 			"deleted_at":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Soft-deletion timestamp, when applicable."},
-			"uploaded_files_environment_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Environment that indexes this knowledge base's uploaded files. Null until files are uploaded, and on API releases before 1.5.0-rc.21. Change it in the UI: the API accepts it only once files are indexed."},
+			"uploaded_files_environment_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Environment that indexes this knowledge base's uploaded files. Null until files are uploaded. Change it in the UI: the API accepts it only once files are indexed."},
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Knowledge base identifier.",

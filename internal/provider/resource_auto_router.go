@@ -96,7 +96,7 @@ func (r *AutoRouterResource) Schema(_ context.Context, _ resource.SchemaRequest,
 		}}
 	}
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "ALPHA. An auto router serves the `auto` (or `auto:<name>`) model: it scores each session and routes it to a fast, normal or smart tier within a daily budget. Requires API 1.5.0-rc.29 or later; before 1.5.0-rc.39 also `ARCHESTRA_AUTO_ROUTING_ENABLED=true` (or `ARCHESTRA_BETA=true`). Agents, MCP gateways, OAuth clients, virtual keys and the organization default reference a router by ID.",
+		MarkdownDescription: "ALPHA. An auto router serves the `auto` (or `auto:<name>`) model: it scores each session and routes it to a fast, normal or smart tier within a daily budget. Agents, MCP gateways, OAuth clients, virtual keys and the organization default reference a router by ID.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{Computed: true, MarkdownDescription: "Auto router UUID.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 			"name": schema.StringAttribute{Required: true, MarkdownDescription: "Model name clients request: `auto`, or `auto:<name>` with a lowercase name.", Validators: []validator.String{

@@ -4,116 +4,26 @@ Terraform provider and Archestra API releases have independent version numbers.
 Pin both in deployment configuration. Crossplane packages embed the matching
 Terraform provider release and inherit the same API requirements.
 
-| Provider | API capability floor | Exact API versions tested | Status |
-|---|---|---|---|
-| 3.0.0 | 1.4.0-rc.51 | The release in `platform-version.txt` at the release tag | Current |
+Each provider release is built and tested against the Archestra release named in
+`platform-version.txt` at its release tag. The Registry shows the documentation
+for the provider version you select, so these pages describe that provider
+against its tested Archestra release. To learn what an older Archestra release
+supports, read the documentation of the provider release that tested it.
 
-The floor includes atomic delegation, the current service-account team ownership API, the App tool-assignment read contract and the organization setting for unauthenticated LLM proxy requests (introduced in 1.4.0-rc.51) used by v3. It is a minimum required
-capability level, not evidence that every later release is compatible. Pull
-request CI tests the floor and the newest stable release, not each release
-between them. Prereleases can change contracts between release candidates;
-record each tested release explicitly.
+The provider also accepts older Archestra releases down to its API capability
+floor, `1.4.0-rc.51`. The floor is a minimum, not evidence that every later
+release is compatible. On a release older than the tested one, resources and
+attributes for features that release lacks fail, are rejected or are ignored:
+leave them unset, or use the provider release that tested your Archestra
+release.
 
-Two features need 1.5.0-rc.1 or later:
-
-- `default_personal_agent_access_all_tools` on `archestra_organization_settings`.
-  Leave it unset on older releases; they do not store it.
-- Recovering the `value` of an `archestra_virtual_key` that a service account
-  created, on import or refresh. Older releases return 403, so `value` stays
-  null. Users can recover keys they created on every supported release.
-
-Some settings need a later release. Leave them unset on older releases:
-
-- `identity_bindings` on `archestra_agent` and `archestra_mcp_gateway` needs
-  1.5.0-rc.35 or later. Setting it on an older release fails with an error.
-- `connection_page_hidden` on `archestra_organization_settings` needs
-  1.5.0-rc.31 or later.
-- The per-kind deploy actions (`deploy-agent`, `deploy-mcp-gateway`,
-  `deploy-mcp-registry`, `deploy-skill`, `deploy-app`,
-  `deploy-knowledge-source`) in `archestra_environment` permissions and in
-  `default_permissions.environments` on `archestra_organization_settings` need
-  1.5.0-rc.37 or later. Older releases reject them.
-- The `custom-image` key in `popular_agent_overrides` on
-  `archestra_organization_settings` needs 1.5.0-rc.38 or later. Older releases
-  reject it.
-- `description` on `archestra_service_account` needs 1.5.0-rc.39 or later.
-  Older releases do not store it, so applying it fails with an inconsistent
-  result.
-- Fixed role identifiers such as `fixed:agents:reader`, in any role attribute
-  and in identity-provider role mappings, need 1.5.0-rc.39 or later.
-- Managing `archestra_team` (`members`, `external_group_ids`) or reading a team
-  with a service-account API key needs 1.5.0-rc.40 or later. Older releases
-  answer 403 to member and Team Sync changes and 404 to reads of a team the
-  service account does not belong to. Personal API keys work on every supported
-  release.
-
-Newer resources and nested settings need these releases. Acceptance tests skip
-them on older releases:
-
-| Resource or setting | Needs |
-|---|---|
-| `archestra_knowledge_connector` | The floor (1.4.0-rc.51) |
-| `archestra_openappa_battery_install` | 1.5.0-rc.1 |
-| `network_policy` on `archestra_agent` | 1.5.0-rc.20 |
-| `subagent_load_balancing` on `archestra_mcp_gateway` | 1.5.0-rc.23 |
-| `archestra_service_account_federated_credential` | 1.5.0-rc.26, with an Enterprise license |
-| `archestra_auto_router` (ALPHA) and the `auto_router_id` / `auto_router_ids` / `default_auto_router_id` settings | 1.5.0-rc.29; before 1.5.0-rc.39 also `ARCHESTRA_AUTO_ROUTING_ENABLED=true` (or `ARCHESTRA_BETA=true`) |
-| `archestra_blob_provider` and `archestra_cost_export` | 1.5.0-rc.30 |
-| `desktop_config` on `archestra_mcp_registry_entry` | 1.5.0-rc.32; before 1.5.0-rc.39 also `ARCHESTRA_BETA=true` |
-
-`archestra_model_pool` additionally requires the model-pools CRUD API introduced
-in [Archestra PR #9681](https://github.com/archestra-ai/archestra/pull/9681), with
-`ARCHESTRA_LLM_MODEL_POOLS_ENABLED=true` or `ARCHESTRA_BETA=true` on releases before
-1.5.0-rc.39; from 1.5.0-rc.39 model pools are always on. It additionally
-requires the credential-owned grant contract first published in
-[Archestra 1.5.0-rc.12](https://github.com/archestra-ai/archestra/releases/tag/platform-v1.5.0-rc.12):
-OpenAPI must accept `name` and `members` without writable `virtualApiKeyIds`.
-The official rc.11 release has the older contract and is unsupported for pool
-writes; stable 1.4.8 has no pool CRUD API.
-Create/update refuse the older grant-replacing contract before mutation. Pool writes manage name and members. Virtual-key grants are read-only on
-the pool and belong to credential configuration in the current API. The global
-version floor does not establish this capability. Pool lifecycle and Terraform
-planning are covered by controlled HTTP fixtures. A real native lifecycle against
-an existing local development API reporting `1.5.0-rc.11` passed create, read,
-update, import, drift repair and destroy, with actual UI checks and verified cleanup
-([record](audit/model-pool-local-native-rc11.json),
-[procedure](docs/guides/model-pool-local-acceptance.md)). This is one recorded
-local development build containing the later grant changes, not the official
-rc.11 release or a release compatibility sweep. Actual local Crossplane
-ModelPool reconciliation also passed create, reference resolution, update,
-automatic drift repair, orphan/adoption and deletion in both scopes with the
-unpublished host controller ([record](audit/model-pool-local-crossplane-rc11.json),
-[procedure](docs/guides/model-pool-local-crossplane.md)). Container/xpkg deployment
-and a release compatibility sweep remain separate checks. The older 31-family
-reconciliation evidence below does not cover ModelPool.
-
-`platform-version.txt` at the provider release tag names the tested release.
-Acceptance CI runs the native suite against that release and records the image
-digest it used in the job summary. The provider embeds the same file for the
-runtime check below.
-
-Pull request CI also runs the native and credential acceptance suites against
-the oldest supported release (`1.4.0-rc.51`) and the newest stable Archestra
-release. These checks are required, so a change that breaks a supported older
-release cannot merge. The runtime check below still warns on those releases,
-because it treats only the release in `platform-version.txt` as tested.
-
-Crossplane lifecycle CI exercises both scopes against the release in
-`platform-version.txt`, including ModelPool create, update, automatic drift repair,
-UUID adoption and deletion. These jobs use source-built providers/controllers;
-they do not establish that a published xpkg installs and runs.
-[ModelPool CI against the released rc.12 app and chart](https://github.com/archestra-ai/terraform-provider-archestra/actions/runs/40715454241/job/122911867851)
-passed in both scopes with unpublished PR provider/controller binaries. The recorded
-historical evidence for
-1.5.0-rc.3 (image
-`sha256:ef2cc471d08b2af05e40cd211bc8b8292752723dff13b8d6c08530079e7167d6`)
-covers all 31 resource families in both scopes on one Terraform provider and
-controller binary pair: 138 lifecycle records with normal cleanup
-([evidence](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/crossplane-release-1.5.0-rc.3.json)). The same run's native
-acceptance ([evidence](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/native-acceptance-1.5.0-rc.3.json)) and runtime
-package checks for linux/amd64 and linux/arm64
-([evidence](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/runtime-package-validation-1.5.0-rc.3.json)) are linked, with
-the earlier milestone records, from [the audit](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/README.md).
+Pull request CI runs the native and credential acceptance suites against the
+tested release, the floor and the newest stable Archestra release. Acceptance
+tests skip features an older release lacks. Crossplane lifecycle CI exercises
+both scopes against the tested release with source-built providers and
+controllers; it does not establish that a published xpkg installs and runs.
+Recorded lifecycle evidence is listed in the
+[provider audit](audit/README.md).
 
 For Terraform, select an approved provider release with `required_providers` and
 commit `.terraform.lock.hcl`. That constraint selects a provider version; Terraform
@@ -137,8 +47,8 @@ merges. Merging after acceptance passes makes that release the tested one.
 ## Runtime compatibility check
 
 Before configuring resource and data-source clients, the provider reads the
-public `GET /health` endpoint. It rejects semantic versions below `1.4.0-rc.51`,
-which lack required v3 API capabilities. Versions other than the tested release
+public `GET /health` endpoint. It rejects semantic versions below the API
+capability floor. Versions other than the tested release
 in `platform-version.txt` produce a warning. Newer does not automatically mean
 compatible.
 Custom versions or unreadable version metadata produce a warning by default.

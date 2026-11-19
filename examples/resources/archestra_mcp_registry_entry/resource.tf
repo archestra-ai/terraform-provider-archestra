@@ -170,9 +170,9 @@ resource "archestra_mcp_registry_entry" "remote_oauth" {
   }
 }
 
-# Remote MCP server with an advanced OAuth configuration — exercises all of the
-# new fields exposed in v1.2.20: grant_type, audience, endpoint overrides,
-# well-known discovery URL, default scopes, and provider metadata.
+# Remote MCP server with an advanced OAuth configuration: grant_type, audience,
+# endpoint overrides, well-known discovery URL, default scopes, and provider
+# metadata.
 resource "archestra_mcp_registry_entry" "remote_oauth_advanced" {
   name        = "remote-oauth-advanced"
   description = "Remote MCP server with an explicit OAuth authorization_code flow"

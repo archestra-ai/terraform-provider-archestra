@@ -14,7 +14,7 @@ import (
 func currentAgentAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
 		"model_pool_id":                             schema.StringAttribute{Optional: true, MarkdownDescription: "Model pool used for the agent; the API resolves its model and provider key.", Validators: []validator.String{stringvalidator.ConflictsWith(path.MatchRoot("model_id"), path.MatchRoot("llm_api_key_id"), path.MatchRoot("llm_model"))}},
-		"auto_router_id":                            schema.StringAttribute{Optional: true, MarkdownDescription: "ALPHA. `archestra_auto_router` the agent runs on instead of a fixed model, key or pool. Requires API 1.5.0-rc.29 or later with auto routing enabled; Agent Runtime and built-in agents cannot use one.", Validators: []validator.String{stringvalidator.ConflictsWith(path.MatchRoot("model_id"), path.MatchRoot("llm_api_key_id"), path.MatchRoot("llm_model"), path.MatchRoot("model_pool_id"))}},
+		"auto_router_id":                            schema.StringAttribute{Optional: true, MarkdownDescription: "ALPHA. `archestra_auto_router` the agent runs on instead of a fixed model, key or pool. Requires auto routing to be enabled; Agent Runtime and built-in agents cannot use one.", Validators: []validator.String{stringvalidator.ConflictsWith(path.MatchRoot("model_id"), path.MatchRoot("llm_api_key_id"), path.MatchRoot("llm_model"), path.MatchRoot("model_pool_id"))}},
 		"author_email":                              schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported author email."},
 		"created_by":                                schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
 		"created_by_service_account_id":             schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported created by service account id."},
@@ -219,7 +219,7 @@ func flattenCurrentAgentFields(data *AgentResourceModel, body []byte, diags *dia
 func currentGatewayAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
 		"model_pool_id":                 schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported model pool identifier on the shared agent record."},
-		"auto_router_id":                schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported auto router identifier on the shared agent record (API 1.5.0-rc.29 or later)."},
+		"auto_router_id":                schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported auto router identifier on the shared agent record."},
 		"github_actions_access":         githubActionsAccessSchema(),
 		"author_email":                  schema.StringAttribute{Computed: true, MarkdownDescription: "Server-reported author email."},
 		"created_by":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},

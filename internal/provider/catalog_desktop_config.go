@@ -39,7 +39,7 @@ func catalogDesktopConfigAttribute() schema.SingleNestedAttribute {
 		Optional: true,
 		MarkdownDescription: "Makes this a desktop MCP server that runs on each user's device; set exactly one of `command` or `url`. " +
 			"Conflicts with `local_config` and `remote_config`; adding or removing it replaces the entry. " +
-			"Desktop MCP servers are alpha: they need API 1.5.0-rc.32 or later, and `ARCHESTRA_BETA=true` before 1.5.0-rc.39.",
+			"Desktop MCP servers are alpha.",
 		PlanModifiers: []planmodifier.Object{objectplanmodifier.RequiresReplaceIf(desktopModeChanged,
 			"Switching between a desktop MCP server and a local or remote one replaces the entry.",
 			"Switching between a desktop MCP server and a local or remote one replaces the entry.")},

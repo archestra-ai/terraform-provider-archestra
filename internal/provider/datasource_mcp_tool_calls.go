@@ -137,7 +137,7 @@ func (d *McpToolCallsDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 						"auth_method":        schema.StringAttribute{Computed: true, MarkdownDescription: "How the agent authenticated the call (`oauth`, `user_token`, `org_token`, `team_token`, `external_idp`, `session`). Null if absent."},
 						"user_id":            schema.StringAttribute{Computed: true, MarkdownDescription: "UUID of the user the call ran on behalf of. Null for org-wide calls."},
 						"user_name":          schema.StringAttribute{Computed: true, MarkdownDescription: "Display name of the user. Null when `user_id` is null."},
-						"service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "UUID of the service account that made the call. Null for other callers and on API releases before 1.5.0-rc.39."},
+						"service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "UUID of the service account that made the call. Null for other callers."},
 						"created_at":         schema.StringAttribute{Computed: true, MarkdownDescription: "RFC 3339 timestamp of when the call was recorded."},
 					},
 				},

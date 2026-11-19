@@ -72,7 +72,7 @@ func (r *ModelPoolResource) Metadata(_ context.Context, req resource.MetadataReq
 	resp.TypeName = req.ProviderTypeName + "_model_pool"
 }
 func (r *ModelPoolResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	resp.Schema = schema.Schema{MarkdownDescription: "Model name balanced across shared provider keys with priority, weights and server-managed failover. Requires Archestra's model-pools API (PR #9681); before 1.5.0-rc.39 also ARCHESTRA_LLM_MODEL_POOLS_ENABLED or ARCHESTRA_BETA. Members are authoritative; grants are managed on credentials, and virtual_api_key_ids is read-only; import an existing pool by UUID before managing it.", Attributes: map[string]schema.Attribute{
+	resp.Schema = schema.Schema{MarkdownDescription: "Model name balanced across shared provider keys with priority, weights and server-managed failover. Members are authoritative; grants are managed on credentials, and virtual_api_key_ids is read-only; import an existing pool by UUID before managing it.", Attributes: map[string]schema.Attribute{
 		"id":   schema.StringAttribute{Computed: true, MarkdownDescription: "Model pool UUID.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 		"name": schema.StringAttribute{Required: true, MarkdownDescription: "Model name callers request.", Validators: modelPoolStringValidators()},
 		"members": schema.SetNestedAttribute{Required: true, MarkdownDescription: "Shared provider keys and their upstream model identifiers.", Validators: []validator.Set{setvalidator.SizeBetween(1, 50)}, NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{

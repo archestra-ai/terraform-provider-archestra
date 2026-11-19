@@ -135,14 +135,14 @@ resource "archestra_organization_settings" "main" {
 - `connection_default_client_id` (String) Default client shown by connection setup.
 - `connection_default_mcp_gateway_id` (String) Default gateway offered to connecting clients.
 - `connection_llm_proxy_enabled` (Boolean) Whether connection setup offers the LLM proxy.
-- `connection_page_hidden` (Boolean) Whether the connection page is hidden from members (API 1.5.0-rc.31 or later; leave unset on older releases).
+- `connection_page_hidden` (Boolean) Whether the connection page is hidden from members.
 - `connection_plugins_enabled` (Boolean) Whether connection setup offers plugins.
 - `connection_runtime_handoff_enabled` (Boolean) Whether clients can hand work to an agent runtime.
 - `connection_runtime_handoff_instructions` (String) Instructions shown during runtime handoff.
 - `connection_shown_client_ids` (String) JSON configuration for connection shown client ids.
 - `connection_skills_enabled` (Boolean) Whether connection setup offers skills.
 - `default_agent_id` (String) Default agent (profile) ID for the organization
-- `default_auto_router_id` (String) ALPHA. `archestra_auto_router` ID that agents without their own model, key, pool or router run on; set null to clear. Requires API 1.5.0-rc.29 or later with auto routing enabled; older releases ignore it.
+- `default_auto_router_id` (String) ALPHA. `archestra_auto_router` ID that agents without their own model, key, pool or router run on; set null to clear. Requires auto routing to be enabled.
 - `default_environment_description` (String) Description of the default deployment environment.
 - `default_environment_name` (String) Name of the default deployment environment.
 - `default_environment_namespace` (String) Kubernetes namespace of the default deployment environment.
@@ -154,7 +154,7 @@ resource "archestra_organization_settings" "main" {
 - `default_model_id` (String) Database ID of the default discovered LLM model.
 - `default_network_policy` (String) JSON configuration for default network policy.
 - `default_permissions` (Attributes) Default access policies from organization Settings. Manage each object type independently: omit a field to leave its policy unmanaged, or set [] to clear that type's direct organization-wide grants. Changing these policies affects existing and future objects. Organization-settings deletion leaves them intact. The API rejects any change, including [], that leaves a policy without a grant that includes manage-permissions. (see [below for nested schema](#nestedatt--default_permissions))
-- `default_personal_agent_access_all_tools` (Boolean) Whether new personal agents start with access to all tools. Requires API 1.5.0-rc.1 or later.
+- `default_personal_agent_access_all_tools` (Boolean) Whether new personal agents start with access to all tools.
 - `default_smart_model_id` (String) Database ID of the stronger model on `default_llm_api_key_id` used when an agent without its own `smart_model_id` forks a subagent on the `smart` tier.
 - `default_user_limits` (Attributes Map) Default member spending limits from LLM Settings, keyed by `default` for the organization or an environment UUID for an override. Omit this map to preserve all defaults; an explicit map owns the complete set, and {} removes them all. Organization-settings deletion leaves these settings intact. (see [below for nested schema](#nestedatt--default_user_limits))
 - `embedding_chat_api_key_id` (String) API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
@@ -197,7 +197,7 @@ resource "archestra_organization_settings" "main" {
 ### Read-Only
 
 - `agent_runtime_tiers` (String) Stored Agent Runtime tier configuration as JSON.
-- `auto_routing_enabled` (Boolean) Whether auto routers route sessions (ALPHA; toggled from the auto-routing settings, API 1.5.0-rc.29 or later).
+- `auto_routing_enabled` (Boolean) Whether auto routers route sessions (ALPHA; toggled from the auto-routing settings).
 - `created_at` (String) RFC3339 timestamp the organization was created.
 - `embedding_dimensions` (Number, Deprecated) Configured embedding model output dimensions. **Deprecated** — the backend is migrating this to `models.embeddingDimensions` (per-model rather than per-org). Exposed here only so existing organizations whose dimensions are still pinned at the org level can read the value via Terraform.
 - `id` (String) Organization identifier

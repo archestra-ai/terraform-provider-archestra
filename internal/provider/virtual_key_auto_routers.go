@@ -17,7 +17,7 @@ func virtualKeyAutoRouterIDsAttribute() schema.SetAttribute {
 		Optional:            true,
 		ElementType:         types.StringType,
 		Validators:          []validator.Set{setvalidator.SizeAtMost(500), setvalidator.ValueStringsAre(stringvalidator.RegexMatches(canonicalUUIDRegexp, "Use lowercase canonical auto router UUIDs."))},
-		MarkdownDescription: "ALPHA. `archestra_auto_router` IDs the key may call by name; an empty set clears them, and removing the attribute leaves them unmanaged. Standard keys only. Requires API 1.5.0-rc.29 or later with auto routing enabled; read back from each router's `virtual_api_key_ids`.",
+		MarkdownDescription: "ALPHA. `archestra_auto_router` IDs the key may call by name; an empty set clears them, and removing the attribute leaves them unmanaged. Standard keys only. Requires auto routing to be enabled; read back from each router's `virtual_api_key_ids`.",
 	}
 }
 

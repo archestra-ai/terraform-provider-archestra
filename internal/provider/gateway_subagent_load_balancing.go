@@ -43,7 +43,7 @@ func gatewaySubagentLoadBalancingAttribute() schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{
 		Optional: true,
 		MarkdownDescription: "How the gateway spreads delegated requests across its assigned subagents and retries failures. " +
-			"Omit for the default (no load balancing); removing it later clears the setting. Requires API 1.5.0-rc.23 or later.",
+			"Omit for the default (no load balancing); removing it later clears the setting.",
 		Attributes: map[string]schema.Attribute{
 			"enabled": schema.BoolAttribute{
 				Optional: true, Computed: true, Default: booldefault.StaticBool(false),

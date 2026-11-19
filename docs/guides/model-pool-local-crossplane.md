@@ -24,8 +24,7 @@ flowchart LR
 ## Scope and prerequisites
 
 Use an owner-confirmed local kind cluster and an existing loopback Archestra API
-with model pools enabled and the credential-owned grant contract first released
-in Archestra 1.5.0-rc.12. Obtain scoped
+with model pools enabled. Obtain scoped
 permission for the Crossplane installation/CRDs, a temporary management key and
 Secret, and sequential disabled synthetic pools. The key inherits its caller's
 available management permissions; it is not an inference provider key.
@@ -70,8 +69,9 @@ Keep credentials out of logs and committed files.
    that Secret, both named `pool-proof`. The latter serves namespaced resources.
    See the [configuration shape](https://github.com/archestra-ai/terraform-provider-archestra/tree/main/crossplane/examples).
 5. Mirror the local provider under
-   `registry.terraform.io/archestra-ai/archestra/3.0.4/<host-platform>/` and select
-   it with a private `TF_CLI_CONFIG_FILE`. Use Terraform 1.5.7, matching the
+   `registry.terraform.io/archestra-ai/archestra/<version>/<host-platform>/` and select
+   it with a private `TF_CLI_CONFIG_FILE`; `<version>` is any label, used again
+   in step 6. Use Terraform 1.5.7, matching the
    existing [development recipe](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/scripts/bootstrap-crossplane.sh).
    That recipe also shows the mirror layout. Read it before reuse: its stock
    entry point assumes its own app stack and credential bootstrap, installs
@@ -84,7 +84,7 @@ Keep credentials out of logs and committed files.
    /path/to/local/controller \
      --terraform-version=1.5.7 \
      --terraform-provider-source=archestra-ai/archestra \
-     --terraform-provider-version=3.0.4 \
+     --terraform-provider-version=<version> \
      --poll=2s --max-reconcile-rate=1 \
      --metrics-bind-address=127.0.0.1:18080 --certs-dir=
    ```
@@ -140,18 +140,5 @@ only empty provider CRDs and the namespace created for this proof. Chart removal
 can retain official core CRDs: inventory and report them rather than deleting
 shared API definitions blindly. Preserve evidence and unrelated services.
 
-The [recorded local proof](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/model-pool-local-crossplane-rc11.json)
-passed in both scopes against a development API reporting `1.5.0-rc.11`,
-with source containing the later credential-owned grant changes, rather than the
-official rc.11 release. It used
-Crossplane 2.2.1 and Kubernetes v1.37.0. Both members remained disabled; priorities
-were 1/2, the first weight changed 3 to 7, injected drift used weight 11, and repair
-restored 7. Update/adoption retained each pool UUID. Both original pools were
-unchanged and the temporary key returned 401 after revocation. Task processes,
-Secret/configs, namespace and nine provider CRDs were removed; 21 official core
-Crossplane CRDs remained, with no task deployment running. The user's app/backend
-and original cluster objects were preserved.
-
-This establishes real local controller reconciliation. It does not measure
-inference distribution/failover, mutate grants, test container/xpkg deployment,
-or establish release compatibility across versions.
+Past runs and their records are listed in the
+[provider audit](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/README.md).

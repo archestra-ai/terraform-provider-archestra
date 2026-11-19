@@ -80,7 +80,7 @@ func (r *ServiceAccountResource) Schema(_ context.Context, _ resource.SchemaRequ
 			},
 			"description": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: "What the service account is for. Requires API 1.5.0-rc.39 or later.",
+				MarkdownDescription: "What the service account is for.",
 				// The backend trims the value and stores a blank one as null.
 				Validators: []validator.String{
 					stringvalidator.LengthBetween(1, 1000),
@@ -95,7 +95,7 @@ func (r *ServiceAccountResource) Schema(_ context.Context, _ resource.SchemaRequ
 			"disabled":                   schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether the identity is disabled."},
 			"token_count":                schema.Int64Attribute{Computed: true, MarkdownDescription: "Total issued tokens."},
 			"active_token_count":         schema.Int64Attribute{Computed: true, MarkdownDescription: "Tokens currently able to authenticate."},
-			"federated_credential_count": schema.Int64Attribute{Computed: true, MarkdownDescription: "Federated (workload identity) credentials bound to the account. Null on API releases before 1.5.0-rc.26."},
+			"federated_credential_count": schema.Int64Attribute{Computed: true, MarkdownDescription: "Federated (workload identity) credentials bound to the account."},
 			"last_used_at":               schema.StringAttribute{Computed: true, MarkdownDescription: "Most recent use across the account's tokens."},
 			"soonest_expiry_at":          schema.StringAttribute{Computed: true, MarkdownDescription: "Earliest expiry among active tokens."},
 			"created_at": schema.StringAttribute{

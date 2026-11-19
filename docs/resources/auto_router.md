@@ -3,18 +3,17 @@
 page_title: "archestra_auto_router Resource - archestra"
 subcategory: ""
 description: |-
-  ALPHA. An auto router serves the auto (or auto:<name>) model: it scores each session and routes it to a fast, normal or smart tier within a daily budget. Requires API 1.5.0-rc.29 or later; before 1.5.0-rc.39 also ARCHESTRA_AUTO_ROUTING_ENABLED=true (or ARCHESTRA_BETA=true). Agents, MCP gateways, OAuth clients, virtual keys and the organization default reference a router by ID.
+  ALPHA. An auto router serves the auto (or auto:<name>) model: it scores each session and routes it to a fast, normal or smart tier within a daily budget. Agents, MCP gateways, OAuth clients, virtual keys and the organization default reference a router by ID.
 ---
 
 # archestra_auto_router (Resource)
 
-ALPHA. An auto router serves the `auto` (or `auto:<name>`) model: it scores each session and routes it to a fast, normal or smart tier within a daily budget. Requires API 1.5.0-rc.29 or later; before 1.5.0-rc.39 also `ARCHESTRA_AUTO_ROUTING_ENABLED=true` (or `ARCHESTRA_BETA=true`). Agents, MCP gateways, OAuth clients, virtual keys and the organization default reference a router by ID.
+ALPHA. An auto router serves the `auto` (or `auto:<name>`) model: it scores each session and routes it to a fast, normal or smart tier within a daily budget. Agents, MCP gateways, OAuth clients, virtual keys and the organization default reference a router by ID.
 
 ## Example Usage
 
 ```terraform
-# ALPHA. Requires Archestra 1.5.0-rc.29 or later. Before 1.5.0-rc.39, also set
-# ARCHESTRA_AUTO_ROUTING_ENABLED=true (or ARCHESTRA_BETA=true).
+# ALPHA.
 # Clients request the router's name as the model ("auto" or "auto:<name>").
 variable "openai_provider_key_id" {
   type = string

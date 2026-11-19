@@ -3,12 +3,12 @@
 page_title: "archestra_blob_provider Resource - archestra"
 subcategory: ""
 description: |-
-  Object storage destination that features such as cost exports write files to (API 1.5.0-rc.30 or later). Set exactly one of s3, gcs or azure_blob. By default the API writes and deletes a small test object before saving; set skip_connection_test to save without it.
+  Object storage destination that features such as cost exports write files to. Set exactly one of s3, gcs or azure_blob. By default the API writes and deletes a small test object before saving; set skip_connection_test to save without it.
 ---
 
 # archestra_blob_provider (Resource)
 
-Object storage destination that features such as cost exports write files to (API 1.5.0-rc.30 or later). Set exactly one of `s3`, `gcs` or `azure_blob`. By default the API writes and deletes a small test object before saving; set `skip_connection_test` to save without it.
+Object storage destination that features such as cost exports write files to. Set exactly one of `s3`, `gcs` or `azure_blob`. By default the API writes and deletes a small test object before saving; set `skip_connection_test` to save without it.
 
 ## Example Usage
 

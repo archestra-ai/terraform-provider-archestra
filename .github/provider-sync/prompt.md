@@ -28,7 +28,8 @@ exclusions. Generated types and include-list entries are not lifecycle coverage.
 Read the actual API/model/service implementation where the schema is insufficient.
 Remove obsolete names only with tested state/CRD migration and a clear guide.
 Escalate missing API capabilities through a separate proposed change; do not expand
-this agent's upstream write access. Keep all public text generic and secret-free.
+this agent's upstream write access. Keep all public text generic, secret-free
+and version-neutral (follow `.agents/skills/user-facing-text/SKILL.md`).
 
 Regenerate provider client/docs/examples and both Crossplane scopes from the same
 Terraform binary. Run unit/drift/API tests, vet/lint, examples, real isolated

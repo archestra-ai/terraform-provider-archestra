@@ -30,7 +30,7 @@ resource "archestra_service_account" "example" {
 
 ### Optional
 
-- `description` (String) What the service account is for. Requires API 1.5.0-rc.39 or later.
+- `description` (String) What the service account is for.
 - `disabled` (Boolean) Whether the identity is disabled.
 - `icon` (String) Emoji or image icon.
 - `labels` (Attributes Set) Service-account labels. (see [below for nested schema](#nestedatt--labels))
@@ -42,7 +42,7 @@ resource "archestra_service_account" "example" {
 - `active_token_count` (Number) Tokens currently able to authenticate.
 - `created_at` (String) Creation timestamp (RFC 3339).
 - `created_by` (String) Creator identity metadata as JSON.
-- `federated_credential_count` (Number) Federated (workload identity) credentials bound to the account. Null on API releases before 1.5.0-rc.26.
+- `federated_credential_count` (Number) Federated (workload identity) credentials bound to the account.
 - `id` (String) Service account identifier.
 - `last_used_at` (String) Most recent use across the account's tokens.
 - `soonest_expiry_at` (String) Earliest expiry among active tokens.

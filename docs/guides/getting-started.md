@@ -14,7 +14,7 @@ terraform {
   required_providers {
     archestra = {
       source  = "archestra-ai/archestra"
-      version = "~> 3.0.0"
+      version = "~> 3.0"
     }
   }
 }
@@ -25,10 +25,9 @@ provider "archestra" {
 }
 ```
 
-`~> 3.0.0` allows patch updates within the v3.0 line. Review the
+`~> 3.0` allows any v3 release. Review the
 [migration guide](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/MIGRATION-v3.md)
-before upgrading from v2. The v3 branch remains a draft until its compatibility,
-field coverage, migration and packaging gates pass.
+before upgrading from v2.
 
 ## 2. Mint an API key
 

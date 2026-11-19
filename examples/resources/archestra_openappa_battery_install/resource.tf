@@ -1,4 +1,4 @@
-# Requires Archestra 1.5.0-rc.1 or later with OpenAPPA guardrails enabled.
+# Requires OpenAPPA guardrails to be enabled.
 # Installs edit the organization's policy text, so they fail while a GitHub
 # repository owns that text.
 resource "archestra_mcp_registry_entry" "github" {
