@@ -25,7 +25,7 @@ jobs:
     outputs:
       run: ${{ steps.scope.outputs.run }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -49,7 +49,7 @@ jobs:
     permissions: {}
     steps:
       - name: Lint PR title
-        uses: archestra-ai/.github/actions/lint-pr-title@dbb529ba77ba07dd8f71f16ccb1b2317f4587312 # v1.24.0
+        uses: archestra-ai/.github/actions/lint-pr-title@v1.24.0
 
   linting-and-tests:
     name: Linting and Tests
@@ -58,7 +58,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout project
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
 
@@ -74,7 +74,7 @@ jobs:
           cd tools && go mod tidy -diff
 
       - name: Linting
-        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+        uses: golangci/golangci-lint-action@v9.3.0
         with:
           version: v2.11
           # The action's own check fetches the schema from golangci-lint.run, which times out from runners.
@@ -145,7 +145,7 @@ jobs:
       - name: Require successful integration scope
         if: needs.integration-scope.result != 'success'
         run: exit 1
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
       - name: Read platform version
@@ -167,7 +167,7 @@ jobs:
       matrix: ${{ steps.select.outputs.matrix }}
       acceptance-matrix: ${{ steps.acceptance.outputs.matrix }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
       - name: Select releases
@@ -196,7 +196,7 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.older-releases.outputs.acceptance-matrix) }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
       - name: Run acceptance shard
@@ -240,7 +240,7 @@ jobs:
       - name: Require successful integration scope
         if: needs.integration-scope.result != 'success'
         run: exit 1
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
         if: needs.integration-scope.outputs.run == 'true'
         with:
           persist-credentials: false

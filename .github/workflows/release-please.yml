@@ -87,7 +87,7 @@ jobs:
           { echo "version=$version"; echo "tag=v$version"; } >> "$GITHUB_OUTPUT"
 
       - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           submodules: true # crossplane/build makelib
           fetch-depth: 0 # goreleaser and makelib read tags
@@ -117,7 +117,7 @@ jobs:
       # Release: the tag release-please just made is at HEAD. Dry run: no tag,
       # so goreleaser takes the smoke version and skips its tag checks.
       - name: Build the provider (unsigned)
-        uses: goreleaser/goreleaser-action@a4f02ab5355a589de60d917a659ce617ed19b3de # v7.3.0
+        uses: goreleaser/goreleaser-action@v7.3.0
         with:
           # validate checks the tag is at a clean HEAD: not for a dry run (no
           # tag) or an existing tag (main's build tooling is laid over it).
@@ -141,7 +141,7 @@ jobs:
           ls -l "$RUNNER_TEMP/release-provider"
 
       - name: Keep the release files
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: release-provider
           path: ${{ runner.temp }}/release-provider
@@ -149,12 +149,12 @@ jobs:
           retention-days: 30
 
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
+        uses: docker/setup-qemu-action@v4.4.0
         with:
           platforms: all
 
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+        uses: docker/setup-buildx-action@v4.4.1
         with:
           cache-binary: false
 
@@ -243,7 +243,7 @@ jobs:
       subjects: ${{ steps.subjects.outputs.subjects }}
     steps:
       - name: Download the release files
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        uses: actions/download-artifact@v8.0.2
         with:
           name: release-provider
           path: release-provider
@@ -322,18 +322,18 @@ jobs:
       contents: write # create the dry run's draft release and upload to it
     steps:
       - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
 
       - name: Download the release files
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        uses: actions/download-artifact@v8.0.2
         with:
           name: release-provider
           path: release-provider
 
       - name: Download the signed release assets
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        uses: actions/download-artifact@v8.0.2
         with:
           name: release-assets
           path: release-assets
