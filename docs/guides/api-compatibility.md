@@ -45,6 +45,11 @@ Some settings need a later release. Leave them unset on older releases:
   result.
 - Fixed role identifiers such as `fixed:agents:reader`, in any role attribute
   and in identity-provider role mappings, need 1.5.0-rc.39 or later.
+- Managing `archestra_team` (`members`, `external_group_ids`) or reading a team
+  with a service-account API key needs 1.5.0-rc.40 or later. Older releases
+  answer 403 to member and Team Sync changes and 404 to reads of a team the
+  service account does not belong to. Personal API keys work on every supported
+  release.
 
 Newer resources and nested settings need these releases. Acceptance tests skip
 them on older releases:
