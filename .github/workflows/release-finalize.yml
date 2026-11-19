@@ -72,13 +72,13 @@ jobs:
       package_digest: ${{ steps.request.outputs.package_digest }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
 
       - name: Generate a publisher token
         id: publisher-token
-        uses: archestra-ai/.github/actions/github-app-token@0bd6a54bf206174fd0cebc3222def111651e91bb # v1.31.1
+        uses: archestra-ai/.github/actions/github-app-token@v1.31.1
         with:
           owner: archestra-ai
           repositories: release-publisher
@@ -126,7 +126,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
 
