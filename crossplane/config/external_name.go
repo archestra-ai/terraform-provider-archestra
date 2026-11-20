@@ -55,6 +55,12 @@ var ExternalNameConfigs = map[string]ujconfig.ExternalName{
 	"archestra_credential":                           ujconfig.IdentifierFromProvider,
 	"archestra_team":                                 ujconfig.IdentifierFromProvider,
 	"archestra_openappa_battery_install":             ujconfig.IdentifierFromProvider,
+	"archestra_site_notification":                    ujconfig.IdentifierFromProvider,
+	"archestra_guardrails_policy":                    ujconfig.IdentifierFromProvider,
+	"archestra_chatops_slack":                        ujconfig.IdentifierFromProvider,
+	"archestra_chatops_slack_agent_bot":              ujconfig.IdentifierFromProvider,
+	"archestra_chatops_ms_teams":                     ujconfig.IdentifierFromProvider,
+	"archestra_chatops_telegram":                     ujconfig.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies external-name configs as a default

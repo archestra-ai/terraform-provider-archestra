@@ -163,6 +163,16 @@ func ConfigureResources(p *ujconfig.Provider) {
 		}
 		r.References["decision_model.api_key_id"] = ujconfig.Reference{TerraformName: "archestra_model_provider"}
 	})
+	p.AddResourceConfigurator("archestra_site_notification", func(r *ujconfig.Resource) { r.ShortGroup = "organization"; r.Kind = "SiteNotification" })
+	p.AddResourceConfigurator("archestra_guardrails_policy", func(r *ujconfig.Resource) { r.ShortGroup = "security"; r.Kind = "GuardrailsPolicy" })
+	p.AddResourceConfigurator("archestra_chatops_slack", func(r *ujconfig.Resource) { r.ShortGroup = "chatops"; r.Kind = "Slack" })
+	p.AddResourceConfigurator("archestra_chatops_slack_agent_bot", func(r *ujconfig.Resource) {
+		r.ShortGroup = "chatops"
+		r.Kind = "SlackAgentBot"
+		r.References["agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
+	})
+	p.AddResourceConfigurator("archestra_chatops_ms_teams", func(r *ujconfig.Resource) { r.ShortGroup = "chatops"; r.Kind = "MSTeams" })
+	p.AddResourceConfigurator("archestra_chatops_telegram", func(r *ujconfig.Resource) { r.ShortGroup = "chatops"; r.Kind = "Telegram" })
 	p.AddResourceConfigurator("archestra_openappa_battery_install", func(r *ujconfig.Resource) {
 		r.ShortGroup = "security"
 		r.Kind = "BatteryInstall"

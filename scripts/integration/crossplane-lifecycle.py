@@ -246,7 +246,9 @@ def main():
                 raise RuntimeError('Unable to remove owned API fixture: HTTP ' + str(status))
             leases.remove(lease)
             return
-        kube(*lease[0], 'delete', lease[1], lease[2], '--ignore-not-found', '--wait=true', '--timeout=75s')
+        # A conflict while the controller finalizes a deletion is retried after
+        # the per-object backoff, which grows to 60s; leave room for one retry.
+        kube(*lease[0], 'delete', lease[1], lease[2], '--ignore-not-found', '--wait=true', '--timeout=150s')
         leases.remove(lease)
 
     def observation(lease):

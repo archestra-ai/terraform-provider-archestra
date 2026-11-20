@@ -5,6 +5,27 @@ generate:
 output: internal/client/archestra_client.go
 output-options:
   include-operation-ids:
+    - getInternalMcpCatalog
+    - getRoles
+    - getKnowledgeBases
+    - getProjects
+    - getIdentityProviders
+    - getSiteNotification
+    - getSiteNotificationSettings
+    - createSiteNotification
+    - updateSiteNotification
+    - deleteSiteNotification
+    - getGuardrailsPolicy
+    - updateGuardrailsPolicy
+    - getSlackChatOpsConfig
+    - updateSlackChatOpsConfig
+    - getMsTeamsChatOpsConfig
+    - updateChatOpsConfigInQuickstart
+    - getTelegramChatOpsConfig
+    - updateTelegramChatOpsConfig
+    - listSlackAgentBots
+    - updateSlackAgentBot
+    - deleteSlackAgentBot
     - addTeamExternalGroup
     - addTeamMember
     - assignToolToAgent

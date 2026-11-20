@@ -270,6 +270,12 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewSkillResource,
 		NewRuntimeCredentialResource,
 		NewIdentityProviderResource,
+		NewSiteNotificationResource,
+		NewGuardrailsPolicyResource,
+		NewChatOpsSlackResource,
+		NewChatOpsSlackAgentBotResource,
+		NewChatOpsMsTeamsResource,
+		NewChatOpsTelegramResource,
 	}
 }
 
@@ -287,6 +293,12 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewServiceAccountDataSource,
 		NewEnvironmentDataSource,
 		NewMcpServerDataSource,
+		NewRoleDataSource,
+		NewProjectDataSource,
+		NewKnowledgeBaseDataSource,
+		NewOauthClientDataSource,
+		NewIdentityProviderDataSource,
+		NewMcpRegistryEntryDataSource,
 	}
 }
 
