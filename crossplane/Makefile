@@ -4,11 +4,11 @@
 PROJECT_NAME ?= provider-archestra
 PROJECT_REPO ?= github.com/archestra-ai/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION ?= 1.5.7
-
-# Do not allow a version of terraform greater than 1.5.x, due to versions 1.6+ being
-# licensed under BSL, which is not permitted.
-TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAFORM_VERSION)\n1.6" | sort -V | head -n1`" ] && echo 1 || echo 0)
+# The Terraform CLI the provider runs is OpenTofu (MPL-2.0): HashiCorp
+# Terraform 1.6 and later are BSL-licensed, and 1.5.7, the last MPL release,
+# no longer receives fixes. It is installed under the name `terraform`, the
+# binary upjet runs.
+export TERRAFORM_VERSION ?= 1.13.9
 
 # Codegen dumps the schema from a locally-built binary (hack/generate-schema.sh); the provider
 # image bundles the native provider from the published GitHub release.
@@ -102,7 +102,7 @@ xpkg.build.provider-archestra: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
-build.init: $(UP) $(CROSSPLANE_CLI) check-terraform-version
+build.init: $(UP) $(CROSSPLANE_CLI)
 
 # ====================================================================================
 # Setup Terraform for fetching provider schema
@@ -110,19 +110,14 @@ TERRAFORM := $(TOOLS_HOST_DIR)/terraform-$(TERRAFORM_VERSION)
 TERRAFORM_WORKDIR := $(WORK_DIR)/terraform
 TERRAFORM_PROVIDER_SCHEMA := config/schema.json
 
-check-terraform-version:
-ifneq ($(TERRAFORM_VERSION_VALID),1)
-	$(error invalid TERRAFORM_VERSION $(TERRAFORM_VERSION), must be less than 1.6.0 since that version introduced a not permitted BSL license))
-endif
-
-$(TERRAFORM): check-terraform-version
-	@$(INFO) installing terraform $(HOSTOS)-$(HOSTARCH)
+$(TERRAFORM):
+	@$(INFO) installing OpenTofu $(TERRAFORM_VERSION) $(HOSTOS)-$(HOSTARCH)
 	@mkdir -p $(TOOLS_HOST_DIR)/tmp-terraform
-	@curl -fsSL https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip
+	@curl -fsSL https://github.com/opentofu/opentofu/releases/download/v$(TERRAFORM_VERSION)/tofu_$(TERRAFORM_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip
 	@unzip $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip -d $(TOOLS_HOST_DIR)/tmp-terraform
-	@mv $(TOOLS_HOST_DIR)/tmp-terraform/terraform $(TERRAFORM)
+	@mv $(TOOLS_HOST_DIR)/tmp-terraform/tofu $(TERRAFORM)
 	@rm -fr $(TOOLS_HOST_DIR)/tmp-terraform
-	@$(OK) installing terraform $(HOSTOS)-$(HOSTARCH)
+	@$(OK) installing OpenTofu $(TERRAFORM_VERSION) $(HOSTOS)-$(HOSTARCH)
 
 # Override the upstream schema target: dump from the locally-built TF provider
 # binary in the parent directory rather than fetching from the public registry.
@@ -150,7 +145,7 @@ clean-generated:
 
 go.generate: clean-generated
 
-.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version
+.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 # ====================================================================================
 # Targets
 

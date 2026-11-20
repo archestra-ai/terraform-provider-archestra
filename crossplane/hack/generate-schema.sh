@@ -34,7 +34,9 @@ cat > "$WORK/main.tf" <<EOF
 terraform {
   required_providers {
     ${NAME} = {
-      source  = "${NAMESPACE}/${NAME}"
+      # The host too: OpenTofu resolves a bare namespace/name to
+      # registry.opentofu.org, not the plugin directory's host.
+      source  = "${HOST}/${NAMESPACE}/${NAME}"
       version = "${VERSION}"
     }
   }

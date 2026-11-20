@@ -51,7 +51,7 @@ Useful for fast iteration without rebuilding the xpkg:
 ```bash
 make build
 ./_output/bin/$(go env GOOS)_$(go env GOARCH)/provider --debug \
-  --terraform-version=1.5.7 \
+  --terraform-version=1.13.9 \
   --terraform-provider-source=archestra-ai/archestra
 ```
 

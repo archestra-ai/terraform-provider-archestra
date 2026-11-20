@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"os"
+	"strings"
 
 	xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
@@ -27,6 +28,17 @@ const (
 	errWorkloadIdentity     = "cannot sign in with workload identity"
 )
 
+// providerRegistryHost is the host the provider's address names. OpenTofu,
+// the CLI the image runs, resolves a source without a host to
+// registry.opentofu.org, while upjet writes registry.terraform.io into every
+// resource's state. A source qualified with this host keeps the configuration,
+// the state and the image's provider mirror on one address under both CLIs.
+const providerRegistryHost = "registry.terraform.io"
+
+// providerStateAddress formats the state's provider address from the
+// qualified source.
+const providerStateAddress = `provider["%s"]`
+
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
 // returns Terraform provider setup configuration
 func TerraformSetupBuilder(version, providerSource, providerVersion string) terraform.SetupFn {
@@ -34,8 +46,9 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		ps := terraform.Setup{
 			Version: version,
 			Requirement: terraform.ProviderRequirement{
-				Source:  providerSource,
-				Version: providerVersion,
+				Source:   qualifiedProviderSource(providerSource),
+				Version:  providerVersion,
+				Registry: providerStateAddress,
 			},
 		}
 
@@ -162,4 +175,13 @@ func resolveModern(ctx context.Context, crClient client.Client, mg resource.Mode
 		return nil, errors.Wrap(err, errTrackUsage)
 	}
 	return &pcSpec, nil
+}
+
+// qualifiedProviderSource adds the registry host to a source given as
+// namespace/type, and leaves a source that names its host unchanged.
+func qualifiedProviderSource(source string) string {
+	if strings.Count(source, "/") == 1 {
+		return providerRegistryHost + "/" + source
+	}
+	return source
 }
