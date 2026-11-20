@@ -16,8 +16,8 @@ import (
 
 const (
 	workloadIdentityTokenPath = "/api/workload-identity/token"
-	tokenExchangeGrantType    = "urn:ietf:params:oauth:grant-type:token-exchange"
-	jwtTokenType              = "urn:ietf:params:oauth:token-type:jwt"
+	tokenExchangeGrantType    = "urn:ietf:params:oauth:grant-type:token-exchange" //nolint:gosec // G101 false positive: an RFC 8693 grant type URN, not a credential.
+	jwtTokenType              = "urn:ietf:params:oauth:token-type:jwt"            //nolint:gosec // G101 false positive: an RFC 8693 token type URN, not a credential.
 
 	// Exchanged tokens last an hour. Refreshing well before expiry keeps a
 	// request that starts just before the deadline from failing mid-apply.
@@ -116,8 +116,8 @@ func exchangeWorkloadIdentityToken(ctx context.Context, in exchangeWorkloadIdent
 		return "", 0, fmt.Errorf("cannot read the workload identity token response: %w", err)
 	}
 
-	switch {
-	case resp.StatusCode == http.StatusOK:
+	switch resp.StatusCode {
+	case http.StatusOK:
 		var ok struct {
 			AccessToken string `json:"access_token"`
 			ExpiresIn   int64  `json:"expires_in"`
@@ -126,7 +126,7 @@ func exchangeWorkloadIdentityToken(ctx context.Context, in exchangeWorkloadIdent
 			return "", 0, errors.New("the workload identity token response has no access token or lifetime")
 		}
 		return ok.AccessToken, time.Duration(ok.ExpiresIn) * time.Second, nil
-	case resp.StatusCode == http.StatusNotFound:
+	case http.StatusNotFound:
 		return "", 0, fmt.Errorf("this Archestra server does not support workload identity token exchange (it needs Archestra %s or later with an Enterprise license)", workloadIdentityMinimumAPIVersion)
 	default:
 		var failure struct {

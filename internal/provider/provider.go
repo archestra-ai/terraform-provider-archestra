@@ -178,9 +178,9 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 		return
 	}
 
-	authorization := func(context.Context) (string, error) { return apiKey, nil }
+	var workloadSource *workloadIdentityTokenSource
 	if workload.serviceAccountID != "" {
-		source := &workloadIdentityTokenSource{
+		workloadSource = &workloadIdentityTokenSource{
 			httpClient:       httpClient,
 			baseURL:          baseURL,
 			serviceAccountID: workload.serviceAccountID,
@@ -190,11 +190,10 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 		}
 		// Exchange now so a rejected token fails at configure time with a
 		// clear diagnostic instead of on the first resource operation.
-		if _, err := source.Token(ctx); err != nil {
+		if _, err := workloadSource.Token(ctx); err != nil {
 			resp.Diagnostics.AddAttributeError(path.Root("service_account_id"), "Workload identity sign-in failed", err.Error())
 			return
 		}
-		authorization = source.Token
 	}
 
 	// Create a new Archestra client using the configuration values
@@ -202,11 +201,15 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 		baseURL,
 		client.WithHTTPClient(httpClient),
 		client.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-			value, err := authorization(ctx)
+			if workloadSource == nil {
+				req.Header.Set("Authorization", apiKey)
+				return nil
+			}
+			token, err := workloadSource.Token(ctx)
 			if err != nil {
 				return err
 			}
-			req.Header.Set("Authorization", value)
+			req.Header.Set("Authorization", token)
 			return nil
 		}),
 	)

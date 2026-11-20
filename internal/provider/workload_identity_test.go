@@ -21,6 +21,7 @@ func TestWorkloadIdentityTokenSourceExchangesAndCaches(t *testing.T) {
 		if r.URL.Path != workloadIdentityTokenPath || r.Method != http.MethodPost {
 			t.Errorf("unexpected request %s %s", r.Method, r.URL.Path)
 		}
+		r.Body = http.MaxBytesReader(w, r.Body, 1<<20)
 		if err := r.ParseForm(); err != nil {
 			t.Fatal(err)
 		}
@@ -68,6 +69,7 @@ func TestWorkloadIdentityTokenSourceExchangesAndCaches(t *testing.T) {
 func TestWorkloadIdentityTokenSourceRereadsRotatedTokenFile(t *testing.T) {
 	var seen []string
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.Body = http.MaxBytesReader(w, r.Body, 1<<20)
 		_ = r.ParseForm()
 		seen = append(seen, r.PostForm.Get("subject_token"))
 		_, _ = w.Write([]byte(`{"access_token":"t","expires_in":60}`))
