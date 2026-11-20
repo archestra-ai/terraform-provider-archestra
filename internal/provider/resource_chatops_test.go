@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -11,6 +12,9 @@ import (
 // with the chat service), updated, and imported. Secrets are write-only, so
 // an import cannot recover them.
 func TestAccChatOpsResources(t *testing.T) {
+	if os.Getenv("TF_ACC") != "" && !testAccAPIVersionAtLeast(t, chatOpsMinimumAPIVersion) {
+		t.Skipf("the ChatOps configuration API needs Archestra %s or later", chatOpsMinimumAPIVersion)
+	}
 	config := func(appID string) string {
 		return `
 resource "archestra_chatops_slack" "test" {

@@ -183,7 +183,7 @@ func flattenSiteNotification(data *SiteNotificationResourceModel, body []byte, d
 		ExpiresAt   *time.Time `json:"expiresAt"`
 		CreatedAt   *time.Time `json:"createdAt"`
 		IsActive    bool       `json:"isActive"`
-		Dismissible bool       `json:"dismissible"`
+		Dismissible *bool      `json:"dismissible"`
 	}
 	if err := json.Unmarshal(body, &value); err != nil {
 		diags.AddError("Invalid API Response", err.Error())
@@ -194,5 +194,11 @@ func flattenSiteNotification(data *SiteNotificationResourceModel, body []byte, d
 	data.ExpiresAt = credentialConfiguredTimestamp(data.ExpiresAt, value.ExpiresAt)
 	data.CreatedAt = canonicalAPITimestamp(value.CreatedAt)
 	data.IsActive = types.BoolValue(value.IsActive)
-	data.Dismissible = types.BoolValue(value.Dismissible)
+	// Archestra releases before dismissible banners omit the field; keep the
+	// planned value rather than report a change the server never made.
+	if value.Dismissible != nil {
+		data.Dismissible = types.BoolValue(*value.Dismissible)
+	} else if data.Dismissible.IsNull() || data.Dismissible.IsUnknown() {
+		data.Dismissible = types.BoolValue(true)
+	}
 }

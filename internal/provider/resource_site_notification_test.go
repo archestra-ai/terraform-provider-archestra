@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -11,6 +12,11 @@ import (
 // its expiry, imported and removed.
 func TestAccSiteNotificationResource(t *testing.T) {
 	const name = "archestra_site_notification.test"
+	// Dismissible banners arrived in 1.5.0-rc.39; older releases ignore the flag.
+	dismissible := "true"
+	if os.Getenv("TF_ACC") != "" && testAccAPIVersionAtLeast(t, "1.5.0-rc.39") {
+		dismissible = "false"
+	}
 	created := `
 resource "archestra_site_notification" "test" {
   content    = "tf-acc: maintenance on Saturday"
@@ -22,7 +28,7 @@ resource "archestra_site_notification" "test" {
 resource "archestra_site_notification" "test" {
   content     = "tf-acc: maintenance moved to Sunday"
   is_active   = false
-  dismissible = false
+  dismissible = ` + dismissible + `
 }
 `
 	resource.Test(t, resource.TestCase{
@@ -47,7 +53,7 @@ resource "archestra_site_notification" "test" {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(name, "content", "tf-acc: maintenance moved to Sunday"),
 					resource.TestCheckNoResourceAttr(name, "expires_at"),
-					resource.TestCheckResourceAttr(name, "dismissible", "false"),
+					resource.TestCheckResourceAttr(name, "dismissible", dismissible),
 				),
 			},
 			{ResourceName: name, ImportState: true, ImportStateVerify: true},
