@@ -58,6 +58,7 @@ var ExternalNameConfigs = map[string]ujconfig.ExternalName{
 	"archestra_site_notification":                    ujconfig.IdentifierFromProvider,
 	"archestra_guardrails_policy":                    ujconfig.IdentifierFromProvider,
 	"archestra_chatops_slack":                        ujconfig.IdentifierFromProvider,
+	"archestra_chatops_slack_agent_bot":              ujconfig.IdentifierFromProvider,
 	"archestra_chatops_ms_teams":                     ujconfig.IdentifierFromProvider,
 	"archestra_chatops_telegram":                     ujconfig.IdentifierFromProvider,
 }

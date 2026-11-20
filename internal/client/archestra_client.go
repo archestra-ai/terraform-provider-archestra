@@ -10893,6 +10893,330 @@ func (e UpdateSlackChatOpsConfig500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for ListSlackAgentBots200JSONResponseBodyBotsConnectionMode.
+const (
+	ListSlackAgentBots200JSONResponseBodyBotsConnectionModeSocket  ListSlackAgentBots200JSONResponseBodyBotsConnectionMode = "socket"
+	ListSlackAgentBots200JSONResponseBodyBotsConnectionModeWebhook ListSlackAgentBots200JSONResponseBodyBotsConnectionMode = "webhook"
+)
+
+// Valid indicates whether the value is a known member of the ListSlackAgentBots200JSONResponseBodyBotsConnectionMode enum.
+func (e ListSlackAgentBots200JSONResponseBodyBotsConnectionMode) Valid() bool {
+	switch e {
+	case ListSlackAgentBots200JSONResponseBodyBotsConnectionModeSocket:
+		return true
+	case ListSlackAgentBots200JSONResponseBodyBotsConnectionModeWebhook:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionMode.
+const (
+	ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionModeSocket  ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionMode = "socket"
+	ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionModeWebhook ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionMode = "webhook"
+)
+
+// Valid indicates whether the value is a known member of the ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionMode enum.
+func (e ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionMode) Valid() bool {
+	switch e {
+	case ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionModeSocket:
+		return true
+	case ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionModeWebhook:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListSlackAgentBots400JSONResponseBodyErrorType.
+const (
+	ListSlackAgentBots400JSONResponseBodyErrorTypeApiValidationError ListSlackAgentBots400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the ListSlackAgentBots400JSONResponseBodyErrorType enum.
+func (e ListSlackAgentBots400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListSlackAgentBots400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListSlackAgentBots401JSONResponseBodyErrorType.
+const (
+	ListSlackAgentBots401JSONResponseBodyErrorTypeApiAuthenticationError ListSlackAgentBots401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the ListSlackAgentBots401JSONResponseBodyErrorType enum.
+func (e ListSlackAgentBots401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListSlackAgentBots401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListSlackAgentBots403JSONResponseBodyErrorType.
+const (
+	ListSlackAgentBots403JSONResponseBodyErrorTypeApiAuthorizationError ListSlackAgentBots403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the ListSlackAgentBots403JSONResponseBodyErrorType enum.
+func (e ListSlackAgentBots403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListSlackAgentBots403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListSlackAgentBots404JSONResponseBodyErrorType.
+const (
+	ListSlackAgentBots404JSONResponseBodyErrorTypeApiNotFoundError ListSlackAgentBots404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the ListSlackAgentBots404JSONResponseBodyErrorType enum.
+func (e ListSlackAgentBots404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListSlackAgentBots404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListSlackAgentBots409JSONResponseBodyErrorType.
+const (
+	ListSlackAgentBots409JSONResponseBodyErrorTypeApiConflictError ListSlackAgentBots409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the ListSlackAgentBots409JSONResponseBodyErrorType enum.
+func (e ListSlackAgentBots409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListSlackAgentBots409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListSlackAgentBots500JSONResponseBodyErrorType.
+const (
+	ListSlackAgentBots500JSONResponseBodyErrorTypeApiInternalServerError ListSlackAgentBots500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the ListSlackAgentBots500JSONResponseBodyErrorType enum.
+func (e ListSlackAgentBots500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case ListSlackAgentBots500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSlackAgentBot400JSONResponseBodyErrorType.
+const (
+	DeleteSlackAgentBot400JSONResponseBodyErrorTypeApiValidationError DeleteSlackAgentBot400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSlackAgentBot400JSONResponseBodyErrorType enum.
+func (e DeleteSlackAgentBot400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSlackAgentBot400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSlackAgentBot401JSONResponseBodyErrorType.
+const (
+	DeleteSlackAgentBot401JSONResponseBodyErrorTypeApiAuthenticationError DeleteSlackAgentBot401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSlackAgentBot401JSONResponseBodyErrorType enum.
+func (e DeleteSlackAgentBot401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSlackAgentBot401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSlackAgentBot403JSONResponseBodyErrorType.
+const (
+	DeleteSlackAgentBot403JSONResponseBodyErrorTypeApiAuthorizationError DeleteSlackAgentBot403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSlackAgentBot403JSONResponseBodyErrorType enum.
+func (e DeleteSlackAgentBot403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSlackAgentBot403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSlackAgentBot404JSONResponseBodyErrorType.
+const (
+	DeleteSlackAgentBot404JSONResponseBodyErrorTypeApiNotFoundError DeleteSlackAgentBot404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSlackAgentBot404JSONResponseBodyErrorType enum.
+func (e DeleteSlackAgentBot404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSlackAgentBot404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSlackAgentBot409JSONResponseBodyErrorType.
+const (
+	DeleteSlackAgentBot409JSONResponseBodyErrorTypeApiConflictError DeleteSlackAgentBot409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSlackAgentBot409JSONResponseBodyErrorType enum.
+func (e DeleteSlackAgentBot409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSlackAgentBot409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSlackAgentBot500JSONResponseBodyErrorType.
+const (
+	DeleteSlackAgentBot500JSONResponseBodyErrorTypeApiInternalServerError DeleteSlackAgentBot500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSlackAgentBot500JSONResponseBodyErrorType enum.
+func (e DeleteSlackAgentBot500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSlackAgentBot500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackAgentBotJSONBodyConnectionMode.
+const (
+	Socket  UpdateSlackAgentBotJSONBodyConnectionMode = "socket"
+	Webhook UpdateSlackAgentBotJSONBodyConnectionMode = "webhook"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackAgentBotJSONBodyConnectionMode enum.
+func (e UpdateSlackAgentBotJSONBodyConnectionMode) Valid() bool {
+	switch e {
+	case Socket:
+		return true
+	case Webhook:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackAgentBot400JSONResponseBodyErrorType.
+const (
+	UpdateSlackAgentBot400JSONResponseBodyErrorTypeApiValidationError UpdateSlackAgentBot400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackAgentBot400JSONResponseBodyErrorType enum.
+func (e UpdateSlackAgentBot400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackAgentBot400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackAgentBot401JSONResponseBodyErrorType.
+const (
+	UpdateSlackAgentBot401JSONResponseBodyErrorTypeApiAuthenticationError UpdateSlackAgentBot401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackAgentBot401JSONResponseBodyErrorType enum.
+func (e UpdateSlackAgentBot401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackAgentBot401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackAgentBot403JSONResponseBodyErrorType.
+const (
+	UpdateSlackAgentBot403JSONResponseBodyErrorTypeApiAuthorizationError UpdateSlackAgentBot403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackAgentBot403JSONResponseBodyErrorType enum.
+func (e UpdateSlackAgentBot403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackAgentBot403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackAgentBot404JSONResponseBodyErrorType.
+const (
+	UpdateSlackAgentBot404JSONResponseBodyErrorTypeApiNotFoundError UpdateSlackAgentBot404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackAgentBot404JSONResponseBodyErrorType enum.
+func (e UpdateSlackAgentBot404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackAgentBot404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackAgentBot409JSONResponseBodyErrorType.
+const (
+	UpdateSlackAgentBot409JSONResponseBodyErrorTypeApiConflictError UpdateSlackAgentBot409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackAgentBot409JSONResponseBodyErrorType enum.
+func (e UpdateSlackAgentBot409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackAgentBot409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackAgentBot500JSONResponseBodyErrorType.
+const (
+	UpdateSlackAgentBot500JSONResponseBodyErrorTypeApiInternalServerError UpdateSlackAgentBot500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackAgentBot500JSONResponseBodyErrorType enum.
+func (e UpdateSlackAgentBot500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackAgentBot500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetTelegramChatOpsConfig400JSONResponseBodyErrorType.
 const (
 	GetTelegramChatOpsConfig400JSONResponseBodyErrorTypeApiValidationError GetTelegramChatOpsConfig400JSONResponseBodyErrorType = "api_validation_error"
@@ -47195,13 +47519,13 @@ func (e GetToolsWithAssignments200JSONResponseBodyDataDelegateToAgentScope) Vali
 
 // Defines values for GetToolsWithAssignments400JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
+	ApiValidationError GetToolsWithAssignments400JSONResponseBodyErrorType = "api_validation_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments400JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments400JSONResponseBodyErrorTypeApiValidationError:
+	case ApiValidationError:
 		return true
 	default:
 		return false
@@ -47210,13 +47534,13 @@ func (e GetToolsWithAssignments400JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments401JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
+	ApiAuthenticationError GetToolsWithAssignments401JSONResponseBodyErrorType = "api_authentication_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments401JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments401JSONResponseBodyErrorTypeApiAuthenticationError:
+	case ApiAuthenticationError:
 		return true
 	default:
 		return false
@@ -47225,13 +47549,13 @@ func (e GetToolsWithAssignments401JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments403JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
+	ApiAuthorizationError GetToolsWithAssignments403JSONResponseBodyErrorType = "api_authorization_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments403JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments403JSONResponseBodyErrorTypeApiAuthorizationError:
+	case ApiAuthorizationError:
 		return true
 	default:
 		return false
@@ -47240,13 +47564,13 @@ func (e GetToolsWithAssignments403JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments404JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
+	ApiNotFoundError GetToolsWithAssignments404JSONResponseBodyErrorType = "api_not_found_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments404JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments404JSONResponseBodyErrorTypeApiNotFoundError:
+	case ApiNotFoundError:
 		return true
 	default:
 		return false
@@ -47255,13 +47579,13 @@ func (e GetToolsWithAssignments404JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments409JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
+	ApiConflictError GetToolsWithAssignments409JSONResponseBodyErrorType = "api_conflict_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments409JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments409JSONResponseBodyErrorTypeApiConflictError:
+	case ApiConflictError:
 		return true
 	default:
 		return false
@@ -47270,13 +47594,13 @@ func (e GetToolsWithAssignments409JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for GetToolsWithAssignments500JSONResponseBodyErrorType.
 const (
-	GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
+	ApiInternalServerError GetToolsWithAssignments500JSONResponseBodyErrorType = "api_internal_server_error"
 )
 
 // Valid indicates whether the value is a known member of the GetToolsWithAssignments500JSONResponseBodyErrorType enum.
 func (e GetToolsWithAssignments500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
-	case GetToolsWithAssignments500JSONResponseBodyErrorTypeApiInternalServerError:
+	case ApiInternalServerError:
 		return true
 	default:
 		return false
@@ -50750,6 +51074,79 @@ type UpdateSlackChatOpsConfig409JSONResponseBodyErrorType string
 
 // UpdateSlackChatOpsConfig500JSONResponseBodyErrorType defines parameters for UpdateSlackChatOpsConfig.
 type UpdateSlackChatOpsConfig500JSONResponseBodyErrorType string
+
+// ListSlackAgentBots200JSONResponseBodyBotsConnectionMode defines parameters for ListSlackAgentBots.
+type ListSlackAgentBots200JSONResponseBodyBotsConnectionMode string
+
+// ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionMode defines parameters for ListSlackAgentBots.
+type ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionMode string
+
+// ListSlackAgentBots400JSONResponseBodyErrorType defines parameters for ListSlackAgentBots.
+type ListSlackAgentBots400JSONResponseBodyErrorType string
+
+// ListSlackAgentBots401JSONResponseBodyErrorType defines parameters for ListSlackAgentBots.
+type ListSlackAgentBots401JSONResponseBodyErrorType string
+
+// ListSlackAgentBots403JSONResponseBodyErrorType defines parameters for ListSlackAgentBots.
+type ListSlackAgentBots403JSONResponseBodyErrorType string
+
+// ListSlackAgentBots404JSONResponseBodyErrorType defines parameters for ListSlackAgentBots.
+type ListSlackAgentBots404JSONResponseBodyErrorType string
+
+// ListSlackAgentBots409JSONResponseBodyErrorType defines parameters for ListSlackAgentBots.
+type ListSlackAgentBots409JSONResponseBodyErrorType string
+
+// ListSlackAgentBots500JSONResponseBodyErrorType defines parameters for ListSlackAgentBots.
+type ListSlackAgentBots500JSONResponseBodyErrorType string
+
+// DeleteSlackAgentBot400JSONResponseBodyErrorType defines parameters for DeleteSlackAgentBot.
+type DeleteSlackAgentBot400JSONResponseBodyErrorType string
+
+// DeleteSlackAgentBot401JSONResponseBodyErrorType defines parameters for DeleteSlackAgentBot.
+type DeleteSlackAgentBot401JSONResponseBodyErrorType string
+
+// DeleteSlackAgentBot403JSONResponseBodyErrorType defines parameters for DeleteSlackAgentBot.
+type DeleteSlackAgentBot403JSONResponseBodyErrorType string
+
+// DeleteSlackAgentBot404JSONResponseBodyErrorType defines parameters for DeleteSlackAgentBot.
+type DeleteSlackAgentBot404JSONResponseBodyErrorType string
+
+// DeleteSlackAgentBot409JSONResponseBodyErrorType defines parameters for DeleteSlackAgentBot.
+type DeleteSlackAgentBot409JSONResponseBodyErrorType string
+
+// DeleteSlackAgentBot500JSONResponseBodyErrorType defines parameters for DeleteSlackAgentBot.
+type DeleteSlackAgentBot500JSONResponseBodyErrorType string
+
+// UpdateSlackAgentBotJSONBody defines parameters for UpdateSlackAgentBot.
+type UpdateSlackAgentBotJSONBody struct {
+	AppId          *string                                    `json:"appId,omitempty"`
+	AppLevelToken  *string                                    `json:"appLevelToken,omitempty"`
+	BotToken       *string                                    `json:"botToken,omitempty"`
+	ConnectionMode *UpdateSlackAgentBotJSONBodyConnectionMode `json:"connectionMode,omitempty"`
+	Enabled        *bool                                      `json:"enabled,omitempty"`
+	SigningSecret  *string                                    `json:"signingSecret,omitempty"`
+}
+
+// UpdateSlackAgentBotJSONBodyConnectionMode defines parameters for UpdateSlackAgentBot.
+type UpdateSlackAgentBotJSONBodyConnectionMode string
+
+// UpdateSlackAgentBot400JSONResponseBodyErrorType defines parameters for UpdateSlackAgentBot.
+type UpdateSlackAgentBot400JSONResponseBodyErrorType string
+
+// UpdateSlackAgentBot401JSONResponseBodyErrorType defines parameters for UpdateSlackAgentBot.
+type UpdateSlackAgentBot401JSONResponseBodyErrorType string
+
+// UpdateSlackAgentBot403JSONResponseBodyErrorType defines parameters for UpdateSlackAgentBot.
+type UpdateSlackAgentBot403JSONResponseBodyErrorType string
+
+// UpdateSlackAgentBot404JSONResponseBodyErrorType defines parameters for UpdateSlackAgentBot.
+type UpdateSlackAgentBot404JSONResponseBodyErrorType string
+
+// UpdateSlackAgentBot409JSONResponseBodyErrorType defines parameters for UpdateSlackAgentBot.
+type UpdateSlackAgentBot409JSONResponseBodyErrorType string
+
+// UpdateSlackAgentBot500JSONResponseBodyErrorType defines parameters for UpdateSlackAgentBot.
+type UpdateSlackAgentBot500JSONResponseBodyErrorType string
 
 // GetTelegramChatOpsConfig400JSONResponseBodyErrorType defines parameters for GetTelegramChatOpsConfig.
 type GetTelegramChatOpsConfig400JSONResponseBodyErrorType string
@@ -59251,6 +59648,9 @@ type UpdateChatOpsConfigInQuickstartJSONRequestBody UpdateChatOpsConfigInQuickst
 // UpdateSlackChatOpsConfigJSONRequestBody defines body for UpdateSlackChatOpsConfig for application/json ContentType.
 type UpdateSlackChatOpsConfigJSONRequestBody UpdateSlackChatOpsConfigJSONBody
 
+// UpdateSlackAgentBotJSONRequestBody defines body for UpdateSlackAgentBot for application/json ContentType.
+type UpdateSlackAgentBotJSONRequestBody UpdateSlackAgentBotJSONBody
+
 // UpdateTelegramChatOpsConfigJSONRequestBody defines body for UpdateTelegramChatOpsConfig for application/json ContentType.
 type UpdateTelegramChatOpsConfigJSONRequestBody UpdateTelegramChatOpsConfigJSONBody
 
@@ -66582,6 +66982,17 @@ type ClientInterface interface {
 
 	UpdateSlackChatOpsConfig(ctx context.Context, body UpdateSlackChatOpsConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListSlackAgentBots request
+	ListSlackAgentBots(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteSlackAgentBot request
+	DeleteSlackAgentBot(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSlackAgentBotWithBody request with any body
+	UpdateSlackAgentBotWithBody(ctx context.Context, agentId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateSlackAgentBot(ctx context.Context, agentId openapi_types.UUID, body UpdateSlackAgentBotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetTelegramChatOpsConfig request
 	GetTelegramChatOpsConfig(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -68242,6 +68653,54 @@ func (c *Client) UpdateSlackChatOpsConfigWithBody(ctx context.Context, contentTy
 
 func (c *Client) UpdateSlackChatOpsConfig(ctx context.Context, body UpdateSlackChatOpsConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateSlackChatOpsConfigRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListSlackAgentBots(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSlackAgentBotsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteSlackAgentBot(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSlackAgentBotRequest(c.Server, agentId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSlackAgentBotWithBody(ctx context.Context, agentId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSlackAgentBotRequestWithBody(c.Server, agentId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSlackAgentBot(ctx context.Context, agentId openapi_types.UUID, body UpdateSlackAgentBotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSlackAgentBotRequest(c.Server, agentId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -74035,6 +74494,114 @@ func NewUpdateSlackChatOpsConfigRequestWithBody(server string, contentType strin
 	}
 
 	operationPath := fmt.Sprintf("/api/chatops/config/slack")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListSlackAgentBotsRequest generates requests for ListSlackAgentBots
+func NewListSlackAgentBotsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/config/slack/agents")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteSlackAgentBotRequest generates requests for DeleteSlackAgentBot
+func NewDeleteSlackAgentBotRequest(server string, agentId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "agentId", agentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/config/slack/agents/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateSlackAgentBotRequest calls the generic UpdateSlackAgentBot builder with application/json body
+func NewUpdateSlackAgentBotRequest(server string, agentId openapi_types.UUID, body UpdateSlackAgentBotJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateSlackAgentBotRequestWithBody(server, agentId, "application/json", bodyReader)
+}
+
+// NewUpdateSlackAgentBotRequestWithBody generates requests for UpdateSlackAgentBot with any type of body
+func NewUpdateSlackAgentBotRequestWithBody(server string, agentId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "agentId", agentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/config/slack/agents/%s", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -82570,6 +83137,17 @@ type ClientWithResponsesInterface interface {
 
 	UpdateSlackChatOpsConfigWithResponse(ctx context.Context, body UpdateSlackChatOpsConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSlackChatOpsConfigResponse, error)
 
+	// ListSlackAgentBotsWithResponse request
+	ListSlackAgentBotsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSlackAgentBotsResponse, error)
+
+	// DeleteSlackAgentBotWithResponse request
+	DeleteSlackAgentBotWithResponse(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteSlackAgentBotResponse, error)
+
+	// UpdateSlackAgentBotWithBodyWithResponse request with any body
+	UpdateSlackAgentBotWithBodyWithResponse(ctx context.Context, agentId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSlackAgentBotResponse, error)
+
+	UpdateSlackAgentBotWithResponse(ctx context.Context, agentId openapi_types.UUID, body UpdateSlackAgentBotJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSlackAgentBotResponse, error)
+
 	// GetTelegramChatOpsConfigWithResponse request
 	GetTelegramChatOpsConfigWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTelegramChatOpsConfigResponse, error)
 
@@ -88949,6 +89527,271 @@ func (r UpdateSlackChatOpsConfigResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateSlackChatOpsConfigResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ListSlackAgentBotsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Bots []struct {
+			AgentId        string                                                  `json:"agentId"`
+			AgentName      string                                                  `json:"agentName"`
+			AppId          string                                                  `json:"appId"`
+			BotUserId      *string                                                 `json:"botUserId"`
+			Connected      bool                                                    `json:"connected"`
+			ConnectionMode ListSlackAgentBots200JSONResponseBodyBotsConnectionMode `json:"connectionMode"`
+			CreatedBy      *struct {
+				Id   string  `json:"id"`
+				Name *string `json:"name"`
+			} `json:"createdBy"`
+			CreatedByArchestra bool     `json:"createdByArchestra"`
+			Enabled            bool     `json:"enabled"`
+			Handle             *string  `json:"handle"`
+			IdentitySyncError  *string  `json:"identitySyncError"`
+			Installed          bool     `json:"installed"`
+			MissingScopes      []string `json:"missingScopes"`
+			NeedsAppLevelToken bool     `json:"needsAppLevelToken"`
+			ReinstallUrl       *string  `json:"reinstallUrl"`
+			TeamId             *string  `json:"teamId"`
+		} `json:"bots"`
+		CanCreateApps   bool `json:"canCreateApps"`
+		OneClickInstall bool `json:"oneClickInstall"`
+		UnassignedApp   *struct {
+			AgentUsage []struct {
+				AgentId   string  `json:"agentId"`
+				AgentName string  `json:"agentName"`
+				Bindings  float32 `json:"bindings"`
+			} `json:"agentUsage"`
+			AppId          string                                                           `json:"appId"`
+			Connected      bool                                                             `json:"connected"`
+			ConnectionMode ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionMode `json:"connectionMode"`
+			CreatedBy      *struct {
+				Id   string  `json:"id"`
+				Name *string `json:"name"`
+			} `json:"createdBy"`
+			Handle             *string `json:"handle"`
+			Installed          bool    `json:"installed"`
+			NeedsAppLevelToken bool    `json:"needsAppLevelToken"`
+		} `json:"unassignedApp"`
+		WorkspaceName *string `json:"workspaceName"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         ListSlackAgentBots400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         ListSlackAgentBots401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                        `json:"details,omitempty"`
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         ListSlackAgentBots403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         ListSlackAgentBots404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         ListSlackAgentBots409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         ListSlackAgentBots500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSlackAgentBotsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSlackAgentBotsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListSlackAgentBotsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteSlackAgentBotResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         DeleteSlackAgentBot400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         DeleteSlackAgentBot401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                         `json:"details,omitempty"`
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         DeleteSlackAgentBot403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         DeleteSlackAgentBot404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         DeleteSlackAgentBot409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         DeleteSlackAgentBot500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteSlackAgentBotResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteSlackAgentBotResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteSlackAgentBotResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateSlackAgentBotResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         UpdateSlackAgentBot400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         UpdateSlackAgentBot401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                         `json:"details,omitempty"`
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         UpdateSlackAgentBot403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         UpdateSlackAgentBot404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         UpdateSlackAgentBot409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         UpdateSlackAgentBot500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateSlackAgentBotResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSlackAgentBotResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateSlackAgentBotResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -108344,6 +109187,41 @@ func (c *ClientWithResponses) UpdateSlackChatOpsConfigWithResponse(ctx context.C
 	return ParseUpdateSlackChatOpsConfigResponse(rsp)
 }
 
+// ListSlackAgentBotsWithResponse request returning *ListSlackAgentBotsResponse
+func (c *ClientWithResponses) ListSlackAgentBotsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSlackAgentBotsResponse, error) {
+	rsp, err := c.ListSlackAgentBots(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSlackAgentBotsResponse(rsp)
+}
+
+// DeleteSlackAgentBotWithResponse request returning *DeleteSlackAgentBotResponse
+func (c *ClientWithResponses) DeleteSlackAgentBotWithResponse(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteSlackAgentBotResponse, error) {
+	rsp, err := c.DeleteSlackAgentBot(ctx, agentId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteSlackAgentBotResponse(rsp)
+}
+
+// UpdateSlackAgentBotWithBodyWithResponse request with arbitrary body returning *UpdateSlackAgentBotResponse
+func (c *ClientWithResponses) UpdateSlackAgentBotWithBodyWithResponse(ctx context.Context, agentId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSlackAgentBotResponse, error) {
+	rsp, err := c.UpdateSlackAgentBotWithBody(ctx, agentId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSlackAgentBotResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateSlackAgentBotWithResponse(ctx context.Context, agentId openapi_types.UUID, body UpdateSlackAgentBotJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSlackAgentBotResponse, error) {
+	rsp, err := c.UpdateSlackAgentBot(ctx, agentId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSlackAgentBotResponse(rsp)
+}
+
 // GetTelegramChatOpsConfigWithResponse request returning *GetTelegramChatOpsConfigResponse
 func (c *ClientWithResponses) GetTelegramChatOpsConfigWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTelegramChatOpsConfigResponse, error) {
 	rsp, err := c.GetTelegramChatOpsConfig(ctx, reqEditors...)
@@ -118100,6 +118978,367 @@ func ParseUpdateSlackChatOpsConfigResponse(rsp *http.Response) (*UpdateSlackChat
 				InternalCode *string                                              `json:"internal_code,omitempty"`
 				Message      string                                               `json:"message"`
 				Type         UpdateSlackChatOpsConfig500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListSlackAgentBotsResponse parses an HTTP response from a ListSlackAgentBotsWithResponse call
+func ParseListSlackAgentBotsResponse(rsp *http.Response) (*ListSlackAgentBotsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSlackAgentBotsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Bots []struct {
+				AgentId        string                                                  `json:"agentId"`
+				AgentName      string                                                  `json:"agentName"`
+				AppId          string                                                  `json:"appId"`
+				BotUserId      *string                                                 `json:"botUserId"`
+				Connected      bool                                                    `json:"connected"`
+				ConnectionMode ListSlackAgentBots200JSONResponseBodyBotsConnectionMode `json:"connectionMode"`
+				CreatedBy      *struct {
+					Id   string  `json:"id"`
+					Name *string `json:"name"`
+				} `json:"createdBy"`
+				CreatedByArchestra bool     `json:"createdByArchestra"`
+				Enabled            bool     `json:"enabled"`
+				Handle             *string  `json:"handle"`
+				IdentitySyncError  *string  `json:"identitySyncError"`
+				Installed          bool     `json:"installed"`
+				MissingScopes      []string `json:"missingScopes"`
+				NeedsAppLevelToken bool     `json:"needsAppLevelToken"`
+				ReinstallUrl       *string  `json:"reinstallUrl"`
+				TeamId             *string  `json:"teamId"`
+			} `json:"bots"`
+			CanCreateApps   bool `json:"canCreateApps"`
+			OneClickInstall bool `json:"oneClickInstall"`
+			UnassignedApp   *struct {
+				AgentUsage []struct {
+					AgentId   string  `json:"agentId"`
+					AgentName string  `json:"agentName"`
+					Bindings  float32 `json:"bindings"`
+				} `json:"agentUsage"`
+				AppId          string                                                           `json:"appId"`
+				Connected      bool                                                             `json:"connected"`
+				ConnectionMode ListSlackAgentBots200JSONResponseBodyUnassignedAppConnectionMode `json:"connectionMode"`
+				CreatedBy      *struct {
+					Id   string  `json:"id"`
+					Name *string `json:"name"`
+				} `json:"createdBy"`
+				Handle             *string `json:"handle"`
+				Installed          bool    `json:"installed"`
+				NeedsAppLevelToken bool    `json:"needsAppLevelToken"`
+			} `json:"unassignedApp"`
+			WorkspaceName *string `json:"workspaceName"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         ListSlackAgentBots400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         ListSlackAgentBots401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                        `json:"details,omitempty"`
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         ListSlackAgentBots403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         ListSlackAgentBots404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         ListSlackAgentBots409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         ListSlackAgentBots500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteSlackAgentBotResponse parses an HTTP response from a DeleteSlackAgentBotWithResponse call
+func ParseDeleteSlackAgentBotResponse(rsp *http.Response) (*DeleteSlackAgentBotResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteSlackAgentBotResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         DeleteSlackAgentBot400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         DeleteSlackAgentBot401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                         `json:"details,omitempty"`
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         DeleteSlackAgentBot403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         DeleteSlackAgentBot404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         DeleteSlackAgentBot409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         DeleteSlackAgentBot500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateSlackAgentBotResponse parses an HTTP response from a UpdateSlackAgentBotWithResponse call
+func ParseUpdateSlackAgentBotResponse(rsp *http.Response) (*UpdateSlackAgentBotResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateSlackAgentBotResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         UpdateSlackAgentBot400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         UpdateSlackAgentBot401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                         `json:"details,omitempty"`
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         UpdateSlackAgentBot403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         UpdateSlackAgentBot404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         UpdateSlackAgentBot409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         UpdateSlackAgentBot500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

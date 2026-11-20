@@ -3,12 +3,12 @@
 page_title: "archestra_chatops_slack Resource - archestra"
 subcategory: ""
 description: |-
-  The organization's Slack integration, so people can chat with agents in Slack. One per organization. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the integration off and keeps the stored credentials. Enabling it checks the bot token with Slack.
+  The organization's Slack integration, so people can chat with agents in Slack. One per organization; to give an agent its own Slack bot, use archestra_chatops_slack_agent_bot. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the integration off and keeps the stored credentials. Enabling it checks the bot token with Slack.
 ---
 
 # archestra_chatops_slack (Resource)
 
-The organization's Slack integration, so people can chat with agents in Slack. One per organization. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the integration off and keeps the stored credentials. Enabling it checks the bot token with Slack.
+The organization's Slack integration, so people can chat with agents in Slack. One per organization; to give an agent its own Slack bot, use `archestra_chatops_slack_agent_bot`. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the integration off and keeps the stored credentials. Enabling it checks the bot token with Slack.
 
 ## Example Usage
 

@@ -23,6 +23,9 @@ output-options:
     - updateChatOpsConfigInQuickstart
     - getTelegramChatOpsConfig
     - updateTelegramChatOpsConfig
+    - listSlackAgentBots
+    - updateSlackAgentBot
+    - deleteSlackAgentBot
     - addTeamExternalGroup
     - addTeamMember
     - assignToolToAgent

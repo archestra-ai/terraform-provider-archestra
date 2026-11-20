@@ -33,7 +33,7 @@ func NewChatOpsSlackResource() resource.Resource {
 	return &ChatOpsResource{channel: chatOpsChannel{
 		typeName:    "chatops_slack",
 		id:          "slack",
-		description: "The organization's Slack integration, so people can chat with agents in Slack. One per organization. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the integration off and keeps the stored credentials. Enabling it checks the bot token with Slack.",
+		description: "The organization's Slack integration, so people can chat with agents in Slack. One per organization; to give an agent its own Slack bot, use `archestra_chatops_slack_agent_bot`. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the integration off and keeps the stored credentials. Enabling it checks the bot token with Slack.",
 		fields: []chatOpsField{
 			{tf: "bot_token", json: "botToken", secret: true, desc: "Slack bot token (`xoxb-…`)."},
 			{tf: "signing_secret", json: "signingSecret", secret: true, desc: "Slack signing secret, used in webhook mode."},
@@ -43,12 +43,12 @@ func NewChatOpsSlackResource() resource.Resource {
 		},
 		apiShape: client.GetSlackChatOpsConfigResponse{},
 		get: func(ctx context.Context, c *client.ClientWithResponses) (int, []byte, error) {
-			r, err := c.GetSlackChatOpsConfigWithResponse(ctx)
-			return chatOpsResult(r, err)
+			r, err := c.GetSlackChatOpsConfig(ctx)
+			return chatOpsRaw(r, err)
 		},
 		put: func(ctx context.Context, c *client.ClientWithResponses, body io.Reader) (int, []byte, error) {
-			r, err := c.UpdateSlackChatOpsConfigWithBodyWithResponse(ctx, "application/json", body)
-			return chatOpsResult(r, err)
+			r, err := c.UpdateSlackChatOpsConfigWithBody(ctx, "application/json", body)
+			return chatOpsRaw(r, err)
 		},
 	}}
 }
@@ -67,12 +67,12 @@ func NewChatOpsMsTeamsResource() resource.Resource {
 		},
 		apiShape: client.GetMsTeamsChatOpsConfigResponse{},
 		get: func(ctx context.Context, c *client.ClientWithResponses) (int, []byte, error) {
-			r, err := c.GetMsTeamsChatOpsConfigWithResponse(ctx)
-			return chatOpsResult(r, err)
+			r, err := c.GetMsTeamsChatOpsConfig(ctx)
+			return chatOpsRaw(r, err)
 		},
 		put: func(ctx context.Context, c *client.ClientWithResponses, body io.Reader) (int, []byte, error) {
-			r, err := c.UpdateChatOpsConfigInQuickstartWithBodyWithResponse(ctx, "application/json", body)
-			return chatOpsResult(r, err)
+			r, err := c.UpdateChatOpsConfigInQuickstartWithBody(ctx, "application/json", body)
+			return chatOpsRaw(r, err)
 		},
 	}}
 }
@@ -87,12 +87,12 @@ func NewChatOpsTelegramResource() resource.Resource {
 		},
 		apiShape: client.GetTelegramChatOpsConfigResponse{},
 		get: func(ctx context.Context, c *client.ClientWithResponses) (int, []byte, error) {
-			r, err := c.GetTelegramChatOpsConfigWithResponse(ctx)
-			return chatOpsResult(r, err)
+			r, err := c.GetTelegramChatOpsConfig(ctx)
+			return chatOpsRaw(r, err)
 		},
 		put: func(ctx context.Context, c *client.ClientWithResponses, body io.Reader) (int, []byte, error) {
-			r, err := c.UpdateTelegramChatOpsConfigWithBodyWithResponse(ctx, "application/json", body)
-			return chatOpsResult(r, err)
+			r, err := c.UpdateTelegramChatOpsConfigWithBody(ctx, "application/json", body)
+			return chatOpsRaw(r, err)
 		},
 	}}
 }
@@ -209,7 +209,7 @@ func (r *ChatOpsResource) Delete(ctx context.Context, _ resource.DeleteRequest, 
 		return
 	}
 	if status != http.StatusOK {
-		resp.Diagnostics.AddError("Disable Failed", fmt.Sprintf("API returned status %d: %s", status, string(body)))
+		resp.Diagnostics.AddError(chatOpsStatusError("Disable Failed", status, body))
 	}
 }
 
@@ -229,7 +229,7 @@ func (r *ChatOpsResource) write(ctx context.Context, patch map[string]any, state
 		return
 	}
 	if status != http.StatusOK {
-		diags.AddError("Save Failed", fmt.Sprintf("API returned status %d: %s", status, string(respBody)))
+		diags.AddError(chatOpsStatusError("Save Failed", status, respBody))
 		return
 	}
 	r.refresh(ctx, state, diags)
@@ -244,7 +244,7 @@ func (r *ChatOpsResource) refresh(ctx context.Context, state *tfsdk.State, diags
 		return
 	}
 	if status != http.StatusOK {
-		diags.AddError("Read Failed", fmt.Sprintf("API returned status %d: %s", status, string(body)))
+		diags.AddError(chatOpsStatusError("Read Failed", status, body))
 		return
 	}
 	var stored map[string]any
@@ -282,32 +282,25 @@ func chatOpsString(value any) types.String {
 	return types.StringNull()
 }
 
-type chatOpsResponse interface {
-	StatusCode() int
-}
-
-func chatOpsResult[T chatOpsResponse](r T, err error) (int, []byte, error) {
+// The raw client: the generated response parser rejects the error body an
+// Archestra release without these routes sends with its 404.
+func chatOpsRaw(resp *http.Response, err error) (int, []byte, error) {
 	if err != nil {
 		return 0, nil, err
 	}
-	body := chatOpsBody(r)
-	return r.StatusCode(), body, nil
+	defer resp.Body.Close()
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	if err != nil {
+		return 0, nil, err
+	}
+	return resp.StatusCode, body, nil
 }
 
-func chatOpsBody(r any) []byte {
-	switch v := r.(type) {
-	case *client.GetSlackChatOpsConfigResponse:
-		return v.Body
-	case *client.UpdateSlackChatOpsConfigResponse:
-		return v.Body
-	case *client.GetMsTeamsChatOpsConfigResponse:
-		return v.Body
-	case *client.UpdateChatOpsConfigInQuickstartResponse:
-		return v.Body
-	case *client.GetTelegramChatOpsConfigResponse:
-		return v.Body
-	case *client.UpdateTelegramChatOpsConfigResponse:
-		return v.Body
+const chatOpsMinimumAPIVersion = "1.5.0-rc.1"
+
+func chatOpsStatusError(summary string, status int, body []byte) (string, string) {
+	if status == http.StatusNotFound {
+		return summary, fmt.Sprintf("This Archestra server has no ChatOps configuration API; it needs Archestra %s or later.", chatOpsMinimumAPIVersion)
 	}
-	return nil
+	return summary, fmt.Sprintf("API returned status %d: %s", status, string(body))
 }

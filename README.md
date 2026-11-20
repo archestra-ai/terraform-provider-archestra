@@ -32,6 +32,7 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_blob_provider` | `storage` / `BlobProvider` |
 | `archestra_chatops_ms_teams` | `chatops` / `MSTeams` |
 | `archestra_chatops_slack` | `chatops` / `Slack` |
+| `archestra_chatops_slack_agent_bot` | `chatops` / `SlackAgentBot` |
 | `archestra_chatops_telegram` | `chatops` / `Telegram` |
 | `archestra_cost_export` | `llm` / `CostExport` |
 | `archestra_credential` | `credential` / `Credential` |

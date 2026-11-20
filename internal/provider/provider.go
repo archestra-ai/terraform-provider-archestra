@@ -225,6 +225,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewSiteNotificationResource,
 		NewGuardrailsPolicyResource,
 		NewChatOpsSlackResource,
+		NewChatOpsSlackAgentBotResource,
 		NewChatOpsMsTeamsResource,
 		NewChatOpsTelegramResource,
 	}
