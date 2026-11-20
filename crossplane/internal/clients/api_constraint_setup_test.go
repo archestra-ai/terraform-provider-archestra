@@ -2,6 +2,7 @@ package clients
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	clusterenvironment "github.com/archestra-ai/provider-archestra/apis/cluster/environment/v1alpha1"
@@ -74,6 +75,15 @@ func TestAPIConstraintReachesTerraformInBothScopes(t *testing.T) {
 			}
 			if result.Configuration["api_key"] != "synthetic-fixture" || result.Configuration["base_url"] != "http://127.0.0.1:19000" || len(result.Configuration) != 3 {
 				t.Fatal("provider credential allowlist changed")
+			}
+			// OpenTofu resolves a source without a host to registry.opentofu.org;
+			// the configuration and the state upjet writes must name one address.
+			const address = "registry.terraform.io/archestra-ai/archestra"
+			if result.Requirement.Source != address {
+				t.Fatalf("provider source %q, want %q", result.Requirement.Source, address)
+			}
+			if got := fmt.Sprintf(result.Requirement.Registry, result.Requirement.Source); got != `provider["`+address+`"]` {
+				t.Fatalf("state provider address %s", got)
 			}
 		})
 	}

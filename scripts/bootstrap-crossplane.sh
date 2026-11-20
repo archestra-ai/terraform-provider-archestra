@@ -12,7 +12,7 @@
 #      and creates the cluster ProviderConfig plus the namespaced
 #      ClusterProviderConfig and ProviderConfig, all named ${PROVIDER_CONFIG}.
 #   5. Deploys the remote MCP fixture (scripts/k8s/provider-mcp-mock.yaml).
-#   6. Starts the controller on the host with Terraform 1.5.7 and the locally
+#   6. Starts the controller on the host with OpenTofu (as terraform) and the locally
 #      built provider served from a filesystem mirror.
 #
 # Required tools: kind, kubectl, helm, curl, python3; go, goimports and make when building.
@@ -36,17 +36,19 @@ KIND_CLUSTER="${KIND_CLUSTER:-archestra-ci-cluster}"
 CROSSPLANE_VERSION="${CROSSPLANE_VERSION:-2.2.1}"
 CROSSPLANE_NAMESPACE="${CROSSPLANE_NAMESPACE:-crossplane-system}"
 PROVIDER_CONFIG="${PROVIDER_CONFIG:-default}"
-TERRAFORM_VERSION=1.5.7
-# SHA256 of each terraform_1.5.7_<platform>.zip, from HashiCorp's
-# terraform_1.5.7_SHA256SUMS, whose GPG signature verifies against the HashiCorp
-# Security key (C874 011F 0AB4 0511 0D02 1055 3436 5D94 72D7 468F). Update them
-# together with TERRAFORM_VERSION.
+# The CLI the provider image runs: OpenTofu, installed as `terraform`.
+TERRAFORM_VERSION=1.13.9
+# SHA256 of each tofu_1.13.9_<platform>.zip, from OpenTofu's
+# tofu_1.13.9_SHA256SUMS, whose cosign signature verifies against the
+# opentofu/opentofu release workflow
+# (https://github.com/opentofu/opentofu/.github/workflows/release.yml@refs/heads/v1.13).
+# Update them together with TERRAFORM_VERSION and crossplane/Makefile.
 terraform_sha256() {
   case "$1" in
-    darwin_amd64) echo b310ec0e626e9799000cfc8e30247cd827cf7f8030c8e0400257c7f111e93537 ;;
-    darwin_arm64) echo db7c33eb1a446b73a443e2c55b532845f7b70cd56100bec4c96f15cfab5f50cb ;;
-    linux_amd64) echo c0ed7bc32ee52ae255af9982c8c88a7a4c610485cf1d55feeb037eab75fa082c ;;
-    linux_arm64) echo f4b4ad7c6b6088960a667e34495cae490fb072947a9ff266bf5929f5333565e4 ;;
+    darwin_amd64) echo ac5505dd19d896f327d0ab727d4b853413c694931a7602b31f93c3a3e9d46d00 ;;
+    darwin_arm64) echo 29ba2f4c78556a8d25476e5070fe4745495ef649c4a3b827170eb7436d23feb3 ;;
+    linux_amd64) echo bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce ;;
+    linux_arm64) echo 04f7c93828b859d420269ed30f923ffebf09157b5d7fb95bf8d88a4d208b7fa3 ;;
     *) return 1 ;;
   esac
 }
@@ -226,12 +228,12 @@ if [ "${CROSSPLANE_SKIP_MCP_FIXTURE:-0}" != 1 ]; then
   fi
 fi
 
-# 6. Terraform 1.5.7, the provider mirror and the controller.
+# 6. OpenTofu, the provider mirror and the controller.
 if [ ! -x "${TERRAFORM_DIR}/terraform" ]; then
-  log "Downloading Terraform ${TERRAFORM_VERSION}..."
+  log "Downloading OpenTofu ${TERRAFORM_VERSION}..."
   terraform_digest="$(terraform_sha256 "$GOOS_ARCH")" || { log "No pinned Terraform checksum for ${GOOS_ARCH}"; exit 1; }
   mkdir -p "$TERRAFORM_DIR"
-  curl -fsSL "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_${GOOS_ARCH}.zip" \
+  curl -fsSL "https://github.com/opentofu/opentofu/releases/download/v${TERRAFORM_VERSION}/tofu_${TERRAFORM_VERSION}_${GOOS_ARCH}.zip" \
     -o "${TERRAFORM_DIR}/terraform.zip"
   if command -v sha256sum >/dev/null 2>&1; then
     echo "${terraform_digest}  ${TERRAFORM_DIR}/terraform.zip" | sha256sum -c - >&2
@@ -239,6 +241,7 @@ if [ ! -x "${TERRAFORM_DIR}/terraform" ]; then
     echo "${terraform_digest}  ${TERRAFORM_DIR}/terraform.zip" | shasum -a 256 -c - >&2
   fi
   python3 -c 'import sys, zipfile; zipfile.ZipFile(sys.argv[1]).extractall(sys.argv[2])' "${TERRAFORM_DIR}/terraform.zip" "$TERRAFORM_DIR"
+  mv "${TERRAFORM_DIR}/tofu" "${TERRAFORM_DIR}/terraform"
   chmod +x "${TERRAFORM_DIR}/terraform"
   rm -f "${TERRAFORM_DIR}/terraform.zip"
 fi
@@ -249,10 +252,10 @@ cat > "${WORK_DIR}/terraformrc" <<EOF
 provider_installation {
   filesystem_mirror {
     path    = "${MIRROR_DIR}"
-    include = ["*/*"]
+    include = ["registry.terraform.io/*/*"]
   }
   direct {
-    exclude = ["*/*"]
+    exclude = ["registry.terraform.io/*/*"]
   }
 }
 EOF
