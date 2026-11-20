@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.8.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.7.0...v3.8.0) (2026-11-20)
+
+
+### Features
+
+* name teams, service accounts, keys and pools by reference in sharing grants and limits ([#276](https://github.com/archestra-ai/terraform-provider-archestra/issues/276)) ([b819ac4](https://github.com/archestra-ai/terraform-provider-archestra/commit/b819ac495db84dd62789a604d4769f61bc8836d0))
+* sign in with workload identity in the Terraform and Crossplane providers ([#273](https://github.com/archestra-ai/terraform-provider-archestra/issues/273)) ([72ef5b7](https://github.com/archestra-ai/terraform-provider-archestra/commit/72ef5b7ff697826b062a5be6bbe55ceb97ee13ba))
+* site notification, guardrails policy and ChatOps resources (incl. per-agent Slack bots), plus six lookup data sources ([#274](https://github.com/archestra-ai/terraform-provider-archestra/issues/274)) ([1fd68ff](https://github.com/archestra-ai/terraform-provider-archestra/commit/1fd68ff37478f9097b82a105ca5084999be3ab90))
+
 ## [3.7.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.6.0...v3.7.0) (2026-11-20)
 
 
