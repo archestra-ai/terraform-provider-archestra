@@ -31,9 +31,11 @@ import (
 
 func NewChatOpsSlackResource() resource.Resource {
 	return &ChatOpsResource{channel: chatOpsChannel{
-		typeName:    "chatops_slack",
-		id:          "slack",
-		description: "The organization's Slack integration, so people can chat with agents in Slack. One per organization; to give an agent its own Slack bot, use `archestra_chatops_slack_agent_bot`. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the integration off and keeps the stored credentials. Enabling it checks the bot token with Slack.",
+		typeName: "chatops_slack",
+		id:       "slack",
+		description: "The organization's shared Slack app: one bot that answers as whichever agent a channel or direct message is bound to. People pick the agent on their first message, and reach another one with `Agent > message` or the `list` command. One per organization.\n\n" +
+			"To give an agent a Slack bot of its own, which people @mention by name and which always answers as that agent, use `archestra_chatops_slack_agent_bot`. Several such bots can work in the same channel and thread, and they run alongside this app.\n\n" +
+			"Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the app off and keeps the stored credentials. Enabling it checks the bot token with Slack.",
 		fields: []chatOpsField{
 			{tf: "bot_token", json: "botToken", secret: true, desc: "Slack bot token (`xoxb-…`)."},
 			{tf: "signing_secret", json: "signingSecret", secret: true, desc: "Slack signing secret, used in webhook mode."},

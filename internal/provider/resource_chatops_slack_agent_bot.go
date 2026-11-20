@@ -51,7 +51,9 @@ func (r *ChatOpsSlackAgentBotResource) Metadata(_ context.Context, req resource.
 func (r *ChatOpsSlackAgentBotResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	sticky := []planmodifier.String{stringplanmodifier.UseStateForUnknown()}
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "A Slack app whose bot always answers as one agent, in addition to the organization's Slack app (`archestra_chatops_slack`). Each agent has at most one bot. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource disconnects the bot. Enabling it checks the bot token with Slack.",
+		MarkdownDescription: "A Slack app of its own for one agent. Its bot always answers as that agent, whatever channel it is in, and people @mention it by name, for example `@archestra_marketing`. Several agents' bots can work in the same channel and thread; mentioning one does not wake another. Each agent has at most one bot, and each bot needs its own Slack app.\n\n" +
+			"This is separate from the organization's shared Slack app (`archestra_chatops_slack`), one bot that answers as whichever agent a channel or direct message is bound to. Use either or both.\n\n" +
+			"Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource disconnects the bot. Enabling it checks the bot token with Slack.",
 		Attributes: map[string]schema.Attribute{
 			"id":              schema.StringAttribute{Computed: true, PlanModifiers: sticky, MarkdownDescription: "Agent ID."},
 			"agent_id":        schema.StringAttribute{Required: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "ID of the agent the bot answers as."},

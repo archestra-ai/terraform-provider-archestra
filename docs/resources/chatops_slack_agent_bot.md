@@ -3,12 +3,18 @@
 page_title: "archestra_chatops_slack_agent_bot Resource - archestra"
 subcategory: ""
 description: |-
-  A Slack app whose bot always answers as one agent, in addition to the organization's Slack app (archestra_chatops_slack). Each agent has at most one bot. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource disconnects the bot. Enabling it checks the bot token with Slack.
+  A Slack app of its own for one agent. Its bot always answers as that agent, whatever channel it is in, and people @mention it by name, for example @archestra_marketing. Several agents' bots can work in the same channel and thread; mentioning one does not wake another. Each agent has at most one bot, and each bot needs its own Slack app.
+  This is separate from the organization's shared Slack app (archestra_chatops_slack), one bot that answers as whichever agent a channel or direct message is bound to. Use either or both.
+  Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource disconnects the bot. Enabling it checks the bot token with Slack.
 ---
 
 # archestra_chatops_slack_agent_bot (Resource)
 
-A Slack app whose bot always answers as one agent, in addition to the organization's Slack app (`archestra_chatops_slack`). Each agent has at most one bot. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource disconnects the bot. Enabling it checks the bot token with Slack.
+A Slack app of its own for one agent. Its bot always answers as that agent, whatever channel it is in, and people @mention it by name, for example `@archestra_marketing`. Several agents' bots can work in the same channel and thread; mentioning one does not wake another. Each agent has at most one bot, and each bot needs its own Slack app.
+
+This is separate from the organization's shared Slack app (`archestra_chatops_slack`), one bot that answers as whichever agent a channel or direct message is bound to. Use either or both.
+
+Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource disconnects the bot. Enabling it checks the bot token with Slack.
 
 ## Example Usage
 

@@ -3,12 +3,18 @@
 page_title: "archestra_chatops_slack Resource - archestra"
 subcategory: ""
 description: |-
-  The organization's Slack integration, so people can chat with agents in Slack. One per organization; to give an agent its own Slack bot, use archestra_chatops_slack_agent_bot. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the integration off and keeps the stored credentials. Enabling it checks the bot token with Slack.
+  The organization's shared Slack app: one bot that answers as whichever agent a channel or direct message is bound to. People pick the agent on their first message, and reach another one with Agent > message or the list command. One per organization.
+  To give an agent a Slack bot of its own, which people @mention by name and which always answers as that agent, use archestra_chatops_slack_agent_bot. Several such bots can work in the same channel and thread, and they run alongside this app.
+  Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the app off and keeps the stored credentials. Enabling it checks the bot token with Slack.
 ---
 
 # archestra_chatops_slack (Resource)
 
-The organization's Slack integration, so people can chat with agents in Slack. One per organization; to give an agent its own Slack bot, use `archestra_chatops_slack_agent_bot`. Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the integration off and keeps the stored credentials. Enabling it checks the bot token with Slack.
+The organization's shared Slack app: one bot that answers as whichever agent a channel or direct message is bound to. People pick the agent on their first message, and reach another one with `Agent > message` or the `list` command. One per organization.
+
+To give an agent a Slack bot of its own, which people @mention by name and which always answers as that agent, use `archestra_chatops_slack_agent_bot`. Several such bots can work in the same channel and thread, and they run alongside this app.
+
+Secrets are write-only: the API never returns them, so a change made outside Terraform is not detected. Destroying the resource turns the app off and keeps the stored credentials. Enabling it checks the bot token with Slack.
 
 ## Example Usage
 
@@ -23,6 +29,7 @@ variable "slack_app_level_token" {
   sensitive = true
 }
 
+# The shared bot: each channel or direct message is bound to an agent.
 resource "archestra_chatops_slack" "this" {
   connection_mode = "socket"
   app_id          = "A0123456789"

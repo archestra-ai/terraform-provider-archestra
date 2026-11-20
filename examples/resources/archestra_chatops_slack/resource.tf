@@ -8,6 +8,7 @@ variable "slack_app_level_token" {
   sensitive = true
 }
 
+# The shared bot: each channel or direct message is bound to an agent.
 resource "archestra_chatops_slack" "this" {
   connection_mode = "socket"
   app_id          = "A0123456789"
