@@ -14,6 +14,9 @@ variable "fallback_provider_key_id" {
 
 resource "archestra_model_pool" "balanced" {
   name = "gpt-4.1"
+  # "least-tokens" sends each request to the member of the lowest healthy
+  # priority that has used the fewest tokens in the current minute instead.
+  routing_strategy = "weighted"
   members = [
     {
       provider_api_key_id = var.primary_provider_key_id
@@ -46,8 +49,8 @@ resource "archestra_model_pool" "balanced" {
 # Virtual keys mapping a member key already have access. Manage additional
 # pool grants through credential settings; virtual_api_key_ids is read-only.
 # The entire member set is replaced on every update.
-# Cooldowns, retry rules, timeouts and routing strategy are server-owned.
-# This API does not add Responses API support or utilization-aware routing.
+# Cooldowns, retry rules and timeouts are server-owned.
+# This API does not add Responses API support.
 
 # Adopt a pool created in the UI before applying a matching configuration:
 # terraform import archestra_model_pool.balanced 11111111-1111-4111-8111-111111111111

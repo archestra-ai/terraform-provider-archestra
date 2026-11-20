@@ -26,6 +26,7 @@ type ModelPoolMember struct {
 type ModelPool struct {
 	ID               string            `json:"id"`
 	Name             string            `json:"name"`
+	RoutingStrategy  string            `json:"routingStrategy,omitempty"`
 	OrganizationID   string            `json:"organizationId"`
 	CreatedAt        string            `json:"createdAt"`
 	UpdatedAt        string            `json:"updatedAt"`

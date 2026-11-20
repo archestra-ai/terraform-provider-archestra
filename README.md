@@ -48,11 +48,13 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_limit` | `limit` / `Limit` |
 | `archestra_mcp_gateway` | `gateway` / `Gateway` |
 | `archestra_mcp_registry_entry` | `mcp` / `RegistryEntry` |
+| `archestra_mcp_runtime_tiers` | `mcp` / `RuntimeTiers` |
 | `archestra_mcp_server` | `mcp` / `Server` |
 | `archestra_model` | `llm` / `Model` |
 | `archestra_model_pool` | `llm` / `ModelPool` |
 | `archestra_model_provider` | `llm` / `ModelProvider` |
 | `archestra_oauth_client` | `credential` / `OAuthClient` |
+| `archestra_oauth_client_federated_credential` | `credential` / `OAuthClientFederatedCredential` |
 | `archestra_openappa_battery_install` | `security` / `BatteryInstall` |
 | `archestra_organization_settings` | `organization` / `Settings` |
 | `archestra_plugin` | `plugin` / `Plugin` |

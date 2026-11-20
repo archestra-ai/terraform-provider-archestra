@@ -1,0 +1,1 @@
+terraform import archestra_oauth_client_federated_credential.example oauth_client_id:credential_uuid

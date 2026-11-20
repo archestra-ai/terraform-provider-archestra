@@ -9,6 +9,8 @@ resource "archestra_mcp_registry_entry" "filesystem" {
   local_config = {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/home/user"]
+    # CPU and memory come from one of the organization's MCP runtime tiers.
+    runtime_tier = "M"
 
     environment = [
       { key = "NODE_ENV", type = "plain_text", value = "production" },

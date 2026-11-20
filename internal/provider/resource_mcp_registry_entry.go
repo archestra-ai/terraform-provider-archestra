@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
@@ -193,6 +194,7 @@ var localConfigAttrTypes = map[string]attr.Type{
 	"http_path":          types.StringType,
 	"service_account":    types.StringType,
 	"node_port":          types.Int64Type,
+	"runtime_tier":       types.StringType,
 	"image_pull_secrets": types.ListType{ElemType: types.ObjectType{AttrTypes: ipSecretAttrTypes}},
 }
 
@@ -233,6 +235,7 @@ type LocalConfigModel struct {
 	HTTPPath         types.String `tfsdk:"http_path"`
 	ServiceAccount   types.String `tfsdk:"service_account"`
 	NodePort         types.Int64  `tfsdk:"node_port"`
+	RuntimeTier      types.String `tfsdk:"runtime_tier"`
 	ImagePullSecrets types.List   `tfsdk:"image_pull_secrets"`
 }
 
@@ -449,6 +452,13 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 						Optional:            true,
 						Validators: []validator.Int64{
 							int64validator.Between(30000, 32767),
+						},
+					},
+					"runtime_tier": schema.StringAttribute{
+						MarkdownDescription: "Name of the organization's MCP runtime tier (see `archestra_mcp_runtime_tiers`) that sets the server's CPU and memory, matched without regard to case.",
+						Optional:            true,
+						Validators: []validator.String{
+							stringvalidator.LengthBetween(1, 32),
 						},
 					},
 					"image_pull_secrets": schema.ListNestedAttribute{
@@ -1066,6 +1076,7 @@ func mapCatalogLocalConfig(ctx context.Context, apiResp *client.GetInternalMcpCa
 		"http_path":          types.StringNull(),
 		"service_account":    types.StringNull(),
 		"node_port":          types.Int64Null(),
+		"runtime_tier":       types.StringNull(),
 		"image_pull_secrets": types.ListNull(ipsObjType),
 	}
 
@@ -1125,6 +1136,9 @@ func mapCatalogLocalConfig(ctx context.Context, apiResp *client.GetInternalMcpCa
 	if lc.NodePort != nil {
 		obj["node_port"] = types.Int64Value(int64(*lc.NodePort))
 	}
+	if lc.RuntimeTier != nil {
+		obj["runtime_tier"] = catalogRuntimeTier(ctx, *lc.RuntimeTier, prior)
+	}
 	if lc.EnvFrom != nil && len(*lc.EnvFrom) > 0 {
 		efValues := make([]attr.Value, len(*lc.EnvFrom))
 		for i, ef := range *lc.EnvFrom {
@@ -1142,6 +1156,18 @@ func mapCatalogLocalConfig(ctx context.Context, apiResp *client.GetInternalMcpCa
 
 	out, _ := types.ObjectValue(localConfigAttrTypes, obj)
 	return out
+}
+
+// catalogRuntimeTier keeps the configured spelling: the API stores the tier's
+// own spelling of a name it matched without regard to case.
+func catalogRuntimeTier(ctx context.Context, tier string, prior types.Object) types.String {
+	if !prior.IsNull() && !prior.IsUnknown() {
+		var priorLC LocalConfigModel
+		if d := prior.As(ctx, &priorLC, basetypes.ObjectAsOptions{}); !d.HasError() && strings.EqualFold(priorLC.RuntimeTier.ValueString(), tier) {
+			return priorLC.RuntimeTier
+		}
+	}
+	return types.StringValue(tier)
 }
 
 // mapCatalogImagePullSecrets parses imagePullSecrets from the raw response

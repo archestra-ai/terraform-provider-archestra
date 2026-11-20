@@ -31,6 +31,7 @@ type OauthClientResourceModel struct {
 	AutoRouterIDs          types.Set    `tfsdk:"auto_router_ids"`
 	ID                     types.String `tfsdk:"id"`
 	Name                   types.String `tfsdk:"name"`
+	Icon                   types.String `tfsdk:"icon"`
 	ClientID               types.String `tfsdk:"client_id"`
 	ClientSecret           types.String `tfsdk:"client_secret"`
 	GrantType              types.String `tfsdk:"grant_type"`
@@ -60,6 +61,7 @@ var oauthClientAttrSpec = []AttrSpec{
 	{TFName: "model_pool_ids", JSONName: "modelPoolIds", Kind: Set, OmitOnNull: true},
 	{TFName: "auto_router_ids", JSONName: "autoRouterIds", Kind: Set, OmitOnNull: true},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
+	{TFName: "icon", JSONName: "icon", Kind: Scalar},
 	{TFName: "grant_type", JSONName: "grantType", Kind: Scalar},
 	{TFName: "scopes", JSONName: "scopes", Kind: Set},
 	{TFName: "allowed_gateway_ids", JSONName: "allowedGatewayIds", Kind: Set, OmitOnNull: true},
@@ -87,6 +89,7 @@ func (r *OauthClientResource) Schema(_ context.Context, _ resource.SchemaRequest
 	resp.Schema = schema.Schema{MarkdownDescription: "Unified managed OAuth client for MCP, A2A and LLM proxy capabilities. Client credentials and authorization-code modes share one resource; grant type changes replace the client. A nonempty rotation_nonce change rotates the secret in place and preserves client identity. Import does not recover the secret. User authorization, consent and token redemption are separate interactive operations.", Attributes: map[string]schema.Attribute{
 		"id":                  schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Managed client identifier."},
 		"name":                schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 256)}, MarkdownDescription: "Client display name."},
+		"icon":                schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.LengthAtMost(1048576)}, MarkdownDescription: "Emoji, logo ID or image data URL shown beside the name."},
 		"client_id":           schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Public OAuth client identifier."},
 		"client_secret":       schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Secret returned only on creation or provider-managed rotation."},
 		"grant_type":          schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString("client_credentials"), Validators: []validator.String{stringvalidator.OneOf("client_credentials", "authorization_code")}, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Immutable OAuth grant type."},
@@ -312,6 +315,7 @@ func (r *OauthClientResource) flatten(ctx context.Context, data *OauthClientReso
 		credentialRoutingResponse
 		ID                     string          `json:"id"`
 		Name                   string          `json:"name"`
+		Icon                   *string         `json:"icon"`
 		ClientID               string          `json:"clientId"`
 		GrantType              string          `json:"grantType"`
 		Scopes                 []string        `json:"scopes"`
@@ -335,6 +339,7 @@ func (r *OauthClientResource) flatten(ctx context.Context, data *OauthClientReso
 	}
 	data.ID = types.StringValue(raw.ID)
 	data.Name = types.StringValue(raw.Name)
+	data.Icon = types.StringPointerValue(raw.Icon)
 	data.ClientID = types.StringValue(raw.ClientID)
 	data.GrantType = types.StringValue(raw.GrantType)
 	data.IncludeFutureProviders = types.BoolValue(raw.IncludeFutureProviders)

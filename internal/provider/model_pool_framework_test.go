@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	tfresource "github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestModelPoolTerraformFailureDiagnostics(t *testing.T) {
@@ -101,14 +102,18 @@ func TestModelPoolTerraformFramework(t *testing.T) {
 		}
 	}))
 	defer server.Close()
-	config := fmt.Sprintf(`provider "archestra" {
+	configWith := func(routing string) string {
+		return fmt.Sprintf(`provider "archestra" {
  base_url = %q
  api_key = "fixture-key"
  }
  resource "archestra_model_pool" "test" {
  name = "balanced-model"
+ %s
  members = [{ provider_api_key_id = %q, model_id = "gpt-4.1" }]
- }`, server.URL, poolKeyID)
+ }`, server.URL, routing, poolKeyID)
+	}
+	config := configWith("")
 	tfresource.UnitTest(t, tfresource.TestCase{
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []tfresource.TestStep{
@@ -118,9 +123,21 @@ func TestModelPoolTerraformFramework(t *testing.T) {
 				tfresource.TestCheckResourceAttr("archestra_model_pool.test", "members.0.weight", "1"),
 				tfresource.TestCheckResourceAttr("archestra_model_pool.test", "members.0.enabled", "true"),
 				tfresource.TestCheckResourceAttr("archestra_model_pool.test", "virtual_api_key_ids.#", "0"),
+				tfresource.TestCheckResourceAttr("archestra_model_pool.test", "routing_strategy", "weighted"),
 			)},
 			{ResourceName: "archestra_model_pool.test", ImportState: true, ImportStateVerify: true},
 			{Config: config, PlanOnly: true},
+			{Config: configWith(`routing_strategy = "least-tokens"`), Check: tfresource.ComposeTestCheckFunc(
+				tfresource.TestCheckResourceAttr("archestra_model_pool.test", "routing_strategy", "least-tokens"),
+				func(*terraform.State) error {
+					if remote["routingStrategy"] != "least-tokens" {
+						return fmt.Errorf("routing strategy not sent: %v", remote["routingStrategy"])
+					}
+					return nil
+				},
+			)},
+			// Removing the setting returns the pool to weighted routing.
+			{Config: config, Check: tfresource.TestCheckResourceAttr("archestra_model_pool.test", "routing_strategy", "weighted")},
 		},
 	})
 }

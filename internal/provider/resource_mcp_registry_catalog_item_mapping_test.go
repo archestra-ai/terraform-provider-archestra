@@ -516,6 +516,7 @@ func mustPriorLocalConfigWithIPS(t *testing.T, server, username, password string
 		"http_path":          types.StringNull(),
 		"service_account":    types.StringNull(),
 		"node_port":          types.Int64Null(),
+		"runtime_tier":       types.StringNull(),
 		"image_pull_secrets": ipsList,
 	}
 	obj, d := types.ObjectValue(localConfigAttrTypes, fields)

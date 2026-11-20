@@ -1,4 +1,4 @@
-// Code generated from Archestra allAvailableActions (942b442748b8c34a608bd161dcff1f079c42c096). DO NOT EDIT.
+// Code generated from Archestra allAvailableActions (60a9fe4f69145d77c4aeb20fe9347471aa9aedc9). DO NOT EDIT.
 package provider
 
 var currentRoleActions = map[string][]string{
@@ -9,8 +9,11 @@ var currentRoleActions = map[string][]string{
 	"app":                   {"read", "create"},
 	"auditLog":              {"read", "admin"},
 	"chat":                  {"read", "create", "update", "delete", "full-view"},
+	"costExport":            {"read", "create", "update", "delete"},
 	"credential":            {"read", "create"},
 	"environment":           {"read", "create", "update", "delete"},
+	"guardrailsPolicy":      {"read", "update"},
+	"guardrailsYell":        {"read", "admin"},
 	"identityProvider":      {"read", "create", "update", "delete"},
 	"invitation":            {"create", "cancel"},
 	"knowledgeSource":       {"read", "create", "update", "delete", "query"},
@@ -26,8 +29,6 @@ var currentRoleActions = map[string][]string{
 	"mcpServerInstallation": {"read", "create", "update", "delete"},
 	"member":                {"read", "create", "update", "delete", "impersonate"},
 	"oauthClient":           {"read", "create"},
-	"openappaDiagnostics":   {"read", "update", "admin"},
-	"openappaPolicy":        {"read", "update"},
 	"organization":          {"update", "delete"},
 	"organizationSettings":  {"read", "update"},
 	"plugin":                {"read", "create", "update", "delete"},

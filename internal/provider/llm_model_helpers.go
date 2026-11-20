@@ -52,11 +52,14 @@ func (r *LlmModelResource) APIShape() any { return client.GetModelsWithApiKeysRe
 //     completionPricePerToken: backend-derived metadata exposed in the UI
 //     for sorting/filtering, not part of the manage-this-model surface.
 //     Could be surfaced as Computed-only fields later if asked.
+//   - syncedLongContextPricing: the provider catalog's long-context tier,
+//     refreshed by model sync; long_context_* override it.
 func (r *LlmModelResource) KnownIntentionallySkipped() []string {
 	return []string{
 		"provider", "apiKeys", "createdAt", "updatedAt", "lastSyncedAt",
 		"bestModelId", "isBest", "isFastest", "discoveredViaLlmProxy",
 		"externalId", "supportsToolCalling",
 		"promptPricePerToken", "completionPricePerToken",
+		"syncedLongContextPricing",
 	}
 }

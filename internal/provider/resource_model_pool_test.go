@@ -20,7 +20,7 @@ import (
 const poolTestID = "11111111-1111-4111-8111-111111111111"
 const poolKeyID = "22222222-2222-4222-8222-222222222222"
 const poolVirtualKeyID = "33333333-3333-4333-8333-333333333333"
-const poolTestState = `{"id":"` + poolTestID + `","name":"balanced-model","members":[{"provider_api_key_id":"` + poolKeyID + `","model_id":"gpt-4.1","priority":1,"weight":3,"enabled":true}],"virtual_api_key_ids":["` + poolVirtualKeyID + `"]}`
+const poolTestState = `{"id":"` + poolTestID + `","name":"balanced-model","routing_strategy":"weighted","members":[{"provider_api_key_id":"` + poolKeyID + `","model_id":"gpt-4.1","priority":1,"weight":3,"enabled":true}],"virtual_api_key_ids":["` + poolVirtualKeyID + `"]}`
 
 func poolFixtureState(t *testing.T, r *ModelPoolResource, values string) tfsdk.State {
 	t.Helper()
@@ -86,7 +86,7 @@ func TestModelPoolLifecycle(t *testing.T) {
 			if err := json.NewDecoder(req.Body).Decode(&body); err != nil {
 				t.Error(err)
 			}
-			if len(body) != 2 || body["members"] == nil || body["virtualApiKeyIds"] != nil {
+			if len(body) != 3 || body["members"] == nil || body["routingStrategy"] != "weighted" || body["virtualApiKeyIds"] != nil {
 				t.Errorf("replacement omitted settings: %#v", body)
 			}
 			if req.Header.Get("Content-Type") != "application/json" {

@@ -182,6 +182,12 @@ output-options:
     - createServiceAccountFederatedCredential
     - updateServiceAccountFederatedCredential
     - deleteServiceAccountFederatedCredential
+    - getOauthClientFederatedCredentials
+    - createOauthClientFederatedCredential
+    - updateOauthClientFederatedCredential
+    - deleteOauthClientFederatedCredential
+    - getMcpRuntimeTiers
+    - updateMcpRuntimeTiers
     - updateEnvironmentResourceDefaults
     - createA2aRemoteAgent
     - getA2aRemoteAgent

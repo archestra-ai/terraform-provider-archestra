@@ -110,5 +110,7 @@ func (r *OrganizationSettingsResource) KnownIntentionallySkipped() []string {
 		"onboardingSurveyCompletedAt",
 		// Retired feature projection has no writable API setting.
 		"skillToolsEnabled",
+		// Written through its own endpoint; manage it with archestra_mcp_runtime_tiers.
+		"mcpRuntimeTiers",
 	}
 }

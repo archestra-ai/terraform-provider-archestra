@@ -29376,6 +29376,366 @@ func (e UpdateOauthClient500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetOauthClientFederatedCredentials400JSONResponseBodyErrorType.
+const (
+	GetOauthClientFederatedCredentials400JSONResponseBodyErrorTypeApiValidationError GetOauthClientFederatedCredentials400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOauthClientFederatedCredentials400JSONResponseBodyErrorType enum.
+func (e GetOauthClientFederatedCredentials400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOauthClientFederatedCredentials400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOauthClientFederatedCredentials401JSONResponseBodyErrorType.
+const (
+	GetOauthClientFederatedCredentials401JSONResponseBodyErrorTypeApiAuthenticationError GetOauthClientFederatedCredentials401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOauthClientFederatedCredentials401JSONResponseBodyErrorType enum.
+func (e GetOauthClientFederatedCredentials401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOauthClientFederatedCredentials401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOauthClientFederatedCredentials403JSONResponseBodyErrorType.
+const (
+	GetOauthClientFederatedCredentials403JSONResponseBodyErrorTypeApiAuthorizationError GetOauthClientFederatedCredentials403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOauthClientFederatedCredentials403JSONResponseBodyErrorType enum.
+func (e GetOauthClientFederatedCredentials403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOauthClientFederatedCredentials403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOauthClientFederatedCredentials404JSONResponseBodyErrorType.
+const (
+	GetOauthClientFederatedCredentials404JSONResponseBodyErrorTypeApiNotFoundError GetOauthClientFederatedCredentials404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOauthClientFederatedCredentials404JSONResponseBodyErrorType enum.
+func (e GetOauthClientFederatedCredentials404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOauthClientFederatedCredentials404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOauthClientFederatedCredentials409JSONResponseBodyErrorType.
+const (
+	GetOauthClientFederatedCredentials409JSONResponseBodyErrorTypeApiConflictError GetOauthClientFederatedCredentials409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOauthClientFederatedCredentials409JSONResponseBodyErrorType enum.
+func (e GetOauthClientFederatedCredentials409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOauthClientFederatedCredentials409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetOauthClientFederatedCredentials500JSONResponseBodyErrorType.
+const (
+	GetOauthClientFederatedCredentials500JSONResponseBodyErrorTypeApiInternalServerError GetOauthClientFederatedCredentials500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetOauthClientFederatedCredentials500JSONResponseBodyErrorType enum.
+func (e GetOauthClientFederatedCredentials500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetOauthClientFederatedCredentials500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOauthClientFederatedCredential400JSONResponseBodyErrorType.
+const (
+	CreateOauthClientFederatedCredential400JSONResponseBodyErrorTypeApiValidationError CreateOauthClientFederatedCredential400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOauthClientFederatedCredential400JSONResponseBodyErrorType enum.
+func (e CreateOauthClientFederatedCredential400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOauthClientFederatedCredential400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOauthClientFederatedCredential401JSONResponseBodyErrorType.
+const (
+	CreateOauthClientFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError CreateOauthClientFederatedCredential401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOauthClientFederatedCredential401JSONResponseBodyErrorType enum.
+func (e CreateOauthClientFederatedCredential401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOauthClientFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOauthClientFederatedCredential403JSONResponseBodyErrorType.
+const (
+	CreateOauthClientFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError CreateOauthClientFederatedCredential403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOauthClientFederatedCredential403JSONResponseBodyErrorType enum.
+func (e CreateOauthClientFederatedCredential403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOauthClientFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOauthClientFederatedCredential404JSONResponseBodyErrorType.
+const (
+	CreateOauthClientFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError CreateOauthClientFederatedCredential404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOauthClientFederatedCredential404JSONResponseBodyErrorType enum.
+func (e CreateOauthClientFederatedCredential404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOauthClientFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOauthClientFederatedCredential409JSONResponseBodyErrorType.
+const (
+	CreateOauthClientFederatedCredential409JSONResponseBodyErrorTypeApiConflictError CreateOauthClientFederatedCredential409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOauthClientFederatedCredential409JSONResponseBodyErrorType enum.
+func (e CreateOauthClientFederatedCredential409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOauthClientFederatedCredential409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOauthClientFederatedCredential500JSONResponseBodyErrorType.
+const (
+	CreateOauthClientFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError CreateOauthClientFederatedCredential500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateOauthClientFederatedCredential500JSONResponseBodyErrorType enum.
+func (e CreateOauthClientFederatedCredential500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateOauthClientFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOauthClientFederatedCredential400JSONResponseBodyErrorType.
+const (
+	DeleteOauthClientFederatedCredential400JSONResponseBodyErrorTypeApiValidationError DeleteOauthClientFederatedCredential400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOauthClientFederatedCredential400JSONResponseBodyErrorType enum.
+func (e DeleteOauthClientFederatedCredential400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOauthClientFederatedCredential400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOauthClientFederatedCredential401JSONResponseBodyErrorType.
+const (
+	DeleteOauthClientFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError DeleteOauthClientFederatedCredential401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOauthClientFederatedCredential401JSONResponseBodyErrorType enum.
+func (e DeleteOauthClientFederatedCredential401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOauthClientFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOauthClientFederatedCredential403JSONResponseBodyErrorType.
+const (
+	DeleteOauthClientFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError DeleteOauthClientFederatedCredential403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOauthClientFederatedCredential403JSONResponseBodyErrorType enum.
+func (e DeleteOauthClientFederatedCredential403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOauthClientFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOauthClientFederatedCredential404JSONResponseBodyErrorType.
+const (
+	DeleteOauthClientFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError DeleteOauthClientFederatedCredential404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOauthClientFederatedCredential404JSONResponseBodyErrorType enum.
+func (e DeleteOauthClientFederatedCredential404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOauthClientFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOauthClientFederatedCredential409JSONResponseBodyErrorType.
+const (
+	DeleteOauthClientFederatedCredential409JSONResponseBodyErrorTypeApiConflictError DeleteOauthClientFederatedCredential409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOauthClientFederatedCredential409JSONResponseBodyErrorType enum.
+func (e DeleteOauthClientFederatedCredential409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOauthClientFederatedCredential409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteOauthClientFederatedCredential500JSONResponseBodyErrorType.
+const (
+	DeleteOauthClientFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError DeleteOauthClientFederatedCredential500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteOauthClientFederatedCredential500JSONResponseBodyErrorType enum.
+func (e DeleteOauthClientFederatedCredential500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteOauthClientFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOauthClientFederatedCredential400JSONResponseBodyErrorType.
+const (
+	UpdateOauthClientFederatedCredential400JSONResponseBodyErrorTypeApiValidationError UpdateOauthClientFederatedCredential400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOauthClientFederatedCredential400JSONResponseBodyErrorType enum.
+func (e UpdateOauthClientFederatedCredential400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOauthClientFederatedCredential400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOauthClientFederatedCredential401JSONResponseBodyErrorType.
+const (
+	UpdateOauthClientFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError UpdateOauthClientFederatedCredential401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOauthClientFederatedCredential401JSONResponseBodyErrorType enum.
+func (e UpdateOauthClientFederatedCredential401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOauthClientFederatedCredential401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOauthClientFederatedCredential403JSONResponseBodyErrorType.
+const (
+	UpdateOauthClientFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError UpdateOauthClientFederatedCredential403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOauthClientFederatedCredential403JSONResponseBodyErrorType enum.
+func (e UpdateOauthClientFederatedCredential403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOauthClientFederatedCredential403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOauthClientFederatedCredential404JSONResponseBodyErrorType.
+const (
+	UpdateOauthClientFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError UpdateOauthClientFederatedCredential404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOauthClientFederatedCredential404JSONResponseBodyErrorType enum.
+func (e UpdateOauthClientFederatedCredential404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOauthClientFederatedCredential404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOauthClientFederatedCredential409JSONResponseBodyErrorType.
+const (
+	UpdateOauthClientFederatedCredential409JSONResponseBodyErrorTypeApiConflictError UpdateOauthClientFederatedCredential409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOauthClientFederatedCredential409JSONResponseBodyErrorType enum.
+func (e UpdateOauthClientFederatedCredential409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOauthClientFederatedCredential409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOauthClientFederatedCredential500JSONResponseBodyErrorType.
+const (
+	UpdateOauthClientFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError UpdateOauthClientFederatedCredential500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOauthClientFederatedCredential500JSONResponseBodyErrorType enum.
+func (e UpdateOauthClientFederatedCredential500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateOauthClientFederatedCredential500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for RotateOauthClientSecret200JSONResponseBodyCreatedByType.
 const (
 	RotateOauthClientSecret200JSONResponseBodyCreatedByTypeServiceAccount RotateOauthClientSecret200JSONResponseBodyCreatedByType = "service_account"
@@ -34815,6 +35175,186 @@ const (
 func (e UpdateKnowledgeSettings500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
 	case UpdateKnowledgeSettings500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpRuntimeTiers400JSONResponseBodyErrorType.
+const (
+	GetMcpRuntimeTiers400JSONResponseBodyErrorTypeApiValidationError GetMcpRuntimeTiers400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpRuntimeTiers400JSONResponseBodyErrorType enum.
+func (e GetMcpRuntimeTiers400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpRuntimeTiers400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpRuntimeTiers401JSONResponseBodyErrorType.
+const (
+	GetMcpRuntimeTiers401JSONResponseBodyErrorTypeApiAuthenticationError GetMcpRuntimeTiers401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpRuntimeTiers401JSONResponseBodyErrorType enum.
+func (e GetMcpRuntimeTiers401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpRuntimeTiers401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpRuntimeTiers403JSONResponseBodyErrorType.
+const (
+	GetMcpRuntimeTiers403JSONResponseBodyErrorTypeApiAuthorizationError GetMcpRuntimeTiers403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpRuntimeTiers403JSONResponseBodyErrorType enum.
+func (e GetMcpRuntimeTiers403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpRuntimeTiers403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpRuntimeTiers404JSONResponseBodyErrorType.
+const (
+	GetMcpRuntimeTiers404JSONResponseBodyErrorTypeApiNotFoundError GetMcpRuntimeTiers404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpRuntimeTiers404JSONResponseBodyErrorType enum.
+func (e GetMcpRuntimeTiers404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpRuntimeTiers404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpRuntimeTiers409JSONResponseBodyErrorType.
+const (
+	GetMcpRuntimeTiers409JSONResponseBodyErrorTypeApiConflictError GetMcpRuntimeTiers409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpRuntimeTiers409JSONResponseBodyErrorType enum.
+func (e GetMcpRuntimeTiers409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpRuntimeTiers409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMcpRuntimeTiers500JSONResponseBodyErrorType.
+const (
+	GetMcpRuntimeTiers500JSONResponseBodyErrorTypeApiInternalServerError GetMcpRuntimeTiers500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMcpRuntimeTiers500JSONResponseBodyErrorType enum.
+func (e GetMcpRuntimeTiers500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMcpRuntimeTiers500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateMcpRuntimeTiers400JSONResponseBodyErrorType.
+const (
+	UpdateMcpRuntimeTiers400JSONResponseBodyErrorTypeApiValidationError UpdateMcpRuntimeTiers400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateMcpRuntimeTiers400JSONResponseBodyErrorType enum.
+func (e UpdateMcpRuntimeTiers400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateMcpRuntimeTiers400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateMcpRuntimeTiers401JSONResponseBodyErrorType.
+const (
+	UpdateMcpRuntimeTiers401JSONResponseBodyErrorTypeApiAuthenticationError UpdateMcpRuntimeTiers401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateMcpRuntimeTiers401JSONResponseBodyErrorType enum.
+func (e UpdateMcpRuntimeTiers401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateMcpRuntimeTiers401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateMcpRuntimeTiers403JSONResponseBodyErrorType.
+const (
+	UpdateMcpRuntimeTiers403JSONResponseBodyErrorTypeApiAuthorizationError UpdateMcpRuntimeTiers403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateMcpRuntimeTiers403JSONResponseBodyErrorType enum.
+func (e UpdateMcpRuntimeTiers403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateMcpRuntimeTiers403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateMcpRuntimeTiers404JSONResponseBodyErrorType.
+const (
+	UpdateMcpRuntimeTiers404JSONResponseBodyErrorTypeApiNotFoundError UpdateMcpRuntimeTiers404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateMcpRuntimeTiers404JSONResponseBodyErrorType enum.
+func (e UpdateMcpRuntimeTiers404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateMcpRuntimeTiers404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateMcpRuntimeTiers409JSONResponseBodyErrorType.
+const (
+	UpdateMcpRuntimeTiers409JSONResponseBodyErrorTypeApiConflictError UpdateMcpRuntimeTiers409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateMcpRuntimeTiers409JSONResponseBodyErrorType enum.
+func (e UpdateMcpRuntimeTiers409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateMcpRuntimeTiers409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateMcpRuntimeTiers500JSONResponseBodyErrorType.
+const (
+	UpdateMcpRuntimeTiers500JSONResponseBodyErrorTypeApiInternalServerError UpdateMcpRuntimeTiers500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateMcpRuntimeTiers500JSONResponseBodyErrorType enum.
+func (e UpdateMcpRuntimeTiers500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateMcpRuntimeTiers500JSONResponseBodyErrorTypeApiInternalServerError:
 		return true
 	default:
 		return false
@@ -52882,6 +53422,7 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 		ImagePullPolicy  *CreateInternalMcpCatalogItemJSONBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
 		ImagePullSecrets *[]CreateInternalMcpCatalogItemJSONBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
 		NodePort         *float32                                                                  `json:"nodePort,omitempty"`
+		RuntimeTier      *string                                                                   `json:"runtimeTier,omitempty"`
 		ServiceAccount   *string                                                                   `json:"serviceAccount,omitempty"`
 		TransportType    *CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 	} `json:"localConfig,omitempty"`
@@ -53339,6 +53880,7 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 		ImagePullPolicy  *UpdateInternalMcpCatalogItemJSONBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
 		ImagePullSecrets *[]UpdateInternalMcpCatalogItemJSONBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
 		NodePort         *float32                                                                  `json:"nodePort,omitempty"`
+		RuntimeTier      *string                                                                   `json:"runtimeTier,omitempty"`
 		ServiceAccount   *string                                                                   `json:"serviceAccount,omitempty"`
 		TransportType    *UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 	} `json:"localConfig,omitempty"`
@@ -55395,6 +55937,9 @@ type CreateOauthClientJSONBody struct {
 	BillingTeamId *string                             `json:"billingTeamId,omitempty"`
 	GrantType     *CreateOauthClientJSONBodyGrantType `json:"grantType,omitempty"`
 
+	// Icon An emoji, a logo id or an image data URL shown beside the name. Omit on update to keep it; null clears it.
+	Icon *string `json:"icon,omitempty"`
+
 	// IncludeFutureProviders Use current and future shared primary provider keys, with selected keys as overrides. Defaults to false on creation; omit on update to preserve the mode. Only valid for client_credentials with LLM Proxy access.
 	IncludeFutureProviders *bool `json:"includeFutureProviders,omitempty"`
 
@@ -55569,6 +56114,9 @@ type UpdateOauthClientJSONBody struct {
 	BillingTeamId *string                             `json:"billingTeamId,omitempty"`
 	GrantType     *UpdateOauthClientJSONBodyGrantType `json:"grantType,omitempty"`
 
+	// Icon An emoji, a logo id or an image data URL shown beside the name. Omit on update to keep it; null clears it.
+	Icon *string `json:"icon,omitempty"`
+
 	// IncludeFutureProviders Use current and future shared primary provider keys, with selected keys as overrides. Defaults to false on creation; omit on update to preserve the mode. Only valid for client_credentials with LLM Proxy access.
 	IncludeFutureProviders *bool `json:"includeFutureProviders,omitempty"`
 
@@ -55642,6 +56190,96 @@ type UpdateOauthClient409JSONResponseBodyErrorType string
 
 // UpdateOauthClient500JSONResponseBodyErrorType defines parameters for UpdateOauthClient.
 type UpdateOauthClient500JSONResponseBodyErrorType string
+
+// GetOauthClientFederatedCredentials400JSONResponseBodyErrorType defines parameters for GetOauthClientFederatedCredentials.
+type GetOauthClientFederatedCredentials400JSONResponseBodyErrorType string
+
+// GetOauthClientFederatedCredentials401JSONResponseBodyErrorType defines parameters for GetOauthClientFederatedCredentials.
+type GetOauthClientFederatedCredentials401JSONResponseBodyErrorType string
+
+// GetOauthClientFederatedCredentials403JSONResponseBodyErrorType defines parameters for GetOauthClientFederatedCredentials.
+type GetOauthClientFederatedCredentials403JSONResponseBodyErrorType string
+
+// GetOauthClientFederatedCredentials404JSONResponseBodyErrorType defines parameters for GetOauthClientFederatedCredentials.
+type GetOauthClientFederatedCredentials404JSONResponseBodyErrorType string
+
+// GetOauthClientFederatedCredentials409JSONResponseBodyErrorType defines parameters for GetOauthClientFederatedCredentials.
+type GetOauthClientFederatedCredentials409JSONResponseBodyErrorType string
+
+// GetOauthClientFederatedCredentials500JSONResponseBodyErrorType defines parameters for GetOauthClientFederatedCredentials.
+type GetOauthClientFederatedCredentials500JSONResponseBodyErrorType string
+
+// CreateOauthClientFederatedCredentialJSONBody defines parameters for CreateOauthClientFederatedCredential.
+type CreateOauthClientFederatedCredentialJSONBody struct {
+	Audience        string             `json:"audience"`
+	ClaimConditions *map[string]string `json:"claimConditions,omitempty"`
+	Issuer          string             `json:"issuer"`
+	Name            string             `json:"name"`
+	Subject         string             `json:"subject"`
+}
+
+// CreateOauthClientFederatedCredential400JSONResponseBodyErrorType defines parameters for CreateOauthClientFederatedCredential.
+type CreateOauthClientFederatedCredential400JSONResponseBodyErrorType string
+
+// CreateOauthClientFederatedCredential401JSONResponseBodyErrorType defines parameters for CreateOauthClientFederatedCredential.
+type CreateOauthClientFederatedCredential401JSONResponseBodyErrorType string
+
+// CreateOauthClientFederatedCredential403JSONResponseBodyErrorType defines parameters for CreateOauthClientFederatedCredential.
+type CreateOauthClientFederatedCredential403JSONResponseBodyErrorType string
+
+// CreateOauthClientFederatedCredential404JSONResponseBodyErrorType defines parameters for CreateOauthClientFederatedCredential.
+type CreateOauthClientFederatedCredential404JSONResponseBodyErrorType string
+
+// CreateOauthClientFederatedCredential409JSONResponseBodyErrorType defines parameters for CreateOauthClientFederatedCredential.
+type CreateOauthClientFederatedCredential409JSONResponseBodyErrorType string
+
+// CreateOauthClientFederatedCredential500JSONResponseBodyErrorType defines parameters for CreateOauthClientFederatedCredential.
+type CreateOauthClientFederatedCredential500JSONResponseBodyErrorType string
+
+// DeleteOauthClientFederatedCredential400JSONResponseBodyErrorType defines parameters for DeleteOauthClientFederatedCredential.
+type DeleteOauthClientFederatedCredential400JSONResponseBodyErrorType string
+
+// DeleteOauthClientFederatedCredential401JSONResponseBodyErrorType defines parameters for DeleteOauthClientFederatedCredential.
+type DeleteOauthClientFederatedCredential401JSONResponseBodyErrorType string
+
+// DeleteOauthClientFederatedCredential403JSONResponseBodyErrorType defines parameters for DeleteOauthClientFederatedCredential.
+type DeleteOauthClientFederatedCredential403JSONResponseBodyErrorType string
+
+// DeleteOauthClientFederatedCredential404JSONResponseBodyErrorType defines parameters for DeleteOauthClientFederatedCredential.
+type DeleteOauthClientFederatedCredential404JSONResponseBodyErrorType string
+
+// DeleteOauthClientFederatedCredential409JSONResponseBodyErrorType defines parameters for DeleteOauthClientFederatedCredential.
+type DeleteOauthClientFederatedCredential409JSONResponseBodyErrorType string
+
+// DeleteOauthClientFederatedCredential500JSONResponseBodyErrorType defines parameters for DeleteOauthClientFederatedCredential.
+type DeleteOauthClientFederatedCredential500JSONResponseBodyErrorType string
+
+// UpdateOauthClientFederatedCredentialJSONBody defines parameters for UpdateOauthClientFederatedCredential.
+type UpdateOauthClientFederatedCredentialJSONBody struct {
+	Audience        *string            `json:"audience,omitempty"`
+	ClaimConditions *map[string]string `json:"claimConditions,omitempty"`
+	Issuer          *string            `json:"issuer,omitempty"`
+	Name            *string            `json:"name,omitempty"`
+	Subject         *string            `json:"subject,omitempty"`
+}
+
+// UpdateOauthClientFederatedCredential400JSONResponseBodyErrorType defines parameters for UpdateOauthClientFederatedCredential.
+type UpdateOauthClientFederatedCredential400JSONResponseBodyErrorType string
+
+// UpdateOauthClientFederatedCredential401JSONResponseBodyErrorType defines parameters for UpdateOauthClientFederatedCredential.
+type UpdateOauthClientFederatedCredential401JSONResponseBodyErrorType string
+
+// UpdateOauthClientFederatedCredential403JSONResponseBodyErrorType defines parameters for UpdateOauthClientFederatedCredential.
+type UpdateOauthClientFederatedCredential403JSONResponseBodyErrorType string
+
+// UpdateOauthClientFederatedCredential404JSONResponseBodyErrorType defines parameters for UpdateOauthClientFederatedCredential.
+type UpdateOauthClientFederatedCredential404JSONResponseBodyErrorType string
+
+// UpdateOauthClientFederatedCredential409JSONResponseBodyErrorType defines parameters for UpdateOauthClientFederatedCredential.
+type UpdateOauthClientFederatedCredential409JSONResponseBodyErrorType string
+
+// UpdateOauthClientFederatedCredential500JSONResponseBodyErrorType defines parameters for UpdateOauthClientFederatedCredential.
+type UpdateOauthClientFederatedCredential500JSONResponseBodyErrorType string
 
 // RotateOauthClientSecret200JSONResponseBodyCreatedByType defines parameters for RotateOauthClientSecret.
 type RotateOauthClientSecret200JSONResponseBodyCreatedByType string
@@ -56372,6 +57010,54 @@ type UpdateKnowledgeSettings409JSONResponseBodyErrorType string
 
 // UpdateKnowledgeSettings500JSONResponseBodyErrorType defines parameters for UpdateKnowledgeSettings.
 type UpdateKnowledgeSettings500JSONResponseBodyErrorType string
+
+// GetMcpRuntimeTiers400JSONResponseBodyErrorType defines parameters for GetMcpRuntimeTiers.
+type GetMcpRuntimeTiers400JSONResponseBodyErrorType string
+
+// GetMcpRuntimeTiers401JSONResponseBodyErrorType defines parameters for GetMcpRuntimeTiers.
+type GetMcpRuntimeTiers401JSONResponseBodyErrorType string
+
+// GetMcpRuntimeTiers403JSONResponseBodyErrorType defines parameters for GetMcpRuntimeTiers.
+type GetMcpRuntimeTiers403JSONResponseBodyErrorType string
+
+// GetMcpRuntimeTiers404JSONResponseBodyErrorType defines parameters for GetMcpRuntimeTiers.
+type GetMcpRuntimeTiers404JSONResponseBodyErrorType string
+
+// GetMcpRuntimeTiers409JSONResponseBodyErrorType defines parameters for GetMcpRuntimeTiers.
+type GetMcpRuntimeTiers409JSONResponseBodyErrorType string
+
+// GetMcpRuntimeTiers500JSONResponseBodyErrorType defines parameters for GetMcpRuntimeTiers.
+type GetMcpRuntimeTiers500JSONResponseBodyErrorType string
+
+// UpdateMcpRuntimeTiersJSONBody defines parameters for UpdateMcpRuntimeTiers.
+type UpdateMcpRuntimeTiersJSONBody struct {
+	Tiers []struct {
+		CpuLimit         *float32 `json:"cpuLimit"`
+		CpuRequest       float32  `json:"cpuRequest"`
+		MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+		MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+		Name             string   `json:"name"`
+		PreviousName     *string  `json:"previousName,omitempty"`
+	} `json:"tiers"`
+}
+
+// UpdateMcpRuntimeTiers400JSONResponseBodyErrorType defines parameters for UpdateMcpRuntimeTiers.
+type UpdateMcpRuntimeTiers400JSONResponseBodyErrorType string
+
+// UpdateMcpRuntimeTiers401JSONResponseBodyErrorType defines parameters for UpdateMcpRuntimeTiers.
+type UpdateMcpRuntimeTiers401JSONResponseBodyErrorType string
+
+// UpdateMcpRuntimeTiers403JSONResponseBodyErrorType defines parameters for UpdateMcpRuntimeTiers.
+type UpdateMcpRuntimeTiers403JSONResponseBodyErrorType string
+
+// UpdateMcpRuntimeTiers404JSONResponseBodyErrorType defines parameters for UpdateMcpRuntimeTiers.
+type UpdateMcpRuntimeTiers404JSONResponseBodyErrorType string
+
+// UpdateMcpRuntimeTiers409JSONResponseBodyErrorType defines parameters for UpdateMcpRuntimeTiers.
+type UpdateMcpRuntimeTiers409JSONResponseBodyErrorType string
+
+// UpdateMcpRuntimeTiers500JSONResponseBodyErrorType defines parameters for UpdateMcpRuntimeTiers.
+type UpdateMcpRuntimeTiers500JSONResponseBodyErrorType string
 
 // UpdateMcpSettingsJSONBody defines parameters for UpdateMcpSettings.
 type UpdateMcpSettingsJSONBody struct {
@@ -59768,6 +60454,12 @@ type CreateOauthClientJSONRequestBody CreateOauthClientJSONBody
 // UpdateOauthClientJSONRequestBody defines body for UpdateOauthClient for application/json ContentType.
 type UpdateOauthClientJSONRequestBody UpdateOauthClientJSONBody
 
+// CreateOauthClientFederatedCredentialJSONRequestBody defines body for CreateOauthClientFederatedCredential for application/json ContentType.
+type CreateOauthClientFederatedCredentialJSONRequestBody CreateOauthClientFederatedCredentialJSONBody
+
+// UpdateOauthClientFederatedCredentialJSONRequestBody defines body for UpdateOauthClientFederatedCredential for application/json ContentType.
+type UpdateOauthClientFederatedCredentialJSONRequestBody UpdateOauthClientFederatedCredentialJSONBody
+
 // CreateOpenappaBatteryInstallJSONRequestBody defines body for CreateOpenappaBatteryInstall for application/json ContentType.
 type CreateOpenappaBatteryInstallJSONRequestBody CreateOpenappaBatteryInstallJSONBody
 
@@ -59797,6 +60489,9 @@ type UpdateIntegrationSettingsJSONRequestBody UpdateIntegrationSettingsJSONBody
 
 // UpdateKnowledgeSettingsJSONRequestBody defines body for UpdateKnowledgeSettings for application/json ContentType.
 type UpdateKnowledgeSettingsJSONRequestBody UpdateKnowledgeSettingsJSONBody
+
+// UpdateMcpRuntimeTiersJSONRequestBody defines body for UpdateMcpRuntimeTiers for application/json ContentType.
+type UpdateMcpRuntimeTiersJSONRequestBody UpdateMcpRuntimeTiersJSONBody
 
 // UpdateMcpSettingsJSONRequestBody defines body for UpdateMcpSettings for application/json ContentType.
 type UpdateMcpSettingsJSONRequestBody UpdateMcpSettingsJSONBody
@@ -67335,6 +68030,22 @@ type ClientInterface interface {
 
 	UpdateOauthClient(ctx context.Context, id string, body UpdateOauthClientJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetOauthClientFederatedCredentials request
+	GetOauthClientFederatedCredentials(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateOauthClientFederatedCredentialWithBody request with any body
+	CreateOauthClientFederatedCredentialWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateOauthClientFederatedCredential(ctx context.Context, id string, body CreateOauthClientFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteOauthClientFederatedCredential request
+	DeleteOauthClientFederatedCredential(ctx context.Context, id string, credentialId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateOauthClientFederatedCredentialWithBody request with any body
+	UpdateOauthClientFederatedCredentialWithBody(ctx context.Context, id string, credentialId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateOauthClientFederatedCredential(ctx context.Context, id string, credentialId openapi_types.UUID, body UpdateOauthClientFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// RotateOauthClientSecret request
 	RotateOauthClientSecret(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -67399,6 +68110,14 @@ type ClientInterface interface {
 	UpdateKnowledgeSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateKnowledgeSettings(ctx context.Context, body UpdateKnowledgeSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMcpRuntimeTiers request
+	GetMcpRuntimeTiers(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateMcpRuntimeTiersWithBody request with any body
+	UpdateMcpRuntimeTiersWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateMcpRuntimeTiers(ctx context.Context, body UpdateMcpRuntimeTiersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateMcpSettingsWithBody request with any body
 	UpdateMcpSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -70235,6 +70954,78 @@ func (c *Client) UpdateOauthClient(ctx context.Context, id string, body UpdateOa
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetOauthClientFederatedCredentials(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOauthClientFederatedCredentialsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOauthClientFederatedCredentialWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOauthClientFederatedCredentialRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOauthClientFederatedCredential(ctx context.Context, id string, body CreateOauthClientFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOauthClientFederatedCredentialRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteOauthClientFederatedCredential(ctx context.Context, id string, credentialId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteOauthClientFederatedCredentialRequest(c.Server, id, credentialId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOauthClientFederatedCredentialWithBody(ctx context.Context, id string, credentialId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOauthClientFederatedCredentialRequestWithBody(c.Server, id, credentialId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOauthClientFederatedCredential(ctx context.Context, id string, credentialId openapi_types.UUID, body UpdateOauthClientFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOauthClientFederatedCredentialRequest(c.Server, id, credentialId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) RotateOauthClientSecret(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRotateOauthClientSecretRequest(c.Server, id)
 	if err != nil {
@@ -70525,6 +71316,42 @@ func (c *Client) UpdateKnowledgeSettingsWithBody(ctx context.Context, contentTyp
 
 func (c *Client) UpdateKnowledgeSettings(ctx context.Context, body UpdateKnowledgeSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateKnowledgeSettingsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMcpRuntimeTiers(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMcpRuntimeTiersRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateMcpRuntimeTiersWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMcpRuntimeTiersRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateMcpRuntimeTiers(ctx context.Context, body UpdateMcpRuntimeTiersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMcpRuntimeTiersRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -78882,6 +79709,182 @@ func NewUpdateOauthClientRequestWithBody(server string, id string, contentType s
 	return req, nil
 }
 
+// NewGetOauthClientFederatedCredentialsRequest generates requests for GetOauthClientFederatedCredentials
+func NewGetOauthClientFederatedCredentialsRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/oauth-clients/%s/federated-credentials", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateOauthClientFederatedCredentialRequest calls the generic CreateOauthClientFederatedCredential builder with application/json body
+func NewCreateOauthClientFederatedCredentialRequest(server string, id string, body CreateOauthClientFederatedCredentialJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateOauthClientFederatedCredentialRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewCreateOauthClientFederatedCredentialRequestWithBody generates requests for CreateOauthClientFederatedCredential with any type of body
+func NewCreateOauthClientFederatedCredentialRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/oauth-clients/%s/federated-credentials", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteOauthClientFederatedCredentialRequest generates requests for DeleteOauthClientFederatedCredential
+func NewDeleteOauthClientFederatedCredentialRequest(server string, id string, credentialId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "credentialId", credentialId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/oauth-clients/%s/federated-credentials/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateOauthClientFederatedCredentialRequest calls the generic UpdateOauthClientFederatedCredential builder with application/json body
+func NewUpdateOauthClientFederatedCredentialRequest(server string, id string, credentialId openapi_types.UUID, body UpdateOauthClientFederatedCredentialJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateOauthClientFederatedCredentialRequestWithBody(server, id, credentialId, "application/json", bodyReader)
+}
+
+// NewUpdateOauthClientFederatedCredentialRequestWithBody generates requests for UpdateOauthClientFederatedCredential with any type of body
+func NewUpdateOauthClientFederatedCredentialRequestWithBody(server string, id string, credentialId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "credentialId", credentialId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/oauth-clients/%s/federated-credentials/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewRotateOauthClientSecretRequest generates requests for RotateOauthClientSecret
 func NewRotateOauthClientSecretRequest(server string, id string) (*http.Request, error) {
 	var err error
@@ -79426,6 +80429,73 @@ func NewUpdateKnowledgeSettingsRequestWithBody(server string, contentType string
 	}
 
 	operationPath := fmt.Sprintf("/api/organization/knowledge-settings")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetMcpRuntimeTiersRequest generates requests for GetMcpRuntimeTiers
+func NewGetMcpRuntimeTiersRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/organization/mcp-runtime-tiers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateMcpRuntimeTiersRequest calls the generic UpdateMcpRuntimeTiers builder with application/json body
+func NewUpdateMcpRuntimeTiersRequest(server string, body UpdateMcpRuntimeTiersJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateMcpRuntimeTiersRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateMcpRuntimeTiersRequestWithBody generates requests for UpdateMcpRuntimeTiers with any type of body
+func NewUpdateMcpRuntimeTiersRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/organization/mcp-runtime-tiers")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -83490,6 +84560,22 @@ type ClientWithResponsesInterface interface {
 
 	UpdateOauthClientWithResponse(ctx context.Context, id string, body UpdateOauthClientJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOauthClientResponse, error)
 
+	// GetOauthClientFederatedCredentialsWithResponse request
+	GetOauthClientFederatedCredentialsWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetOauthClientFederatedCredentialsResponse, error)
+
+	// CreateOauthClientFederatedCredentialWithBodyWithResponse request with any body
+	CreateOauthClientFederatedCredentialWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOauthClientFederatedCredentialResponse, error)
+
+	CreateOauthClientFederatedCredentialWithResponse(ctx context.Context, id string, body CreateOauthClientFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOauthClientFederatedCredentialResponse, error)
+
+	// DeleteOauthClientFederatedCredentialWithResponse request
+	DeleteOauthClientFederatedCredentialWithResponse(ctx context.Context, id string, credentialId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteOauthClientFederatedCredentialResponse, error)
+
+	// UpdateOauthClientFederatedCredentialWithBodyWithResponse request with any body
+	UpdateOauthClientFederatedCredentialWithBodyWithResponse(ctx context.Context, id string, credentialId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOauthClientFederatedCredentialResponse, error)
+
+	UpdateOauthClientFederatedCredentialWithResponse(ctx context.Context, id string, credentialId openapi_types.UUID, body UpdateOauthClientFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOauthClientFederatedCredentialResponse, error)
+
 	// RotateOauthClientSecretWithResponse request
 	RotateOauthClientSecretWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*RotateOauthClientSecretResponse, error)
 
@@ -83554,6 +84640,14 @@ type ClientWithResponsesInterface interface {
 	UpdateKnowledgeSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKnowledgeSettingsResponse, error)
 
 	UpdateKnowledgeSettingsWithResponse(ctx context.Context, body UpdateKnowledgeSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKnowledgeSettingsResponse, error)
+
+	// GetMcpRuntimeTiersWithResponse request
+	GetMcpRuntimeTiersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMcpRuntimeTiersResponse, error)
+
+	// UpdateMcpRuntimeTiersWithBodyWithResponse request with any body
+	UpdateMcpRuntimeTiersWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMcpRuntimeTiersResponse, error)
+
+	UpdateMcpRuntimeTiersWithResponse(ctx context.Context, body UpdateMcpRuntimeTiersJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMcpRuntimeTiersResponse, error)
 
 	// UpdateMcpSettingsWithBodyWithResponse request with any body
 	UpdateMcpSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMcpSettingsResponse, error)
@@ -93813,6 +94907,7 @@ type GetInternalMcpCatalogResponse struct {
 			ImagePullPolicy  *GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
 			ImagePullSecrets *[]GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
 			NodePort         *float32                                                                      `json:"nodePort,omitempty"`
+			RuntimeTier      *string                                                                       `json:"runtimeTier,omitempty"`
 			ServiceAccount   *string                                                                       `json:"serviceAccount,omitempty"`
 			TransportType    *GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 		} `json:"localConfig"`
@@ -94034,6 +95129,7 @@ type CreateInternalMcpCatalogItemResponse struct {
 			ImagePullPolicy  *CreateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
 			ImagePullSecrets *[]CreateInternalMcpCatalogItem200JSONResponseBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
 			NodePort         *float32                                                                             `json:"nodePort,omitempty"`
+			RuntimeTier      *string                                                                              `json:"runtimeTier,omitempty"`
 			ServiceAccount   *string                                                                              `json:"serviceAccount,omitempty"`
 			TransportType    *CreateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 		} `json:"localConfig"`
@@ -94328,6 +95424,7 @@ type GetInternalMcpCatalogItemResponse struct {
 			ImagePullPolicy  *GetInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
 			ImagePullSecrets *[]GetInternalMcpCatalogItem200JSONResponseBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
 			NodePort         *float32                                                                          `json:"nodePort,omitempty"`
+			RuntimeTier      *string                                                                           `json:"runtimeTier,omitempty"`
 			ServiceAccount   *string                                                                           `json:"serviceAccount,omitempty"`
 			TransportType    *GetInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 		} `json:"localConfig"`
@@ -94549,6 +95646,7 @@ type UpdateInternalMcpCatalogItemResponse struct {
 			ImagePullPolicy  *UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
 			ImagePullSecrets *[]UpdateInternalMcpCatalogItem200JSONResponseBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
 			NodePort         *float32                                                                             `json:"nodePort,omitempty"`
+			RuntimeTier      *string                                                                              `json:"runtimeTier,omitempty"`
 			ServiceAccount   *string                                                                              `json:"serviceAccount,omitempty"`
 			TransportType    *UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 		} `json:"localConfig"`
@@ -96368,7 +97466,14 @@ type GetModelsWithApiKeysResponse struct {
 		SupportedEndpoints        interface{}                                                `json:"supportedEndpoints"`
 		SupportsReasoningEffort   *bool                                                      `json:"supportsReasoningEffort"`
 		SupportsToolCalling       *bool                                                      `json:"supportsToolCalling"`
-		Teams                     []struct {
+		SyncedLongContextPricing  *struct {
+			PricePerMillionCacheRead  *string `json:"pricePerMillionCacheRead"`
+			PricePerMillionCacheWrite *string `json:"pricePerMillionCacheWrite"`
+			PricePerMillionInput      string  `json:"pricePerMillionInput"`
+			PricePerMillionOutput     string  `json:"pricePerMillionOutput"`
+			Threshold                 int     `json:"threshold"`
+		} `json:"syncedLongContextPricing"`
+		Teams []struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"teams"`
@@ -96496,7 +97601,14 @@ type UpdateModelResponse struct {
 		SupportedEndpoints                   interface{}                                       `json:"supportedEndpoints"`
 		SupportsReasoningEffort              *bool                                             `json:"supportsReasoningEffort"`
 		SupportsToolCalling                  *bool                                             `json:"supportsToolCalling"`
-		UpdatedAt                            time.Time                                         `json:"updatedAt"`
+		SyncedLongContextPricing             *struct {
+			PricePerMillionCacheRead  *string `json:"pricePerMillionCacheRead"`
+			PricePerMillionCacheWrite *string `json:"pricePerMillionCacheWrite"`
+			PricePerMillionInput      string  `json:"pricePerMillionInput"`
+			PricePerMillionOutput     string  `json:"pricePerMillionOutput"`
+			Threshold                 int     `json:"threshold"`
+		} `json:"syncedLongContextPricing"`
+		UpdatedAt time.Time `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -98474,6 +99586,7 @@ type GetOauthClientsResponse struct {
 			} `json:"createdBy"`
 			Disabled               bool                                            `json:"disabled"`
 			GrantType              GetOauthClients200JSONResponseBodyDataGrantType `json:"grantType"`
+			Icon                   *string                                         `json:"icon"`
 			Id                     string                                          `json:"id"`
 			IncludeFutureProviders bool                                            `json:"includeFutureProviders"`
 			Labels                 []struct {
@@ -98603,6 +99716,7 @@ type CreateOauthClientResponse struct {
 		} `json:"createdBy"`
 		Disabled               bool                                          `json:"disabled"`
 		GrantType              CreateOauthClient200JSONResponseBodyGrantType `json:"grantType"`
+		Icon                   *string                                       `json:"icon"`
 		Id                     string                                        `json:"id"`
 		IncludeFutureProviders bool                                          `json:"includeFutureProviders"`
 		Labels                 []struct {
@@ -98797,6 +99911,7 @@ type UpdateOauthClientResponse struct {
 		} `json:"createdBy"`
 		Disabled               bool                                          `json:"disabled"`
 		GrantType              UpdateOauthClient200JSONResponseBodyGrantType `json:"grantType"`
+		Icon                   *string                                       `json:"icon"`
 		Id                     string                                        `json:"id"`
 		IncludeFutureProviders bool                                          `json:"includeFutureProviders"`
 		Labels                 []struct {
@@ -98894,6 +100009,333 @@ func (r UpdateOauthClientResponse) ContentType() string {
 	return ""
 }
 
+type GetOauthClientFederatedCredentialsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		Audience        string             `json:"audience"`
+		ClaimConditions map[string]string  `json:"claimConditions"`
+		CreatedAt       time.Time          `json:"createdAt"`
+		Id              openapi_types.UUID `json:"id"`
+		Issuer          string             `json:"issuer"`
+		LastUsedAt      *time.Time         `json:"lastUsedAt"`
+		Name            string             `json:"name"`
+		OauthClientId   string             `json:"oauthClientId"`
+		Subject         string             `json:"subject"`
+		UpdatedAt       time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                        `json:"internal_code,omitempty"`
+			Message      string                                                         `json:"message"`
+			Type         GetOauthClientFederatedCredentials400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                        `json:"internal_code,omitempty"`
+			Message      string                                                         `json:"message"`
+			Type         GetOauthClientFederatedCredentials401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                        `json:"details,omitempty"`
+			InternalCode *string                                                        `json:"internal_code,omitempty"`
+			Message      string                                                         `json:"message"`
+			Type         GetOauthClientFederatedCredentials403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                        `json:"internal_code,omitempty"`
+			Message      string                                                         `json:"message"`
+			Type         GetOauthClientFederatedCredentials404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                        `json:"internal_code,omitempty"`
+			Message      string                                                         `json:"message"`
+			Type         GetOauthClientFederatedCredentials409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                        `json:"internal_code,omitempty"`
+			Message      string                                                         `json:"message"`
+			Type         GetOauthClientFederatedCredentials500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOauthClientFederatedCredentialsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOauthClientFederatedCredentialsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetOauthClientFederatedCredentialsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CreateOauthClientFederatedCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Audience        string             `json:"audience"`
+		ClaimConditions map[string]string  `json:"claimConditions"`
+		CreatedAt       time.Time          `json:"createdAt"`
+		Id              openapi_types.UUID `json:"id"`
+		Issuer          string             `json:"issuer"`
+		LastUsedAt      *time.Time         `json:"lastUsedAt"`
+		Name            string             `json:"name"`
+		OauthClientId   string             `json:"oauthClientId"`
+		Subject         string             `json:"subject"`
+		UpdatedAt       time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         CreateOauthClientFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         CreateOauthClientFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                          `json:"details,omitempty"`
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         CreateOauthClientFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         CreateOauthClientFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         CreateOauthClientFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         CreateOauthClientFederatedCredential500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateOauthClientFederatedCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateOauthClientFederatedCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateOauthClientFederatedCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteOauthClientFederatedCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         DeleteOauthClientFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         DeleteOauthClientFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                          `json:"details,omitempty"`
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         DeleteOauthClientFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         DeleteOauthClientFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         DeleteOauthClientFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         DeleteOauthClientFederatedCredential500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteOauthClientFederatedCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteOauthClientFederatedCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteOauthClientFederatedCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateOauthClientFederatedCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Audience        string             `json:"audience"`
+		ClaimConditions map[string]string  `json:"claimConditions"`
+		CreatedAt       time.Time          `json:"createdAt"`
+		Id              openapi_types.UUID `json:"id"`
+		Issuer          string             `json:"issuer"`
+		LastUsedAt      *time.Time         `json:"lastUsedAt"`
+		Name            string             `json:"name"`
+		OauthClientId   string             `json:"oauthClientId"`
+		Subject         string             `json:"subject"`
+		UpdatedAt       time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         UpdateOauthClientFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         UpdateOauthClientFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                          `json:"details,omitempty"`
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         UpdateOauthClientFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         UpdateOauthClientFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         UpdateOauthClientFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                          `json:"internal_code,omitempty"`
+			Message      string                                                           `json:"message"`
+			Type         UpdateOauthClientFederatedCredential500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateOauthClientFederatedCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateOauthClientFederatedCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateOauthClientFederatedCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type RotateOauthClientSecretResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -98917,6 +100359,7 @@ type RotateOauthClientSecretResponse struct {
 		} `json:"createdBy"`
 		Disabled               bool                                                `json:"disabled"`
 		GrantType              RotateOauthClientSecret200JSONResponseBodyGrantType `json:"grantType"`
+		Icon                   *string                                             `json:"icon"`
 		Id                     string                                              `json:"id"`
 		IncludeFutureProviders bool                                                `json:"includeFutureProviders"`
 		Labels                 []struct {
@@ -99544,6 +100987,15 @@ type GetOrganizationResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -99748,6 +101200,15 @@ type UpdateAgentSettingsResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -99952,6 +101413,15 @@ type UpdateAppearanceSettingsResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -100156,6 +101626,15 @@ type UpdateAuthSettingsResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -100360,6 +101839,15 @@ type CompleteOnboardingResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -100564,6 +102052,15 @@ type UpdateConnectionSettingsResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -100768,6 +102265,15 @@ type UpdateDefaultEnvironmentResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -100972,6 +102478,15 @@ type UpdateIntegrationSettingsResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -101176,6 +102691,15 @@ type UpdateKnowledgeSettingsResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -101295,6 +102819,172 @@ func (r UpdateKnowledgeSettingsResponse) ContentType() string {
 	return ""
 }
 
+type GetMcpRuntimeTiersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Tiers []struct {
+			CpuLimit                 *float32 `json:"cpuLimit"`
+			CpuRequest               float32  `json:"cpuRequest"`
+			MemoryLimitMiB           int      `json:"memoryLimitMiB"`
+			MemoryLimitMiBOverride   *int     `json:"memoryLimitMiBOverride,omitempty"`
+			MemoryRequestMiB         int      `json:"memoryRequestMiB"`
+			MemoryRequestMiBOverride *int     `json:"memoryRequestMiBOverride,omitempty"`
+			Name                     string   `json:"name"`
+		} `json:"tiers"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetMcpRuntimeTiers400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetMcpRuntimeTiers401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                        `json:"details,omitempty"`
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetMcpRuntimeTiers403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetMcpRuntimeTiers404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetMcpRuntimeTiers409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                        `json:"internal_code,omitempty"`
+			Message      string                                         `json:"message"`
+			Type         GetMcpRuntimeTiers500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMcpRuntimeTiersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMcpRuntimeTiersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetMcpRuntimeTiersResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateMcpRuntimeTiersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Tiers []struct {
+			CpuLimit                 *float32 `json:"cpuLimit"`
+			CpuRequest               float32  `json:"cpuRequest"`
+			MemoryLimitMiB           int      `json:"memoryLimitMiB"`
+			MemoryLimitMiBOverride   *int     `json:"memoryLimitMiBOverride,omitempty"`
+			MemoryRequestMiB         int      `json:"memoryRequestMiB"`
+			MemoryRequestMiBOverride *int     `json:"memoryRequestMiBOverride,omitempty"`
+			Name                     string   `json:"name"`
+		} `json:"tiers"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         UpdateMcpRuntimeTiers400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         UpdateMcpRuntimeTiers401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                           `json:"details,omitempty"`
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         UpdateMcpRuntimeTiers403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         UpdateMcpRuntimeTiers404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         UpdateMcpRuntimeTiers409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         UpdateMcpRuntimeTiers500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateMcpRuntimeTiersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateMcpRuntimeTiersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateMcpRuntimeTiersResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type UpdateMcpSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -101380,6 +103070,15 @@ type UpdateMcpSettingsResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -101662,6 +103361,15 @@ type UpdateSecuritySettingsResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -101866,6 +103574,15 @@ type UpdateSkillsSettingsResponse struct {
 		Logo                      *string `json:"logo"`
 		LogoDark                  *string `json:"logoDark"`
 		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		McpRuntimeTiers           *struct {
+			Tiers []struct {
+				CpuLimit         *float32 `json:"cpuLimit"`
+				CpuRequest       float32  `json:"cpuRequest"`
+				MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+				MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+				Name             string   `json:"name"`
+			} `json:"tiers"`
+		} `json:"mcpRuntimeTiers"`
 		MessagingChannelOverrides *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"messagingChannelOverrides"`
@@ -110326,6 +112043,58 @@ func (c *ClientWithResponses) UpdateOauthClientWithResponse(ctx context.Context,
 	return ParseUpdateOauthClientResponse(rsp)
 }
 
+// GetOauthClientFederatedCredentialsWithResponse request returning *GetOauthClientFederatedCredentialsResponse
+func (c *ClientWithResponses) GetOauthClientFederatedCredentialsWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetOauthClientFederatedCredentialsResponse, error) {
+	rsp, err := c.GetOauthClientFederatedCredentials(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOauthClientFederatedCredentialsResponse(rsp)
+}
+
+// CreateOauthClientFederatedCredentialWithBodyWithResponse request with arbitrary body returning *CreateOauthClientFederatedCredentialResponse
+func (c *ClientWithResponses) CreateOauthClientFederatedCredentialWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOauthClientFederatedCredentialResponse, error) {
+	rsp, err := c.CreateOauthClientFederatedCredentialWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOauthClientFederatedCredentialResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateOauthClientFederatedCredentialWithResponse(ctx context.Context, id string, body CreateOauthClientFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOauthClientFederatedCredentialResponse, error) {
+	rsp, err := c.CreateOauthClientFederatedCredential(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOauthClientFederatedCredentialResponse(rsp)
+}
+
+// DeleteOauthClientFederatedCredentialWithResponse request returning *DeleteOauthClientFederatedCredentialResponse
+func (c *ClientWithResponses) DeleteOauthClientFederatedCredentialWithResponse(ctx context.Context, id string, credentialId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteOauthClientFederatedCredentialResponse, error) {
+	rsp, err := c.DeleteOauthClientFederatedCredential(ctx, id, credentialId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteOauthClientFederatedCredentialResponse(rsp)
+}
+
+// UpdateOauthClientFederatedCredentialWithBodyWithResponse request with arbitrary body returning *UpdateOauthClientFederatedCredentialResponse
+func (c *ClientWithResponses) UpdateOauthClientFederatedCredentialWithBodyWithResponse(ctx context.Context, id string, credentialId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOauthClientFederatedCredentialResponse, error) {
+	rsp, err := c.UpdateOauthClientFederatedCredentialWithBody(ctx, id, credentialId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOauthClientFederatedCredentialResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateOauthClientFederatedCredentialWithResponse(ctx context.Context, id string, credentialId openapi_types.UUID, body UpdateOauthClientFederatedCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOauthClientFederatedCredentialResponse, error) {
+	rsp, err := c.UpdateOauthClientFederatedCredential(ctx, id, credentialId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOauthClientFederatedCredentialResponse(rsp)
+}
+
 // RotateOauthClientSecretWithResponse request returning *RotateOauthClientSecretResponse
 func (c *ClientWithResponses) RotateOauthClientSecretWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*RotateOauthClientSecretResponse, error) {
 	rsp, err := c.RotateOauthClientSecret(ctx, id, reqEditors...)
@@ -110539,6 +112308,32 @@ func (c *ClientWithResponses) UpdateKnowledgeSettingsWithResponse(ctx context.Co
 		return nil, err
 	}
 	return ParseUpdateKnowledgeSettingsResponse(rsp)
+}
+
+// GetMcpRuntimeTiersWithResponse request returning *GetMcpRuntimeTiersResponse
+func (c *ClientWithResponses) GetMcpRuntimeTiersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMcpRuntimeTiersResponse, error) {
+	rsp, err := c.GetMcpRuntimeTiers(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMcpRuntimeTiersResponse(rsp)
+}
+
+// UpdateMcpRuntimeTiersWithBodyWithResponse request with arbitrary body returning *UpdateMcpRuntimeTiersResponse
+func (c *ClientWithResponses) UpdateMcpRuntimeTiersWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMcpRuntimeTiersResponse, error) {
+	rsp, err := c.UpdateMcpRuntimeTiersWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMcpRuntimeTiersResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateMcpRuntimeTiersWithResponse(ctx context.Context, body UpdateMcpRuntimeTiersJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMcpRuntimeTiersResponse, error) {
+	rsp, err := c.UpdateMcpRuntimeTiers(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMcpRuntimeTiersResponse(rsp)
 }
 
 // UpdateMcpSettingsWithBodyWithResponse request with arbitrary body returning *UpdateMcpSettingsResponse
@@ -124690,6 +126485,7 @@ func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCata
 				ImagePullPolicy  *GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
 				ImagePullSecrets *[]GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
 				NodePort         *float32                                                                      `json:"nodePort,omitempty"`
+				RuntimeTier      *string                                                                       `json:"runtimeTier,omitempty"`
 				ServiceAccount   *string                                                                       `json:"serviceAccount,omitempty"`
 				TransportType    *GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 			} `json:"localConfig"`
@@ -124943,6 +126739,7 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 				ImagePullPolicy  *CreateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
 				ImagePullSecrets *[]CreateInternalMcpCatalogItem200JSONResponseBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
 				NodePort         *float32                                                                             `json:"nodePort,omitempty"`
+				RuntimeTier      *string                                                                              `json:"runtimeTier,omitempty"`
 				ServiceAccount   *string                                                                              `json:"serviceAccount,omitempty"`
 				TransportType    *CreateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 			} `json:"localConfig"`
@@ -125301,6 +127098,7 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 				ImagePullPolicy  *GetInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
 				ImagePullSecrets *[]GetInternalMcpCatalogItem200JSONResponseBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
 				NodePort         *float32                                                                          `json:"nodePort,omitempty"`
+				RuntimeTier      *string                                                                           `json:"runtimeTier,omitempty"`
 				ServiceAccount   *string                                                                           `json:"serviceAccount,omitempty"`
 				TransportType    *GetInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 			} `json:"localConfig"`
@@ -125554,6 +127352,7 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 				ImagePullPolicy  *UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
 				ImagePullSecrets *[]UpdateInternalMcpCatalogItem200JSONResponseBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
 				NodePort         *float32                                                                             `json:"nodePort,omitempty"`
+				RuntimeTier      *string                                                                              `json:"runtimeTier,omitempty"`
 				ServiceAccount   *string                                                                              `json:"serviceAccount,omitempty"`
 				TransportType    *UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 			} `json:"localConfig"`
@@ -127936,7 +129735,14 @@ func ParseGetModelsWithApiKeysResponse(rsp *http.Response) (*GetModelsWithApiKey
 			SupportedEndpoints        interface{}                                                `json:"supportedEndpoints"`
 			SupportsReasoningEffort   *bool                                                      `json:"supportsReasoningEffort"`
 			SupportsToolCalling       *bool                                                      `json:"supportsToolCalling"`
-			Teams                     []struct {
+			SyncedLongContextPricing  *struct {
+				PricePerMillionCacheRead  *string `json:"pricePerMillionCacheRead"`
+				PricePerMillionCacheWrite *string `json:"pricePerMillionCacheWrite"`
+				PricePerMillionInput      string  `json:"pricePerMillionInput"`
+				PricePerMillionOutput     string  `json:"pricePerMillionOutput"`
+				Threshold                 int     `json:"threshold"`
+			} `json:"syncedLongContextPricing"`
+			Teams []struct {
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"teams"`
@@ -128096,7 +129902,14 @@ func ParseUpdateModelResponse(rsp *http.Response) (*UpdateModelResponse, error) 
 			SupportedEndpoints                   interface{}                                       `json:"supportedEndpoints"`
 			SupportsReasoningEffort              *bool                                             `json:"supportsReasoningEffort"`
 			SupportsToolCalling                  *bool                                             `json:"supportsToolCalling"`
-			UpdatedAt                            time.Time                                         `json:"updatedAt"`
+			SyncedLongContextPricing             *struct {
+				PricePerMillionCacheRead  *string `json:"pricePerMillionCacheRead"`
+				PricePerMillionCacheWrite *string `json:"pricePerMillionCacheWrite"`
+				PricePerMillionInput      string  `json:"pricePerMillionInput"`
+				PricePerMillionOutput     string  `json:"pricePerMillionOutput"`
+				Threshold                 int     `json:"threshold"`
+			} `json:"syncedLongContextPricing"`
+			UpdatedAt time.Time `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -130682,6 +132495,7 @@ func ParseGetOauthClientsResponse(rsp *http.Response) (*GetOauthClientsResponse,
 				} `json:"createdBy"`
 				Disabled               bool                                            `json:"disabled"`
 				GrantType              GetOauthClients200JSONResponseBodyDataGrantType `json:"grantType"`
+				Icon                   *string                                         `json:"icon"`
 				Id                     string                                          `json:"id"`
 				IncludeFutureProviders bool                                            `json:"includeFutureProviders"`
 				Labels                 []struct {
@@ -130843,6 +132657,7 @@ func ParseCreateOauthClientResponse(rsp *http.Response) (*CreateOauthClientRespo
 			} `json:"createdBy"`
 			Disabled               bool                                          `json:"disabled"`
 			GrantType              CreateOauthClient200JSONResponseBodyGrantType `json:"grantType"`
+			Icon                   *string                                       `json:"icon"`
 			Id                     string                                        `json:"id"`
 			IncludeFutureProviders bool                                          `json:"includeFutureProviders"`
 			Labels                 []struct {
@@ -131101,6 +132916,7 @@ func ParseUpdateOauthClientResponse(rsp *http.Response) (*UpdateOauthClientRespo
 			} `json:"createdBy"`
 			Disabled               bool                                          `json:"disabled"`
 			GrantType              UpdateOauthClient200JSONResponseBodyGrantType `json:"grantType"`
+			Icon                   *string                                       `json:"icon"`
 			Id                     string                                        `json:"id"`
 			IncludeFutureProviders bool                                          `json:"includeFutureProviders"`
 			Labels                 []struct {
@@ -131218,6 +133034,461 @@ func ParseUpdateOauthClientResponse(rsp *http.Response) (*UpdateOauthClientRespo
 	return response, nil
 }
 
+// ParseGetOauthClientFederatedCredentialsResponse parses an HTTP response from a GetOauthClientFederatedCredentialsWithResponse call
+func ParseGetOauthClientFederatedCredentialsResponse(rsp *http.Response) (*GetOauthClientFederatedCredentialsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOauthClientFederatedCredentialsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			Audience        string             `json:"audience"`
+			ClaimConditions map[string]string  `json:"claimConditions"`
+			CreatedAt       time.Time          `json:"createdAt"`
+			Id              openapi_types.UUID `json:"id"`
+			Issuer          string             `json:"issuer"`
+			LastUsedAt      *time.Time         `json:"lastUsedAt"`
+			Name            string             `json:"name"`
+			OauthClientId   string             `json:"oauthClientId"`
+			Subject         string             `json:"subject"`
+			UpdatedAt       time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                        `json:"internal_code,omitempty"`
+				Message      string                                                         `json:"message"`
+				Type         GetOauthClientFederatedCredentials400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                        `json:"internal_code,omitempty"`
+				Message      string                                                         `json:"message"`
+				Type         GetOauthClientFederatedCredentials401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                        `json:"details,omitempty"`
+				InternalCode *string                                                        `json:"internal_code,omitempty"`
+				Message      string                                                         `json:"message"`
+				Type         GetOauthClientFederatedCredentials403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                        `json:"internal_code,omitempty"`
+				Message      string                                                         `json:"message"`
+				Type         GetOauthClientFederatedCredentials404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                        `json:"internal_code,omitempty"`
+				Message      string                                                         `json:"message"`
+				Type         GetOauthClientFederatedCredentials409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                        `json:"internal_code,omitempty"`
+				Message      string                                                         `json:"message"`
+				Type         GetOauthClientFederatedCredentials500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateOauthClientFederatedCredentialResponse parses an HTTP response from a CreateOauthClientFederatedCredentialWithResponse call
+func ParseCreateOauthClientFederatedCredentialResponse(rsp *http.Response) (*CreateOauthClientFederatedCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateOauthClientFederatedCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Audience        string             `json:"audience"`
+			ClaimConditions map[string]string  `json:"claimConditions"`
+			CreatedAt       time.Time          `json:"createdAt"`
+			Id              openapi_types.UUID `json:"id"`
+			Issuer          string             `json:"issuer"`
+			LastUsedAt      *time.Time         `json:"lastUsedAt"`
+			Name            string             `json:"name"`
+			OauthClientId   string             `json:"oauthClientId"`
+			Subject         string             `json:"subject"`
+			UpdatedAt       time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         CreateOauthClientFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         CreateOauthClientFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                          `json:"details,omitempty"`
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         CreateOauthClientFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         CreateOauthClientFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         CreateOauthClientFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         CreateOauthClientFederatedCredential500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteOauthClientFederatedCredentialResponse parses an HTTP response from a DeleteOauthClientFederatedCredentialWithResponse call
+func ParseDeleteOauthClientFederatedCredentialResponse(rsp *http.Response) (*DeleteOauthClientFederatedCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteOauthClientFederatedCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         DeleteOauthClientFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         DeleteOauthClientFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                          `json:"details,omitempty"`
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         DeleteOauthClientFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         DeleteOauthClientFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         DeleteOauthClientFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         DeleteOauthClientFederatedCredential500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateOauthClientFederatedCredentialResponse parses an HTTP response from a UpdateOauthClientFederatedCredentialWithResponse call
+func ParseUpdateOauthClientFederatedCredentialResponse(rsp *http.Response) (*UpdateOauthClientFederatedCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateOauthClientFederatedCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Audience        string             `json:"audience"`
+			ClaimConditions map[string]string  `json:"claimConditions"`
+			CreatedAt       time.Time          `json:"createdAt"`
+			Id              openapi_types.UUID `json:"id"`
+			Issuer          string             `json:"issuer"`
+			LastUsedAt      *time.Time         `json:"lastUsedAt"`
+			Name            string             `json:"name"`
+			OauthClientId   string             `json:"oauthClientId"`
+			Subject         string             `json:"subject"`
+			UpdatedAt       time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         UpdateOauthClientFederatedCredential400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         UpdateOauthClientFederatedCredential401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                          `json:"details,omitempty"`
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         UpdateOauthClientFederatedCredential403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         UpdateOauthClientFederatedCredential404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         UpdateOauthClientFederatedCredential409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                          `json:"internal_code,omitempty"`
+				Message      string                                                           `json:"message"`
+				Type         UpdateOauthClientFederatedCredential500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseRotateOauthClientSecretResponse parses an HTTP response from a RotateOauthClientSecretWithResponse call
 func ParseRotateOauthClientSecretResponse(rsp *http.Response) (*RotateOauthClientSecretResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -131253,6 +133524,7 @@ func ParseRotateOauthClientSecretResponse(rsp *http.Response) (*RotateOauthClien
 			} `json:"createdBy"`
 			Disabled               bool                                                `json:"disabled"`
 			GrantType              RotateOauthClientSecret200JSONResponseBodyGrantType `json:"grantType"`
+			Icon                   *string                                             `json:"icon"`
 			Id                     string                                              `json:"id"`
 			IncludeFutureProviders bool                                                `json:"includeFutureProviders"`
 			Labels                 []struct {
@@ -132072,6 +134344,15 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`
@@ -132308,6 +134589,15 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`
@@ -132544,6 +134834,15 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`
@@ -132780,6 +135079,15 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`
@@ -133016,6 +135324,15 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`
@@ -133252,6 +135569,15 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`
@@ -133488,6 +135814,15 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`
@@ -133724,6 +136059,15 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`
@@ -133960,6 +136304,15 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`
@@ -134099,6 +136452,236 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 	return response, nil
 }
 
+// ParseGetMcpRuntimeTiersResponse parses an HTTP response from a GetMcpRuntimeTiersWithResponse call
+func ParseGetMcpRuntimeTiersResponse(rsp *http.Response) (*GetMcpRuntimeTiersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMcpRuntimeTiersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Tiers []struct {
+				CpuLimit                 *float32 `json:"cpuLimit"`
+				CpuRequest               float32  `json:"cpuRequest"`
+				MemoryLimitMiB           int      `json:"memoryLimitMiB"`
+				MemoryLimitMiBOverride   *int     `json:"memoryLimitMiBOverride,omitempty"`
+				MemoryRequestMiB         int      `json:"memoryRequestMiB"`
+				MemoryRequestMiBOverride *int     `json:"memoryRequestMiBOverride,omitempty"`
+				Name                     string   `json:"name"`
+			} `json:"tiers"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetMcpRuntimeTiers400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetMcpRuntimeTiers401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                        `json:"details,omitempty"`
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetMcpRuntimeTiers403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetMcpRuntimeTiers404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetMcpRuntimeTiers409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                        `json:"internal_code,omitempty"`
+				Message      string                                         `json:"message"`
+				Type         GetMcpRuntimeTiers500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateMcpRuntimeTiersResponse parses an HTTP response from a UpdateMcpRuntimeTiersWithResponse call
+func ParseUpdateMcpRuntimeTiersResponse(rsp *http.Response) (*UpdateMcpRuntimeTiersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateMcpRuntimeTiersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Tiers []struct {
+				CpuLimit                 *float32 `json:"cpuLimit"`
+				CpuRequest               float32  `json:"cpuRequest"`
+				MemoryLimitMiB           int      `json:"memoryLimitMiB"`
+				MemoryLimitMiBOverride   *int     `json:"memoryLimitMiBOverride,omitempty"`
+				MemoryRequestMiB         int      `json:"memoryRequestMiB"`
+				MemoryRequestMiBOverride *int     `json:"memoryRequestMiBOverride,omitempty"`
+				Name                     string   `json:"name"`
+			} `json:"tiers"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         UpdateMcpRuntimeTiers400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         UpdateMcpRuntimeTiers401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                           `json:"details,omitempty"`
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         UpdateMcpRuntimeTiers403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         UpdateMcpRuntimeTiers404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         UpdateMcpRuntimeTiers409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         UpdateMcpRuntimeTiers500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseUpdateMcpSettingsResponse parses an HTTP response from a UpdateMcpSettingsWithResponse call
 func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -134196,6 +136779,15 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`
@@ -134542,6 +137134,15 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`
@@ -134778,6 +137379,15 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 			Logo                      *string `json:"logo"`
 			LogoDark                  *string `json:"logoDark"`
 			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			McpRuntimeTiers           *struct {
+				Tiers []struct {
+					CpuLimit         *float32 `json:"cpuLimit"`
+					CpuRequest       float32  `json:"cpuRequest"`
+					MemoryLimitMiB   *int     `json:"memoryLimitMiB,omitempty"`
+					MemoryRequestMiB *int     `json:"memoryRequestMiB,omitempty"`
+					Name             string   `json:"name"`
+				} `json:"tiers"`
+			} `json:"mcpRuntimeTiers"`
 			MessagingChannelOverrides *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"messagingChannelOverrides"`

@@ -14,7 +14,7 @@ import (
 
 func currentModelAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
-		"long_context_threshold":                     schema.Int64Attribute{Optional: true, MarkdownDescription: "Input token threshold for long-context pricing."},
+		"long_context_threshold":                     schema.Int64Attribute{Optional: true, MarkdownDescription: "Input token threshold for long-context pricing; unset uses the tier synced from the model provider's catalog."},
 		"long_context_price_per_million_input":       schema.StringAttribute{Optional: true, MarkdownDescription: "Price per million input tokens above the long-context threshold."},
 		"long_context_price_per_million_output":      schema.StringAttribute{Optional: true, MarkdownDescription: "Price per million output tokens above the long-context threshold."},
 		"long_context_price_per_million_cache_read":  schema.StringAttribute{Optional: true, MarkdownDescription: "Price per million cache-read tokens above the long-context threshold."},

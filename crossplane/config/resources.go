@@ -67,6 +67,11 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.References["billing_team_id"] = ujconfig.Reference{TerraformName: "archestra_team"}
 		r.References["provider_api_keys.provider_api_key_id"] = ujconfig.Reference{TerraformName: "archestra_model_provider"}
 	})
+	p.AddResourceConfigurator("archestra_oauth_client_federated_credential", func(r *ujconfig.Resource) {
+		r.ShortGroup = credentialGroup
+		r.Kind = "OAuthClientFederatedCredential"
+		r.References["oauth_client_id"] = ujconfig.Reference{TerraformName: "archestra_oauth_client"}
+	})
 	p.AddResourceConfigurator("archestra_remote_agent", func(r *ujconfig.Resource) { r.ShortGroup = "a2a"; r.Kind = "RemoteAgent" })
 
 	for _, name := range []string{"archestra_environment", "archestra_model", "archestra_plugin", "archestra_virtual_key", "archestra_oauth_client", "archestra_remote_agent", "archestra_service_account", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_knowledge_connector", "archestra_mcp_registry_entry", "archestra_skill", "archestra_credential", "archestra_model_provider"} {
@@ -203,6 +208,10 @@ func ConfigureResources(p *ujconfig.Provider) {
 	p.AddResourceConfigurator("archestra_mcp_registry_entry", func(r *ujconfig.Resource) {
 		r.ShortGroup = mcpGroup
 		r.Kind = "RegistryEntry"
+	})
+	p.AddResourceConfigurator("archestra_mcp_runtime_tiers", func(r *ujconfig.Resource) {
+		r.ShortGroup = mcpGroup
+		r.Kind = "RuntimeTiers"
 	})
 	p.AddResourceConfigurator("archestra_mcp_server", func(r *ujconfig.Resource) {
 		r.ShortGroup = mcpGroup

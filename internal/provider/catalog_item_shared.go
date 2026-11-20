@@ -116,6 +116,7 @@ var catalogItemAttrSpec = []AttrSpec{
 		{TFName: "http_path", JSONName: "httpPath", Kind: Scalar},
 		{TFName: "service_account", JSONName: "serviceAccount", Kind: Scalar},
 		{TFName: "node_port", JSONName: "nodePort", Kind: Scalar},
+		{TFName: "runtime_tier", JSONName: "runtimeTier", Kind: Scalar},
 		{TFName: "image_pull_secrets", JSONName: "imagePullSecrets", Kind: List, Children: []AttrSpec{
 			{TFName: "source", JSONName: "source", Kind: Scalar},
 			{TFName: "name", JSONName: "name", Kind: Scalar},
