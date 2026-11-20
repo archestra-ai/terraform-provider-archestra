@@ -260,8 +260,13 @@ Optional:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--agents"></a>
@@ -270,8 +275,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--apps"></a>
@@ -280,8 +290,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--conversations"></a>
@@ -290,8 +305,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--credentials"></a>
@@ -300,8 +320,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--environments"></a>
@@ -310,8 +335,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--knowledge_bases"></a>
@@ -320,8 +350,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--knowledge_connectors"></a>
@@ -330,8 +365,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--knowledge_files"></a>
@@ -340,8 +380,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--mcp_gateways"></a>
@@ -350,8 +395,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--mcp_registry"></a>
@@ -360,8 +410,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--model_providers"></a>
@@ -370,8 +425,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--models"></a>
@@ -380,8 +440,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--oauth_clients"></a>
@@ -390,8 +455,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--plugins"></a>
@@ -400,8 +470,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--projects"></a>
@@ -410,8 +485,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--remote_agents"></a>
@@ -420,8 +500,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--service_accounts"></a>
@@ -430,8 +515,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--skills"></a>
@@ -440,8 +530,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--default_permissions--virtual_keys"></a>
@@ -450,8 +545,13 @@ Required:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 

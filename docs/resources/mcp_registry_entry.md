@@ -421,8 +421,13 @@ Optional:
 Required:
 
 - `actions` (Set of String) Actions granted to the principal.
+
+Optional:
+
+- `service_account_id` (String) Service account to grant access to, such as `archestra_service_account.example.id`. Replaces `subject_type` and `subject_id`.
 - `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
+- `subject_type` (String) Principal type: `user`, `team`, `serviceAccount`, `role` or `organization`. Set with `subject_id`, or leave both out and set `team_id` or `service_account_id`.
+- `team_id` (String) Team to grant access to, such as `archestra_team.example.id`. Replaces `subject_type` and `subject_id`.
 
 
 <a id="nestedatt--remote_config"></a>

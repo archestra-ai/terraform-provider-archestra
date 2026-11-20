@@ -14,9 +14,11 @@ resource "archestra_limit" "org_token_cost" {
 
 # Per-team MCP-server-call ceiling — every team gets 5k GitHub MCP calls before
 # requests start getting rate-limited. Requires `mcp_server_name`.
+# A team, agent, virtual key, environment or OAuth client can be named
+# directly with team_id, agent_id, virtual_key_id, environment_id or
+# llm_oauth_client_id instead of entity_type with entity_id.
 resource "archestra_limit" "engineering_github_calls" {
-  entity_id       = archestra_team.engineering.id
-  entity_type     = "team"
+  team_id         = archestra_team.engineering.id
   limit_type      = "mcp_server_calls"
   limit_value     = 5000
   mcp_server_name = archestra_mcp_server.github.name
@@ -25,8 +27,7 @@ resource "archestra_limit" "engineering_github_calls" {
 # Per-agent tool-call quota — caps how many times the support agent can call
 # `list_repos` on the github MCP. Requires both `mcp_server_name` and `tool_name`.
 resource "archestra_limit" "support_list_repos" {
-  entity_id       = archestra_agent.support.id
-  entity_type     = "agent"
+  agent_id        = archestra_agent.support.id
   limit_type      = "tool_calls"
   limit_value     = 200
   mcp_server_name = archestra_mcp_server.github.name

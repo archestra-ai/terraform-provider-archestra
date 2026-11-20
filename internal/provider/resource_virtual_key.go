@@ -5,6 +5,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -19,8 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"net/http"
-	"time"
 )
 
 var _ resource.ResourceWithImportState = &VirtualAPIKeyResource{}
@@ -41,6 +42,7 @@ type VirtualAPIKeyResourceModel struct {
 	OwnerID                types.String `tfsdk:"owner_id"`
 	InitialGrants          types.Set    `tfsdk:"permissions"`
 	AutoRouterIDs          types.Set    `tfsdk:"auto_router_ids"`
+	ModelPoolIDs           types.Set    `tfsdk:"model_pool_ids"`
 	RotationNonce          types.String `tfsdk:"rotation_nonce"`
 	Value                  types.String `tfsdk:"value"`
 }
@@ -56,6 +58,7 @@ var virtualAPIKeyAttrSpec = []AttrSpec{
 	{TFName: "owner_id", JSONName: "ownerId", Kind: Scalar, OmitOnNull: true}, initialGrantsAttrSpec,
 	// Write-only on the key: the API reports grants on each router, not on the key.
 	{TFName: "auto_router_ids", JSONName: "autoRouterIds", Kind: Set, OmitOnNull: true},
+	{TFName: "model_pool_ids", JSONName: "modelPoolIds", Kind: Set, OmitOnNull: true},
 	{TFName: "rotation_nonce", Kind: Synthetic},
 }
 
@@ -83,6 +86,7 @@ func (r *VirtualAPIKeyResource) Schema(_ context.Context, _ resource.SchemaReque
 		"owner_id":                 schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Creation-only owner selector, defaulting to the creator."},
 		"permissions":              initialGrantsAttribute(),
 		"auto_router_ids":          virtualKeyAutoRouterIDsAttribute(),
+		"model_pool_ids":           virtualKeyModelPoolIDsAttribute(),
 		"rotation_nonce":           schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{rotationNonceRequiresReplace()}, MarkdownDescription: "Change this value to replace the key and revoke its old credential; a first value set after import is recorded without rotation."},
 		"value":                    schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Bearer credential returned on creation or revealed to its creator on import and refresh, retained in sensitive state."},
 	}}
@@ -122,7 +126,7 @@ func (r *VirtualAPIKeyResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 	if result.JSON200 == nil {
-		resp.Diagnostics.AddError("Creation Failed", fmt.Sprintf("API returned status %d", result.StatusCode()))
+		resp.Diagnostics.AddError("Creation Failed", fmt.Sprintf("API returned status %d: %s", result.StatusCode(), string(result.Body)))
 		return
 	}
 	data.Value = types.StringPointerValue(result.JSON200.Value) // null when the token is withheld (team lead creating for a member)
@@ -164,6 +168,7 @@ func (r *VirtualAPIKeyResource) Read(ctx context.Context, req resource.ReadReque
 	}
 	readParentPermissions(ctx, r.client, "llmVirtualKey", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
 	readVirtualKeyAutoRouters(ctx, r.client, &data, &resp.Diagnostics)
+	readVirtualKeyModelPools(ctx, r.client, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -227,7 +232,7 @@ func (r *VirtualAPIKeyResource) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 	if result.JSON200 == nil {
-		resp.Diagnostics.AddError("Update Failed", fmt.Sprintf("API returned status %d", result.StatusCode()))
+		resp.Diagnostics.AddError("Update Failed", fmt.Sprintf("API returned status %d: %s", result.StatusCode(), string(result.Body)))
 		return
 	}
 	data.Value = prior.Value

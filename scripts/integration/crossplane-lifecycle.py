@@ -726,14 +726,19 @@ def main():
                 patch(app, {'name': renamed, 'htmlSecretRef': next_ref, 'browserPermissions': [],
                     'environmentId': None, 'environmentIdRef': None, 'openInFullscreen': True,
                     'labels': [], 'permissions': [], 'tools': dynamic_tools})
+                def app_shared_with_organization():
+                    code, policy = api(policy_path)
+                    if code != 200:
+                        raise RuntimeError('App sharing read failed')
+                    return any(g['subject'] == {'type': 'organization', 'id': '*'} for g in policy['grants'])
+
+                # One update writes the metadata, then the sharing, so wait for both.
                 wait('App versioned update, assignments and clears', lambda: condition(app, 'True')
                     and app_metadata(identifier)['name'] == renamed and app_metadata(identifier)['environmentId'] is None
                     and app_metadata(identifier)['openInFullscreen'] is True and not app_metadata(identifier)['labels']
                     and app_content(identifier)['html'] == desired_html and not app_content(identifier)['uiPermissions']
-                    and app_tools(identifier) == {tool_ids[0]: (None, 'dynamic')})
-                code, policy = api(policy_path)
-                if code != 200 or any(g['subject'] == {'type': 'organization', 'id': '*'} for g in policy['grants']):
-                    raise RuntimeError('App sharing clear was not persisted')
+                    and app_tools(identifier) == {tool_ids[0]: (None, 'dynamic')}
+                    and not app_shared_with_organization())
                 base_version = app_metadata(identifier)['latestVersion']
                 if api(path, {'name': 'Out of band ' + run, 'html': '<html><head></head><body>External edit</body></html>',
                              'baseVersion': base_version})[0] != 200:
