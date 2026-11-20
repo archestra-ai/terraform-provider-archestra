@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.7.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.6.0...v3.7.0) (2026-11-20)
+
+
+### Features
+
+* service account descriptions; sync platform API to 1.5.0-rc.40 ([#264](https://github.com/archestra-ai/terraform-provider-archestra/issues/264)) ([dab860a](https://github.com/archestra-ai/terraform-provider-archestra/commit/dab860a8f3ccf11096e832e36b45fa8529379488))
+
+
+### Bug Fixes
+
+* **deps:** build with Go 1.26.11 and golang.org/x/net v0.62.0 ([#272](https://github.com/archestra-ai/terraform-provider-archestra/issues/272)) ([ab7747a](https://github.com/archestra-ai/terraform-provider-archestra/commit/ab7747a8dd617f7d0f57ec16a42b4c7c366321a9))
+
 ## [3.6.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.5.0...v3.6.0) (2026-11-17)
 
 
