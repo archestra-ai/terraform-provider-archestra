@@ -30,11 +30,15 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_api_key` | `credential` / `APIKey` |
 | `archestra_auto_router` | `llm` / `AutoRouter` |
 | `archestra_blob_provider` | `storage` / `BlobProvider` |
+| `archestra_chatops_ms_teams` | `chatops` / `MSTeams` |
+| `archestra_chatops_slack` | `chatops` / `Slack` |
+| `archestra_chatops_telegram` | `chatops` / `Telegram` |
 | `archestra_cost_export` | `llm` / `CostExport` |
 | `archestra_credential` | `credential` / `Credential` |
 | `archestra_environment` | `environment` / `Environment` |
 | `archestra_github_app` | `credential` / `GitHubApp` |
 | `archestra_github_pat` | `credential` / `GitHubPAT` |
+| `archestra_guardrails_policy` | `security` / `GuardrailsPolicy` |
 | `archestra_identity_provider` | `identity` / `Provider` |
 | `archestra_knowledge_base` | `knowledge` / `KnowledgeBase` |
 | `archestra_knowledge_connector` | `knowledge` / `Connector` |
@@ -44,8 +48,8 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_mcp_gateway` | `gateway` / `Gateway` |
 | `archestra_mcp_registry_entry` | `mcp` / `RegistryEntry` |
 | `archestra_mcp_server` | `mcp` / `Server` |
-| `archestra_model_pool` | `llm` / `ModelPool` |
 | `archestra_model` | `llm` / `Model` |
+| `archestra_model_pool` | `llm` / `ModelPool` |
 | `archestra_model_provider` | `llm` / `ModelProvider` |
 | `archestra_oauth_client` | `credential` / `OAuthClient` |
 | `archestra_openappa_battery_install` | `security` / `BatteryInstall` |
@@ -60,6 +64,7 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_service_account_api_key` | `credential` / `ServiceAccountAPIKey` |
 | `archestra_service_account_federated_credential` | `identity` / `ServiceAccountFederatedCredential` |
 | `archestra_share_link` | `marketplace` / `ShareLink` |
+| `archestra_site_notification` | `organization` / `SiteNotification` |
 | `archestra_skill` | `skill` / `Skill` |
 | `archestra_team` | `team` / `Team` |
 | `archestra_virtual_key` | `llm` / `VirtualKey` |
@@ -69,8 +74,11 @@ The data sources are `archestra_agent`, `archestra_tool`,
 (both looked up by name), and the lookups that find an object made outside
 Terraform so configuration needs no pasted ID: `archestra_team` (by ID or
 name), `archestra_user` (by email), `archestra_service_account`,
-`archestra_environment`, `archestra_mcp_server`, `archestra_model` and
-`archestra_model_provider`. Tool lookup accepts an optional MCP server filter;
+`archestra_environment`, `archestra_mcp_server`, `archestra_model`,
+`archestra_model_provider`, `archestra_role`, `archestra_project`,
+`archestra_knowledge_base`, `archestra_oauth_client`,
+`archestra_mcp_registry_entry` (all by name) and `archestra_identity_provider`
+(by provider ID). Tool lookup accepts an optional MCP server filter;
 agent lookup includes its relationships. Data sources read existing state.
 
 Crossplane resources use `<group>.archestra.crossplane.io` in cluster scope and

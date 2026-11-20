@@ -17,11 +17,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 )
 
+// The ChatOps configuration API merges omitted fields with the stored ones, so
+// omission cannot clear a value.
+const chatOpsKeepsOmitted = "Omission keeps the stored value; the API has no way to clear it."
+
 // useStateForUnknownAllowlist names (resource_type, dotted_attr_path) pairs
 // where Optional+Computed+UseStateForUnknown is intentional sticky behavior.
 // Every entry needs a reason — the default of RemoveOnConfigNullList is
 // safer; allowlisting asserts the field has no "remove = clear" semantic.
 var useStateForUnknownAllowlist = map[string]map[string]string{
+	"archestra_chatops_slack":       {"app_id": chatOpsKeepsOmitted, "connection_mode": chatOpsKeepsOmitted},
+	"archestra_chatops_ms_teams":    {"app_id": chatOpsKeepsOmitted, "tenant_id": chatOpsKeepsOmitted, "group_chat_file_sign_in": chatOpsKeepsOmitted},
 	"archestra_app":                 {"permissions": "Omission preserves sharing; [] clears additional grants without changing ownership."},
 	"archestra_knowledge_file":      {"permissions": "Omission preserves additional sharing; explicit empty clears it while retaining ownership."},
 	"archestra_environment":         {"permissions": "Omission preserves sharing; explicit empty clears it without changing ownership."},

@@ -10497,6 +10497,582 @@ func (e UpdateBlobProvider500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetMsTeamsChatOpsConfig400JSONResponseBodyErrorType.
+const (
+	GetMsTeamsChatOpsConfig400JSONResponseBodyErrorTypeApiValidationError GetMsTeamsChatOpsConfig400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMsTeamsChatOpsConfig400JSONResponseBodyErrorType enum.
+func (e GetMsTeamsChatOpsConfig400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMsTeamsChatOpsConfig400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMsTeamsChatOpsConfig401JSONResponseBodyErrorType.
+const (
+	GetMsTeamsChatOpsConfig401JSONResponseBodyErrorTypeApiAuthenticationError GetMsTeamsChatOpsConfig401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMsTeamsChatOpsConfig401JSONResponseBodyErrorType enum.
+func (e GetMsTeamsChatOpsConfig401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMsTeamsChatOpsConfig401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMsTeamsChatOpsConfig403JSONResponseBodyErrorType.
+const (
+	GetMsTeamsChatOpsConfig403JSONResponseBodyErrorTypeApiAuthorizationError GetMsTeamsChatOpsConfig403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMsTeamsChatOpsConfig403JSONResponseBodyErrorType enum.
+func (e GetMsTeamsChatOpsConfig403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMsTeamsChatOpsConfig403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMsTeamsChatOpsConfig404JSONResponseBodyErrorType.
+const (
+	GetMsTeamsChatOpsConfig404JSONResponseBodyErrorTypeApiNotFoundError GetMsTeamsChatOpsConfig404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMsTeamsChatOpsConfig404JSONResponseBodyErrorType enum.
+func (e GetMsTeamsChatOpsConfig404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMsTeamsChatOpsConfig404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMsTeamsChatOpsConfig409JSONResponseBodyErrorType.
+const (
+	GetMsTeamsChatOpsConfig409JSONResponseBodyErrorTypeApiConflictError GetMsTeamsChatOpsConfig409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMsTeamsChatOpsConfig409JSONResponseBodyErrorType enum.
+func (e GetMsTeamsChatOpsConfig409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMsTeamsChatOpsConfig409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetMsTeamsChatOpsConfig500JSONResponseBodyErrorType.
+const (
+	GetMsTeamsChatOpsConfig500JSONResponseBodyErrorTypeApiInternalServerError GetMsTeamsChatOpsConfig500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetMsTeamsChatOpsConfig500JSONResponseBodyErrorType enum.
+func (e GetMsTeamsChatOpsConfig500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetMsTeamsChatOpsConfig500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateChatOpsConfigInQuickstart400JSONResponseBodyErrorType.
+const (
+	UpdateChatOpsConfigInQuickstart400JSONResponseBodyErrorTypeApiValidationError UpdateChatOpsConfigInQuickstart400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateChatOpsConfigInQuickstart400JSONResponseBodyErrorType enum.
+func (e UpdateChatOpsConfigInQuickstart400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateChatOpsConfigInQuickstart400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateChatOpsConfigInQuickstart401JSONResponseBodyErrorType.
+const (
+	UpdateChatOpsConfigInQuickstart401JSONResponseBodyErrorTypeApiAuthenticationError UpdateChatOpsConfigInQuickstart401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateChatOpsConfigInQuickstart401JSONResponseBodyErrorType enum.
+func (e UpdateChatOpsConfigInQuickstart401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateChatOpsConfigInQuickstart401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateChatOpsConfigInQuickstart403JSONResponseBodyErrorType.
+const (
+	UpdateChatOpsConfigInQuickstart403JSONResponseBodyErrorTypeApiAuthorizationError UpdateChatOpsConfigInQuickstart403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateChatOpsConfigInQuickstart403JSONResponseBodyErrorType enum.
+func (e UpdateChatOpsConfigInQuickstart403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateChatOpsConfigInQuickstart403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateChatOpsConfigInQuickstart404JSONResponseBodyErrorType.
+const (
+	UpdateChatOpsConfigInQuickstart404JSONResponseBodyErrorTypeApiNotFoundError UpdateChatOpsConfigInQuickstart404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateChatOpsConfigInQuickstart404JSONResponseBodyErrorType enum.
+func (e UpdateChatOpsConfigInQuickstart404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateChatOpsConfigInQuickstart404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateChatOpsConfigInQuickstart409JSONResponseBodyErrorType.
+const (
+	UpdateChatOpsConfigInQuickstart409JSONResponseBodyErrorTypeApiConflictError UpdateChatOpsConfigInQuickstart409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateChatOpsConfigInQuickstart409JSONResponseBodyErrorType enum.
+func (e UpdateChatOpsConfigInQuickstart409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateChatOpsConfigInQuickstart409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateChatOpsConfigInQuickstart500JSONResponseBodyErrorType.
+const (
+	UpdateChatOpsConfigInQuickstart500JSONResponseBodyErrorTypeApiInternalServerError UpdateChatOpsConfigInQuickstart500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateChatOpsConfigInQuickstart500JSONResponseBodyErrorType enum.
+func (e UpdateChatOpsConfigInQuickstart500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateChatOpsConfigInQuickstart500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSlackChatOpsConfig200JSONResponseBodyConnectionMode.
+const (
+	GetSlackChatOpsConfig200JSONResponseBodyConnectionModeSocket  GetSlackChatOpsConfig200JSONResponseBodyConnectionMode = "socket"
+	GetSlackChatOpsConfig200JSONResponseBodyConnectionModeWebhook GetSlackChatOpsConfig200JSONResponseBodyConnectionMode = "webhook"
+)
+
+// Valid indicates whether the value is a known member of the GetSlackChatOpsConfig200JSONResponseBodyConnectionMode enum.
+func (e GetSlackChatOpsConfig200JSONResponseBodyConnectionMode) Valid() bool {
+	switch e {
+	case GetSlackChatOpsConfig200JSONResponseBodyConnectionModeSocket:
+		return true
+	case GetSlackChatOpsConfig200JSONResponseBodyConnectionModeWebhook:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSlackChatOpsConfig400JSONResponseBodyErrorType.
+const (
+	GetSlackChatOpsConfig400JSONResponseBodyErrorTypeApiValidationError GetSlackChatOpsConfig400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSlackChatOpsConfig400JSONResponseBodyErrorType enum.
+func (e GetSlackChatOpsConfig400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSlackChatOpsConfig400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSlackChatOpsConfig401JSONResponseBodyErrorType.
+const (
+	GetSlackChatOpsConfig401JSONResponseBodyErrorTypeApiAuthenticationError GetSlackChatOpsConfig401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSlackChatOpsConfig401JSONResponseBodyErrorType enum.
+func (e GetSlackChatOpsConfig401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSlackChatOpsConfig401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSlackChatOpsConfig403JSONResponseBodyErrorType.
+const (
+	GetSlackChatOpsConfig403JSONResponseBodyErrorTypeApiAuthorizationError GetSlackChatOpsConfig403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSlackChatOpsConfig403JSONResponseBodyErrorType enum.
+func (e GetSlackChatOpsConfig403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSlackChatOpsConfig403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSlackChatOpsConfig404JSONResponseBodyErrorType.
+const (
+	GetSlackChatOpsConfig404JSONResponseBodyErrorTypeApiNotFoundError GetSlackChatOpsConfig404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSlackChatOpsConfig404JSONResponseBodyErrorType enum.
+func (e GetSlackChatOpsConfig404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSlackChatOpsConfig404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSlackChatOpsConfig409JSONResponseBodyErrorType.
+const (
+	GetSlackChatOpsConfig409JSONResponseBodyErrorTypeApiConflictError GetSlackChatOpsConfig409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSlackChatOpsConfig409JSONResponseBodyErrorType enum.
+func (e GetSlackChatOpsConfig409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSlackChatOpsConfig409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSlackChatOpsConfig500JSONResponseBodyErrorType.
+const (
+	GetSlackChatOpsConfig500JSONResponseBodyErrorTypeApiInternalServerError GetSlackChatOpsConfig500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSlackChatOpsConfig500JSONResponseBodyErrorType enum.
+func (e GetSlackChatOpsConfig500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSlackChatOpsConfig500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackChatOpsConfigJSONBodyConnectionMode.
+const (
+	UpdateSlackChatOpsConfigJSONBodyConnectionModeSocket  UpdateSlackChatOpsConfigJSONBodyConnectionMode = "socket"
+	UpdateSlackChatOpsConfigJSONBodyConnectionModeWebhook UpdateSlackChatOpsConfigJSONBodyConnectionMode = "webhook"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackChatOpsConfigJSONBodyConnectionMode enum.
+func (e UpdateSlackChatOpsConfigJSONBodyConnectionMode) Valid() bool {
+	switch e {
+	case UpdateSlackChatOpsConfigJSONBodyConnectionModeSocket:
+		return true
+	case UpdateSlackChatOpsConfigJSONBodyConnectionModeWebhook:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackChatOpsConfig400JSONResponseBodyErrorType.
+const (
+	UpdateSlackChatOpsConfig400JSONResponseBodyErrorTypeApiValidationError UpdateSlackChatOpsConfig400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackChatOpsConfig400JSONResponseBodyErrorType enum.
+func (e UpdateSlackChatOpsConfig400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackChatOpsConfig400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackChatOpsConfig401JSONResponseBodyErrorType.
+const (
+	UpdateSlackChatOpsConfig401JSONResponseBodyErrorTypeApiAuthenticationError UpdateSlackChatOpsConfig401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackChatOpsConfig401JSONResponseBodyErrorType enum.
+func (e UpdateSlackChatOpsConfig401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackChatOpsConfig401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackChatOpsConfig403JSONResponseBodyErrorType.
+const (
+	UpdateSlackChatOpsConfig403JSONResponseBodyErrorTypeApiAuthorizationError UpdateSlackChatOpsConfig403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackChatOpsConfig403JSONResponseBodyErrorType enum.
+func (e UpdateSlackChatOpsConfig403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackChatOpsConfig403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackChatOpsConfig404JSONResponseBodyErrorType.
+const (
+	UpdateSlackChatOpsConfig404JSONResponseBodyErrorTypeApiNotFoundError UpdateSlackChatOpsConfig404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackChatOpsConfig404JSONResponseBodyErrorType enum.
+func (e UpdateSlackChatOpsConfig404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackChatOpsConfig404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackChatOpsConfig409JSONResponseBodyErrorType.
+const (
+	UpdateSlackChatOpsConfig409JSONResponseBodyErrorTypeApiConflictError UpdateSlackChatOpsConfig409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackChatOpsConfig409JSONResponseBodyErrorType enum.
+func (e UpdateSlackChatOpsConfig409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackChatOpsConfig409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSlackChatOpsConfig500JSONResponseBodyErrorType.
+const (
+	UpdateSlackChatOpsConfig500JSONResponseBodyErrorTypeApiInternalServerError UpdateSlackChatOpsConfig500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSlackChatOpsConfig500JSONResponseBodyErrorType enum.
+func (e UpdateSlackChatOpsConfig500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSlackChatOpsConfig500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTelegramChatOpsConfig400JSONResponseBodyErrorType.
+const (
+	GetTelegramChatOpsConfig400JSONResponseBodyErrorTypeApiValidationError GetTelegramChatOpsConfig400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTelegramChatOpsConfig400JSONResponseBodyErrorType enum.
+func (e GetTelegramChatOpsConfig400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTelegramChatOpsConfig400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTelegramChatOpsConfig401JSONResponseBodyErrorType.
+const (
+	GetTelegramChatOpsConfig401JSONResponseBodyErrorTypeApiAuthenticationError GetTelegramChatOpsConfig401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTelegramChatOpsConfig401JSONResponseBodyErrorType enum.
+func (e GetTelegramChatOpsConfig401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTelegramChatOpsConfig401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTelegramChatOpsConfig403JSONResponseBodyErrorType.
+const (
+	GetTelegramChatOpsConfig403JSONResponseBodyErrorTypeApiAuthorizationError GetTelegramChatOpsConfig403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTelegramChatOpsConfig403JSONResponseBodyErrorType enum.
+func (e GetTelegramChatOpsConfig403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTelegramChatOpsConfig403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTelegramChatOpsConfig404JSONResponseBodyErrorType.
+const (
+	GetTelegramChatOpsConfig404JSONResponseBodyErrorTypeApiNotFoundError GetTelegramChatOpsConfig404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTelegramChatOpsConfig404JSONResponseBodyErrorType enum.
+func (e GetTelegramChatOpsConfig404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTelegramChatOpsConfig404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTelegramChatOpsConfig409JSONResponseBodyErrorType.
+const (
+	GetTelegramChatOpsConfig409JSONResponseBodyErrorTypeApiConflictError GetTelegramChatOpsConfig409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTelegramChatOpsConfig409JSONResponseBodyErrorType enum.
+func (e GetTelegramChatOpsConfig409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTelegramChatOpsConfig409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTelegramChatOpsConfig500JSONResponseBodyErrorType.
+const (
+	GetTelegramChatOpsConfig500JSONResponseBodyErrorTypeApiInternalServerError GetTelegramChatOpsConfig500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetTelegramChatOpsConfig500JSONResponseBodyErrorType enum.
+func (e GetTelegramChatOpsConfig500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetTelegramChatOpsConfig500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateTelegramChatOpsConfig400JSONResponseBodyErrorType.
+const (
+	UpdateTelegramChatOpsConfig400JSONResponseBodyErrorTypeApiValidationError UpdateTelegramChatOpsConfig400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateTelegramChatOpsConfig400JSONResponseBodyErrorType enum.
+func (e UpdateTelegramChatOpsConfig400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateTelegramChatOpsConfig400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateTelegramChatOpsConfig401JSONResponseBodyErrorType.
+const (
+	UpdateTelegramChatOpsConfig401JSONResponseBodyErrorTypeApiAuthenticationError UpdateTelegramChatOpsConfig401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateTelegramChatOpsConfig401JSONResponseBodyErrorType enum.
+func (e UpdateTelegramChatOpsConfig401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateTelegramChatOpsConfig401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateTelegramChatOpsConfig403JSONResponseBodyErrorType.
+const (
+	UpdateTelegramChatOpsConfig403JSONResponseBodyErrorTypeApiAuthorizationError UpdateTelegramChatOpsConfig403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateTelegramChatOpsConfig403JSONResponseBodyErrorType enum.
+func (e UpdateTelegramChatOpsConfig403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateTelegramChatOpsConfig403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateTelegramChatOpsConfig404JSONResponseBodyErrorType.
+const (
+	UpdateTelegramChatOpsConfig404JSONResponseBodyErrorTypeApiNotFoundError UpdateTelegramChatOpsConfig404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateTelegramChatOpsConfig404JSONResponseBodyErrorType enum.
+func (e UpdateTelegramChatOpsConfig404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateTelegramChatOpsConfig404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateTelegramChatOpsConfig409JSONResponseBodyErrorType.
+const (
+	UpdateTelegramChatOpsConfig409JSONResponseBodyErrorTypeApiConflictError UpdateTelegramChatOpsConfig409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateTelegramChatOpsConfig409JSONResponseBodyErrorType enum.
+func (e UpdateTelegramChatOpsConfig409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateTelegramChatOpsConfig409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateTelegramChatOpsConfig500JSONResponseBodyErrorType.
+const (
+	UpdateTelegramChatOpsConfig500JSONResponseBodyErrorTypeApiInternalServerError UpdateTelegramChatOpsConfig500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateTelegramChatOpsConfig500JSONResponseBodyErrorType enum.
+func (e UpdateTelegramChatOpsConfig500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateTelegramChatOpsConfig500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ListCostExports200JSONResponseBodyFormat.
 const (
 	ListCostExports200JSONResponseBodyFormatFocusCsv ListCostExports200JSONResponseBodyFormat = "focus_csv"
@@ -14019,6 +14595,186 @@ func (e UpdateGithubPat500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetGuardrailsPolicy400JSONResponseBodyErrorType.
+const (
+	GetGuardrailsPolicy400JSONResponseBodyErrorTypeApiValidationError GetGuardrailsPolicy400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetGuardrailsPolicy400JSONResponseBodyErrorType enum.
+func (e GetGuardrailsPolicy400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetGuardrailsPolicy400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetGuardrailsPolicy401JSONResponseBodyErrorType.
+const (
+	GetGuardrailsPolicy401JSONResponseBodyErrorTypeApiAuthenticationError GetGuardrailsPolicy401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetGuardrailsPolicy401JSONResponseBodyErrorType enum.
+func (e GetGuardrailsPolicy401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetGuardrailsPolicy401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetGuardrailsPolicy403JSONResponseBodyErrorType.
+const (
+	GetGuardrailsPolicy403JSONResponseBodyErrorTypeApiAuthorizationError GetGuardrailsPolicy403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetGuardrailsPolicy403JSONResponseBodyErrorType enum.
+func (e GetGuardrailsPolicy403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetGuardrailsPolicy403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetGuardrailsPolicy404JSONResponseBodyErrorType.
+const (
+	GetGuardrailsPolicy404JSONResponseBodyErrorTypeApiNotFoundError GetGuardrailsPolicy404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetGuardrailsPolicy404JSONResponseBodyErrorType enum.
+func (e GetGuardrailsPolicy404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetGuardrailsPolicy404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetGuardrailsPolicy409JSONResponseBodyErrorType.
+const (
+	GetGuardrailsPolicy409JSONResponseBodyErrorTypeApiConflictError GetGuardrailsPolicy409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetGuardrailsPolicy409JSONResponseBodyErrorType enum.
+func (e GetGuardrailsPolicy409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetGuardrailsPolicy409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetGuardrailsPolicy500JSONResponseBodyErrorType.
+const (
+	GetGuardrailsPolicy500JSONResponseBodyErrorTypeApiInternalServerError GetGuardrailsPolicy500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetGuardrailsPolicy500JSONResponseBodyErrorType enum.
+func (e GetGuardrailsPolicy500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetGuardrailsPolicy500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateGuardrailsPolicy400JSONResponseBodyErrorType.
+const (
+	UpdateGuardrailsPolicy400JSONResponseBodyErrorTypeApiValidationError UpdateGuardrailsPolicy400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateGuardrailsPolicy400JSONResponseBodyErrorType enum.
+func (e UpdateGuardrailsPolicy400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateGuardrailsPolicy400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateGuardrailsPolicy401JSONResponseBodyErrorType.
+const (
+	UpdateGuardrailsPolicy401JSONResponseBodyErrorTypeApiAuthenticationError UpdateGuardrailsPolicy401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateGuardrailsPolicy401JSONResponseBodyErrorType enum.
+func (e UpdateGuardrailsPolicy401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateGuardrailsPolicy401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateGuardrailsPolicy403JSONResponseBodyErrorType.
+const (
+	UpdateGuardrailsPolicy403JSONResponseBodyErrorTypeApiAuthorizationError UpdateGuardrailsPolicy403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateGuardrailsPolicy403JSONResponseBodyErrorType enum.
+func (e UpdateGuardrailsPolicy403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateGuardrailsPolicy403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateGuardrailsPolicy404JSONResponseBodyErrorType.
+const (
+	UpdateGuardrailsPolicy404JSONResponseBodyErrorTypeApiNotFoundError UpdateGuardrailsPolicy404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateGuardrailsPolicy404JSONResponseBodyErrorType enum.
+func (e UpdateGuardrailsPolicy404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateGuardrailsPolicy404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateGuardrailsPolicy409JSONResponseBodyErrorType.
+const (
+	UpdateGuardrailsPolicy409JSONResponseBodyErrorTypeApiConflictError UpdateGuardrailsPolicy409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateGuardrailsPolicy409JSONResponseBodyErrorType enum.
+func (e UpdateGuardrailsPolicy409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateGuardrailsPolicy409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateGuardrailsPolicy500JSONResponseBodyErrorType.
+const (
+	UpdateGuardrailsPolicy500JSONResponseBodyErrorTypeApiInternalServerError UpdateGuardrailsPolicy500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateGuardrailsPolicy500JSONResponseBodyErrorType enum.
+func (e UpdateGuardrailsPolicy500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateGuardrailsPolicy500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetHooks200JSONResponseBodyEvent.
 const (
 	GetHooks200JSONResponseBodyEventPostToolUse  GetHooks200JSONResponseBodyEvent = "post_tool_use"
@@ -14478,6 +15234,258 @@ const (
 func (e UpdateHook500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
 	case UpdateHook500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths.
+const (
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigClientSecret                                           GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.clientSecret"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.agentIdentity.privateKeyPem"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsClientSecret               GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.clientSecret"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret   GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.clientSecret"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem  GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.privateKeyPem"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsPrivateKeyPem              GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.privateKeyPem"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigDecryptionPvk                                          GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "samlConfig.decryptionPvk"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKey                               GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKey"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKeyPass                           GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKeyPass"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKey                                  GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKey"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKeyPass                              GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKeyPass"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigPrivateKey                                             GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "samlConfig.privateKey"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKey                                GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKey"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKeyPass                            GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKeyPass"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKey                                   GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKey"
+	GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKeyPass                               GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKeyPass"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths enum.
+func (e GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths) Valid() bool {
+	switch e {
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigClientSecret:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsClientSecret:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsPrivateKeyPem:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigDecryptionPvk:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKey:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKeyPass:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKey:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKeyPass:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigPrivateKey:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKey:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKeyPass:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKey:
+		return true
+	case GetIdentityProviders200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKeyPass:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource.
+const (
+	GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSourceClient GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "client"
+	GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSourceSpiffe GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "spiffe"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource enum.
+func (e GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource) Valid() bool {
+	switch e {
+	case GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSourceClient:
+		return true
+	case GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSourceSpiffe:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy.
+const (
+	GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyEntraObo    GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "entra_obo"
+	GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyOktaManaged GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "okta_managed"
+	GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyRfc8693     GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "rfc8693"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy enum.
+func (e GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy) Valid() bool {
+	switch e {
+	case GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyEntraObo:
+		return true
+	case GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyOktaManaged:
+		return true
+	case GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyRfc8693:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType.
+const (
+	GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeAccessToken GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType = "urn:ietf:params:oauth:token-type:access_token"
+	GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeIdToken     GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType = "urn:ietf:params:oauth:token-type:id_token"
+	GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeJwt         GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType = "urn:ietf:params:oauth:token-type:jwt"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType enum.
+func (e GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType) Valid() bool {
+	switch e {
+	case GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeAccessToken:
+		return true
+	case GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeIdToken:
+		return true
+	case GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeJwt:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication.
+const (
+	GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthenticationClientSecretBasic GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication = "client_secret_basic"
+	GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthenticationClientSecretPost  GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication = "client_secret_post"
+	GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthenticationPrivateKeyJwt     GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication = "private_key_jwt"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication enum.
+func (e GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication) Valid() bool {
+	switch e {
+	case GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthenticationClientSecretBasic:
+		return true
+	case GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthenticationClientSecretPost:
+		return true
+	case GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthenticationPrivateKeyJwt:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthentication.
+const (
+	GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthenticationClientSecretBasic GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthentication = "client_secret_basic"
+	GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthenticationClientSecretPost  GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthentication = "client_secret_post"
+	GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthenticationPrivateKeyJwt     GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthentication = "private_key_jwt"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthentication enum.
+func (e GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthentication) Valid() bool {
+	switch e {
+	case GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthenticationClientSecretBasic:
+		return true
+	case GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthenticationClientSecretPost:
+		return true
+	case GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthenticationPrivateKeyJwt:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders400JSONResponseBodyErrorType.
+const (
+	GetIdentityProviders400JSONResponseBodyErrorTypeApiValidationError GetIdentityProviders400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders400JSONResponseBodyErrorType enum.
+func (e GetIdentityProviders400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetIdentityProviders400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders401JSONResponseBodyErrorType.
+const (
+	GetIdentityProviders401JSONResponseBodyErrorTypeApiAuthenticationError GetIdentityProviders401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders401JSONResponseBodyErrorType enum.
+func (e GetIdentityProviders401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetIdentityProviders401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders403JSONResponseBodyErrorType.
+const (
+	GetIdentityProviders403JSONResponseBodyErrorTypeApiAuthorizationError GetIdentityProviders403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders403JSONResponseBodyErrorType enum.
+func (e GetIdentityProviders403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetIdentityProviders403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders404JSONResponseBodyErrorType.
+const (
+	GetIdentityProviders404JSONResponseBodyErrorTypeApiNotFoundError GetIdentityProviders404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders404JSONResponseBodyErrorType enum.
+func (e GetIdentityProviders404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetIdentityProviders404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders409JSONResponseBodyErrorType.
+const (
+	GetIdentityProviders409JSONResponseBodyErrorTypeApiConflictError GetIdentityProviders409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders409JSONResponseBodyErrorType enum.
+func (e GetIdentityProviders409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetIdentityProviders409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetIdentityProviders500JSONResponseBodyErrorType.
+const (
+	GetIdentityProviders500JSONResponseBodyErrorTypeApiInternalServerError GetIdentityProviders500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetIdentityProviders500JSONResponseBodyErrorType enum.
+func (e GetIdentityProviders500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetIdentityProviders500JSONResponseBodyErrorTypeApiInternalServerError:
 		return true
 	default:
 		return false
@@ -15284,58 +16292,58 @@ func (e UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication) Val
 
 // Defines values for UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths.
 const (
-	OidcConfigClientSecret                                           UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.clientSecret"
-	OidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.agentIdentity.privateKeyPem"
-	OidcConfigEnterpriseManagedCredentialsClientSecret               UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.clientSecret"
-	OidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret   UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.clientSecret"
-	OidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem  UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.privateKeyPem"
-	OidcConfigEnterpriseManagedCredentialsPrivateKeyPem              UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.privateKeyPem"
-	SamlConfigDecryptionPvk                                          UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.decryptionPvk"
-	SamlConfigIdpMetadataEncPrivateKey                               UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKey"
-	SamlConfigIdpMetadataEncPrivateKeyPass                           UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKeyPass"
-	SamlConfigIdpMetadataPrivateKey                                  UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKey"
-	SamlConfigIdpMetadataPrivateKeyPass                              UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKeyPass"
-	SamlConfigPrivateKey                                             UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.privateKey"
-	SamlConfigSpMetadataEncPrivateKey                                UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKey"
-	SamlConfigSpMetadataEncPrivateKeyPass                            UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKeyPass"
-	SamlConfigSpMetadataPrivateKey                                   UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKey"
-	SamlConfigSpMetadataPrivateKeyPass                               UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKeyPass"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigClientSecret                                           UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.clientSecret"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.agentIdentity.privateKeyPem"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsClientSecret               UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.clientSecret"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret   UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.clientSecret"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem  UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.entraAgentId.privateKeyPem"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsPrivateKeyPem              UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "oidcConfig.enterpriseManagedCredentials.privateKeyPem"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigDecryptionPvk                                          UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.decryptionPvk"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKey                               UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKey"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKeyPass                           UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.encPrivateKeyPass"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKey                                  UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKey"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKeyPass                              UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.idpMetadata.privateKeyPass"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigPrivateKey                                             UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.privateKey"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKey                                UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKey"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKeyPass                            UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.encPrivateKeyPass"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKey                                   UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKey"
+	UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKeyPass                               UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths = "samlConfig.spMetadata.privateKeyPass"
 )
 
 // Valid indicates whether the value is a known member of the UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths enum.
 func (e UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths) Valid() bool {
 	switch e {
-	case OidcConfigClientSecret:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigClientSecret:
 		return true
-	case OidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsAgentIdentityPrivateKeyPem:
 		return true
-	case OidcConfigEnterpriseManagedCredentialsClientSecret:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsClientSecret:
 		return true
-	case OidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdClientSecret:
 		return true
-	case OidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsEntraAgentIdPrivateKeyPem:
 		return true
-	case OidcConfigEnterpriseManagedCredentialsPrivateKeyPem:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsOidcConfigEnterpriseManagedCredentialsPrivateKeyPem:
 		return true
-	case SamlConfigDecryptionPvk:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigDecryptionPvk:
 		return true
-	case SamlConfigIdpMetadataEncPrivateKey:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKey:
 		return true
-	case SamlConfigIdpMetadataEncPrivateKeyPass:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataEncPrivateKeyPass:
 		return true
-	case SamlConfigIdpMetadataPrivateKey:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKey:
 		return true
-	case SamlConfigIdpMetadataPrivateKeyPass:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigIdpMetadataPrivateKeyPass:
 		return true
-	case SamlConfigPrivateKey:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigPrivateKey:
 		return true
-	case SamlConfigSpMetadataEncPrivateKey:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKey:
 		return true
-	case SamlConfigSpMetadataEncPrivateKeyPass:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataEncPrivateKeyPass:
 		return true
-	case SamlConfigSpMetadataPrivateKey:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKey:
 		return true
-	case SamlConfigSpMetadataPrivateKeyPass:
+	case UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPathsSamlConfigSpMetadataPrivateKeyPass:
 		return true
 	default:
 		return false
@@ -15344,16 +16352,16 @@ func (e UpdateIdentityProvider200JSONResponseBodyConfiguredSecretPaths) Valid() 
 
 // Defines values for UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource.
 const (
-	SourceClient UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "client"
-	SourceSpiffe UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "spiffe"
+	UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSourceClient UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "client"
+	UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSourceSpiffe UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource = "spiffe"
 )
 
 // Valid indicates whether the value is a known member of the UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource enum.
 func (e UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource) Valid() bool {
 	switch e {
-	case SourceClient:
+	case UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSourceClient:
 		return true
-	case SourceSpiffe:
+	case UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySourceSourceSpiffe:
 		return true
 	default:
 		return false
@@ -15362,19 +16370,19 @@ func (e UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCred
 
 // Defines values for UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy.
 const (
-	EntraObo    UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "entra_obo"
-	OktaManaged UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "okta_managed"
-	Rfc8693     UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "rfc8693"
+	UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyEntraObo    UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "entra_obo"
+	UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyOktaManaged UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "okta_managed"
+	UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyRfc8693     UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "rfc8693"
 )
 
 // Valid indicates whether the value is a known member of the UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy enum.
 func (e UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy) Valid() bool {
 	switch e {
-	case EntraObo:
+	case UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyEntraObo:
 		return true
-	case OktaManaged:
+	case UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyOktaManaged:
 		return true
-	case Rfc8693:
+	case UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyRfc8693:
 		return true
 	default:
 		return false
@@ -15383,19 +16391,19 @@ func (e UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCred
 
 // Defines values for UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType.
 const (
-	UrnIetfParamsOauthTokenTypeAccessToken UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType = "urn:ietf:params:oauth:token-type:access_token"
-	UrnIetfParamsOauthTokenTypeIdToken     UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType = "urn:ietf:params:oauth:token-type:id_token"
-	UrnIetfParamsOauthTokenTypeJwt         UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType = "urn:ietf:params:oauth:token-type:jwt"
+	UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeAccessToken UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType = "urn:ietf:params:oauth:token-type:access_token"
+	UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeIdToken     UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType = "urn:ietf:params:oauth:token-type:id_token"
+	UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeJwt         UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType = "urn:ietf:params:oauth:token-type:jwt"
 )
 
 // Valid indicates whether the value is a known member of the UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType enum.
 func (e UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType) Valid() bool {
 	switch e {
-	case UrnIetfParamsOauthTokenTypeAccessToken:
+	case UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeAccessToken:
 		return true
-	case UrnIetfParamsOauthTokenTypeIdToken:
+	case UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeIdToken:
 		return true
-	case UrnIetfParamsOauthTokenTypeJwt:
+	case UpdateIdentityProvider200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenTypeUrnIetfParamsOauthTokenTypeJwt:
 		return true
 	default:
 		return false
@@ -15528,6 +16536,561 @@ const (
 func (e UpdateIdentityProvider500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
 	case UpdateIdentityProvider500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalogParamsStatus.
+const (
+	GetInternalMcpCatalogParamsStatusActive  GetInternalMcpCatalogParamsStatus = "active"
+	GetInternalMcpCatalogParamsStatusDeleted GetInternalMcpCatalogParamsStatus = "deleted"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalogParamsStatus enum.
+func (e GetInternalMcpCatalogParamsStatus) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalogParamsStatusActive:
+		return true
+	case GetInternalMcpCatalogParamsStatusDeleted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalogParamsAccess.
+const (
+	GetInternalMcpCatalogParamsAccessMine   GetInternalMcpCatalogParamsAccess = "mine"
+	GetInternalMcpCatalogParamsAccessOrg    GetInternalMcpCatalogParamsAccess = "org"
+	GetInternalMcpCatalogParamsAccessOthers GetInternalMcpCatalogParamsAccess = "others"
+	GetInternalMcpCatalogParamsAccessShared GetInternalMcpCatalogParamsAccess = "shared"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalogParamsAccess enum.
+func (e GetInternalMcpCatalogParamsAccess) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalogParamsAccessMine:
+		return true
+	case GetInternalMcpCatalogParamsAccessOrg:
+		return true
+	case GetInternalMcpCatalogParamsAccessOthers:
+		return true
+	case GetInternalMcpCatalogParamsAccessShared:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKind.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKindFailedToStart GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKind = "failed-to-start"
+	GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKindNeedsReauth   GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKind = "needs-reauth"
+	GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKindNotRunning    GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKind = "not-running"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKind enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKind) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKindFailedToStart:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKindNeedsReauth:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKindNotRunning:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyCreatedByType.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyCreatedByTypeServiceAccount GetInternalMcpCatalog200JSONResponseBodyCreatedByType = "service_account"
+	GetInternalMcpCatalog200JSONResponseBodyCreatedByTypeUser           GetInternalMcpCatalog200JSONResponseBodyCreatedByType = "user"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyCreatedByType enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyCreatedByType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyCreatedByTypeServiceAccount:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyCreatedByTypeUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyEffectiveActions.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsConfigure               GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "configure"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "configure-deployment-spec"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDelete                  GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "delete"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeployAgent             GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "deploy-agent"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeployApp               GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "deploy-app"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeployKnowledgeSource   GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "deploy-knowledge-source"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeployMcpGateway        GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "deploy-mcp-gateway"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeployMcpRegistry       GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "deploy-mcp-registry"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeploySkill             GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "deploy-skill"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsManagePermissions       GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "manage-permissions"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsRead                    GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "read"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsUpdate                  GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "update"
+	GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsUse                     GetInternalMcpCatalog200JSONResponseBodyEffectiveActions = "use"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyEffectiveActions enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyEffectiveActions) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsConfigure:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsConfigureDeploymentSpec:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDelete:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeployAgent:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeployApp:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeployKnowledgeSource:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeployMcpGateway:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeployMcpRegistry:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsDeploySkill:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsManagePermissions:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsRead:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsUpdate:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEffectiveActionsUse:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionMode.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionModeExchange    GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionMode = "exchange"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionModePassthrough GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionMode = "passthrough"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionMode enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionMode) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionModeExchange:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionModePassthrough:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackMode.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackModeFailClosed        GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackMode = "fail_closed"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackModeFallbackToDynamic GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackMode = "fallback_to_dynamic"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackModeFallbackToStatic  GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackMode = "fallback_to_static"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackMode enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackMode) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackModeFailClosed:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackModeFallbackToDynamic:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackModeFallbackToStatic:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialTypeBearerToken    GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType = "bearer_token"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialTypeIdJag          GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType = "id_jag"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialTypeOpaqueJson     GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType = "opaque_json"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialTypeSecret         GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType = "secret"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialTypeServiceAccount GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType = "service_account"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialTypeBearerToken:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialTypeIdJag:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialTypeOpaqueJson:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialTypeSecret:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialTypeServiceAccount:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceTypeCustomHttp             GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType = "custom_http"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceTypeMcp                    GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType = "mcp"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceTypeOauthProtectedResource GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType = "oauth_protected_resource"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceTypeSecret                 GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType = "secret"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceTypeServiceAccount         GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType = "service_account"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceTypeCustomHttp:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceTypeMcp:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceTypeOauthProtectedResource:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceTypeSecret:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceTypeServiceAccount:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeAuthorizationBearer GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "authorization_bearer"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeBodyField           GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "body_field"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeEnv                 GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "env"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeHeader              GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "header"
+	GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeRawAuthorization    GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "raw_authorization"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeAuthorizationBearer:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeBodyField:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeEnv:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeHeader:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeRawAuthorization:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromType.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromTypeConfigMap GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromType = "configMap"
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromTypeSecret    GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromType = "secret"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromType enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromTypeConfigMap:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromTypeSecret:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScope.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScopeOrganization GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScope = "organization"
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScopePersonal     GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScope = "personal"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScope enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScope) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScopeOrganization:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScopePersonal:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentType.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentTypeBoolean   GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentType = "boolean"
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentTypeNumber    GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentType = "number"
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentTypePlainText GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentType = "plain_text"
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentTypeSecret    GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentType = "secret"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentType enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentTypeBoolean:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentTypeNumber:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentTypePlainText:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentTypeSecret:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicyAlways       GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy = "Always"
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicyIfNotPresent GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy = "IfNotPresent"
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicyNever        GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy = "Never"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicyAlways:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicyIfNotPresent:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicyNever:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0Source.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0SourceExisting GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0Source = "existing"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0Source enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0Source) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0SourceExisting:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1Source.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1SourceCredentials GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1Source = "credentials"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1Source enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1Source) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1SourceCredentials:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportType.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportTypeStdio          GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportType = "stdio"
+	GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportTypeStreamableHttp GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportType = "streamable-http"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportType enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportTypeStdio:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportTypeStreamableHttp:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantTypeAuthorizationCode GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType = "authorization_code"
+	GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantTypeClientCredentials GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType = "client_credentials"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantTypeAuthorizationCode:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantTypeClientCredentials:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyScope.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyScopeOrg      GetInternalMcpCatalog200JSONResponseBodyScope = "org"
+	GetInternalMcpCatalog200JSONResponseBodyScopePersonal GetInternalMcpCatalog200JSONResponseBodyScope = "personal"
+	GetInternalMcpCatalog200JSONResponseBodyScopeTeam     GetInternalMcpCatalog200JSONResponseBodyScope = "team"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyScope enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyScope) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyScopeOrg:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyScopePersonal:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyScopeTeam:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyServerType.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyServerTypeApp        GetInternalMcpCatalog200JSONResponseBodyServerType = "app"
+	GetInternalMcpCatalog200JSONResponseBodyServerTypeBuiltin    GetInternalMcpCatalog200JSONResponseBodyServerType = "builtin"
+	GetInternalMcpCatalog200JSONResponseBodyServerTypeDesktopMcp GetInternalMcpCatalog200JSONResponseBodyServerType = "desktop_mcp"
+	GetInternalMcpCatalog200JSONResponseBodyServerTypeLocal      GetInternalMcpCatalog200JSONResponseBodyServerType = "local"
+	GetInternalMcpCatalog200JSONResponseBodyServerTypeRemote     GetInternalMcpCatalog200JSONResponseBodyServerType = "remote"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyServerType enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyServerType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyServerTypeApp:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyServerTypeBuiltin:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyServerTypeDesktopMcp:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyServerTypeLocal:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyServerTypeRemote:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog200JSONResponseBodyTeamsLevel.
+const (
+	GetInternalMcpCatalog200JSONResponseBodyTeamsLevelUse   GetInternalMcpCatalog200JSONResponseBodyTeamsLevel = "use"
+	GetInternalMcpCatalog200JSONResponseBodyTeamsLevelWrite GetInternalMcpCatalog200JSONResponseBodyTeamsLevel = "write"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog200JSONResponseBodyTeamsLevel enum.
+func (e GetInternalMcpCatalog200JSONResponseBodyTeamsLevel) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog200JSONResponseBodyTeamsLevelUse:
+		return true
+	case GetInternalMcpCatalog200JSONResponseBodyTeamsLevelWrite:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog400JSONResponseBodyErrorType.
+const (
+	GetInternalMcpCatalog400JSONResponseBodyErrorTypeApiValidationError GetInternalMcpCatalog400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog400JSONResponseBodyErrorType enum.
+func (e GetInternalMcpCatalog400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog401JSONResponseBodyErrorType.
+const (
+	GetInternalMcpCatalog401JSONResponseBodyErrorTypeApiAuthenticationError GetInternalMcpCatalog401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog401JSONResponseBodyErrorType enum.
+func (e GetInternalMcpCatalog401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog403JSONResponseBodyErrorType.
+const (
+	GetInternalMcpCatalog403JSONResponseBodyErrorTypeApiAuthorizationError GetInternalMcpCatalog403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog403JSONResponseBodyErrorType enum.
+func (e GetInternalMcpCatalog403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog404JSONResponseBodyErrorType.
+const (
+	GetInternalMcpCatalog404JSONResponseBodyErrorTypeApiNotFoundError GetInternalMcpCatalog404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog404JSONResponseBodyErrorType enum.
+func (e GetInternalMcpCatalog404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog409JSONResponseBodyErrorType.
+const (
+	GetInternalMcpCatalog409JSONResponseBodyErrorTypeApiConflictError GetInternalMcpCatalog409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog409JSONResponseBodyErrorType enum.
+func (e GetInternalMcpCatalog409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetInternalMcpCatalog500JSONResponseBodyErrorType.
+const (
+	GetInternalMcpCatalog500JSONResponseBodyErrorTypeApiInternalServerError GetInternalMcpCatalog500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetInternalMcpCatalog500JSONResponseBodyErrorType enum.
+func (e GetInternalMcpCatalog500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetInternalMcpCatalog500JSONResponseBodyErrorTypeApiInternalServerError:
 		return true
 	default:
 		return false
@@ -17360,19 +18923,19 @@ func (e UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigAs
 
 // Defines values for UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackMode.
 const (
-	FailClosed        UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackMode = "fail_closed"
-	FallbackToDynamic UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackMode = "fallback_to_dynamic"
-	FallbackToStatic  UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackMode = "fallback_to_static"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackModeFailClosed        UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackMode = "fail_closed"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackModeFallbackToDynamic UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackMode = "fallback_to_dynamic"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackModeFallbackToStatic  UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackMode = "fallback_to_static"
 )
 
 // Valid indicates whether the value is a known member of the UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackMode enum.
 func (e UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackMode) Valid() bool {
 	switch e {
-	case FailClosed:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackModeFailClosed:
 		return true
-	case FallbackToDynamic:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackModeFallbackToDynamic:
 		return true
-	case FallbackToStatic:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigFallbackModeFallbackToStatic:
 		return true
 	default:
 		return false
@@ -17435,25 +18998,25 @@ func (e UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigRe
 
 // Defines values for UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode.
 const (
-	AuthorizationBearer UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "authorization_bearer"
-	BodyField           UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "body_field"
-	Env                 UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "env"
-	Header              UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "header"
-	RawAuthorization    UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "raw_authorization"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeAuthorizationBearer UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "authorization_bearer"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeBodyField           UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "body_field"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeEnv                 UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "env"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeHeader              UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "header"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeRawAuthorization    UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode = "raw_authorization"
 )
 
 // Valid indicates whether the value is a known member of the UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode enum.
 func (e UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode) Valid() bool {
 	switch e {
-	case AuthorizationBearer:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeAuthorizationBearer:
 		return true
-	case BodyField:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeBodyField:
 		return true
-	case Env:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeEnv:
 		return true
-	case Header:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeHeader:
 		return true
-	case RawAuthorization:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyEnterpriseManagedConfigTokenInjectionModeRawAuthorization:
 		return true
 	default:
 		return false
@@ -17498,22 +19061,22 @@ func (e UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentCre
 
 // Defines values for UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentType.
 const (
-	Boolean   UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentType = "boolean"
-	Number    UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentType = "number"
-	PlainText UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentType = "plain_text"
-	Secret    UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentType = "secret"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentTypeBoolean   UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentType = "boolean"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentTypeNumber    UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentType = "number"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentTypePlainText UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentType = "plain_text"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentTypeSecret    UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentType = "secret"
 )
 
 // Valid indicates whether the value is a known member of the UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentType enum.
 func (e UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentType) Valid() bool {
 	switch e {
-	case Boolean:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentTypeBoolean:
 		return true
-	case Number:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentTypeNumber:
 		return true
-	case PlainText:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentTypePlainText:
 		return true
-	case Secret:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentTypeSecret:
 		return true
 	default:
 		return false
@@ -17522,19 +19085,19 @@ func (e UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigEnvironmentTyp
 
 // Defines values for UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy.
 const (
-	Always       UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy = "Always"
-	IfNotPresent UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy = "IfNotPresent"
-	Never        UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy = "Never"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicyAlways       UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy = "Always"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicyIfNotPresent UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy = "IfNotPresent"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicyNever        UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy = "Never"
 )
 
 // Valid indicates whether the value is a known member of the UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy enum.
 func (e UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicy) Valid() bool {
 	switch e {
-	case Always:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicyAlways:
 		return true
-	case IfNotPresent:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicyIfNotPresent:
 		return true
-	case Never:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolicyNever:
 		return true
 	default:
 		return false
@@ -17543,13 +19106,13 @@ func (e UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullPolic
 
 // Defines values for UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets0Source.
 const (
-	Existing UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets0Source = "existing"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets0SourceExisting UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets0Source = "existing"
 )
 
 // Valid indicates whether the value is a known member of the UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets0Source enum.
 func (e UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets0Source) Valid() bool {
 	switch e {
-	case Existing:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets0SourceExisting:
 		return true
 	default:
 		return false
@@ -17558,13 +19121,13 @@ func (e UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecre
 
 // Defines values for UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets1Source.
 const (
-	Credentials UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets1Source = "credentials"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets1SourceCredentials UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets1Source = "credentials"
 )
 
 // Valid indicates whether the value is a known member of the UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets1Source enum.
 func (e UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets1Source) Valid() bool {
 	switch e {
-	case Credentials:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecrets1SourceCredentials:
 		return true
 	default:
 		return false
@@ -17573,16 +19136,16 @@ func (e UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigImagePullSecre
 
 // Defines values for UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType.
 const (
-	Stdio          UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType = "stdio"
-	StreamableHttp UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType = "streamable-http"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportTypeStdio          UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType = "stdio"
+	UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportTypeStreamableHttp UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType = "streamable-http"
 )
 
 // Valid indicates whether the value is a known member of the UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType enum.
 func (e UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportType) Valid() bool {
 	switch e {
-	case Stdio:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportTypeStdio:
 		return true
-	case StreamableHttp:
+	case UpdateInternalMcpCatalogItem200JSONResponseBodyLocalConfigTransportTypeStreamableHttp:
 		return true
 	default:
 		return false
@@ -17757,6 +19320,264 @@ const (
 func (e UpdateInternalMcpCatalogItem500JSONResponseBodyErrorType) Valid() bool {
 	switch e {
 	case UpdateInternalMcpCatalogItem500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBasesParamsScope.
+const (
+	GetKnowledgeBasesParamsScopeOrg      GetKnowledgeBasesParamsScope = "org"
+	GetKnowledgeBasesParamsScopePersonal GetKnowledgeBasesParamsScope = "personal"
+	GetKnowledgeBasesParamsScopeTeam     GetKnowledgeBasesParamsScope = "team"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBasesParamsScope enum.
+func (e GetKnowledgeBasesParamsScope) Valid() bool {
+	switch e {
+	case GetKnowledgeBasesParamsScopeOrg:
+		return true
+	case GetKnowledgeBasesParamsScopePersonal:
+		return true
+	case GetKnowledgeBasesParamsScopeTeam:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBasesParamsStatus.
+const (
+	GetKnowledgeBasesParamsStatusActive  GetKnowledgeBasesParamsStatus = "active"
+	GetKnowledgeBasesParamsStatusDeleted GetKnowledgeBasesParamsStatus = "deleted"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBasesParamsStatus enum.
+func (e GetKnowledgeBasesParamsStatus) Valid() bool {
+	switch e {
+	case GetKnowledgeBasesParamsStatusActive:
+		return true
+	case GetKnowledgeBasesParamsStatusDeleted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBasesParamsAccess.
+const (
+	GetKnowledgeBasesParamsAccessMine   GetKnowledgeBasesParamsAccess = "mine"
+	GetKnowledgeBasesParamsAccessOrg    GetKnowledgeBasesParamsAccess = "org"
+	GetKnowledgeBasesParamsAccessOthers GetKnowledgeBasesParamsAccess = "others"
+	GetKnowledgeBasesParamsAccessShared GetKnowledgeBasesParamsAccess = "shared"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBasesParamsAccess enum.
+func (e GetKnowledgeBasesParamsAccess) Valid() bool {
+	switch e {
+	case GetKnowledgeBasesParamsAccessMine:
+		return true
+	case GetKnowledgeBasesParamsAccessOrg:
+		return true
+	case GetKnowledgeBasesParamsAccessOthers:
+		return true
+	case GetKnowledgeBasesParamsAccessShared:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType.
+const (
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeAsana      GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "asana"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeConfluence GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "confluence"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeDropbox    GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "dropbox"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeFileUpload GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "file_upload"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeGdrive     GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "gdrive"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeGithub     GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "github"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeGitlab     GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "gitlab"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeJira       GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "jira"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeLinear     GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "linear"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeMfiles     GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "mfiles"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeNotion     GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "notion"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeOnedrive   GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "onedrive"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeOutline    GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "outline"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypePerforce   GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "perforce"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeSalesforce GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "salesforce"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeServicenow GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "servicenow"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeSharepoint GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "sharepoint"
+	GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeWebCrawler GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType = "web_crawler"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType enum.
+func (e GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType) Valid() bool {
+	switch e {
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeAsana:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeConfluence:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeDropbox:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeFileUpload:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeGdrive:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeGithub:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeGitlab:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeJira:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeLinear:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeMfiles:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeNotion:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeOnedrive:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeOutline:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypePerforce:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeSalesforce:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeServicenow:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeSharepoint:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorTypeWebCrawler:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBases200JSONResponseBodyDataCreatedByType.
+const (
+	GetKnowledgeBases200JSONResponseBodyDataCreatedByTypeServiceAccount GetKnowledgeBases200JSONResponseBodyDataCreatedByType = "service_account"
+	GetKnowledgeBases200JSONResponseBodyDataCreatedByTypeUser           GetKnowledgeBases200JSONResponseBodyDataCreatedByType = "user"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBases200JSONResponseBodyDataCreatedByType enum.
+func (e GetKnowledgeBases200JSONResponseBodyDataCreatedByType) Valid() bool {
+	switch e {
+	case GetKnowledgeBases200JSONResponseBodyDataCreatedByTypeServiceAccount:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataCreatedByTypeUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBases200JSONResponseBodyDataVisibility.
+const (
+	GetKnowledgeBases200JSONResponseBodyDataVisibilityOrgWide    GetKnowledgeBases200JSONResponseBodyDataVisibility = "org-wide"
+	GetKnowledgeBases200JSONResponseBodyDataVisibilityPrivate    GetKnowledgeBases200JSONResponseBodyDataVisibility = "private"
+	GetKnowledgeBases200JSONResponseBodyDataVisibilityTeamScoped GetKnowledgeBases200JSONResponseBodyDataVisibility = "team-scoped"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBases200JSONResponseBodyDataVisibility enum.
+func (e GetKnowledgeBases200JSONResponseBodyDataVisibility) Valid() bool {
+	switch e {
+	case GetKnowledgeBases200JSONResponseBodyDataVisibilityOrgWide:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataVisibilityPrivate:
+		return true
+	case GetKnowledgeBases200JSONResponseBodyDataVisibilityTeamScoped:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBases400JSONResponseBodyErrorType.
+const (
+	GetKnowledgeBases400JSONResponseBodyErrorTypeApiValidationError GetKnowledgeBases400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBases400JSONResponseBodyErrorType enum.
+func (e GetKnowledgeBases400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetKnowledgeBases400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBases401JSONResponseBodyErrorType.
+const (
+	GetKnowledgeBases401JSONResponseBodyErrorTypeApiAuthenticationError GetKnowledgeBases401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBases401JSONResponseBodyErrorType enum.
+func (e GetKnowledgeBases401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetKnowledgeBases401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBases403JSONResponseBodyErrorType.
+const (
+	GetKnowledgeBases403JSONResponseBodyErrorTypeApiAuthorizationError GetKnowledgeBases403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBases403JSONResponseBodyErrorType enum.
+func (e GetKnowledgeBases403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetKnowledgeBases403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBases404JSONResponseBodyErrorType.
+const (
+	GetKnowledgeBases404JSONResponseBodyErrorTypeApiNotFoundError GetKnowledgeBases404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBases404JSONResponseBodyErrorType enum.
+func (e GetKnowledgeBases404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetKnowledgeBases404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBases409JSONResponseBodyErrorType.
+const (
+	GetKnowledgeBases409JSONResponseBodyErrorTypeApiConflictError GetKnowledgeBases409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBases409JSONResponseBodyErrorType enum.
+func (e GetKnowledgeBases409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetKnowledgeBases409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetKnowledgeBases500JSONResponseBodyErrorType.
+const (
+	GetKnowledgeBases500JSONResponseBodyErrorTypeApiInternalServerError GetKnowledgeBases500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetKnowledgeBases500JSONResponseBodyErrorType enum.
+func (e GetKnowledgeBases500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetKnowledgeBases500JSONResponseBodyErrorTypeApiInternalServerError:
 		return true
 	default:
 		return false
@@ -18287,19 +20108,19 @@ func (e UpdateKnowledgeBase200JSONResponseBodyCreatedByType) Valid() bool {
 
 // Defines values for UpdateKnowledgeBase200JSONResponseBodyVisibility.
 const (
-	OrgWide    UpdateKnowledgeBase200JSONResponseBodyVisibility = "org-wide"
-	Private    UpdateKnowledgeBase200JSONResponseBodyVisibility = "private"
-	TeamScoped UpdateKnowledgeBase200JSONResponseBodyVisibility = "team-scoped"
+	UpdateKnowledgeBase200JSONResponseBodyVisibilityOrgWide    UpdateKnowledgeBase200JSONResponseBodyVisibility = "org-wide"
+	UpdateKnowledgeBase200JSONResponseBodyVisibilityPrivate    UpdateKnowledgeBase200JSONResponseBodyVisibility = "private"
+	UpdateKnowledgeBase200JSONResponseBodyVisibilityTeamScoped UpdateKnowledgeBase200JSONResponseBodyVisibility = "team-scoped"
 )
 
 // Valid indicates whether the value is a known member of the UpdateKnowledgeBase200JSONResponseBodyVisibility enum.
 func (e UpdateKnowledgeBase200JSONResponseBodyVisibility) Valid() bool {
 	switch e {
-	case OrgWide:
+	case UpdateKnowledgeBase200JSONResponseBodyVisibilityOrgWide:
 		return true
-	case Private:
+	case UpdateKnowledgeBase200JSONResponseBodyVisibilityPrivate:
 		return true
-	case TeamScoped:
+	case UpdateKnowledgeBase200JSONResponseBodyVisibilityTeamScoped:
 		return true
 	default:
 		return false
@@ -23687,16 +25508,16 @@ func (e UpdateVirtualApiKey200JSONResponseBodyCreatedByType) Valid() bool {
 
 // Defines values for UpdateVirtualApiKey200JSONResponseBodyKeyType.
 const (
-	UpdateVirtualApiKey200JSONResponseBodyKeyTypePassthrough UpdateVirtualApiKey200JSONResponseBodyKeyType = "passthrough"
-	UpdateVirtualApiKey200JSONResponseBodyKeyTypeStandard    UpdateVirtualApiKey200JSONResponseBodyKeyType = "standard"
+	Passthrough UpdateVirtualApiKey200JSONResponseBodyKeyType = "passthrough"
+	Standard    UpdateVirtualApiKey200JSONResponseBodyKeyType = "standard"
 )
 
 // Valid indicates whether the value is a known member of the UpdateVirtualApiKey200JSONResponseBodyKeyType enum.
 func (e UpdateVirtualApiKey200JSONResponseBodyKeyType) Valid() bool {
 	switch e {
-	case UpdateVirtualApiKey200JSONResponseBodyKeyTypePassthrough:
+	case Passthrough:
 		return true
-	case UpdateVirtualApiKey200JSONResponseBodyKeyTypeStandard:
+	case Standard:
 		return true
 	default:
 		return false
@@ -24236,19 +26057,19 @@ func (e GetMcpServersParamsStatus) Valid() bool {
 
 // Defines values for GetMcpServers200JSONResponseBodyAlertMutesIssueKind.
 const (
-	FailedToStart GetMcpServers200JSONResponseBodyAlertMutesIssueKind = "failed-to-start"
-	NeedsReauth   GetMcpServers200JSONResponseBodyAlertMutesIssueKind = "needs-reauth"
-	NotRunning    GetMcpServers200JSONResponseBodyAlertMutesIssueKind = "not-running"
+	GetMcpServers200JSONResponseBodyAlertMutesIssueKindFailedToStart GetMcpServers200JSONResponseBodyAlertMutesIssueKind = "failed-to-start"
+	GetMcpServers200JSONResponseBodyAlertMutesIssueKindNeedsReauth   GetMcpServers200JSONResponseBodyAlertMutesIssueKind = "needs-reauth"
+	GetMcpServers200JSONResponseBodyAlertMutesIssueKindNotRunning    GetMcpServers200JSONResponseBodyAlertMutesIssueKind = "not-running"
 )
 
 // Valid indicates whether the value is a known member of the GetMcpServers200JSONResponseBodyAlertMutesIssueKind enum.
 func (e GetMcpServers200JSONResponseBodyAlertMutesIssueKind) Valid() bool {
 	switch e {
-	case FailedToStart:
+	case GetMcpServers200JSONResponseBodyAlertMutesIssueKindFailedToStart:
 		return true
-	case NeedsReauth:
+	case GetMcpServers200JSONResponseBodyAlertMutesIssueKindNeedsReauth:
 		return true
-	case NotRunning:
+	case GetMcpServers200JSONResponseBodyAlertMutesIssueKindNotRunning:
 		return true
 	default:
 		return false
@@ -27251,16 +29072,16 @@ func (e RotateOauthClientSecret200JSONResponseBodyCreatedByType) Valid() bool {
 
 // Defines values for RotateOauthClientSecret200JSONResponseBodyGrantType.
 const (
-	RotateOauthClientSecret200JSONResponseBodyGrantTypeAuthorizationCode RotateOauthClientSecret200JSONResponseBodyGrantType = "authorization_code"
-	RotateOauthClientSecret200JSONResponseBodyGrantTypeClientCredentials RotateOauthClientSecret200JSONResponseBodyGrantType = "client_credentials"
+	AuthorizationCode RotateOauthClientSecret200JSONResponseBodyGrantType = "authorization_code"
+	ClientCredentials RotateOauthClientSecret200JSONResponseBodyGrantType = "client_credentials"
 )
 
 // Valid indicates whether the value is a known member of the RotateOauthClientSecret200JSONResponseBodyGrantType enum.
 func (e RotateOauthClientSecret200JSONResponseBodyGrantType) Valid() bool {
 	switch e {
-	case RotateOauthClientSecret200JSONResponseBodyGrantTypeAuthorizationCode:
+	case AuthorizationCode:
 		return true
-	case RotateOauthClientSecret200JSONResponseBodyGrantTypeClientCredentials:
+	case ClientCredentials:
 		return true
 	default:
 		return false
@@ -35859,6 +37680,219 @@ func (e UpdatePlugin500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetProjectsParamsScope.
+const (
+	GetProjectsParamsScopeOrg      GetProjectsParamsScope = "org"
+	GetProjectsParamsScopePersonal GetProjectsParamsScope = "personal"
+	GetProjectsParamsScopeTeam     GetProjectsParamsScope = "team"
+)
+
+// Valid indicates whether the value is a known member of the GetProjectsParamsScope enum.
+func (e GetProjectsParamsScope) Valid() bool {
+	switch e {
+	case GetProjectsParamsScopeOrg:
+		return true
+	case GetProjectsParamsScopePersonal:
+		return true
+	case GetProjectsParamsScopeTeam:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetProjectsParamsStatus.
+const (
+	GetProjectsParamsStatusActive  GetProjectsParamsStatus = "active"
+	GetProjectsParamsStatusDeleted GetProjectsParamsStatus = "deleted"
+)
+
+// Valid indicates whether the value is a known member of the GetProjectsParamsStatus enum.
+func (e GetProjectsParamsStatus) Valid() bool {
+	switch e {
+	case GetProjectsParamsStatusActive:
+		return true
+	case GetProjectsParamsStatusDeleted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetProjectsParamsAccess.
+const (
+	GetProjectsParamsAccessMine   GetProjectsParamsAccess = "mine"
+	GetProjectsParamsAccessOrg    GetProjectsParamsAccess = "org"
+	GetProjectsParamsAccessOthers GetProjectsParamsAccess = "others"
+	GetProjectsParamsAccessShared GetProjectsParamsAccess = "shared"
+)
+
+// Valid indicates whether the value is a known member of the GetProjectsParamsAccess enum.
+func (e GetProjectsParamsAccess) Valid() bool {
+	switch e {
+	case GetProjectsParamsAccessMine:
+		return true
+	case GetProjectsParamsAccessOrg:
+		return true
+	case GetProjectsParamsAccessOthers:
+		return true
+	case GetProjectsParamsAccessShared:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetProjects200JSONResponseBodyDataCreatedByType.
+const (
+	GetProjects200JSONResponseBodyDataCreatedByTypeServiceAccount GetProjects200JSONResponseBodyDataCreatedByType = "service_account"
+	GetProjects200JSONResponseBodyDataCreatedByTypeUser           GetProjects200JSONResponseBodyDataCreatedByType = "user"
+)
+
+// Valid indicates whether the value is a known member of the GetProjects200JSONResponseBodyDataCreatedByType enum.
+func (e GetProjects200JSONResponseBodyDataCreatedByType) Valid() bool {
+	switch e {
+	case GetProjects200JSONResponseBodyDataCreatedByTypeServiceAccount:
+		return true
+	case GetProjects200JSONResponseBodyDataCreatedByTypeUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetProjects200JSONResponseBodyDataViewerRole.
+const (
+	GetProjects200JSONResponseBodyDataViewerRoleAdmin  GetProjects200JSONResponseBodyDataViewerRole = "admin"
+	GetProjects200JSONResponseBodyDataViewerRoleOwner  GetProjects200JSONResponseBodyDataViewerRole = "owner"
+	GetProjects200JSONResponseBodyDataViewerRoleShared GetProjects200JSONResponseBodyDataViewerRole = "shared"
+)
+
+// Valid indicates whether the value is a known member of the GetProjects200JSONResponseBodyDataViewerRole enum.
+func (e GetProjects200JSONResponseBodyDataViewerRole) Valid() bool {
+	switch e {
+	case GetProjects200JSONResponseBodyDataViewerRoleAdmin:
+		return true
+	case GetProjects200JSONResponseBodyDataViewerRoleOwner:
+		return true
+	case GetProjects200JSONResponseBodyDataViewerRoleShared:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetProjects200JSONResponseBodyDataVisibility.
+const (
+	GetProjects200JSONResponseBodyDataVisibilityOrganization GetProjects200JSONResponseBodyDataVisibility = "organization"
+	GetProjects200JSONResponseBodyDataVisibilityTeam         GetProjects200JSONResponseBodyDataVisibility = "team"
+	GetProjects200JSONResponseBodyDataVisibilityUser         GetProjects200JSONResponseBodyDataVisibility = "user"
+)
+
+// Valid indicates whether the value is a known member of the GetProjects200JSONResponseBodyDataVisibility enum.
+func (e GetProjects200JSONResponseBodyDataVisibility) Valid() bool {
+	switch e {
+	case GetProjects200JSONResponseBodyDataVisibilityOrganization:
+		return true
+	case GetProjects200JSONResponseBodyDataVisibilityTeam:
+		return true
+	case GetProjects200JSONResponseBodyDataVisibilityUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetProjects400JSONResponseBodyErrorType.
+const (
+	GetProjects400JSONResponseBodyErrorTypeApiValidationError GetProjects400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetProjects400JSONResponseBodyErrorType enum.
+func (e GetProjects400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetProjects400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetProjects401JSONResponseBodyErrorType.
+const (
+	GetProjects401JSONResponseBodyErrorTypeApiAuthenticationError GetProjects401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetProjects401JSONResponseBodyErrorType enum.
+func (e GetProjects401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetProjects401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetProjects403JSONResponseBodyErrorType.
+const (
+	GetProjects403JSONResponseBodyErrorTypeApiAuthorizationError GetProjects403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetProjects403JSONResponseBodyErrorType enum.
+func (e GetProjects403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetProjects403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetProjects404JSONResponseBodyErrorType.
+const (
+	GetProjects404JSONResponseBodyErrorTypeApiNotFoundError GetProjects404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetProjects404JSONResponseBodyErrorType enum.
+func (e GetProjects404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetProjects404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetProjects409JSONResponseBodyErrorType.
+const (
+	GetProjects409JSONResponseBodyErrorTypeApiConflictError GetProjects409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetProjects409JSONResponseBodyErrorType enum.
+func (e GetProjects409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetProjects409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetProjects500JSONResponseBodyErrorType.
+const (
+	GetProjects500JSONResponseBodyErrorTypeApiInternalServerError GetProjects500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetProjects500JSONResponseBodyErrorType enum.
+func (e GetProjects500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetProjects500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateProjectJSONBodyInitialGrantsActions.
 const (
 	CreateProjectJSONBodyInitialGrantsActionsConfigure               CreateProjectJSONBodyInitialGrantsActions = "configure"
@@ -38772,6 +40806,150 @@ func (e UpdateResourcePermissions500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetRolesParamsKind.
+const (
+	Custom GetRolesParamsKind = "custom"
+)
+
+// Valid indicates whether the value is a known member of the GetRolesParamsKind enum.
+func (e GetRolesParamsKind) Valid() bool {
+	switch e {
+	case Custom:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRoles200JSONResponseBodyDataPermission.
+const (
+	GetRoles200JSONResponseBodyDataPermissionAdmin       GetRoles200JSONResponseBodyDataPermission = "admin"
+	GetRoles200JSONResponseBodyDataPermissionCancel      GetRoles200JSONResponseBodyDataPermission = "cancel"
+	GetRoles200JSONResponseBodyDataPermissionCreate      GetRoles200JSONResponseBodyDataPermission = "create"
+	GetRoles200JSONResponseBodyDataPermissionDelete      GetRoles200JSONResponseBodyDataPermission = "delete"
+	GetRoles200JSONResponseBodyDataPermissionFullView    GetRoles200JSONResponseBodyDataPermission = "full-view"
+	GetRoles200JSONResponseBodyDataPermissionImpersonate GetRoles200JSONResponseBodyDataPermission = "impersonate"
+	GetRoles200JSONResponseBodyDataPermissionQuery       GetRoles200JSONResponseBodyDataPermission = "query"
+	GetRoles200JSONResponseBodyDataPermissionRead        GetRoles200JSONResponseBodyDataPermission = "read"
+	GetRoles200JSONResponseBodyDataPermissionUpdate      GetRoles200JSONResponseBodyDataPermission = "update"
+)
+
+// Valid indicates whether the value is a known member of the GetRoles200JSONResponseBodyDataPermission enum.
+func (e GetRoles200JSONResponseBodyDataPermission) Valid() bool {
+	switch e {
+	case GetRoles200JSONResponseBodyDataPermissionAdmin:
+		return true
+	case GetRoles200JSONResponseBodyDataPermissionCancel:
+		return true
+	case GetRoles200JSONResponseBodyDataPermissionCreate:
+		return true
+	case GetRoles200JSONResponseBodyDataPermissionDelete:
+		return true
+	case GetRoles200JSONResponseBodyDataPermissionFullView:
+		return true
+	case GetRoles200JSONResponseBodyDataPermissionImpersonate:
+		return true
+	case GetRoles200JSONResponseBodyDataPermissionQuery:
+		return true
+	case GetRoles200JSONResponseBodyDataPermissionRead:
+		return true
+	case GetRoles200JSONResponseBodyDataPermissionUpdate:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRoles400JSONResponseBodyErrorType.
+const (
+	GetRoles400JSONResponseBodyErrorTypeApiValidationError GetRoles400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetRoles400JSONResponseBodyErrorType enum.
+func (e GetRoles400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetRoles400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRoles401JSONResponseBodyErrorType.
+const (
+	GetRoles401JSONResponseBodyErrorTypeApiAuthenticationError GetRoles401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetRoles401JSONResponseBodyErrorType enum.
+func (e GetRoles401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetRoles401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRoles403JSONResponseBodyErrorType.
+const (
+	GetRoles403JSONResponseBodyErrorTypeApiAuthorizationError GetRoles403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetRoles403JSONResponseBodyErrorType enum.
+func (e GetRoles403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetRoles403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRoles404JSONResponseBodyErrorType.
+const (
+	GetRoles404JSONResponseBodyErrorTypeApiNotFoundError GetRoles404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetRoles404JSONResponseBodyErrorType enum.
+func (e GetRoles404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetRoles404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRoles409JSONResponseBodyErrorType.
+const (
+	GetRoles409JSONResponseBodyErrorTypeApiConflictError GetRoles409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetRoles409JSONResponseBodyErrorType enum.
+func (e GetRoles409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetRoles409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRoles500JSONResponseBodyErrorType.
+const (
+	GetRoles500JSONResponseBodyErrorTypeApiInternalServerError GetRoles500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetRoles500JSONResponseBodyErrorType enum.
+func (e GetRoles500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetRoles500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateRoleJSONBodyPermission.
 const (
 	CreateRoleJSONBodyPermissionAdmin       CreateRoleJSONBodyPermission = "admin"
@@ -40995,6 +43173,456 @@ func (e UpdateServiceAccountToken500JSONResponseBodyErrorType) Valid() bool {
 	}
 }
 
+// Defines values for GetSiteNotification400JSONResponseBodyErrorType.
+const (
+	GetSiteNotification400JSONResponseBodyErrorTypeApiValidationError GetSiteNotification400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotification400JSONResponseBodyErrorType enum.
+func (e GetSiteNotification400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotification400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSiteNotification401JSONResponseBodyErrorType.
+const (
+	GetSiteNotification401JSONResponseBodyErrorTypeApiAuthenticationError GetSiteNotification401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotification401JSONResponseBodyErrorType enum.
+func (e GetSiteNotification401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotification401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSiteNotification403JSONResponseBodyErrorType.
+const (
+	GetSiteNotification403JSONResponseBodyErrorTypeApiAuthorizationError GetSiteNotification403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotification403JSONResponseBodyErrorType enum.
+func (e GetSiteNotification403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotification403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSiteNotification404JSONResponseBodyErrorType.
+const (
+	GetSiteNotification404JSONResponseBodyErrorTypeApiNotFoundError GetSiteNotification404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotification404JSONResponseBodyErrorType enum.
+func (e GetSiteNotification404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotification404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSiteNotification409JSONResponseBodyErrorType.
+const (
+	GetSiteNotification409JSONResponseBodyErrorTypeApiConflictError GetSiteNotification409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotification409JSONResponseBodyErrorType enum.
+func (e GetSiteNotification409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotification409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSiteNotification500JSONResponseBodyErrorType.
+const (
+	GetSiteNotification500JSONResponseBodyErrorTypeApiInternalServerError GetSiteNotification500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotification500JSONResponseBodyErrorType enum.
+func (e GetSiteNotification500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotification500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateSiteNotification400JSONResponseBodyErrorType.
+const (
+	CreateSiteNotification400JSONResponseBodyErrorTypeApiValidationError CreateSiteNotification400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateSiteNotification400JSONResponseBodyErrorType enum.
+func (e CreateSiteNotification400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateSiteNotification400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateSiteNotification401JSONResponseBodyErrorType.
+const (
+	CreateSiteNotification401JSONResponseBodyErrorTypeApiAuthenticationError CreateSiteNotification401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateSiteNotification401JSONResponseBodyErrorType enum.
+func (e CreateSiteNotification401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateSiteNotification401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateSiteNotification403JSONResponseBodyErrorType.
+const (
+	CreateSiteNotification403JSONResponseBodyErrorTypeApiAuthorizationError CreateSiteNotification403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateSiteNotification403JSONResponseBodyErrorType enum.
+func (e CreateSiteNotification403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateSiteNotification403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateSiteNotification404JSONResponseBodyErrorType.
+const (
+	CreateSiteNotification404JSONResponseBodyErrorTypeApiNotFoundError CreateSiteNotification404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateSiteNotification404JSONResponseBodyErrorType enum.
+func (e CreateSiteNotification404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateSiteNotification404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateSiteNotification409JSONResponseBodyErrorType.
+const (
+	CreateSiteNotification409JSONResponseBodyErrorTypeApiConflictError CreateSiteNotification409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateSiteNotification409JSONResponseBodyErrorType enum.
+func (e CreateSiteNotification409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateSiteNotification409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateSiteNotification500JSONResponseBodyErrorType.
+const (
+	CreateSiteNotification500JSONResponseBodyErrorTypeApiInternalServerError CreateSiteNotification500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the CreateSiteNotification500JSONResponseBodyErrorType enum.
+func (e CreateSiteNotification500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case CreateSiteNotification500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSiteNotificationSettings400JSONResponseBodyErrorType.
+const (
+	GetSiteNotificationSettings400JSONResponseBodyErrorTypeApiValidationError GetSiteNotificationSettings400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotificationSettings400JSONResponseBodyErrorType enum.
+func (e GetSiteNotificationSettings400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotificationSettings400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSiteNotificationSettings401JSONResponseBodyErrorType.
+const (
+	GetSiteNotificationSettings401JSONResponseBodyErrorTypeApiAuthenticationError GetSiteNotificationSettings401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotificationSettings401JSONResponseBodyErrorType enum.
+func (e GetSiteNotificationSettings401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotificationSettings401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSiteNotificationSettings403JSONResponseBodyErrorType.
+const (
+	GetSiteNotificationSettings403JSONResponseBodyErrorTypeApiAuthorizationError GetSiteNotificationSettings403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotificationSettings403JSONResponseBodyErrorType enum.
+func (e GetSiteNotificationSettings403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotificationSettings403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSiteNotificationSettings404JSONResponseBodyErrorType.
+const (
+	GetSiteNotificationSettings404JSONResponseBodyErrorTypeApiNotFoundError GetSiteNotificationSettings404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotificationSettings404JSONResponseBodyErrorType enum.
+func (e GetSiteNotificationSettings404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotificationSettings404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSiteNotificationSettings409JSONResponseBodyErrorType.
+const (
+	GetSiteNotificationSettings409JSONResponseBodyErrorTypeApiConflictError GetSiteNotificationSettings409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotificationSettings409JSONResponseBodyErrorType enum.
+func (e GetSiteNotificationSettings409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotificationSettings409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetSiteNotificationSettings500JSONResponseBodyErrorType.
+const (
+	GetSiteNotificationSettings500JSONResponseBodyErrorTypeApiInternalServerError GetSiteNotificationSettings500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the GetSiteNotificationSettings500JSONResponseBodyErrorType enum.
+func (e GetSiteNotificationSettings500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case GetSiteNotificationSettings500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSiteNotification400JSONResponseBodyErrorType.
+const (
+	DeleteSiteNotification400JSONResponseBodyErrorTypeApiValidationError DeleteSiteNotification400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSiteNotification400JSONResponseBodyErrorType enum.
+func (e DeleteSiteNotification400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSiteNotification400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSiteNotification401JSONResponseBodyErrorType.
+const (
+	DeleteSiteNotification401JSONResponseBodyErrorTypeApiAuthenticationError DeleteSiteNotification401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSiteNotification401JSONResponseBodyErrorType enum.
+func (e DeleteSiteNotification401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSiteNotification401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSiteNotification403JSONResponseBodyErrorType.
+const (
+	DeleteSiteNotification403JSONResponseBodyErrorTypeApiAuthorizationError DeleteSiteNotification403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSiteNotification403JSONResponseBodyErrorType enum.
+func (e DeleteSiteNotification403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSiteNotification403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSiteNotification404JSONResponseBodyErrorType.
+const (
+	DeleteSiteNotification404JSONResponseBodyErrorTypeApiNotFoundError DeleteSiteNotification404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSiteNotification404JSONResponseBodyErrorType enum.
+func (e DeleteSiteNotification404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSiteNotification404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSiteNotification409JSONResponseBodyErrorType.
+const (
+	DeleteSiteNotification409JSONResponseBodyErrorTypeApiConflictError DeleteSiteNotification409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSiteNotification409JSONResponseBodyErrorType enum.
+func (e DeleteSiteNotification409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSiteNotification409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeleteSiteNotification500JSONResponseBodyErrorType.
+const (
+	DeleteSiteNotification500JSONResponseBodyErrorTypeApiInternalServerError DeleteSiteNotification500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the DeleteSiteNotification500JSONResponseBodyErrorType enum.
+func (e DeleteSiteNotification500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case DeleteSiteNotification500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSiteNotification400JSONResponseBodyErrorType.
+const (
+	UpdateSiteNotification400JSONResponseBodyErrorTypeApiValidationError UpdateSiteNotification400JSONResponseBodyErrorType = "api_validation_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSiteNotification400JSONResponseBodyErrorType enum.
+func (e UpdateSiteNotification400JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSiteNotification400JSONResponseBodyErrorTypeApiValidationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSiteNotification401JSONResponseBodyErrorType.
+const (
+	UpdateSiteNotification401JSONResponseBodyErrorTypeApiAuthenticationError UpdateSiteNotification401JSONResponseBodyErrorType = "api_authentication_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSiteNotification401JSONResponseBodyErrorType enum.
+func (e UpdateSiteNotification401JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSiteNotification401JSONResponseBodyErrorTypeApiAuthenticationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSiteNotification403JSONResponseBodyErrorType.
+const (
+	UpdateSiteNotification403JSONResponseBodyErrorTypeApiAuthorizationError UpdateSiteNotification403JSONResponseBodyErrorType = "api_authorization_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSiteNotification403JSONResponseBodyErrorType enum.
+func (e UpdateSiteNotification403JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSiteNotification403JSONResponseBodyErrorTypeApiAuthorizationError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSiteNotification404JSONResponseBodyErrorType.
+const (
+	UpdateSiteNotification404JSONResponseBodyErrorTypeApiNotFoundError UpdateSiteNotification404JSONResponseBodyErrorType = "api_not_found_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSiteNotification404JSONResponseBodyErrorType enum.
+func (e UpdateSiteNotification404JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSiteNotification404JSONResponseBodyErrorTypeApiNotFoundError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSiteNotification409JSONResponseBodyErrorType.
+const (
+	UpdateSiteNotification409JSONResponseBodyErrorTypeApiConflictError UpdateSiteNotification409JSONResponseBodyErrorType = "api_conflict_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSiteNotification409JSONResponseBodyErrorType enum.
+func (e UpdateSiteNotification409JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSiteNotification409JSONResponseBodyErrorTypeApiConflictError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateSiteNotification500JSONResponseBodyErrorType.
+const (
+	UpdateSiteNotification500JSONResponseBodyErrorTypeApiInternalServerError UpdateSiteNotification500JSONResponseBodyErrorType = "api_internal_server_error"
+)
+
+// Valid indicates whether the value is a known member of the UpdateSiteNotification500JSONResponseBodyErrorType enum.
+func (e UpdateSiteNotification500JSONResponseBodyErrorType) Valid() bool {
+	switch e {
+	case UpdateSiteNotification500JSONResponseBodyErrorTypeApiInternalServerError:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for DeleteSkillSandboxArtifact200JSONResponseBodyOk.
 const (
 	DeleteSkillSandboxArtifact200JSONResponseBodyOkTrue DeleteSkillSandboxArtifact200JSONResponseBodyOk = true
@@ -41336,19 +43964,19 @@ func (e CreateSkillShareLinkJSONBodyPluginPlatform) Valid() bool {
 
 // Defines values for CreateSkillShareLink200JSONResponseBodyLinkStatus.
 const (
-	CreateSkillShareLink200JSONResponseBodyLinkStatusActive  CreateSkillShareLink200JSONResponseBodyLinkStatus = "active"
-	CreateSkillShareLink200JSONResponseBodyLinkStatusExpired CreateSkillShareLink200JSONResponseBodyLinkStatus = "expired"
-	CreateSkillShareLink200JSONResponseBodyLinkStatusRevoked CreateSkillShareLink200JSONResponseBodyLinkStatus = "revoked"
+	Active  CreateSkillShareLink200JSONResponseBodyLinkStatus = "active"
+	Expired CreateSkillShareLink200JSONResponseBodyLinkStatus = "expired"
+	Revoked CreateSkillShareLink200JSONResponseBodyLinkStatus = "revoked"
 )
 
 // Valid indicates whether the value is a known member of the CreateSkillShareLink200JSONResponseBodyLinkStatus enum.
 func (e CreateSkillShareLink200JSONResponseBodyLinkStatus) Valid() bool {
 	switch e {
-	case CreateSkillShareLink200JSONResponseBodyLinkStatusActive:
+	case Active:
 		return true
-	case CreateSkillShareLink200JSONResponseBodyLinkStatusExpired:
+	case Expired:
 		return true
-	case CreateSkillShareLink200JSONResponseBodyLinkStatusRevoked:
+	case Revoked:
 		return true
 	default:
 		return false
@@ -41945,49 +44573,49 @@ func (e CreateSkill500JSONResponseBodyErrorType) Valid() bool {
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsActions.
 const (
-	ImportGithubSkillsJSONBodyInitialGrantsActionsConfigure               ImportGithubSkillsJSONBodyInitialGrantsActions = "configure"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsConfigureDeploymentSpec ImportGithubSkillsJSONBodyInitialGrantsActions = "configure-deployment-spec"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsDelete                  ImportGithubSkillsJSONBodyInitialGrantsActions = "delete"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsDeployAgent             ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-agent"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsDeployApp               ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-app"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsDeployKnowledgeSource   ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-knowledge-source"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsDeployMcpGateway        ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsDeployMcpRegistry       ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-mcp-registry"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsDeploySkill             ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-skill"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsManagePermissions       ImportGithubSkillsJSONBodyInitialGrantsActions = "manage-permissions"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsRead                    ImportGithubSkillsJSONBodyInitialGrantsActions = "read"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsUpdate                  ImportGithubSkillsJSONBodyInitialGrantsActions = "update"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsUse                     ImportGithubSkillsJSONBodyInitialGrantsActions = "use"
+	Configure               ImportGithubSkillsJSONBodyInitialGrantsActions = "configure"
+	ConfigureDeploymentSpec ImportGithubSkillsJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	Delete                  ImportGithubSkillsJSONBodyInitialGrantsActions = "delete"
+	DeployAgent             ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-agent"
+	DeployApp               ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-app"
+	DeployKnowledgeSource   ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-knowledge-source"
+	DeployMcpGateway        ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-mcp-gateway"
+	DeployMcpRegistry       ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-mcp-registry"
+	DeploySkill             ImportGithubSkillsJSONBodyInitialGrantsActions = "deploy-skill"
+	ManagePermissions       ImportGithubSkillsJSONBodyInitialGrantsActions = "manage-permissions"
+	Read                    ImportGithubSkillsJSONBodyInitialGrantsActions = "read"
+	Update                  ImportGithubSkillsJSONBodyInitialGrantsActions = "update"
+	Use                     ImportGithubSkillsJSONBodyInitialGrantsActions = "use"
 )
 
 // Valid indicates whether the value is a known member of the ImportGithubSkillsJSONBodyInitialGrantsActions enum.
 func (e ImportGithubSkillsJSONBodyInitialGrantsActions) Valid() bool {
 	switch e {
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsConfigure:
+	case Configure:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsConfigureDeploymentSpec:
+	case ConfigureDeploymentSpec:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsDelete:
+	case Delete:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeployAgent:
+	case DeployAgent:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeployApp:
+	case DeployApp:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeployKnowledgeSource:
+	case DeployKnowledgeSource:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeployMcpGateway:
+	case DeployMcpGateway:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeployMcpRegistry:
+	case DeployMcpRegistry:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsDeploySkill:
+	case DeploySkill:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsManagePermissions:
+	case ManagePermissions:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsRead:
+	case Read:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsUpdate:
+	case Update:
 		return true
-	case ImportGithubSkillsJSONBodyInitialGrantsActionsUse:
+	case Use:
 		return true
 	default:
 		return false
@@ -43085,19 +45713,19 @@ func (e UpdateSkillGithubSync200JSONResponseBodySourceProvider) Valid() bool {
 
 // Defines values for UpdateSkillGithubSync200JSONResponseBodySourceType.
 const (
-	BuiltIn UpdateSkillGithubSync200JSONResponseBodySourceType = "built_in"
-	Github  UpdateSkillGithubSync200JSONResponseBodySourceType = "github"
-	Manual  UpdateSkillGithubSync200JSONResponseBodySourceType = "manual"
+	UpdateSkillGithubSync200JSONResponseBodySourceTypeBuiltIn UpdateSkillGithubSync200JSONResponseBodySourceType = "built_in"
+	UpdateSkillGithubSync200JSONResponseBodySourceTypeGithub  UpdateSkillGithubSync200JSONResponseBodySourceType = "github"
+	UpdateSkillGithubSync200JSONResponseBodySourceTypeManual  UpdateSkillGithubSync200JSONResponseBodySourceType = "manual"
 )
 
 // Valid indicates whether the value is a known member of the UpdateSkillGithubSync200JSONResponseBodySourceType enum.
 func (e UpdateSkillGithubSync200JSONResponseBodySourceType) Valid() bool {
 	switch e {
-	case BuiltIn:
+	case UpdateSkillGithubSync200JSONResponseBodySourceTypeBuiltIn:
 		return true
-	case Github:
+	case UpdateSkillGithubSync200JSONResponseBodySourceTypeGithub:
 		return true
-	case Manual:
+	case UpdateSkillGithubSync200JSONResponseBodySourceTypeManual:
 		return true
 	default:
 		return false
@@ -48026,6 +50654,145 @@ type UpdateBlobProvider409JSONResponseBodyErrorType string
 // UpdateBlobProvider500JSONResponseBodyErrorType defines parameters for UpdateBlobProvider.
 type UpdateBlobProvider500JSONResponseBodyErrorType string
 
+// GetMsTeamsChatOpsConfig400JSONResponseBodyErrorType defines parameters for GetMsTeamsChatOpsConfig.
+type GetMsTeamsChatOpsConfig400JSONResponseBodyErrorType string
+
+// GetMsTeamsChatOpsConfig401JSONResponseBodyErrorType defines parameters for GetMsTeamsChatOpsConfig.
+type GetMsTeamsChatOpsConfig401JSONResponseBodyErrorType string
+
+// GetMsTeamsChatOpsConfig403JSONResponseBodyErrorType defines parameters for GetMsTeamsChatOpsConfig.
+type GetMsTeamsChatOpsConfig403JSONResponseBodyErrorType string
+
+// GetMsTeamsChatOpsConfig404JSONResponseBodyErrorType defines parameters for GetMsTeamsChatOpsConfig.
+type GetMsTeamsChatOpsConfig404JSONResponseBodyErrorType string
+
+// GetMsTeamsChatOpsConfig409JSONResponseBodyErrorType defines parameters for GetMsTeamsChatOpsConfig.
+type GetMsTeamsChatOpsConfig409JSONResponseBodyErrorType string
+
+// GetMsTeamsChatOpsConfig500JSONResponseBodyErrorType defines parameters for GetMsTeamsChatOpsConfig.
+type GetMsTeamsChatOpsConfig500JSONResponseBodyErrorType string
+
+// UpdateChatOpsConfigInQuickstartJSONBody defines parameters for UpdateChatOpsConfigInQuickstart.
+type UpdateChatOpsConfigInQuickstartJSONBody struct {
+	AppId               *string `json:"appId,omitempty"`
+	AppSecret           *string `json:"appSecret,omitempty"`
+	Enabled             *bool   `json:"enabled,omitempty"`
+	GroupChatFileSignIn *bool   `json:"groupChatFileSignIn,omitempty"`
+	TenantId            *string `json:"tenantId,omitempty"`
+}
+
+// UpdateChatOpsConfigInQuickstart400JSONResponseBodyErrorType defines parameters for UpdateChatOpsConfigInQuickstart.
+type UpdateChatOpsConfigInQuickstart400JSONResponseBodyErrorType string
+
+// UpdateChatOpsConfigInQuickstart401JSONResponseBodyErrorType defines parameters for UpdateChatOpsConfigInQuickstart.
+type UpdateChatOpsConfigInQuickstart401JSONResponseBodyErrorType string
+
+// UpdateChatOpsConfigInQuickstart403JSONResponseBodyErrorType defines parameters for UpdateChatOpsConfigInQuickstart.
+type UpdateChatOpsConfigInQuickstart403JSONResponseBodyErrorType string
+
+// UpdateChatOpsConfigInQuickstart404JSONResponseBodyErrorType defines parameters for UpdateChatOpsConfigInQuickstart.
+type UpdateChatOpsConfigInQuickstart404JSONResponseBodyErrorType string
+
+// UpdateChatOpsConfigInQuickstart409JSONResponseBodyErrorType defines parameters for UpdateChatOpsConfigInQuickstart.
+type UpdateChatOpsConfigInQuickstart409JSONResponseBodyErrorType string
+
+// UpdateChatOpsConfigInQuickstart500JSONResponseBodyErrorType defines parameters for UpdateChatOpsConfigInQuickstart.
+type UpdateChatOpsConfigInQuickstart500JSONResponseBodyErrorType string
+
+// GetSlackChatOpsConfig200JSONResponseBodyConnectionMode defines parameters for GetSlackChatOpsConfig.
+type GetSlackChatOpsConfig200JSONResponseBodyConnectionMode string
+
+// GetSlackChatOpsConfig400JSONResponseBodyErrorType defines parameters for GetSlackChatOpsConfig.
+type GetSlackChatOpsConfig400JSONResponseBodyErrorType string
+
+// GetSlackChatOpsConfig401JSONResponseBodyErrorType defines parameters for GetSlackChatOpsConfig.
+type GetSlackChatOpsConfig401JSONResponseBodyErrorType string
+
+// GetSlackChatOpsConfig403JSONResponseBodyErrorType defines parameters for GetSlackChatOpsConfig.
+type GetSlackChatOpsConfig403JSONResponseBodyErrorType string
+
+// GetSlackChatOpsConfig404JSONResponseBodyErrorType defines parameters for GetSlackChatOpsConfig.
+type GetSlackChatOpsConfig404JSONResponseBodyErrorType string
+
+// GetSlackChatOpsConfig409JSONResponseBodyErrorType defines parameters for GetSlackChatOpsConfig.
+type GetSlackChatOpsConfig409JSONResponseBodyErrorType string
+
+// GetSlackChatOpsConfig500JSONResponseBodyErrorType defines parameters for GetSlackChatOpsConfig.
+type GetSlackChatOpsConfig500JSONResponseBodyErrorType string
+
+// UpdateSlackChatOpsConfigJSONBody defines parameters for UpdateSlackChatOpsConfig.
+type UpdateSlackChatOpsConfigJSONBody struct {
+	AppId          *string                                         `json:"appId,omitempty"`
+	AppLevelToken  *string                                         `json:"appLevelToken,omitempty"`
+	BotToken       *string                                         `json:"botToken,omitempty"`
+	ConnectionMode *UpdateSlackChatOpsConfigJSONBodyConnectionMode `json:"connectionMode,omitempty"`
+	Enabled        *bool                                           `json:"enabled,omitempty"`
+	SigningSecret  *string                                         `json:"signingSecret,omitempty"`
+}
+
+// UpdateSlackChatOpsConfigJSONBodyConnectionMode defines parameters for UpdateSlackChatOpsConfig.
+type UpdateSlackChatOpsConfigJSONBodyConnectionMode string
+
+// UpdateSlackChatOpsConfig400JSONResponseBodyErrorType defines parameters for UpdateSlackChatOpsConfig.
+type UpdateSlackChatOpsConfig400JSONResponseBodyErrorType string
+
+// UpdateSlackChatOpsConfig401JSONResponseBodyErrorType defines parameters for UpdateSlackChatOpsConfig.
+type UpdateSlackChatOpsConfig401JSONResponseBodyErrorType string
+
+// UpdateSlackChatOpsConfig403JSONResponseBodyErrorType defines parameters for UpdateSlackChatOpsConfig.
+type UpdateSlackChatOpsConfig403JSONResponseBodyErrorType string
+
+// UpdateSlackChatOpsConfig404JSONResponseBodyErrorType defines parameters for UpdateSlackChatOpsConfig.
+type UpdateSlackChatOpsConfig404JSONResponseBodyErrorType string
+
+// UpdateSlackChatOpsConfig409JSONResponseBodyErrorType defines parameters for UpdateSlackChatOpsConfig.
+type UpdateSlackChatOpsConfig409JSONResponseBodyErrorType string
+
+// UpdateSlackChatOpsConfig500JSONResponseBodyErrorType defines parameters for UpdateSlackChatOpsConfig.
+type UpdateSlackChatOpsConfig500JSONResponseBodyErrorType string
+
+// GetTelegramChatOpsConfig400JSONResponseBodyErrorType defines parameters for GetTelegramChatOpsConfig.
+type GetTelegramChatOpsConfig400JSONResponseBodyErrorType string
+
+// GetTelegramChatOpsConfig401JSONResponseBodyErrorType defines parameters for GetTelegramChatOpsConfig.
+type GetTelegramChatOpsConfig401JSONResponseBodyErrorType string
+
+// GetTelegramChatOpsConfig403JSONResponseBodyErrorType defines parameters for GetTelegramChatOpsConfig.
+type GetTelegramChatOpsConfig403JSONResponseBodyErrorType string
+
+// GetTelegramChatOpsConfig404JSONResponseBodyErrorType defines parameters for GetTelegramChatOpsConfig.
+type GetTelegramChatOpsConfig404JSONResponseBodyErrorType string
+
+// GetTelegramChatOpsConfig409JSONResponseBodyErrorType defines parameters for GetTelegramChatOpsConfig.
+type GetTelegramChatOpsConfig409JSONResponseBodyErrorType string
+
+// GetTelegramChatOpsConfig500JSONResponseBodyErrorType defines parameters for GetTelegramChatOpsConfig.
+type GetTelegramChatOpsConfig500JSONResponseBodyErrorType string
+
+// UpdateTelegramChatOpsConfigJSONBody defines parameters for UpdateTelegramChatOpsConfig.
+type UpdateTelegramChatOpsConfigJSONBody struct {
+	BotToken *string `json:"botToken,omitempty"`
+	Enabled  *bool   `json:"enabled,omitempty"`
+}
+
+// UpdateTelegramChatOpsConfig400JSONResponseBodyErrorType defines parameters for UpdateTelegramChatOpsConfig.
+type UpdateTelegramChatOpsConfig400JSONResponseBodyErrorType string
+
+// UpdateTelegramChatOpsConfig401JSONResponseBodyErrorType defines parameters for UpdateTelegramChatOpsConfig.
+type UpdateTelegramChatOpsConfig401JSONResponseBodyErrorType string
+
+// UpdateTelegramChatOpsConfig403JSONResponseBodyErrorType defines parameters for UpdateTelegramChatOpsConfig.
+type UpdateTelegramChatOpsConfig403JSONResponseBodyErrorType string
+
+// UpdateTelegramChatOpsConfig404JSONResponseBodyErrorType defines parameters for UpdateTelegramChatOpsConfig.
+type UpdateTelegramChatOpsConfig404JSONResponseBodyErrorType string
+
+// UpdateTelegramChatOpsConfig409JSONResponseBodyErrorType defines parameters for UpdateTelegramChatOpsConfig.
+type UpdateTelegramChatOpsConfig409JSONResponseBodyErrorType string
+
+// UpdateTelegramChatOpsConfig500JSONResponseBodyErrorType defines parameters for UpdateTelegramChatOpsConfig.
+type UpdateTelegramChatOpsConfig500JSONResponseBodyErrorType string
+
 // ListCostExports200JSONResponseBodyFormat defines parameters for ListCostExports.
 type ListCostExports200JSONResponseBodyFormat string
 
@@ -48899,6 +51666,48 @@ type UpdateGithubPat409JSONResponseBodyErrorType string
 // UpdateGithubPat500JSONResponseBodyErrorType defines parameters for UpdateGithubPat.
 type UpdateGithubPat500JSONResponseBodyErrorType string
 
+// GetGuardrailsPolicy400JSONResponseBodyErrorType defines parameters for GetGuardrailsPolicy.
+type GetGuardrailsPolicy400JSONResponseBodyErrorType string
+
+// GetGuardrailsPolicy401JSONResponseBodyErrorType defines parameters for GetGuardrailsPolicy.
+type GetGuardrailsPolicy401JSONResponseBodyErrorType string
+
+// GetGuardrailsPolicy403JSONResponseBodyErrorType defines parameters for GetGuardrailsPolicy.
+type GetGuardrailsPolicy403JSONResponseBodyErrorType string
+
+// GetGuardrailsPolicy404JSONResponseBodyErrorType defines parameters for GetGuardrailsPolicy.
+type GetGuardrailsPolicy404JSONResponseBodyErrorType string
+
+// GetGuardrailsPolicy409JSONResponseBodyErrorType defines parameters for GetGuardrailsPolicy.
+type GetGuardrailsPolicy409JSONResponseBodyErrorType string
+
+// GetGuardrailsPolicy500JSONResponseBodyErrorType defines parameters for GetGuardrailsPolicy.
+type GetGuardrailsPolicy500JSONResponseBodyErrorType string
+
+// UpdateGuardrailsPolicyJSONBody defines parameters for UpdateGuardrailsPolicy.
+type UpdateGuardrailsPolicyJSONBody struct {
+	Content          string `json:"content"`
+	ExpectedRevision int    `json:"expectedRevision"`
+}
+
+// UpdateGuardrailsPolicy400JSONResponseBodyErrorType defines parameters for UpdateGuardrailsPolicy.
+type UpdateGuardrailsPolicy400JSONResponseBodyErrorType string
+
+// UpdateGuardrailsPolicy401JSONResponseBodyErrorType defines parameters for UpdateGuardrailsPolicy.
+type UpdateGuardrailsPolicy401JSONResponseBodyErrorType string
+
+// UpdateGuardrailsPolicy403JSONResponseBodyErrorType defines parameters for UpdateGuardrailsPolicy.
+type UpdateGuardrailsPolicy403JSONResponseBodyErrorType string
+
+// UpdateGuardrailsPolicy404JSONResponseBodyErrorType defines parameters for UpdateGuardrailsPolicy.
+type UpdateGuardrailsPolicy404JSONResponseBodyErrorType string
+
+// UpdateGuardrailsPolicy409JSONResponseBodyErrorType defines parameters for UpdateGuardrailsPolicy.
+type UpdateGuardrailsPolicy409JSONResponseBodyErrorType string
+
+// UpdateGuardrailsPolicy500JSONResponseBodyErrorType defines parameters for UpdateGuardrailsPolicy.
+type UpdateGuardrailsPolicy500JSONResponseBodyErrorType string
+
 // GetHooksParams defines parameters for GetHooks.
 type GetHooksParams struct {
 	AgentId openapi_types.UUID `form:"agentId" json:"agentId"`
@@ -49009,6 +51818,42 @@ type UpdateHook409JSONResponseBodyErrorType string
 
 // UpdateHook500JSONResponseBodyErrorType defines parameters for UpdateHook.
 type UpdateHook500JSONResponseBodyErrorType string
+
+// GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths defines parameters for GetIdentityProviders.
+type GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths string
+
+// GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource defines parameters for GetIdentityProviders.
+type GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource string
+
+// GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy defines parameters for GetIdentityProviders.
+type GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy string
+
+// GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType defines parameters for GetIdentityProviders.
+type GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType string
+
+// GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication defines parameters for GetIdentityProviders.
+type GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication string
+
+// GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthentication defines parameters for GetIdentityProviders.
+type GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthentication string
+
+// GetIdentityProviders400JSONResponseBodyErrorType defines parameters for GetIdentityProviders.
+type GetIdentityProviders400JSONResponseBodyErrorType string
+
+// GetIdentityProviders401JSONResponseBodyErrorType defines parameters for GetIdentityProviders.
+type GetIdentityProviders401JSONResponseBodyErrorType string
+
+// GetIdentityProviders403JSONResponseBodyErrorType defines parameters for GetIdentityProviders.
+type GetIdentityProviders403JSONResponseBodyErrorType string
+
+// GetIdentityProviders404JSONResponseBodyErrorType defines parameters for GetIdentityProviders.
+type GetIdentityProviders404JSONResponseBodyErrorType string
+
+// GetIdentityProviders409JSONResponseBodyErrorType defines parameters for GetIdentityProviders.
+type GetIdentityProviders409JSONResponseBodyErrorType string
+
+// GetIdentityProviders500JSONResponseBodyErrorType defines parameters for GetIdentityProviders.
+type GetIdentityProviders500JSONResponseBodyErrorType string
 
 // CreateIdentityProviderJSONBody defines parameters for CreateIdentityProvider.
 type CreateIdentityProviderJSONBody struct {
@@ -49434,6 +52279,124 @@ type UpdateIdentityProvider409JSONResponseBodyErrorType string
 
 // UpdateIdentityProvider500JSONResponseBodyErrorType defines parameters for UpdateIdentityProvider.
 type UpdateIdentityProvider500JSONResponseBodyErrorType string
+
+// GetInternalMcpCatalogParams defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalogParams struct {
+	IncludeApps *bool `form:"includeApps,omitempty" json:"includeApps,omitempty"`
+
+	// Status Filter by lifecycle status. `deleted` lists only soft-deleted catalog items you can delete.
+	Status *GetInternalMcpCatalogParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
+	Access *[]GetInternalMcpCatalogParamsAccess `form:"access,omitempty" json:"access,omitempty"`
+
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>, oauthClient:<oauthClientId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
+
+	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
+	Owner *[]string `form:"owner,omitempty" json:"owner,omitempty"`
+}
+
+// GetInternalMcpCatalogParamsStatus defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalogParamsStatus string
+
+// GetInternalMcpCatalogParamsAccess defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalogParamsAccess string
+
+// GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKind defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKind string
+
+// GetInternalMcpCatalog200JSONResponseBodyCreatedByType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyCreatedByType string
+
+// GetInternalMcpCatalog200JSONResponseBodyEffectiveActions defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyEffectiveActions string
+
+// GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionMode defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionMode string
+
+// GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackMode defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackMode string
+
+// GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType string
+
+// GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType string
+
+// GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode string
+
+// GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromType string
+
+// GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScope defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScope string
+
+// GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentType string
+
+// GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy string
+
+// GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0 defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0 struct {
+	Name   string                                                                     `json:"name"`
+	Source GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0Source `json:"source"`
+}
+
+// GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0Source defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0Source string
+
+// GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1 defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1 struct {
+	Email    *string                                                                    `json:"email,omitempty"`
+	Password *string                                                                    `json:"password,omitempty"`
+	Server   string                                                                     `json:"server"`
+	Source   GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1Source `json:"source"`
+	Username string                                                                     `json:"username"`
+}
+
+// GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1Source defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1Source string
+
+// GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item struct {
+	union json.RawMessage
+}
+
+// GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportType string
+
+// GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType string
+
+// GetInternalMcpCatalog200JSONResponseBodyScope defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyScope string
+
+// GetInternalMcpCatalog200JSONResponseBodyServerType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyServerType string
+
+// GetInternalMcpCatalog200JSONResponseBodyTeamsLevel defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog200JSONResponseBodyTeamsLevel string
+
+// GetInternalMcpCatalog400JSONResponseBodyErrorType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog400JSONResponseBodyErrorType string
+
+// GetInternalMcpCatalog401JSONResponseBodyErrorType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog401JSONResponseBodyErrorType string
+
+// GetInternalMcpCatalog403JSONResponseBodyErrorType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog403JSONResponseBodyErrorType string
+
+// GetInternalMcpCatalog404JSONResponseBodyErrorType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog404JSONResponseBodyErrorType string
+
+// GetInternalMcpCatalog409JSONResponseBodyErrorType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog409JSONResponseBodyErrorType string
+
+// GetInternalMcpCatalog500JSONResponseBodyErrorType defines parameters for GetInternalMcpCatalog.
+type GetInternalMcpCatalog500JSONResponseBodyErrorType string
 
 // CreateInternalMcpCatalogItemJSONBody defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBody struct {
@@ -50175,6 +53138,75 @@ type UpdateInternalMcpCatalogItem409JSONResponseBodyErrorType string
 
 // UpdateInternalMcpCatalogItem500JSONResponseBodyErrorType defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItem500JSONResponseBodyErrorType string
+
+// GetKnowledgeBasesParams defines parameters for GetKnowledgeBases.
+type GetKnowledgeBasesParams struct {
+	Limit                *int                          `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset               *int                          `form:"offset,omitempty" json:"offset,omitempty"`
+	Scope                *GetKnowledgeBasesParamsScope `form:"scope,omitempty" json:"scope,omitempty"`
+	TeamIds              *[]string                     `form:"teamIds,omitempty" json:"teamIds,omitempty"`
+	AuthorIds            *[]string                     `form:"authorIds,omitempty" json:"authorIds,omitempty"`
+	ExcludeAuthorIds     *[]string                     `form:"excludeAuthorIds,omitempty" json:"excludeAuthorIds,omitempty"`
+	ExcludeOtherPersonal *bool                         `form:"excludeOtherPersonal,omitempty" json:"excludeOtherPersonal,omitempty"`
+	Search               *string                       `form:"search,omitempty" json:"search,omitempty"`
+
+	// Status Filter by lifecycle status. `deleted` lists soft-deleted knowledge bases and requires [`knowledgeSource:delete`](/docs/reference/permissions#knowledgeSource:delete).
+	Status *GetKnowledgeBasesParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// Labels Filter by labels. Format: key1:val1|val2;key2:val3. AND across keys, OR within values.
+	Labels *string `form:"labels,omitempty" json:"labels,omitempty"`
+
+	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
+	Access *[]GetKnowledgeBasesParamsAccess `form:"access,omitempty" json:"access,omitempty"`
+
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>, oauthClient:<oauthClientId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
+
+	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
+	Owner *[]string `form:"owner,omitempty" json:"owner,omitempty"`
+
+	// Ids Only these knowledge bases (comma-separated IDs, at most 250), such as the ones an agent uses. All of them come back in one page; `limit` and `offset` do not apply.
+	Ids *[]openapi_types.UUID `form:"ids,omitempty" json:"ids,omitempty"`
+
+	// IncludeAssignedAgents Attach each row's assigned agents (default true). False returns an empty `assignedAgents` array, meaning 'not requested'; `assignedAgentCount` is returned either way.
+	IncludeAssignedAgents *bool `form:"includeAssignedAgents,omitempty" json:"includeAssignedAgents,omitempty"`
+}
+
+// GetKnowledgeBasesParamsScope defines parameters for GetKnowledgeBases.
+type GetKnowledgeBasesParamsScope string
+
+// GetKnowledgeBasesParamsStatus defines parameters for GetKnowledgeBases.
+type GetKnowledgeBasesParamsStatus string
+
+// GetKnowledgeBasesParamsAccess defines parameters for GetKnowledgeBases.
+type GetKnowledgeBasesParamsAccess string
+
+// GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType defines parameters for GetKnowledgeBases.
+type GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType string
+
+// GetKnowledgeBases200JSONResponseBodyDataCreatedByType defines parameters for GetKnowledgeBases.
+type GetKnowledgeBases200JSONResponseBodyDataCreatedByType string
+
+// GetKnowledgeBases200JSONResponseBodyDataVisibility defines parameters for GetKnowledgeBases.
+type GetKnowledgeBases200JSONResponseBodyDataVisibility string
+
+// GetKnowledgeBases400JSONResponseBodyErrorType defines parameters for GetKnowledgeBases.
+type GetKnowledgeBases400JSONResponseBodyErrorType string
+
+// GetKnowledgeBases401JSONResponseBodyErrorType defines parameters for GetKnowledgeBases.
+type GetKnowledgeBases401JSONResponseBodyErrorType string
+
+// GetKnowledgeBases403JSONResponseBodyErrorType defines parameters for GetKnowledgeBases.
+type GetKnowledgeBases403JSONResponseBodyErrorType string
+
+// GetKnowledgeBases404JSONResponseBodyErrorType defines parameters for GetKnowledgeBases.
+type GetKnowledgeBases404JSONResponseBodyErrorType string
+
+// GetKnowledgeBases409JSONResponseBodyErrorType defines parameters for GetKnowledgeBases.
+type GetKnowledgeBases409JSONResponseBodyErrorType string
+
+// GetKnowledgeBases500JSONResponseBodyErrorType defines parameters for GetKnowledgeBases.
+type GetKnowledgeBases500JSONResponseBodyErrorType string
 
 // CreateKnowledgeBaseJSONBody defines parameters for CreateKnowledgeBase.
 type CreateKnowledgeBaseJSONBody struct {
@@ -53549,6 +56581,77 @@ type UpdatePlugin409JSONResponseBodyErrorType string
 // UpdatePlugin500JSONResponseBodyErrorType defines parameters for UpdatePlugin.
 type UpdatePlugin500JSONResponseBodyErrorType string
 
+// GetProjectsParams defines parameters for GetProjects.
+type GetProjectsParams struct {
+	Limit  *int                    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int                    `form:"offset,omitempty" json:"offset,omitempty"`
+	Scope  *GetProjectsParamsScope `form:"scope,omitempty" json:"scope,omitempty"`
+	Search *string                 `form:"search,omitempty" json:"search,omitempty"`
+
+	// Labels Filter by labels. Format: key1:val1|val2;key2:val3. AND across keys, OR within values.
+	Labels *string `form:"labels,omitempty" json:"labels,omitempty"`
+
+	// TeamIds Team IDs (comma-separated); only used when scope=team.
+	TeamIds *[]string `form:"teamIds,omitempty" json:"teamIds,omitempty"`
+
+	// AuthorIds Owner user IDs (comma-separated). Admin-only; used with scope=personal.
+	AuthorIds *[]string `form:"authorIds,omitempty" json:"authorIds,omitempty"`
+
+	// ExcludeAuthorIds Exclude owner user IDs (comma-separated). Admin-only; used with scope=personal.
+	ExcludeAuthorIds *[]string `form:"excludeAuthorIds,omitempty" json:"excludeAuthorIds,omitempty"`
+
+	// Status Lifecycle slice: `active` (default) or `deleted` (project admins only; org-wide soft-deleted projects for the restore view).
+	Status *GetProjectsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
+	Access *[]GetProjectsParamsAccess `form:"access,omitempty" json:"access,omitempty"`
+
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>, oauthClient:<oauthClientId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
+
+	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
+	Owner *[]string `form:"owner,omitempty" json:"owner,omitempty"`
+
+	// Pinned Only return projects the current user has pinned (true) or has not pinned (false). Omit for both.
+	Pinned *bool `form:"pinned,omitempty" json:"pinned,omitempty"`
+}
+
+// GetProjectsParamsScope defines parameters for GetProjects.
+type GetProjectsParamsScope string
+
+// GetProjectsParamsStatus defines parameters for GetProjects.
+type GetProjectsParamsStatus string
+
+// GetProjectsParamsAccess defines parameters for GetProjects.
+type GetProjectsParamsAccess string
+
+// GetProjects200JSONResponseBodyDataCreatedByType defines parameters for GetProjects.
+type GetProjects200JSONResponseBodyDataCreatedByType string
+
+// GetProjects200JSONResponseBodyDataViewerRole defines parameters for GetProjects.
+type GetProjects200JSONResponseBodyDataViewerRole string
+
+// GetProjects200JSONResponseBodyDataVisibility defines parameters for GetProjects.
+type GetProjects200JSONResponseBodyDataVisibility string
+
+// GetProjects400JSONResponseBodyErrorType defines parameters for GetProjects.
+type GetProjects400JSONResponseBodyErrorType string
+
+// GetProjects401JSONResponseBodyErrorType defines parameters for GetProjects.
+type GetProjects401JSONResponseBodyErrorType string
+
+// GetProjects403JSONResponseBodyErrorType defines parameters for GetProjects.
+type GetProjects403JSONResponseBodyErrorType string
+
+// GetProjects404JSONResponseBodyErrorType defines parameters for GetProjects.
+type GetProjects404JSONResponseBodyErrorType string
+
+// GetProjects409JSONResponseBodyErrorType defines parameters for GetProjects.
+type GetProjects409JSONResponseBodyErrorType string
+
+// GetProjects500JSONResponseBodyErrorType defines parameters for GetProjects.
+type GetProjects500JSONResponseBodyErrorType string
+
 // CreateProjectJSONBody defines parameters for CreateProject.
 type CreateProjectJSONBody struct {
 	DefaultAgentId *openapi_types.UUID `json:"defaultAgentId,omitempty"`
@@ -54403,6 +57506,40 @@ type UpdateResourcePermissions409JSONResponseBodyErrorType string
 // UpdateResourcePermissions500JSONResponseBodyErrorType defines parameters for UpdateResourcePermissions.
 type UpdateResourcePermissions500JSONResponseBodyErrorType string
 
+// GetRolesParams defines parameters for GetRoles.
+type GetRolesParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int    `form:"offset,omitempty" json:"offset,omitempty"`
+	Name   *string `form:"name,omitempty" json:"name,omitempty"`
+
+	// Kind Limit the list to one kind of role. `custom` leaves out the built-in roles, which cannot be edited.
+	Kind *GetRolesParamsKind `form:"kind,omitempty" json:"kind,omitempty"`
+}
+
+// GetRolesParamsKind defines parameters for GetRoles.
+type GetRolesParamsKind string
+
+// GetRoles200JSONResponseBodyDataPermission defines parameters for GetRoles.
+type GetRoles200JSONResponseBodyDataPermission string
+
+// GetRoles400JSONResponseBodyErrorType defines parameters for GetRoles.
+type GetRoles400JSONResponseBodyErrorType string
+
+// GetRoles401JSONResponseBodyErrorType defines parameters for GetRoles.
+type GetRoles401JSONResponseBodyErrorType string
+
+// GetRoles403JSONResponseBodyErrorType defines parameters for GetRoles.
+type GetRoles403JSONResponseBodyErrorType string
+
+// GetRoles404JSONResponseBodyErrorType defines parameters for GetRoles.
+type GetRoles404JSONResponseBodyErrorType string
+
+// GetRoles409JSONResponseBodyErrorType defines parameters for GetRoles.
+type GetRoles409JSONResponseBodyErrorType string
+
+// GetRoles500JSONResponseBodyErrorType defines parameters for GetRoles.
+type GetRoles500JSONResponseBodyErrorType string
+
 // CreateRoleJSONBody defines parameters for CreateRole.
 type CreateRoleJSONBody struct {
 	Description *string                                   `json:"description,omitempty"`
@@ -54962,6 +58099,112 @@ type UpdateServiceAccountToken409JSONResponseBodyErrorType string
 
 // UpdateServiceAccountToken500JSONResponseBodyErrorType defines parameters for UpdateServiceAccountToken.
 type UpdateServiceAccountToken500JSONResponseBodyErrorType string
+
+// GetSiteNotification400JSONResponseBodyErrorType defines parameters for GetSiteNotification.
+type GetSiteNotification400JSONResponseBodyErrorType string
+
+// GetSiteNotification401JSONResponseBodyErrorType defines parameters for GetSiteNotification.
+type GetSiteNotification401JSONResponseBodyErrorType string
+
+// GetSiteNotification403JSONResponseBodyErrorType defines parameters for GetSiteNotification.
+type GetSiteNotification403JSONResponseBodyErrorType string
+
+// GetSiteNotification404JSONResponseBodyErrorType defines parameters for GetSiteNotification.
+type GetSiteNotification404JSONResponseBodyErrorType string
+
+// GetSiteNotification409JSONResponseBodyErrorType defines parameters for GetSiteNotification.
+type GetSiteNotification409JSONResponseBodyErrorType string
+
+// GetSiteNotification500JSONResponseBodyErrorType defines parameters for GetSiteNotification.
+type GetSiteNotification500JSONResponseBodyErrorType string
+
+// CreateSiteNotificationJSONBody defines parameters for CreateSiteNotification.
+type CreateSiteNotificationJSONBody struct {
+	Content     string     `json:"content"`
+	Dismissible *bool      `json:"dismissible,omitempty"`
+	ExpiresAt   *time.Time `json:"expiresAt,omitempty"`
+	IsActive    *bool      `json:"isActive,omitempty"`
+}
+
+// CreateSiteNotification400JSONResponseBodyErrorType defines parameters for CreateSiteNotification.
+type CreateSiteNotification400JSONResponseBodyErrorType string
+
+// CreateSiteNotification401JSONResponseBodyErrorType defines parameters for CreateSiteNotification.
+type CreateSiteNotification401JSONResponseBodyErrorType string
+
+// CreateSiteNotification403JSONResponseBodyErrorType defines parameters for CreateSiteNotification.
+type CreateSiteNotification403JSONResponseBodyErrorType string
+
+// CreateSiteNotification404JSONResponseBodyErrorType defines parameters for CreateSiteNotification.
+type CreateSiteNotification404JSONResponseBodyErrorType string
+
+// CreateSiteNotification409JSONResponseBodyErrorType defines parameters for CreateSiteNotification.
+type CreateSiteNotification409JSONResponseBodyErrorType string
+
+// CreateSiteNotification500JSONResponseBodyErrorType defines parameters for CreateSiteNotification.
+type CreateSiteNotification500JSONResponseBodyErrorType string
+
+// GetSiteNotificationSettings400JSONResponseBodyErrorType defines parameters for GetSiteNotificationSettings.
+type GetSiteNotificationSettings400JSONResponseBodyErrorType string
+
+// GetSiteNotificationSettings401JSONResponseBodyErrorType defines parameters for GetSiteNotificationSettings.
+type GetSiteNotificationSettings401JSONResponseBodyErrorType string
+
+// GetSiteNotificationSettings403JSONResponseBodyErrorType defines parameters for GetSiteNotificationSettings.
+type GetSiteNotificationSettings403JSONResponseBodyErrorType string
+
+// GetSiteNotificationSettings404JSONResponseBodyErrorType defines parameters for GetSiteNotificationSettings.
+type GetSiteNotificationSettings404JSONResponseBodyErrorType string
+
+// GetSiteNotificationSettings409JSONResponseBodyErrorType defines parameters for GetSiteNotificationSettings.
+type GetSiteNotificationSettings409JSONResponseBodyErrorType string
+
+// GetSiteNotificationSettings500JSONResponseBodyErrorType defines parameters for GetSiteNotificationSettings.
+type GetSiteNotificationSettings500JSONResponseBodyErrorType string
+
+// DeleteSiteNotification400JSONResponseBodyErrorType defines parameters for DeleteSiteNotification.
+type DeleteSiteNotification400JSONResponseBodyErrorType string
+
+// DeleteSiteNotification401JSONResponseBodyErrorType defines parameters for DeleteSiteNotification.
+type DeleteSiteNotification401JSONResponseBodyErrorType string
+
+// DeleteSiteNotification403JSONResponseBodyErrorType defines parameters for DeleteSiteNotification.
+type DeleteSiteNotification403JSONResponseBodyErrorType string
+
+// DeleteSiteNotification404JSONResponseBodyErrorType defines parameters for DeleteSiteNotification.
+type DeleteSiteNotification404JSONResponseBodyErrorType string
+
+// DeleteSiteNotification409JSONResponseBodyErrorType defines parameters for DeleteSiteNotification.
+type DeleteSiteNotification409JSONResponseBodyErrorType string
+
+// DeleteSiteNotification500JSONResponseBodyErrorType defines parameters for DeleteSiteNotification.
+type DeleteSiteNotification500JSONResponseBodyErrorType string
+
+// UpdateSiteNotificationJSONBody defines parameters for UpdateSiteNotification.
+type UpdateSiteNotificationJSONBody struct {
+	Content     *string    `json:"content,omitempty"`
+	Dismissible *bool      `json:"dismissible,omitempty"`
+	ExpiresAt   *time.Time `json:"expiresAt,omitempty"`
+	IsActive    *bool      `json:"isActive,omitempty"`
+}
+
+// UpdateSiteNotification400JSONResponseBodyErrorType defines parameters for UpdateSiteNotification.
+type UpdateSiteNotification400JSONResponseBodyErrorType string
+
+// UpdateSiteNotification401JSONResponseBodyErrorType defines parameters for UpdateSiteNotification.
+type UpdateSiteNotification401JSONResponseBodyErrorType string
+
+// UpdateSiteNotification403JSONResponseBodyErrorType defines parameters for UpdateSiteNotification.
+type UpdateSiteNotification403JSONResponseBodyErrorType string
+
+// UpdateSiteNotification404JSONResponseBodyErrorType defines parameters for UpdateSiteNotification.
+type UpdateSiteNotification404JSONResponseBodyErrorType string
+
+// UpdateSiteNotification409JSONResponseBodyErrorType defines parameters for UpdateSiteNotification.
+type UpdateSiteNotification409JSONResponseBodyErrorType string
+
+// UpdateSiteNotification500JSONResponseBodyErrorType defines parameters for UpdateSiteNotification.
+type UpdateSiteNotification500JSONResponseBodyErrorType string
 
 // DeleteSkillSandboxArtifact200JSONResponseBodyOk defines parameters for DeleteSkillSandboxArtifact.
 type DeleteSkillSandboxArtifact200JSONResponseBodyOk bool
@@ -56002,6 +59245,15 @@ type CreateBlobProviderJSONRequestBody CreateBlobProviderJSONBody
 // UpdateBlobProviderJSONRequestBody defines body for UpdateBlobProvider for application/json ContentType.
 type UpdateBlobProviderJSONRequestBody UpdateBlobProviderJSONBody
 
+// UpdateChatOpsConfigInQuickstartJSONRequestBody defines body for UpdateChatOpsConfigInQuickstart for application/json ContentType.
+type UpdateChatOpsConfigInQuickstartJSONRequestBody UpdateChatOpsConfigInQuickstartJSONBody
+
+// UpdateSlackChatOpsConfigJSONRequestBody defines body for UpdateSlackChatOpsConfig for application/json ContentType.
+type UpdateSlackChatOpsConfigJSONRequestBody UpdateSlackChatOpsConfigJSONBody
+
+// UpdateTelegramChatOpsConfigJSONRequestBody defines body for UpdateTelegramChatOpsConfig for application/json ContentType.
+type UpdateTelegramChatOpsConfigJSONRequestBody UpdateTelegramChatOpsConfigJSONBody
+
 // CreateCostExportJSONRequestBody defines body for CreateCostExport for application/json ContentType.
 type CreateCostExportJSONRequestBody CreateCostExportJSONBody
 
@@ -56043,6 +59295,9 @@ type CreateGithubPatJSONRequestBody CreateGithubPatJSONBody
 
 // UpdateGithubPatJSONRequestBody defines body for UpdateGithubPat for application/json ContentType.
 type UpdateGithubPatJSONRequestBody UpdateGithubPatJSONBody
+
+// UpdateGuardrailsPolicyJSONRequestBody defines body for UpdateGuardrailsPolicy for application/json ContentType.
+type UpdateGuardrailsPolicyJSONRequestBody UpdateGuardrailsPolicyJSONBody
 
 // CreateHookJSONRequestBody defines body for CreateHook for application/json ContentType.
 type CreateHookJSONRequestBody CreateHookJSONBody
@@ -56205,6 +59460,12 @@ type CreateServiceAccountTokenJSONRequestBody CreateServiceAccountTokenJSONBody
 
 // UpdateServiceAccountTokenJSONRequestBody defines body for UpdateServiceAccountToken for application/json ContentType.
 type UpdateServiceAccountTokenJSONRequestBody UpdateServiceAccountTokenJSONBody
+
+// CreateSiteNotificationJSONRequestBody defines body for CreateSiteNotification for application/json ContentType.
+type CreateSiteNotificationJSONRequestBody CreateSiteNotificationJSONBody
+
+// UpdateSiteNotificationJSONRequestBody defines body for UpdateSiteNotification for application/json ContentType.
+type UpdateSiteNotificationJSONRequestBody UpdateSiteNotificationJSONBody
 
 // UpdateSkillSandboxArtifactContentJSONRequestBody defines body for UpdateSkillSandboxArtifactContent for application/json ContentType.
 type UpdateSkillSandboxArtifactContentJSONRequestBody UpdateSkillSandboxArtifactContentJSONBody
@@ -59499,6 +62760,68 @@ func (t CreateRuntimeCredentialJSONBody_InitialGrants_Subject) MarshalJSON() ([]
 }
 
 func (t *CreateRuntimeCredentialJSONBody_InitialGrants_Subject) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0 returns the union data inside the GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item as a GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0
+func (t GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item) AsGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0() (GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0, error) {
+	var body GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0 overwrites any union data inside the GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item as the provided GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0
+func (t *GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item) FromGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0(v GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0 performs a merge with any union data inside the GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item, using the provided GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0
+func (t *GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item) MergeGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0(v GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1 returns the union data inside the GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item as a GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1
+func (t GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item) AsGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1() (GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1, error) {
+	var body GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1 overwrites any union data inside the GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item as the provided GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1
+func (t *GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item) FromGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1(v GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1 performs a merge with any union data inside the GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item, using the provided GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1
+func (t *GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item) MergeGetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1(v GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullSecrets1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -63243,6 +66566,30 @@ type ClientInterface interface {
 
 	UpdateBlobProvider(ctx context.Context, id openapi_types.UUID, body UpdateBlobProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetMsTeamsChatOpsConfig request
+	GetMsTeamsChatOpsConfig(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateChatOpsConfigInQuickstartWithBody request with any body
+	UpdateChatOpsConfigInQuickstartWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateChatOpsConfigInQuickstart(ctx context.Context, body UpdateChatOpsConfigInQuickstartJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSlackChatOpsConfig request
+	GetSlackChatOpsConfig(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSlackChatOpsConfigWithBody request with any body
+	UpdateSlackChatOpsConfigWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateSlackChatOpsConfig(ctx context.Context, body UpdateSlackChatOpsConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetTelegramChatOpsConfig request
+	GetTelegramChatOpsConfig(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateTelegramChatOpsConfigWithBody request with any body
+	UpdateTelegramChatOpsConfigWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateTelegramChatOpsConfig(ctx context.Context, body UpdateTelegramChatOpsConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListCostExports request
 	ListCostExports(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -63355,6 +66702,14 @@ type ClientInterface interface {
 
 	UpdateGithubPat(ctx context.Context, id openapi_types.UUID, body UpdateGithubPatJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetGuardrailsPolicy request
+	GetGuardrailsPolicy(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateGuardrailsPolicyWithBody request with any body
+	UpdateGuardrailsPolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateGuardrailsPolicy(ctx context.Context, body UpdateGuardrailsPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetHooks request
 	GetHooks(ctx context.Context, params *GetHooksParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -63370,6 +66725,9 @@ type ClientInterface interface {
 	UpdateHookWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateHook(ctx context.Context, id openapi_types.UUID, body UpdateHookJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetIdentityProviders request
+	GetIdentityProviders(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateIdentityProviderWithBody request with any body
 	CreateIdentityProviderWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -63387,6 +66745,9 @@ type ClientInterface interface {
 
 	UpdateIdentityProvider(ctx context.Context, id string, body UpdateIdentityProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetInternalMcpCatalog request
+	GetInternalMcpCatalog(ctx context.Context, params *GetInternalMcpCatalogParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CreateInternalMcpCatalogItemWithBody request with any body
 	CreateInternalMcpCatalogItemWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -63402,6 +66763,9 @@ type ClientInterface interface {
 	UpdateInternalMcpCatalogItemWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateInternalMcpCatalogItem(ctx context.Context, id openapi_types.UUID, body UpdateInternalMcpCatalogItemJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKnowledgeBases request
+	GetKnowledgeBases(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateKnowledgeBaseWithBody request with any body
 	CreateKnowledgeBaseWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -63664,6 +67028,9 @@ type ClientInterface interface {
 
 	UpdatePlugin(ctx context.Context, id openapi_types.UUID, body UpdatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetProjects request
+	GetProjects(ctx context.Context, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CreateProjectWithBody request with any body
 	CreateProjectWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -63712,6 +67079,9 @@ type ClientInterface interface {
 	UpdateResourcePermissionsWithBody(ctx context.Context, resource UpdateResourcePermissionsParamsResource, scope string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateResourcePermissions(ctx context.Context, resource UpdateResourcePermissionsParamsResource, scope string, body UpdateResourcePermissionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetRoles request
+	GetRoles(ctx context.Context, params *GetRolesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateRoleWithBody request with any body
 	CreateRoleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -63792,6 +67162,25 @@ type ClientInterface interface {
 	UpdateServiceAccountTokenWithBody(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateServiceAccountToken(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, body UpdateServiceAccountTokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSiteNotification request
+	GetSiteNotification(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateSiteNotificationWithBody request with any body
+	CreateSiteNotificationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateSiteNotification(ctx context.Context, body CreateSiteNotificationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSiteNotificationSettings request
+	GetSiteNotificationSettings(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteSiteNotification request
+	DeleteSiteNotification(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSiteNotificationWithBody request with any body
+	UpdateSiteNotificationWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateSiteNotification(ctx context.Context, id string, body UpdateSiteNotificationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteSkillSandboxArtifact request
 	DeleteSkillSandboxArtifact(ctx context.Context, artifactId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -64791,6 +68180,114 @@ func (c *Client) UpdateBlobProvider(ctx context.Context, id openapi_types.UUID, 
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetMsTeamsChatOpsConfig(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMsTeamsChatOpsConfigRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateChatOpsConfigInQuickstartWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateChatOpsConfigInQuickstartRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateChatOpsConfigInQuickstart(ctx context.Context, body UpdateChatOpsConfigInQuickstartJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateChatOpsConfigInQuickstartRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetSlackChatOpsConfig(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSlackChatOpsConfigRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSlackChatOpsConfigWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSlackChatOpsConfigRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSlackChatOpsConfig(ctx context.Context, body UpdateSlackChatOpsConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSlackChatOpsConfigRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetTelegramChatOpsConfig(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTelegramChatOpsConfigRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateTelegramChatOpsConfigWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateTelegramChatOpsConfigRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateTelegramChatOpsConfig(ctx context.Context, body UpdateTelegramChatOpsConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateTelegramChatOpsConfigRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListCostExports(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListCostExportsRequest(c.Server)
 	if err != nil {
@@ -65295,6 +68792,42 @@ func (c *Client) UpdateGithubPat(ctx context.Context, id openapi_types.UUID, bod
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetGuardrailsPolicy(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetGuardrailsPolicyRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateGuardrailsPolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateGuardrailsPolicyRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateGuardrailsPolicy(ctx context.Context, body UpdateGuardrailsPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateGuardrailsPolicyRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetHooks(ctx context.Context, params *GetHooksParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetHooksRequest(c.Server, params)
 	if err != nil {
@@ -65357,6 +68890,18 @@ func (c *Client) UpdateHookWithBody(ctx context.Context, id openapi_types.UUID, 
 
 func (c *Client) UpdateHook(ctx context.Context, id openapi_types.UUID, body UpdateHookJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateHookRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetIdentityProviders(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetIdentityProvidersRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -65439,6 +68984,18 @@ func (c *Client) UpdateIdentityProvider(ctx context.Context, id string, body Upd
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetInternalMcpCatalog(ctx context.Context, params *GetInternalMcpCatalogParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetInternalMcpCatalogRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) CreateInternalMcpCatalogItemWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateInternalMcpCatalogItemRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -65501,6 +69058,18 @@ func (c *Client) UpdateInternalMcpCatalogItemWithBody(ctx context.Context, id op
 
 func (c *Client) UpdateInternalMcpCatalogItem(ctx context.Context, id openapi_types.UUID, body UpdateInternalMcpCatalogItemJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateInternalMcpCatalogItemRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetKnowledgeBases(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKnowledgeBasesRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -66687,6 +70256,18 @@ func (c *Client) UpdatePlugin(ctx context.Context, id openapi_types.UUID, body U
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetProjects(ctx context.Context, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProjectsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) CreateProjectWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateProjectRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -66893,6 +70474,18 @@ func (c *Client) UpdateResourcePermissionsWithBody(ctx context.Context, resource
 
 func (c *Client) UpdateResourcePermissions(ctx context.Context, resource UpdateResourcePermissionsParamsResource, scope string, body UpdateResourcePermissionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateResourcePermissionsRequest(c.Server, resource, scope, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetRoles(ctx context.Context, params *GetRolesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetRolesRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -67253,6 +70846,90 @@ func (c *Client) UpdateServiceAccountTokenWithBody(ctx context.Context, id opena
 
 func (c *Client) UpdateServiceAccountToken(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, body UpdateServiceAccountTokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateServiceAccountTokenRequest(c.Server, id, tokenId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetSiteNotification(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSiteNotificationRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSiteNotificationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSiteNotificationRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSiteNotification(ctx context.Context, body CreateSiteNotificationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSiteNotificationRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetSiteNotificationSettings(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSiteNotificationSettingsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteSiteNotification(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSiteNotificationRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSiteNotificationWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSiteNotificationRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSiteNotification(ctx context.Context, id string, body UpdateSiteNotificationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSiteNotificationRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -70243,6 +73920,207 @@ func NewUpdateBlobProviderRequestWithBody(server string, id openapi_types.UUID, 
 	return req, nil
 }
 
+// NewGetMsTeamsChatOpsConfigRequest generates requests for GetMsTeamsChatOpsConfig
+func NewGetMsTeamsChatOpsConfigRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/config/ms-teams")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateChatOpsConfigInQuickstartRequest calls the generic UpdateChatOpsConfigInQuickstart builder with application/json body
+func NewUpdateChatOpsConfigInQuickstartRequest(server string, body UpdateChatOpsConfigInQuickstartJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateChatOpsConfigInQuickstartRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateChatOpsConfigInQuickstartRequestWithBody generates requests for UpdateChatOpsConfigInQuickstart with any type of body
+func NewUpdateChatOpsConfigInQuickstartRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/config/ms-teams")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetSlackChatOpsConfigRequest generates requests for GetSlackChatOpsConfig
+func NewGetSlackChatOpsConfigRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/config/slack")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateSlackChatOpsConfigRequest calls the generic UpdateSlackChatOpsConfig builder with application/json body
+func NewUpdateSlackChatOpsConfigRequest(server string, body UpdateSlackChatOpsConfigJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateSlackChatOpsConfigRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateSlackChatOpsConfigRequestWithBody generates requests for UpdateSlackChatOpsConfig with any type of body
+func NewUpdateSlackChatOpsConfigRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/config/slack")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetTelegramChatOpsConfigRequest generates requests for GetTelegramChatOpsConfig
+func NewGetTelegramChatOpsConfigRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/config/telegram")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateTelegramChatOpsConfigRequest calls the generic UpdateTelegramChatOpsConfig builder with application/json body
+func NewUpdateTelegramChatOpsConfigRequest(server string, body UpdateTelegramChatOpsConfigJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateTelegramChatOpsConfigRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateTelegramChatOpsConfigRequestWithBody generates requests for UpdateTelegramChatOpsConfig with any type of body
+func NewUpdateTelegramChatOpsConfigRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/config/telegram")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewListCostExportsRequest generates requests for ListCostExports
 func NewListCostExportsRequest(server string) (*http.Request, error) {
 	var err error
@@ -71371,6 +75249,73 @@ func NewUpdateGithubPatRequestWithBody(server string, id openapi_types.UUID, con
 	return req, nil
 }
 
+// NewGetGuardrailsPolicyRequest generates requests for GetGuardrailsPolicy
+func NewGetGuardrailsPolicyRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/guardrails-policy")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateGuardrailsPolicyRequest calls the generic UpdateGuardrailsPolicy builder with application/json body
+func NewUpdateGuardrailsPolicyRequest(server string, body UpdateGuardrailsPolicyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateGuardrailsPolicyRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateGuardrailsPolicyRequestWithBody generates requests for UpdateGuardrailsPolicy with any type of body
+func NewUpdateGuardrailsPolicyRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/guardrails-policy")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetHooksRequest generates requests for GetHooks
 func NewGetHooksRequest(server string, params *GetHooksParams) (*http.Request, error) {
 	var err error
@@ -71542,6 +75487,33 @@ func NewUpdateHookRequestWithBody(server string, id openapi_types.UUID, contentT
 	return req, nil
 }
 
+// NewGetIdentityProvidersRequest generates requests for GetIdentityProviders
+func NewGetIdentityProvidersRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/identity-providers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCreateIdentityProviderRequest calls the generic CreateIdentityProvider builder with application/json body
 func NewCreateIdentityProviderRequest(server string, body CreateIdentityProviderJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -71693,6 +75665,108 @@ func NewUpdateIdentityProviderRequestWithBody(server string, id string, contentT
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetInternalMcpCatalogRequest generates requests for GetInternalMcpCatalog
+func NewGetInternalMcpCatalogRequest(server string, params *GetInternalMcpCatalogParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/internal_mcp_catalog")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.IncludeApps != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "includeApps", *params.IncludeApps, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Access != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "access", *params.Access, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.SharedWith != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "sharedWith", *params.SharedWith, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Owner != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "owner", *params.Owner, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -71875,6 +75949,228 @@ func NewUpdateInternalMcpCatalogItemRequestWithBody(server string, id openapi_ty
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetKnowledgeBasesRequest generates requests for GetKnowledgeBases
+func NewGetKnowledgeBasesRequest(server string, params *GetKnowledgeBasesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Scope != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "scope", *params.Scope, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.TeamIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "teamIds", *params.TeamIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.AuthorIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "authorIds", *params.AuthorIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ExcludeAuthorIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "excludeAuthorIds", *params.ExcludeAuthorIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ExcludeOtherPersonal != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "excludeOtherPersonal", *params.ExcludeOtherPersonal, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "search", *params.Search, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Labels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "labels", *params.Labels, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Access != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "access", *params.Access, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.SharedWith != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "sharedWith", *params.SharedWith, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Owner != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "owner", *params.Owner, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Ids != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "ids", *params.Ids, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.IncludeAssignedAgents != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "includeAssignedAgents", *params.IncludeAssignedAgents, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -74931,6 +79227,204 @@ func NewUpdatePluginRequestWithBody(server string, id openapi_types.UUID, conten
 	return req, nil
 }
 
+// NewGetProjectsRequest generates requests for GetProjects
+func NewGetProjectsRequest(server string, params *GetProjectsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/projects")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Scope != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "scope", *params.Scope, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "search", *params.Search, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Labels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "labels", *params.Labels, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.TeamIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "teamIds", *params.TeamIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.AuthorIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "authorIds", *params.AuthorIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ExcludeAuthorIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "excludeAuthorIds", *params.ExcludeAuthorIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Access != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "access", *params.Access, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.SharedWith != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "sharedWith", *params.SharedWith, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Owner != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "owner", *params.Owner, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Pinned != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "pinned", *params.Pinned, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCreateProjectRequest calls the generic CreateProject builder with application/json body
 func NewCreateProjectRequest(server string, body CreateProjectJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -75455,6 +79949,96 @@ func NewUpdateResourcePermissionsRequestWithBody(server string, resource UpdateR
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetRolesRequest generates requests for GetRoles
+func NewGetRolesRequest(server string, params *GetRolesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/roles")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Name != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "name", *params.Name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Kind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "kind", *params.Kind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -76287,6 +80871,181 @@ func NewUpdateServiceAccountTokenRequestWithBody(server string, id openapi_types
 	}
 
 	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetSiteNotificationRequest generates requests for GetSiteNotification
+func NewGetSiteNotificationRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/site-notification")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateSiteNotificationRequest calls the generic CreateSiteNotification builder with application/json body
+func NewCreateSiteNotificationRequest(server string, body CreateSiteNotificationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateSiteNotificationRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateSiteNotificationRequestWithBody generates requests for CreateSiteNotification with any type of body
+func NewCreateSiteNotificationRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/site-notification")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetSiteNotificationSettingsRequest generates requests for GetSiteNotificationSettings
+func NewGetSiteNotificationSettingsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/site-notification/settings")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteSiteNotificationRequest generates requests for DeleteSiteNotification
+func NewDeleteSiteNotificationRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/site-notification/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateSiteNotificationRequest calls the generic UpdateSiteNotification builder with application/json body
+func NewUpdateSiteNotificationRequest(server string, id string, body UpdateSiteNotificationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateSiteNotificationRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateSiteNotificationRequestWithBody generates requests for UpdateSiteNotification with any type of body
+func NewUpdateSiteNotificationRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/site-notification/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -77795,6 +82554,30 @@ type ClientWithResponsesInterface interface {
 
 	UpdateBlobProviderWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateBlobProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateBlobProviderResponse, error)
 
+	// GetMsTeamsChatOpsConfigWithResponse request
+	GetMsTeamsChatOpsConfigWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMsTeamsChatOpsConfigResponse, error)
+
+	// UpdateChatOpsConfigInQuickstartWithBodyWithResponse request with any body
+	UpdateChatOpsConfigInQuickstartWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateChatOpsConfigInQuickstartResponse, error)
+
+	UpdateChatOpsConfigInQuickstartWithResponse(ctx context.Context, body UpdateChatOpsConfigInQuickstartJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChatOpsConfigInQuickstartResponse, error)
+
+	// GetSlackChatOpsConfigWithResponse request
+	GetSlackChatOpsConfigWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetSlackChatOpsConfigResponse, error)
+
+	// UpdateSlackChatOpsConfigWithBodyWithResponse request with any body
+	UpdateSlackChatOpsConfigWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSlackChatOpsConfigResponse, error)
+
+	UpdateSlackChatOpsConfigWithResponse(ctx context.Context, body UpdateSlackChatOpsConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSlackChatOpsConfigResponse, error)
+
+	// GetTelegramChatOpsConfigWithResponse request
+	GetTelegramChatOpsConfigWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTelegramChatOpsConfigResponse, error)
+
+	// UpdateTelegramChatOpsConfigWithBodyWithResponse request with any body
+	UpdateTelegramChatOpsConfigWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateTelegramChatOpsConfigResponse, error)
+
+	UpdateTelegramChatOpsConfigWithResponse(ctx context.Context, body UpdateTelegramChatOpsConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTelegramChatOpsConfigResponse, error)
+
 	// ListCostExportsWithResponse request
 	ListCostExportsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListCostExportsResponse, error)
 
@@ -77907,6 +82690,14 @@ type ClientWithResponsesInterface interface {
 
 	UpdateGithubPatWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateGithubPatJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateGithubPatResponse, error)
 
+	// GetGuardrailsPolicyWithResponse request
+	GetGuardrailsPolicyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetGuardrailsPolicyResponse, error)
+
+	// UpdateGuardrailsPolicyWithBodyWithResponse request with any body
+	UpdateGuardrailsPolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateGuardrailsPolicyResponse, error)
+
+	UpdateGuardrailsPolicyWithResponse(ctx context.Context, body UpdateGuardrailsPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateGuardrailsPolicyResponse, error)
+
 	// GetHooksWithResponse request
 	GetHooksWithResponse(ctx context.Context, params *GetHooksParams, reqEditors ...RequestEditorFn) (*GetHooksResponse, error)
 
@@ -77922,6 +82713,9 @@ type ClientWithResponsesInterface interface {
 	UpdateHookWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateHookResponse, error)
 
 	UpdateHookWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateHookJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateHookResponse, error)
+
+	// GetIdentityProvidersWithResponse request
+	GetIdentityProvidersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetIdentityProvidersResponse, error)
 
 	// CreateIdentityProviderWithBodyWithResponse request with any body
 	CreateIdentityProviderWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateIdentityProviderResponse, error)
@@ -77939,6 +82733,9 @@ type ClientWithResponsesInterface interface {
 
 	UpdateIdentityProviderWithResponse(ctx context.Context, id string, body UpdateIdentityProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateIdentityProviderResponse, error)
 
+	// GetInternalMcpCatalogWithResponse request
+	GetInternalMcpCatalogWithResponse(ctx context.Context, params *GetInternalMcpCatalogParams, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogResponse, error)
+
 	// CreateInternalMcpCatalogItemWithBodyWithResponse request with any body
 	CreateInternalMcpCatalogItemWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateInternalMcpCatalogItemResponse, error)
 
@@ -77954,6 +82751,9 @@ type ClientWithResponsesInterface interface {
 	UpdateInternalMcpCatalogItemWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateInternalMcpCatalogItemResponse, error)
 
 	UpdateInternalMcpCatalogItemWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateInternalMcpCatalogItemJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateInternalMcpCatalogItemResponse, error)
+
+	// GetKnowledgeBasesWithResponse request
+	GetKnowledgeBasesWithResponse(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*GetKnowledgeBasesResponse, error)
 
 	// CreateKnowledgeBaseWithBodyWithResponse request with any body
 	CreateKnowledgeBaseWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateKnowledgeBaseResponse, error)
@@ -78216,6 +83016,9 @@ type ClientWithResponsesInterface interface {
 
 	UpdatePluginWithResponse(ctx context.Context, id openapi_types.UUID, body UpdatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePluginResponse, error)
 
+	// GetProjectsWithResponse request
+	GetProjectsWithResponse(ctx context.Context, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*GetProjectsResponse, error)
+
 	// CreateProjectWithBodyWithResponse request with any body
 	CreateProjectWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error)
 
@@ -78264,6 +83067,9 @@ type ClientWithResponsesInterface interface {
 	UpdateResourcePermissionsWithBodyWithResponse(ctx context.Context, resource UpdateResourcePermissionsParamsResource, scope string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateResourcePermissionsResponse, error)
 
 	UpdateResourcePermissionsWithResponse(ctx context.Context, resource UpdateResourcePermissionsParamsResource, scope string, body UpdateResourcePermissionsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateResourcePermissionsResponse, error)
+
+	// GetRolesWithResponse request
+	GetRolesWithResponse(ctx context.Context, params *GetRolesParams, reqEditors ...RequestEditorFn) (*GetRolesResponse, error)
 
 	// CreateRoleWithBodyWithResponse request with any body
 	CreateRoleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateRoleResponse, error)
@@ -78344,6 +83150,25 @@ type ClientWithResponsesInterface interface {
 	UpdateServiceAccountTokenWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateServiceAccountTokenResponse, error)
 
 	UpdateServiceAccountTokenWithResponse(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, body UpdateServiceAccountTokenJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateServiceAccountTokenResponse, error)
+
+	// GetSiteNotificationWithResponse request
+	GetSiteNotificationWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetSiteNotificationResponse, error)
+
+	// CreateSiteNotificationWithBodyWithResponse request with any body
+	CreateSiteNotificationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSiteNotificationResponse, error)
+
+	CreateSiteNotificationWithResponse(ctx context.Context, body CreateSiteNotificationJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSiteNotificationResponse, error)
+
+	// GetSiteNotificationSettingsWithResponse request
+	GetSiteNotificationSettingsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetSiteNotificationSettingsResponse, error)
+
+	// DeleteSiteNotificationWithResponse request
+	DeleteSiteNotificationWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteSiteNotificationResponse, error)
+
+	// UpdateSiteNotificationWithBodyWithResponse request with any body
+	UpdateSiteNotificationWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSiteNotificationResponse, error)
+
+	UpdateSiteNotificationWithResponse(ctx context.Context, id string, body UpdateSiteNotificationJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSiteNotificationResponse, error)
 
 	// DeleteSkillSandboxArtifactWithResponse request
 	DeleteSkillSandboxArtifactWithResponse(ctx context.Context, artifactId string, reqEditors ...RequestEditorFn) (*DeleteSkillSandboxArtifactResponse, error)
@@ -83820,6 +88645,468 @@ func (r UpdateBlobProviderResponse) ContentType() string {
 	return ""
 }
 
+type GetMsTeamsChatOpsConfigResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AppId               *string    `json:"appId"`
+		Configured          bool       `json:"configured"`
+		Enabled             bool       `json:"enabled"`
+		GroupChatFileSignIn bool       `json:"groupChatFileSignIn"`
+		SignInRedirectUri   string     `json:"signInRedirectUri"`
+		TenantId            *string    `json:"tenantId"`
+		UpdatedAt           *time.Time `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                             `json:"internal_code,omitempty"`
+			Message      string                                              `json:"message"`
+			Type         GetMsTeamsChatOpsConfig400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                             `json:"internal_code,omitempty"`
+			Message      string                                              `json:"message"`
+			Type         GetMsTeamsChatOpsConfig401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                             `json:"details,omitempty"`
+			InternalCode *string                                             `json:"internal_code,omitempty"`
+			Message      string                                              `json:"message"`
+			Type         GetMsTeamsChatOpsConfig403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                             `json:"internal_code,omitempty"`
+			Message      string                                              `json:"message"`
+			Type         GetMsTeamsChatOpsConfig404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                             `json:"internal_code,omitempty"`
+			Message      string                                              `json:"message"`
+			Type         GetMsTeamsChatOpsConfig409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                             `json:"internal_code,omitempty"`
+			Message      string                                              `json:"message"`
+			Type         GetMsTeamsChatOpsConfig500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMsTeamsChatOpsConfigResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMsTeamsChatOpsConfigResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetMsTeamsChatOpsConfigResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateChatOpsConfigInQuickstartResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                     `json:"internal_code,omitempty"`
+			Message      string                                                      `json:"message"`
+			Type         UpdateChatOpsConfigInQuickstart400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                     `json:"internal_code,omitempty"`
+			Message      string                                                      `json:"message"`
+			Type         UpdateChatOpsConfigInQuickstart401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                     `json:"details,omitempty"`
+			InternalCode *string                                                     `json:"internal_code,omitempty"`
+			Message      string                                                      `json:"message"`
+			Type         UpdateChatOpsConfigInQuickstart403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                     `json:"internal_code,omitempty"`
+			Message      string                                                      `json:"message"`
+			Type         UpdateChatOpsConfigInQuickstart404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                     `json:"internal_code,omitempty"`
+			Message      string                                                      `json:"message"`
+			Type         UpdateChatOpsConfigInQuickstart409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                     `json:"internal_code,omitempty"`
+			Message      string                                                      `json:"message"`
+			Type         UpdateChatOpsConfigInQuickstart500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateChatOpsConfigInQuickstartResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateChatOpsConfigInQuickstartResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateChatOpsConfigInQuickstartResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetSlackChatOpsConfigResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AppId          *string                                                `json:"appId"`
+		Configured     bool                                                   `json:"configured"`
+		ConnectionMode GetSlackChatOpsConfig200JSONResponseBodyConnectionMode `json:"connectionMode"`
+		Enabled        bool                                                   `json:"enabled"`
+		UpdatedAt      *time.Time                                             `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetSlackChatOpsConfig400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetSlackChatOpsConfig401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                           `json:"details,omitempty"`
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetSlackChatOpsConfig403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetSlackChatOpsConfig404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetSlackChatOpsConfig409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetSlackChatOpsConfig500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSlackChatOpsConfigResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSlackChatOpsConfigResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetSlackChatOpsConfigResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateSlackChatOpsConfigResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         UpdateSlackChatOpsConfig400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         UpdateSlackChatOpsConfig401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                              `json:"details,omitempty"`
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         UpdateSlackChatOpsConfig403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         UpdateSlackChatOpsConfig404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         UpdateSlackChatOpsConfig409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         UpdateSlackChatOpsConfig500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateSlackChatOpsConfigResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSlackChatOpsConfigResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateSlackChatOpsConfigResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetTelegramChatOpsConfigResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Configured bool       `json:"configured"`
+		Enabled    bool       `json:"enabled"`
+		UpdatedAt  *time.Time `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetTelegramChatOpsConfig400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetTelegramChatOpsConfig401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                              `json:"details,omitempty"`
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetTelegramChatOpsConfig403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetTelegramChatOpsConfig404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetTelegramChatOpsConfig409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                              `json:"internal_code,omitempty"`
+			Message      string                                               `json:"message"`
+			Type         GetTelegramChatOpsConfig500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetTelegramChatOpsConfigResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTelegramChatOpsConfigResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetTelegramChatOpsConfigResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateTelegramChatOpsConfigResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         UpdateTelegramChatOpsConfig400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         UpdateTelegramChatOpsConfig401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                 `json:"details,omitempty"`
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         UpdateTelegramChatOpsConfig403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         UpdateTelegramChatOpsConfig404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         UpdateTelegramChatOpsConfig409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         UpdateTelegramChatOpsConfig500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateTelegramChatOpsConfigResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateTelegramChatOpsConfigResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateTelegramChatOpsConfigResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type ListCostExportsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -86178,6 +91465,166 @@ func (r UpdateGithubPatResponse) ContentType() string {
 	return ""
 }
 
+type GetGuardrailsPolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Content        string     `json:"content"`
+		ContentHash    string     `json:"contentHash"`
+		OrganizationId string     `json:"organizationId"`
+		Revision       int        `json:"revision"`
+		UpdatedAt      *time.Time `json:"updatedAt"`
+		UpdatedBy      *string    `json:"updatedBy"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetGuardrailsPolicy400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetGuardrailsPolicy401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                         `json:"details,omitempty"`
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetGuardrailsPolicy403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetGuardrailsPolicy404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetGuardrailsPolicy409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetGuardrailsPolicy500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetGuardrailsPolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetGuardrailsPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetGuardrailsPolicyResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateGuardrailsPolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Content        string     `json:"content"`
+		ContentHash    string     `json:"contentHash"`
+		OrganizationId string     `json:"organizationId"`
+		Revision       int        `json:"revision"`
+		UpdatedAt      *time.Time `json:"updatedAt"`
+		UpdatedBy      *string    `json:"updatedBy"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateGuardrailsPolicy400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateGuardrailsPolicy401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                            `json:"details,omitempty"`
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateGuardrailsPolicy403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateGuardrailsPolicy404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateGuardrailsPolicy409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateGuardrailsPolicy500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateGuardrailsPolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateGuardrailsPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateGuardrailsPolicyResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type GetHooksResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -86499,6 +91946,214 @@ func (r UpdateHookResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateHookResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetIdentityProvidersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		ConfiguredSecretPaths []GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths `json:"configuredSecretPaths"`
+		Domain                string                                                         `json:"domain"`
+		DomainVerified        *bool                                                          `json:"domainVerified"`
+		Id                    string                                                         `json:"id"`
+		Issuer                string                                                         `json:"issuer"`
+
+		// OidcConfig https://github.com/better-auth/better-auth/blob/v1.4.0/packages/sso/src/types.ts#L22
+		OidcConfig *struct {
+			AuthorizationEndpoint        *string `json:"authorizationEndpoint,omitempty"`
+			ClientId                     string  `json:"clientId"`
+			ClientSecret                 *string `json:"clientSecret,omitempty"`
+			DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
+			EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
+			EnterpriseManagedCredentials *struct {
+				AgentIdentity *struct {
+					ActorTokenScope      *string                                                                                           `json:"actorTokenScope,omitempty"`
+					PrivateKeyId         *string                                                                                           `json:"privateKeyId,omitempty"`
+					PrivateKeyPem        *string                                                                                           `json:"privateKeyPem,omitempty"`
+					RequireAgentIdentity *bool                                                                                             `json:"requireAgentIdentity,omitempty"`
+					Source               *GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource `json:"source,omitempty"`
+					SpiffeAudience       *string                                                                                           `json:"spiffeAudience,omitempty"`
+				} `json:"agentIdentity,omitempty"`
+				ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
+				ClientId                *string `json:"clientId,omitempty"`
+				ClientSecret            *string `json:"clientSecret,omitempty"`
+				EntraAgentId            *struct {
+					BlueprintClientId     string  `json:"blueprintClientId"`
+					BlueprintScope        *string `json:"blueprintScope,omitempty"`
+					CertificateThumbprint *string `json:"certificateThumbprint,omitempty"`
+					ClientSecret          *string `json:"clientSecret,omitempty"`
+					PrivateKeyPem         *string `json:"privateKeyPem,omitempty"`
+					RequireAgentIdentity  *bool   `json:"requireAgentIdentity,omitempty"`
+				} `json:"entraAgentId,omitempty"`
+				ExchangeStrategy            *GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
+				PrivateKeyId                *string                                                                                                   `json:"privateKeyId,omitempty"`
+				PrivateKeyPem               *string                                                                                                   `json:"privateKeyPem,omitempty"`
+				SubjectTokenType            *GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
+				TokenEndpoint               *string                                                                                                   `json:"tokenEndpoint,omitempty"`
+				TokenEndpointAuthentication *GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+			} `json:"enterpriseManagedCredentials,omitempty"`
+			Hd           *string `json:"hd,omitempty"`
+			Issuer       string  `json:"issuer"`
+			JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
+
+			// Mapping https://github.com/better-auth/better-auth/blob/v1.4.0/packages/sso/src/types.ts#L3
+			Mapping *struct {
+				Email         *string            `json:"email,omitempty"`
+				EmailVerified *string            `json:"emailVerified,omitempty"`
+				ExtraFields   *map[string]string `json:"extraFields,omitempty"`
+				Id            *string            `json:"id,omitempty"`
+				Image         *string            `json:"image,omitempty"`
+				Name          *string            `json:"name,omitempty"`
+			} `json:"mapping,omitempty"`
+			OverrideUserInfo            *bool                                                                         `json:"overrideUserInfo,omitempty"`
+			Pkce                        bool                                                                          `json:"pkce"`
+			Scopes                      *[]string                                                                     `json:"scopes,omitempty"`
+			SkipDiscovery               *bool                                                                         `json:"skipDiscovery,omitempty"`
+			TokenEndpoint               *string                                                                       `json:"tokenEndpoint,omitempty"`
+			TokenEndpointAuthentication *GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+			UserInfoEndpoint            *string                                                                       `json:"userInfoEndpoint,omitempty"`
+		} `json:"oidcConfig,omitempty"`
+		OrganizationId *string `json:"organizationId"`
+		ProviderId     string  `json:"providerId"`
+		RoleMapping    *struct {
+			// DefaultRole One or more organization role identifiers, separated by commas
+			DefaultRole *string `json:"defaultRole,omitempty"`
+			Rules       *[]struct {
+				Expression string `json:"expression"`
+
+				// Role One or more organization role identifiers, separated by commas
+				Role string `json:"role"`
+			} `json:"rules,omitempty"`
+			SkipRoleSync *bool `json:"skipRoleSync,omitempty"`
+			StrictMode   *bool `json:"strictMode,omitempty"`
+		} `json:"roleMapping,omitempty"`
+
+		// SamlConfig https://github.com/better-auth/better-auth/blob/v1.4.0/packages/sso/src/types.ts#L40
+		SamlConfig *struct {
+			AdditionalParams *map[string]interface{} `json:"additionalParams,omitempty"`
+			Audience         *string                 `json:"audience,omitempty"`
+			CallbackUrl      string                  `json:"callbackUrl"`
+			Cert             string                  `json:"cert"`
+			DecryptionPvk    *string                 `json:"decryptionPvk,omitempty"`
+			DigestAlgorithm  *string                 `json:"digestAlgorithm,omitempty"`
+			EntryPoint       string                  `json:"entryPoint"`
+			IdentifierFormat *string                 `json:"identifierFormat,omitempty"`
+			IdpMetadata      *struct {
+				Cert                 *string `json:"cert,omitempty"`
+				EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
+				EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
+				EntityID             *string `json:"entityID,omitempty"`
+				EntityURL            *string `json:"entityURL,omitempty"`
+				IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
+				Metadata             *string `json:"metadata,omitempty"`
+				PrivateKey           *string `json:"privateKey,omitempty"`
+				PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
+				RedirectURL          *string `json:"redirectURL,omitempty"`
+				SingleSignOnService  *[]struct {
+					Binding  string `json:"Binding"`
+					Location string `json:"Location"`
+				} `json:"singleSignOnService,omitempty"`
+			} `json:"idpMetadata,omitempty"`
+			Issuer string `json:"issuer"`
+
+			// Mapping https://github.com/better-auth/better-auth/blob/v1.4.0/packages/sso/src/types.ts#L12C30-L20C2
+			Mapping *struct {
+				Email         *string            `json:"email,omitempty"`
+				EmailVerified *string            `json:"emailVerified,omitempty"`
+				ExtraFields   *map[string]string `json:"extraFields,omitempty"`
+				FirstName     *string            `json:"firstName,omitempty"`
+				Id            *string            `json:"id,omitempty"`
+				LastName      *string            `json:"lastName,omitempty"`
+				Name          *string            `json:"name,omitempty"`
+			} `json:"mapping,omitempty"`
+			PrivateKey         *string `json:"privateKey,omitempty"`
+			SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty"`
+			SpMetadata         struct {
+				Binding              *string `json:"binding,omitempty"`
+				EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
+				EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
+				EntityID             *string `json:"entityID,omitempty"`
+				IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
+				Metadata             *string `json:"metadata,omitempty"`
+				PrivateKey           *string `json:"privateKey,omitempty"`
+				PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
+			} `json:"spMetadata"`
+			WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
+		} `json:"samlConfig,omitempty"`
+		SsoLoginEnabled bool `json:"ssoLoginEnabled"`
+		TeamSyncConfig  *struct {
+			Enabled          *bool   `json:"enabled,omitempty"`
+			GroupsExpression *string `json:"groupsExpression,omitempty"`
+		} `json:"teamSyncConfig,omitempty"`
+		UserId *string `json:"userId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetIdentityProviders400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetIdentityProviders401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                          `json:"details,omitempty"`
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetIdentityProviders403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetIdentityProviders404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetIdentityProviders409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         GetIdentityProviders500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetIdentityProvidersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetIdentityProvidersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetIdentityProvidersResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -87198,6 +92853,239 @@ func (r UpdateIdentityProviderResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateIdentityProviderResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetInternalMcpCatalogResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		AlertMutes *[]struct {
+			CatalogId        string                                                      `json:"catalogId"`
+			IssueFingerprint string                                                      `json:"issueFingerprint"`
+			IssueKind        GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKind `json:"issueKind"`
+			McpServerId      *string                                                     `json:"mcpServerId"`
+			MutedAt          time.Time                                                   `json:"mutedAt"`
+			Reason           string                                                      `json:"reason"`
+		} `json:"alertMutes,omitempty"`
+		AppEnabled      *bool   `json:"appEnabled,omitempty"`
+		AppId           *string `json:"appId,omitempty"`
+		AuthDescription *string `json:"authDescription"`
+		AuthFields      *[]struct {
+			Description *string `json:"description,omitempty"`
+			Label       string  `json:"label"`
+			Name        string  `json:"name"`
+			Required    bool    `json:"required"`
+			Type        string  `json:"type"`
+		} `json:"authFields"`
+		AuthorId     *string `json:"authorId"`
+		AuthorName   *string `json:"authorName,omitempty"`
+		AwsIamConfig *struct {
+			Audience *string `json:"audience,omitempty"`
+			Region   string  `json:"region"`
+			RoleArn  string  `json:"roleArn"`
+			Service  string  `json:"service"`
+		} `json:"awsIamConfig"`
+		CatalogItemApprovalReason     *string             `json:"catalogItemApprovalReason"`
+		CatalogItemApprovalReviewedAt *time.Time          `json:"catalogItemApprovalReviewedAt"`
+		CatalogItemApprovalReviewedBy *string             `json:"catalogItemApprovalReviewedBy"`
+		CatalogItemApprovalStatus     *string             `json:"catalogItemApprovalStatus"`
+		CatalogReinstallRequired      bool                `json:"catalogReinstallRequired"`
+		ClientSecretId                *openapi_types.UUID `json:"clientSecretId"`
+		ClonedFrom                    *openapi_types.UUID `json:"clonedFrom"`
+		CreatedAt                     time.Time           `json:"createdAt"`
+		CreatedBy                     *struct {
+			Email *string                                                `json:"email"`
+			Id    string                                                 `json:"id"`
+			Name  *string                                                `json:"name"`
+			Type  *GetInternalMcpCatalog200JSONResponseBodyCreatedByType `json:"type,omitempty"`
+		} `json:"createdBy,omitempty"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		DeploymentName            *string             `json:"deploymentName"`
+		DeploymentSpecYaml        *string             `json:"deploymentSpecYaml"`
+		Description               *string             `json:"description"`
+		DesktopConfig             *struct {
+			Command *string `json:"command,omitempty"`
+			Url     *string `json:"url,omitempty"`
+		} `json:"desktopConfig"`
+		DocsUrl                      *string                                                     `json:"docsUrl"`
+		DynamicConnectionMcpServerId *openapi_types.UUID                                         `json:"dynamicConnectionMcpServerId"`
+		EffectiveActions             *[]GetInternalMcpCatalog200JSONResponseBodyEffectiveActions `json:"effectiveActions,omitempty"`
+		EnterpriseManagedConfig      *struct {
+			AssertionMode           *GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
+			Audience                *string                                                                                 `json:"audience,omitempty"`
+			BodyFieldName           *string                                                                                 `json:"bodyFieldName,omitempty"`
+			CacheTtlSeconds         *int                                                                                    `json:"cacheTtlSeconds,omitempty"`
+			ClientIdOverride        *string                                                                                 `json:"clientIdOverride,omitempty"`
+			EnvVarName              *string                                                                                 `json:"envVarName,omitempty"`
+			FallbackMode            *GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackMode            `json:"fallbackMode,omitempty"`
+			HeaderName              *string                                                                                 `json:"headerName,omitempty"`
+			IdentityProviderId      *string                                                                                 `json:"identityProviderId,omitempty"`
+			PrivateKeyIdOverride    *string                                                                                 `json:"privateKeyIdOverride,omitempty"`
+			RequestedCredentialType *GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType `json:"requestedCredentialType,omitempty"`
+			RequestedIssuer         *string                                                                                 `json:"requestedIssuer,omitempty"`
+			ResourceIdentifier      *string                                                                                 `json:"resourceIdentifier,omitempty"`
+			ResourceType            *GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType            `json:"resourceType,omitempty"`
+			ResponseFieldPath       *string                                                                                 `json:"responseFieldPath,omitempty"`
+			Scopes                  *[]string                                                                               `json:"scopes,omitempty"`
+			TokenInjectionMode      *GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode      `json:"tokenInjectionMode,omitempty"`
+		} `json:"enterpriseManagedConfig"`
+		EnvironmentId         *openapi_types.UUID `json:"environmentId"`
+		Icon                  *string             `json:"icon"`
+		Id                    openapi_types.UUID  `json:"id"`
+		ImageApprovalRequired *bool               `json:"imageApprovalRequired,omitempty"`
+		InstallationCommand   *string             `json:"installationCommand"`
+		Instructions          *string             `json:"instructions"`
+		Labels                []struct {
+			Key   string `json:"key"`
+			Value string `json:"value"`
+		} `json:"labels"`
+		LocalConfig *struct {
+			Arguments   *[]string `json:"arguments,omitempty"`
+			Command     *string   `json:"command,omitempty"`
+			DockerImage *string   `json:"dockerImage,omitempty"`
+			EnvFrom     *[]struct {
+				Name   string                                                         `json:"name"`
+				Prefix *string                                                        `json:"prefix,omitempty"`
+				Type   GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromType `json:"type"`
+			} `json:"envFrom,omitempty"`
+			Environment *[]struct {
+				CredentialId         *string                                                                        `json:"credentialId,omitempty"`
+				CredentialScope      *GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScope `json:"credentialScope,omitempty"`
+				Default              *LocalConfigEnvironmentDefault                                                 `json:"default,omitempty"`
+				Description          *string                                                                        `json:"description,omitempty"`
+				Key                  string                                                                         `json:"key"`
+				Mounted              *bool                                                                          `json:"mounted,omitempty"`
+				PromptOnInstallation bool                                                                           `json:"promptOnInstallation"`
+				Required             *bool                                                                          `json:"required,omitempty"`
+				Type                 GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentType             `json:"type"`
+				Value                *string                                                                        `json:"value,omitempty"`
+			} `json:"environment,omitempty"`
+			HttpPath         *string                                                                       `json:"httpPath,omitempty"`
+			HttpPort         *float32                                                                      `json:"httpPort,omitempty"`
+			ImagePullPolicy  *GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
+			ImagePullSecrets *[]GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
+			NodePort         *float32                                                                      `json:"nodePort,omitempty"`
+			ServiceAccount   *string                                                                       `json:"serviceAccount,omitempty"`
+			TransportType    *GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportType             `json:"transportType,omitempty"`
+		} `json:"localConfig"`
+		LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
+		Multitenant         bool                `json:"multitenant"`
+		Name                string              `json:"name"`
+		OauthConfig         *struct {
+			AccessTokenEnvVar        *string                                                       `json:"access_token_env_var,omitempty"`
+			AdditionalScopes         *[]string                                                     `json:"additional_scopes,omitempty"`
+			Audience                 *string                                                       `json:"audience,omitempty"`
+			AuthServerUrl            *string                                                       `json:"auth_server_url,omitempty"`
+			AuthorizationEndpoint    *string                                                       `json:"authorization_endpoint,omitempty"`
+			BrowserAuth              *bool                                                         `json:"browser_auth,omitempty"`
+			ClientId                 string                                                        `json:"client_id"`
+			ClientSecret             *string                                                       `json:"client_secret,omitempty"`
+			DefaultScopes            []string                                                      `json:"default_scopes"`
+			Description              *string                                                       `json:"description,omitempty"`
+			GenericOauth             *bool                                                         `json:"generic_oauth,omitempty"`
+			GrantType                *GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+			Name                     string                                                        `json:"name"`
+			ProviderName             *string                                                       `json:"provider_name,omitempty"`
+			RedirectUris             []string                                                      `json:"redirect_uris"`
+			RequiresProxy            *bool                                                         `json:"requires_proxy,omitempty"`
+			Resource                 *string                                                       `json:"resource,omitempty"`
+			ResourceMetadataUrl      *string                                                       `json:"resource_metadata_url,omitempty"`
+			Scopes                   []string                                                      `json:"scopes"`
+			ServerUrl                string                                                        `json:"server_url"`
+			StreamableHttpPort       *float32                                                      `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl        *string                                                       `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata bool                                                          `json:"supports_resource_metadata"`
+			TokenEndpoint            *string                                                       `json:"token_endpoint,omitempty"`
+			WellKnownUrl             *string                                                       `json:"well_known_url,omitempty"`
+		} `json:"oauthConfig"`
+		OrganizationId *string                                            `json:"organizationId"`
+		ProvidesSkills *bool                                              `json:"providesSkills,omitempty"`
+		ProvidesUi     *bool                                              `json:"providesUi,omitempty"`
+		Repository     *string                                            `json:"repository"`
+		RequiresAuth   bool                                               `json:"requiresAuth"`
+		Scope          GetInternalMcpCatalog200JSONResponseBodyScope      `json:"scope"`
+		ServerType     GetInternalMcpCatalog200JSONResponseBodyServerType `json:"serverType"`
+		ServerUrl      *string                                            `json:"serverUrl"`
+		SkillCount     int                                                `json:"skillCount"`
+		Teams          []struct {
+			Id    string                                             `json:"id"`
+			Level GetInternalMcpCatalog200JSONResponseBodyTeamsLevel `json:"level"`
+			Name  string                                             `json:"name"`
+		} `json:"teams"`
+		ToolCount  int                         `json:"toolCount"`
+		ToolPrefix *string                     `json:"toolPrefix"`
+		UpdatedAt  time.Time                   `json:"updatedAt"`
+		UserConfig *map[string]UserConfigField `json:"userConfig"`
+		Version    *string                     `json:"version"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetInternalMcpCatalog400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetInternalMcpCatalog401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                           `json:"details,omitempty"`
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetInternalMcpCatalog403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetInternalMcpCatalog404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetInternalMcpCatalog409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                           `json:"internal_code,omitempty"`
+			Message      string                                            `json:"message"`
+			Type         GetInternalMcpCatalog500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetInternalMcpCatalogResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetInternalMcpCatalogResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetInternalMcpCatalogResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -87930,6 +93818,126 @@ func (r UpdateInternalMcpCatalogItemResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateInternalMcpCatalogItemResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetKnowledgeBasesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			AssignedAgentCount int `json:"assignedAgentCount"`
+			AssignedAgents     []struct {
+				AgentType string `json:"agentType"`
+				Id        string `json:"id"`
+				Name      string `json:"name"`
+			} `json:"assignedAgents"`
+			Connectors []struct {
+				ConnectorType GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType `json:"connectorType"`
+				Id            string                                                          `json:"id"`
+				Name          string                                                          `json:"name"`
+			} `json:"connectors"`
+			CreatedAt time.Time `json:"createdAt"`
+			CreatedBy *struct {
+				Email *string                                                `json:"email"`
+				Id    string                                                 `json:"id"`
+				Name  *string                                                `json:"name"`
+				Type  *GetKnowledgeBases200JSONResponseBodyDataCreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			Id                        openapi_types.UUID  `json:"id"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name                       string                                             `json:"name"`
+			OrganizationId             string                                             `json:"organizationId"`
+			Status                     string                                             `json:"status"`
+			TeamIds                    []string                                           `json:"teamIds"`
+			TotalDocsIndexed           float32                                            `json:"totalDocsIndexed"`
+			UpdatedAt                  time.Time                                          `json:"updatedAt"`
+			UploadedFilesEnvironmentId *openapi_types.UUID                                `json:"uploadedFilesEnvironmentId,omitempty"`
+			Visibility                 GetKnowledgeBases200JSONResponseBodyDataVisibility `json:"visibility"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetKnowledgeBases400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetKnowledgeBases401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                       `json:"details,omitempty"`
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetKnowledgeBases403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetKnowledgeBases404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetKnowledgeBases409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetKnowledgeBases500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetKnowledgeBasesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKnowledgeBasesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetKnowledgeBasesResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -95789,6 +101797,115 @@ func (r UpdatePluginResponse) ContentType() string {
 	return ""
 }
 
+type GetProjectsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			ConversationCount int       `json:"conversationCount"`
+			CreatedAt         time.Time `json:"createdAt"`
+			CreatedBy         *struct {
+				Email *string                                          `json:"email"`
+				Id    string                                           `json:"id"`
+				Name  *string                                          `json:"name"`
+				Type  *GetProjects200JSONResponseBodyDataCreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			DeletedAt   *time.Time         `json:"deletedAt"`
+			Description *string            `json:"description"`
+			Icon        *string            `json:"icon"`
+			Id          openapi_types.UUID `json:"id"`
+			Labels      []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name           string                                        `json:"name"`
+			OwnerName      *string                                       `json:"ownerName"`
+			PinnedAt       *time.Time                                    `json:"pinnedAt"`
+			ShareTeamNames *[]string                                     `json:"shareTeamNames"`
+			ShareUserNames *[]string                                     `json:"shareUserNames"`
+			ViewerRole     GetProjects200JSONResponseBodyDataViewerRole  `json:"viewerRole"`
+			Visibility     *GetProjects200JSONResponseBodyDataVisibility `json:"visibility"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                 `json:"internal_code,omitempty"`
+			Message      string                                  `json:"message"`
+			Type         GetProjects400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                 `json:"internal_code,omitempty"`
+			Message      string                                  `json:"message"`
+			Type         GetProjects401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                 `json:"details,omitempty"`
+			InternalCode *string                                 `json:"internal_code,omitempty"`
+			Message      string                                  `json:"message"`
+			Type         GetProjects403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                 `json:"internal_code,omitempty"`
+			Message      string                                  `json:"message"`
+			Type         GetProjects404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                 `json:"internal_code,omitempty"`
+			Message      string                                  `json:"message"`
+			Type         GetProjects409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                 `json:"internal_code,omitempty"`
+			Message      string                                  `json:"message"`
+			Type         GetProjects500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetProjectsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetProjectsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetProjectsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type CreateProjectResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -96862,6 +102979,99 @@ func (r UpdateResourcePermissionsResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateResourcePermissionsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetRolesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			CreatedAt      time.Time                                              `json:"createdAt"`
+			Description    *string                                                `json:"description"`
+			Id             string                                                 `json:"id"`
+			Name           string                                                 `json:"name"`
+			OrganizationId string                                                 `json:"organizationId"`
+			Permission     map[string][]GetRoles200JSONResponseBodyDataPermission `json:"permission"`
+			Predefined     bool                                                   `json:"predefined"`
+			Role           string                                                 `json:"role"`
+			UpdatedAt      *time.Time                                             `json:"updatedAt"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetRoles400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetRoles401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}              `json:"details,omitempty"`
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetRoles403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetRoles404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetRoles409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         GetRoles500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetRolesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetRolesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetRolesResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -98620,6 +104830,399 @@ func (r UpdateServiceAccountTokenResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateServiceAccountTokenResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetSiteNotificationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Content     string  `json:"content"`
+		CreatedAt   string  `json:"createdAt"`
+		Dismissible bool    `json:"dismissible"`
+		ExpiresAt   *string `json:"expiresAt"`
+		Id          string  `json:"id"`
+		IsActive    bool    `json:"isActive"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetSiteNotification400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetSiteNotification401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                         `json:"details,omitempty"`
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetSiteNotification403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetSiteNotification404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetSiteNotification409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                         `json:"internal_code,omitempty"`
+			Message      string                                          `json:"message"`
+			Type         GetSiteNotification500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSiteNotificationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSiteNotificationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetSiteNotificationResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CreateSiteNotificationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Content     string  `json:"content"`
+		CreatedAt   string  `json:"createdAt"`
+		Dismissible bool    `json:"dismissible"`
+		ExpiresAt   *string `json:"expiresAt"`
+		Id          string  `json:"id"`
+		IsActive    bool    `json:"isActive"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         CreateSiteNotification400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         CreateSiteNotification401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                            `json:"details,omitempty"`
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         CreateSiteNotification403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         CreateSiteNotification404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         CreateSiteNotification409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         CreateSiteNotification500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateSiteNotificationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateSiteNotificationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateSiteNotificationResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetSiteNotificationSettingsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Content     string  `json:"content"`
+		CreatedAt   string  `json:"createdAt"`
+		Dismissible bool    `json:"dismissible"`
+		ExpiresAt   *string `json:"expiresAt"`
+		Id          string  `json:"id"`
+		IsActive    bool    `json:"isActive"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         GetSiteNotificationSettings400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         GetSiteNotificationSettings401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                                 `json:"details,omitempty"`
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         GetSiteNotificationSettings403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         GetSiteNotificationSettings404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         GetSiteNotificationSettings409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                                 `json:"internal_code,omitempty"`
+			Message      string                                                  `json:"message"`
+			Type         GetSiteNotificationSettings500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSiteNotificationSettingsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSiteNotificationSettingsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetSiteNotificationSettingsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteSiteNotificationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *map[string]interface{}
+	JSON400      *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         DeleteSiteNotification400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         DeleteSiteNotification401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                            `json:"details,omitempty"`
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         DeleteSiteNotification403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         DeleteSiteNotification404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         DeleteSiteNotification409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         DeleteSiteNotification500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteSiteNotificationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteSiteNotificationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteSiteNotificationResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateSiteNotificationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Content     string  `json:"content"`
+		CreatedAt   string  `json:"createdAt"`
+		Dismissible bool    `json:"dismissible"`
+		ExpiresAt   *string `json:"expiresAt"`
+		Id          string  `json:"id"`
+		IsActive    bool    `json:"isActive"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateSiteNotification400JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateSiteNotification401JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                            `json:"details,omitempty"`
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateSiteNotification403JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateSiteNotification404JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateSiteNotification409JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                            `json:"internal_code,omitempty"`
+			Message      string                                             `json:"message"`
+			Type         UpdateSiteNotification500JSONResponseBodyErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateSiteNotificationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSiteNotificationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateSiteNotificationResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -101689,6 +108292,84 @@ func (c *ClientWithResponses) UpdateBlobProviderWithResponse(ctx context.Context
 	return ParseUpdateBlobProviderResponse(rsp)
 }
 
+// GetMsTeamsChatOpsConfigWithResponse request returning *GetMsTeamsChatOpsConfigResponse
+func (c *ClientWithResponses) GetMsTeamsChatOpsConfigWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMsTeamsChatOpsConfigResponse, error) {
+	rsp, err := c.GetMsTeamsChatOpsConfig(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMsTeamsChatOpsConfigResponse(rsp)
+}
+
+// UpdateChatOpsConfigInQuickstartWithBodyWithResponse request with arbitrary body returning *UpdateChatOpsConfigInQuickstartResponse
+func (c *ClientWithResponses) UpdateChatOpsConfigInQuickstartWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateChatOpsConfigInQuickstartResponse, error) {
+	rsp, err := c.UpdateChatOpsConfigInQuickstartWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateChatOpsConfigInQuickstartResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateChatOpsConfigInQuickstartWithResponse(ctx context.Context, body UpdateChatOpsConfigInQuickstartJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChatOpsConfigInQuickstartResponse, error) {
+	rsp, err := c.UpdateChatOpsConfigInQuickstart(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateChatOpsConfigInQuickstartResponse(rsp)
+}
+
+// GetSlackChatOpsConfigWithResponse request returning *GetSlackChatOpsConfigResponse
+func (c *ClientWithResponses) GetSlackChatOpsConfigWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetSlackChatOpsConfigResponse, error) {
+	rsp, err := c.GetSlackChatOpsConfig(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSlackChatOpsConfigResponse(rsp)
+}
+
+// UpdateSlackChatOpsConfigWithBodyWithResponse request with arbitrary body returning *UpdateSlackChatOpsConfigResponse
+func (c *ClientWithResponses) UpdateSlackChatOpsConfigWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSlackChatOpsConfigResponse, error) {
+	rsp, err := c.UpdateSlackChatOpsConfigWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSlackChatOpsConfigResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateSlackChatOpsConfigWithResponse(ctx context.Context, body UpdateSlackChatOpsConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSlackChatOpsConfigResponse, error) {
+	rsp, err := c.UpdateSlackChatOpsConfig(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSlackChatOpsConfigResponse(rsp)
+}
+
+// GetTelegramChatOpsConfigWithResponse request returning *GetTelegramChatOpsConfigResponse
+func (c *ClientWithResponses) GetTelegramChatOpsConfigWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTelegramChatOpsConfigResponse, error) {
+	rsp, err := c.GetTelegramChatOpsConfig(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTelegramChatOpsConfigResponse(rsp)
+}
+
+// UpdateTelegramChatOpsConfigWithBodyWithResponse request with arbitrary body returning *UpdateTelegramChatOpsConfigResponse
+func (c *ClientWithResponses) UpdateTelegramChatOpsConfigWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateTelegramChatOpsConfigResponse, error) {
+	rsp, err := c.UpdateTelegramChatOpsConfigWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateTelegramChatOpsConfigResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateTelegramChatOpsConfigWithResponse(ctx context.Context, body UpdateTelegramChatOpsConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTelegramChatOpsConfigResponse, error) {
+	rsp, err := c.UpdateTelegramChatOpsConfig(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateTelegramChatOpsConfigResponse(rsp)
+}
+
 // ListCostExportsWithResponse request returning *ListCostExportsResponse
 func (c *ClientWithResponses) ListCostExportsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListCostExportsResponse, error) {
 	rsp, err := c.ListCostExports(ctx, reqEditors...)
@@ -102053,6 +108734,32 @@ func (c *ClientWithResponses) UpdateGithubPatWithResponse(ctx context.Context, i
 	return ParseUpdateGithubPatResponse(rsp)
 }
 
+// GetGuardrailsPolicyWithResponse request returning *GetGuardrailsPolicyResponse
+func (c *ClientWithResponses) GetGuardrailsPolicyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetGuardrailsPolicyResponse, error) {
+	rsp, err := c.GetGuardrailsPolicy(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetGuardrailsPolicyResponse(rsp)
+}
+
+// UpdateGuardrailsPolicyWithBodyWithResponse request with arbitrary body returning *UpdateGuardrailsPolicyResponse
+func (c *ClientWithResponses) UpdateGuardrailsPolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateGuardrailsPolicyResponse, error) {
+	rsp, err := c.UpdateGuardrailsPolicyWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateGuardrailsPolicyResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateGuardrailsPolicyWithResponse(ctx context.Context, body UpdateGuardrailsPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateGuardrailsPolicyResponse, error) {
+	rsp, err := c.UpdateGuardrailsPolicy(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateGuardrailsPolicyResponse(rsp)
+}
+
 // GetHooksWithResponse request returning *GetHooksResponse
 func (c *ClientWithResponses) GetHooksWithResponse(ctx context.Context, params *GetHooksParams, reqEditors ...RequestEditorFn) (*GetHooksResponse, error) {
 	rsp, err := c.GetHooks(ctx, params, reqEditors...)
@@ -102103,6 +108810,15 @@ func (c *ClientWithResponses) UpdateHookWithResponse(ctx context.Context, id ope
 		return nil, err
 	}
 	return ParseUpdateHookResponse(rsp)
+}
+
+// GetIdentityProvidersWithResponse request returning *GetIdentityProvidersResponse
+func (c *ClientWithResponses) GetIdentityProvidersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetIdentityProvidersResponse, error) {
+	rsp, err := c.GetIdentityProviders(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetIdentityProvidersResponse(rsp)
 }
 
 // CreateIdentityProviderWithBodyWithResponse request with arbitrary body returning *CreateIdentityProviderResponse
@@ -102157,6 +108873,15 @@ func (c *ClientWithResponses) UpdateIdentityProviderWithResponse(ctx context.Con
 	return ParseUpdateIdentityProviderResponse(rsp)
 }
 
+// GetInternalMcpCatalogWithResponse request returning *GetInternalMcpCatalogResponse
+func (c *ClientWithResponses) GetInternalMcpCatalogWithResponse(ctx context.Context, params *GetInternalMcpCatalogParams, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogResponse, error) {
+	rsp, err := c.GetInternalMcpCatalog(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetInternalMcpCatalogResponse(rsp)
+}
+
 // CreateInternalMcpCatalogItemWithBodyWithResponse request with arbitrary body returning *CreateInternalMcpCatalogItemResponse
 func (c *ClientWithResponses) CreateInternalMcpCatalogItemWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateInternalMcpCatalogItemResponse, error) {
 	rsp, err := c.CreateInternalMcpCatalogItemWithBody(ctx, contentType, body, reqEditors...)
@@ -102207,6 +108932,15 @@ func (c *ClientWithResponses) UpdateInternalMcpCatalogItemWithResponse(ctx conte
 		return nil, err
 	}
 	return ParseUpdateInternalMcpCatalogItemResponse(rsp)
+}
+
+// GetKnowledgeBasesWithResponse request returning *GetKnowledgeBasesResponse
+func (c *ClientWithResponses) GetKnowledgeBasesWithResponse(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*GetKnowledgeBasesResponse, error) {
+	rsp, err := c.GetKnowledgeBases(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKnowledgeBasesResponse(rsp)
 }
 
 // CreateKnowledgeBaseWithBodyWithResponse request with arbitrary body returning *CreateKnowledgeBaseResponse
@@ -103058,6 +109792,15 @@ func (c *ClientWithResponses) UpdatePluginWithResponse(ctx context.Context, id o
 	return ParseUpdatePluginResponse(rsp)
 }
 
+// GetProjectsWithResponse request returning *GetProjectsResponse
+func (c *ClientWithResponses) GetProjectsWithResponse(ctx context.Context, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*GetProjectsResponse, error) {
+	rsp, err := c.GetProjects(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetProjectsResponse(rsp)
+}
+
 // CreateProjectWithBodyWithResponse request with arbitrary body returning *CreateProjectResponse
 func (c *ClientWithResponses) CreateProjectWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error) {
 	rsp, err := c.CreateProjectWithBody(ctx, contentType, body, reqEditors...)
@@ -103213,6 +109956,15 @@ func (c *ClientWithResponses) UpdateResourcePermissionsWithResponse(ctx context.
 		return nil, err
 	}
 	return ParseUpdateResourcePermissionsResponse(rsp)
+}
+
+// GetRolesWithResponse request returning *GetRolesResponse
+func (c *ClientWithResponses) GetRolesWithResponse(ctx context.Context, params *GetRolesParams, reqEditors ...RequestEditorFn) (*GetRolesResponse, error) {
+	rsp, err := c.GetRoles(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetRolesResponse(rsp)
 }
 
 // CreateRoleWithBodyWithResponse request with arbitrary body returning *CreateRoleResponse
@@ -103473,6 +110225,67 @@ func (c *ClientWithResponses) UpdateServiceAccountTokenWithResponse(ctx context.
 		return nil, err
 	}
 	return ParseUpdateServiceAccountTokenResponse(rsp)
+}
+
+// GetSiteNotificationWithResponse request returning *GetSiteNotificationResponse
+func (c *ClientWithResponses) GetSiteNotificationWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetSiteNotificationResponse, error) {
+	rsp, err := c.GetSiteNotification(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSiteNotificationResponse(rsp)
+}
+
+// CreateSiteNotificationWithBodyWithResponse request with arbitrary body returning *CreateSiteNotificationResponse
+func (c *ClientWithResponses) CreateSiteNotificationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSiteNotificationResponse, error) {
+	rsp, err := c.CreateSiteNotificationWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSiteNotificationResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateSiteNotificationWithResponse(ctx context.Context, body CreateSiteNotificationJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSiteNotificationResponse, error) {
+	rsp, err := c.CreateSiteNotification(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSiteNotificationResponse(rsp)
+}
+
+// GetSiteNotificationSettingsWithResponse request returning *GetSiteNotificationSettingsResponse
+func (c *ClientWithResponses) GetSiteNotificationSettingsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetSiteNotificationSettingsResponse, error) {
+	rsp, err := c.GetSiteNotificationSettings(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSiteNotificationSettingsResponse(rsp)
+}
+
+// DeleteSiteNotificationWithResponse request returning *DeleteSiteNotificationResponse
+func (c *ClientWithResponses) DeleteSiteNotificationWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteSiteNotificationResponse, error) {
+	rsp, err := c.DeleteSiteNotification(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteSiteNotificationResponse(rsp)
+}
+
+// UpdateSiteNotificationWithBodyWithResponse request with arbitrary body returning *UpdateSiteNotificationResponse
+func (c *ClientWithResponses) UpdateSiteNotificationWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSiteNotificationResponse, error) {
+	rsp, err := c.UpdateSiteNotificationWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSiteNotificationResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateSiteNotificationWithResponse(ctx context.Context, id string, body UpdateSiteNotificationJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSiteNotificationResponse, error) {
+	rsp, err := c.UpdateSiteNotification(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSiteNotificationResponse(rsp)
 }
 
 // DeleteSkillSandboxArtifactWithResponse request returning *DeleteSkillSandboxArtifactResponse
@@ -110861,6 +117674,660 @@ func ParseUpdateBlobProviderResponse(rsp *http.Response) (*UpdateBlobProviderRes
 	return response, nil
 }
 
+// ParseGetMsTeamsChatOpsConfigResponse parses an HTTP response from a GetMsTeamsChatOpsConfigWithResponse call
+func ParseGetMsTeamsChatOpsConfigResponse(rsp *http.Response) (*GetMsTeamsChatOpsConfigResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMsTeamsChatOpsConfigResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AppId               *string    `json:"appId"`
+			Configured          bool       `json:"configured"`
+			Enabled             bool       `json:"enabled"`
+			GroupChatFileSignIn bool       `json:"groupChatFileSignIn"`
+			SignInRedirectUri   string     `json:"signInRedirectUri"`
+			TenantId            *string    `json:"tenantId"`
+			UpdatedAt           *time.Time `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                             `json:"internal_code,omitempty"`
+				Message      string                                              `json:"message"`
+				Type         GetMsTeamsChatOpsConfig400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                             `json:"internal_code,omitempty"`
+				Message      string                                              `json:"message"`
+				Type         GetMsTeamsChatOpsConfig401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                             `json:"details,omitempty"`
+				InternalCode *string                                             `json:"internal_code,omitempty"`
+				Message      string                                              `json:"message"`
+				Type         GetMsTeamsChatOpsConfig403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                             `json:"internal_code,omitempty"`
+				Message      string                                              `json:"message"`
+				Type         GetMsTeamsChatOpsConfig404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                             `json:"internal_code,omitempty"`
+				Message      string                                              `json:"message"`
+				Type         GetMsTeamsChatOpsConfig409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                             `json:"internal_code,omitempty"`
+				Message      string                                              `json:"message"`
+				Type         GetMsTeamsChatOpsConfig500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateChatOpsConfigInQuickstartResponse parses an HTTP response from a UpdateChatOpsConfigInQuickstartWithResponse call
+func ParseUpdateChatOpsConfigInQuickstartResponse(rsp *http.Response) (*UpdateChatOpsConfigInQuickstartResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateChatOpsConfigInQuickstartResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                     `json:"internal_code,omitempty"`
+				Message      string                                                      `json:"message"`
+				Type         UpdateChatOpsConfigInQuickstart400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                     `json:"internal_code,omitempty"`
+				Message      string                                                      `json:"message"`
+				Type         UpdateChatOpsConfigInQuickstart401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                     `json:"details,omitempty"`
+				InternalCode *string                                                     `json:"internal_code,omitempty"`
+				Message      string                                                      `json:"message"`
+				Type         UpdateChatOpsConfigInQuickstart403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                     `json:"internal_code,omitempty"`
+				Message      string                                                      `json:"message"`
+				Type         UpdateChatOpsConfigInQuickstart404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                     `json:"internal_code,omitempty"`
+				Message      string                                                      `json:"message"`
+				Type         UpdateChatOpsConfigInQuickstart409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                     `json:"internal_code,omitempty"`
+				Message      string                                                      `json:"message"`
+				Type         UpdateChatOpsConfigInQuickstart500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetSlackChatOpsConfigResponse parses an HTTP response from a GetSlackChatOpsConfigWithResponse call
+func ParseGetSlackChatOpsConfigResponse(rsp *http.Response) (*GetSlackChatOpsConfigResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSlackChatOpsConfigResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AppId          *string                                                `json:"appId"`
+			Configured     bool                                                   `json:"configured"`
+			ConnectionMode GetSlackChatOpsConfig200JSONResponseBodyConnectionMode `json:"connectionMode"`
+			Enabled        bool                                                   `json:"enabled"`
+			UpdatedAt      *time.Time                                             `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetSlackChatOpsConfig400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetSlackChatOpsConfig401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                           `json:"details,omitempty"`
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetSlackChatOpsConfig403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetSlackChatOpsConfig404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetSlackChatOpsConfig409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetSlackChatOpsConfig500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateSlackChatOpsConfigResponse parses an HTTP response from a UpdateSlackChatOpsConfigWithResponse call
+func ParseUpdateSlackChatOpsConfigResponse(rsp *http.Response) (*UpdateSlackChatOpsConfigResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateSlackChatOpsConfigResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         UpdateSlackChatOpsConfig400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         UpdateSlackChatOpsConfig401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                              `json:"details,omitempty"`
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         UpdateSlackChatOpsConfig403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         UpdateSlackChatOpsConfig404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         UpdateSlackChatOpsConfig409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         UpdateSlackChatOpsConfig500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetTelegramChatOpsConfigResponse parses an HTTP response from a GetTelegramChatOpsConfigWithResponse call
+func ParseGetTelegramChatOpsConfigResponse(rsp *http.Response) (*GetTelegramChatOpsConfigResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTelegramChatOpsConfigResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Configured bool       `json:"configured"`
+			Enabled    bool       `json:"enabled"`
+			UpdatedAt  *time.Time `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetTelegramChatOpsConfig400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetTelegramChatOpsConfig401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                              `json:"details,omitempty"`
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetTelegramChatOpsConfig403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetTelegramChatOpsConfig404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetTelegramChatOpsConfig409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                              `json:"internal_code,omitempty"`
+				Message      string                                               `json:"message"`
+				Type         GetTelegramChatOpsConfig500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateTelegramChatOpsConfigResponse parses an HTTP response from a UpdateTelegramChatOpsConfigWithResponse call
+func ParseUpdateTelegramChatOpsConfigResponse(rsp *http.Response) (*UpdateTelegramChatOpsConfigResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateTelegramChatOpsConfigResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         UpdateTelegramChatOpsConfig400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         UpdateTelegramChatOpsConfig401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                 `json:"details,omitempty"`
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         UpdateTelegramChatOpsConfig403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         UpdateTelegramChatOpsConfig404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         UpdateTelegramChatOpsConfig409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         UpdateTelegramChatOpsConfig500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListCostExportsResponse parses an HTTP response from a ListCostExportsWithResponse call
 func ParseListCostExportsResponse(rsp *http.Response) (*ListCostExportsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -114115,6 +121582,230 @@ func ParseUpdateGithubPatResponse(rsp *http.Response) (*UpdateGithubPatResponse,
 	return response, nil
 }
 
+// ParseGetGuardrailsPolicyResponse parses an HTTP response from a GetGuardrailsPolicyWithResponse call
+func ParseGetGuardrailsPolicyResponse(rsp *http.Response) (*GetGuardrailsPolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetGuardrailsPolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Content        string     `json:"content"`
+			ContentHash    string     `json:"contentHash"`
+			OrganizationId string     `json:"organizationId"`
+			Revision       int        `json:"revision"`
+			UpdatedAt      *time.Time `json:"updatedAt"`
+			UpdatedBy      *string    `json:"updatedBy"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetGuardrailsPolicy400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetGuardrailsPolicy401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                         `json:"details,omitempty"`
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetGuardrailsPolicy403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetGuardrailsPolicy404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetGuardrailsPolicy409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetGuardrailsPolicy500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateGuardrailsPolicyResponse parses an HTTP response from a UpdateGuardrailsPolicyWithResponse call
+func ParseUpdateGuardrailsPolicyResponse(rsp *http.Response) (*UpdateGuardrailsPolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateGuardrailsPolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Content        string     `json:"content"`
+			ContentHash    string     `json:"contentHash"`
+			OrganizationId string     `json:"organizationId"`
+			Revision       int        `json:"revision"`
+			UpdatedAt      *time.Time `json:"updatedAt"`
+			UpdatedBy      *string    `json:"updatedBy"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateGuardrailsPolicy400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateGuardrailsPolicy401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                            `json:"details,omitempty"`
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateGuardrailsPolicy403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateGuardrailsPolicy404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateGuardrailsPolicy409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateGuardrailsPolicy500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetHooksResponse parses an HTTP response from a GetHooksWithResponse call
 func ParseGetHooksResponse(rsp *http.Response) (*GetHooksResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -114558,6 +122249,246 @@ func ParseUpdateHookResponse(rsp *http.Response) (*UpdateHookResponse, error) {
 				InternalCode *string                                `json:"internal_code,omitempty"`
 				Message      string                                 `json:"message"`
 				Type         UpdateHook500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetIdentityProvidersResponse parses an HTTP response from a GetIdentityProvidersWithResponse call
+func ParseGetIdentityProvidersResponse(rsp *http.Response) (*GetIdentityProvidersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetIdentityProvidersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			ConfiguredSecretPaths []GetIdentityProviders200JSONResponseBodyConfiguredSecretPaths `json:"configuredSecretPaths"`
+			Domain                string                                                         `json:"domain"`
+			DomainVerified        *bool                                                          `json:"domainVerified"`
+			Id                    string                                                         `json:"id"`
+			Issuer                string                                                         `json:"issuer"`
+
+			// OidcConfig https://github.com/better-auth/better-auth/blob/v1.4.0/packages/sso/src/types.ts#L22
+			OidcConfig *struct {
+				AuthorizationEndpoint        *string `json:"authorizationEndpoint,omitempty"`
+				ClientId                     string  `json:"clientId"`
+				ClientSecret                 *string `json:"clientSecret,omitempty"`
+				DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
+				EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
+				EnterpriseManagedCredentials *struct {
+					AgentIdentity *struct {
+						ActorTokenScope      *string                                                                                           `json:"actorTokenScope,omitempty"`
+						PrivateKeyId         *string                                                                                           `json:"privateKeyId,omitempty"`
+						PrivateKeyPem        *string                                                                                           `json:"privateKeyPem,omitempty"`
+						RequireAgentIdentity *bool                                                                                             `json:"requireAgentIdentity,omitempty"`
+						Source               *GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsAgentIdentitySource `json:"source,omitempty"`
+						SpiffeAudience       *string                                                                                           `json:"spiffeAudience,omitempty"`
+					} `json:"agentIdentity,omitempty"`
+					ClientAssertionAudience *string `json:"clientAssertionAudience,omitempty"`
+					ClientId                *string `json:"clientId,omitempty"`
+					ClientSecret            *string `json:"clientSecret,omitempty"`
+					EntraAgentId            *struct {
+						BlueprintClientId     string  `json:"blueprintClientId"`
+						BlueprintScope        *string `json:"blueprintScope,omitempty"`
+						CertificateThumbprint *string `json:"certificateThumbprint,omitempty"`
+						ClientSecret          *string `json:"clientSecret,omitempty"`
+						PrivateKeyPem         *string `json:"privateKeyPem,omitempty"`
+						RequireAgentIdentity  *bool   `json:"requireAgentIdentity,omitempty"`
+					} `json:"entraAgentId,omitempty"`
+					ExchangeStrategy            *GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
+					PrivateKeyId                *string                                                                                                   `json:"privateKeyId,omitempty"`
+					PrivateKeyPem               *string                                                                                                   `json:"privateKeyPem,omitempty"`
+					SubjectTokenType            *GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
+					TokenEndpoint               *string                                                                                                   `json:"tokenEndpoint,omitempty"`
+					TokenEndpointAuthentication *GetIdentityProviders200JSONResponseBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+				} `json:"enterpriseManagedCredentials,omitempty"`
+				Hd           *string `json:"hd,omitempty"`
+				Issuer       string  `json:"issuer"`
+				JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
+
+				// Mapping https://github.com/better-auth/better-auth/blob/v1.4.0/packages/sso/src/types.ts#L3
+				Mapping *struct {
+					Email         *string            `json:"email,omitempty"`
+					EmailVerified *string            `json:"emailVerified,omitempty"`
+					ExtraFields   *map[string]string `json:"extraFields,omitempty"`
+					Id            *string            `json:"id,omitempty"`
+					Image         *string            `json:"image,omitempty"`
+					Name          *string            `json:"name,omitempty"`
+				} `json:"mapping,omitempty"`
+				OverrideUserInfo            *bool                                                                         `json:"overrideUserInfo,omitempty"`
+				Pkce                        bool                                                                          `json:"pkce"`
+				Scopes                      *[]string                                                                     `json:"scopes,omitempty"`
+				SkipDiscovery               *bool                                                                         `json:"skipDiscovery,omitempty"`
+				TokenEndpoint               *string                                                                       `json:"tokenEndpoint,omitempty"`
+				TokenEndpointAuthentication *GetIdentityProviders200JSONResponseBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+				UserInfoEndpoint            *string                                                                       `json:"userInfoEndpoint,omitempty"`
+			} `json:"oidcConfig,omitempty"`
+			OrganizationId *string `json:"organizationId"`
+			ProviderId     string  `json:"providerId"`
+			RoleMapping    *struct {
+				// DefaultRole One or more organization role identifiers, separated by commas
+				DefaultRole *string `json:"defaultRole,omitempty"`
+				Rules       *[]struct {
+					Expression string `json:"expression"`
+
+					// Role One or more organization role identifiers, separated by commas
+					Role string `json:"role"`
+				} `json:"rules,omitempty"`
+				SkipRoleSync *bool `json:"skipRoleSync,omitempty"`
+				StrictMode   *bool `json:"strictMode,omitempty"`
+			} `json:"roleMapping,omitempty"`
+
+			// SamlConfig https://github.com/better-auth/better-auth/blob/v1.4.0/packages/sso/src/types.ts#L40
+			SamlConfig *struct {
+				AdditionalParams *map[string]interface{} `json:"additionalParams,omitempty"`
+				Audience         *string                 `json:"audience,omitempty"`
+				CallbackUrl      string                  `json:"callbackUrl"`
+				Cert             string                  `json:"cert"`
+				DecryptionPvk    *string                 `json:"decryptionPvk,omitempty"`
+				DigestAlgorithm  *string                 `json:"digestAlgorithm,omitempty"`
+				EntryPoint       string                  `json:"entryPoint"`
+				IdentifierFormat *string                 `json:"identifierFormat,omitempty"`
+				IdpMetadata      *struct {
+					Cert                 *string `json:"cert,omitempty"`
+					EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
+					EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
+					EntityID             *string `json:"entityID,omitempty"`
+					EntityURL            *string `json:"entityURL,omitempty"`
+					IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
+					Metadata             *string `json:"metadata,omitempty"`
+					PrivateKey           *string `json:"privateKey,omitempty"`
+					PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
+					RedirectURL          *string `json:"redirectURL,omitempty"`
+					SingleSignOnService  *[]struct {
+						Binding  string `json:"Binding"`
+						Location string `json:"Location"`
+					} `json:"singleSignOnService,omitempty"`
+				} `json:"idpMetadata,omitempty"`
+				Issuer string `json:"issuer"`
+
+				// Mapping https://github.com/better-auth/better-auth/blob/v1.4.0/packages/sso/src/types.ts#L12C30-L20C2
+				Mapping *struct {
+					Email         *string            `json:"email,omitempty"`
+					EmailVerified *string            `json:"emailVerified,omitempty"`
+					ExtraFields   *map[string]string `json:"extraFields,omitempty"`
+					FirstName     *string            `json:"firstName,omitempty"`
+					Id            *string            `json:"id,omitempty"`
+					LastName      *string            `json:"lastName,omitempty"`
+					Name          *string            `json:"name,omitempty"`
+				} `json:"mapping,omitempty"`
+				PrivateKey         *string `json:"privateKey,omitempty"`
+				SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty"`
+				SpMetadata         struct {
+					Binding              *string `json:"binding,omitempty"`
+					EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
+					EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
+					EntityID             *string `json:"entityID,omitempty"`
+					IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
+					Metadata             *string `json:"metadata,omitempty"`
+					PrivateKey           *string `json:"privateKey,omitempty"`
+					PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
+				} `json:"spMetadata"`
+				WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
+			} `json:"samlConfig,omitempty"`
+			SsoLoginEnabled bool `json:"ssoLoginEnabled"`
+			TeamSyncConfig  *struct {
+				Enabled          *bool   `json:"enabled,omitempty"`
+				GroupsExpression *string `json:"groupsExpression,omitempty"`
+			} `json:"teamSyncConfig,omitempty"`
+			UserId *string `json:"userId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetIdentityProviders400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetIdentityProviders401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                          `json:"details,omitempty"`
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetIdentityProviders403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetIdentityProviders404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetIdentityProviders409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         GetIdentityProviders500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -115385,6 +123316,271 @@ func ParseUpdateIdentityProviderResponse(rsp *http.Response) (*UpdateIdentityPro
 				InternalCode *string                                            `json:"internal_code,omitempty"`
 				Message      string                                             `json:"message"`
 				Type         UpdateIdentityProvider500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetInternalMcpCatalogResponse parses an HTTP response from a GetInternalMcpCatalogWithResponse call
+func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCatalogResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetInternalMcpCatalogResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			AlertMutes *[]struct {
+				CatalogId        string                                                      `json:"catalogId"`
+				IssueFingerprint string                                                      `json:"issueFingerprint"`
+				IssueKind        GetInternalMcpCatalog200JSONResponseBodyAlertMutesIssueKind `json:"issueKind"`
+				McpServerId      *string                                                     `json:"mcpServerId"`
+				MutedAt          time.Time                                                   `json:"mutedAt"`
+				Reason           string                                                      `json:"reason"`
+			} `json:"alertMutes,omitempty"`
+			AppEnabled      *bool   `json:"appEnabled,omitempty"`
+			AppId           *string `json:"appId,omitempty"`
+			AuthDescription *string `json:"authDescription"`
+			AuthFields      *[]struct {
+				Description *string `json:"description,omitempty"`
+				Label       string  `json:"label"`
+				Name        string  `json:"name"`
+				Required    bool    `json:"required"`
+				Type        string  `json:"type"`
+			} `json:"authFields"`
+			AuthorId     *string `json:"authorId"`
+			AuthorName   *string `json:"authorName,omitempty"`
+			AwsIamConfig *struct {
+				Audience *string `json:"audience,omitempty"`
+				Region   string  `json:"region"`
+				RoleArn  string  `json:"roleArn"`
+				Service  string  `json:"service"`
+			} `json:"awsIamConfig"`
+			CatalogItemApprovalReason     *string             `json:"catalogItemApprovalReason"`
+			CatalogItemApprovalReviewedAt *time.Time          `json:"catalogItemApprovalReviewedAt"`
+			CatalogItemApprovalReviewedBy *string             `json:"catalogItemApprovalReviewedBy"`
+			CatalogItemApprovalStatus     *string             `json:"catalogItemApprovalStatus"`
+			CatalogReinstallRequired      bool                `json:"catalogReinstallRequired"`
+			ClientSecretId                *openapi_types.UUID `json:"clientSecretId"`
+			ClonedFrom                    *openapi_types.UUID `json:"clonedFrom"`
+			CreatedAt                     time.Time           `json:"createdAt"`
+			CreatedBy                     *struct {
+				Email *string                                                `json:"email"`
+				Id    string                                                 `json:"id"`
+				Name  *string                                                `json:"name"`
+				Type  *GetInternalMcpCatalog200JSONResponseBodyCreatedByType `json:"type,omitempty"`
+			} `json:"createdBy,omitempty"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			DeploymentName            *string             `json:"deploymentName"`
+			DeploymentSpecYaml        *string             `json:"deploymentSpecYaml"`
+			Description               *string             `json:"description"`
+			DesktopConfig             *struct {
+				Command *string `json:"command,omitempty"`
+				Url     *string `json:"url,omitempty"`
+			} `json:"desktopConfig"`
+			DocsUrl                      *string                                                     `json:"docsUrl"`
+			DynamicConnectionMcpServerId *openapi_types.UUID                                         `json:"dynamicConnectionMcpServerId"`
+			EffectiveActions             *[]GetInternalMcpCatalog200JSONResponseBodyEffectiveActions `json:"effectiveActions,omitempty"`
+			EnterpriseManagedConfig      *struct {
+				AssertionMode           *GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
+				Audience                *string                                                                                 `json:"audience,omitempty"`
+				BodyFieldName           *string                                                                                 `json:"bodyFieldName,omitempty"`
+				CacheTtlSeconds         *int                                                                                    `json:"cacheTtlSeconds,omitempty"`
+				ClientIdOverride        *string                                                                                 `json:"clientIdOverride,omitempty"`
+				EnvVarName              *string                                                                                 `json:"envVarName,omitempty"`
+				FallbackMode            *GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigFallbackMode            `json:"fallbackMode,omitempty"`
+				HeaderName              *string                                                                                 `json:"headerName,omitempty"`
+				IdentityProviderId      *string                                                                                 `json:"identityProviderId,omitempty"`
+				PrivateKeyIdOverride    *string                                                                                 `json:"privateKeyIdOverride,omitempty"`
+				RequestedCredentialType *GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigRequestedCredentialType `json:"requestedCredentialType,omitempty"`
+				RequestedIssuer         *string                                                                                 `json:"requestedIssuer,omitempty"`
+				ResourceIdentifier      *string                                                                                 `json:"resourceIdentifier,omitempty"`
+				ResourceType            *GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigResourceType            `json:"resourceType,omitempty"`
+				ResponseFieldPath       *string                                                                                 `json:"responseFieldPath,omitempty"`
+				Scopes                  *[]string                                                                               `json:"scopes,omitempty"`
+				TokenInjectionMode      *GetInternalMcpCatalog200JSONResponseBodyEnterpriseManagedConfigTokenInjectionMode      `json:"tokenInjectionMode,omitempty"`
+			} `json:"enterpriseManagedConfig"`
+			EnvironmentId         *openapi_types.UUID `json:"environmentId"`
+			Icon                  *string             `json:"icon"`
+			Id                    openapi_types.UUID  `json:"id"`
+			ImageApprovalRequired *bool               `json:"imageApprovalRequired,omitempty"`
+			InstallationCommand   *string             `json:"installationCommand"`
+			Instructions          *string             `json:"instructions"`
+			Labels                []struct {
+				Key   string `json:"key"`
+				Value string `json:"value"`
+			} `json:"labels"`
+			LocalConfig *struct {
+				Arguments   *[]string `json:"arguments,omitempty"`
+				Command     *string   `json:"command,omitempty"`
+				DockerImage *string   `json:"dockerImage,omitempty"`
+				EnvFrom     *[]struct {
+					Name   string                                                         `json:"name"`
+					Prefix *string                                                        `json:"prefix,omitempty"`
+					Type   GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvFromType `json:"type"`
+				} `json:"envFrom,omitempty"`
+				Environment *[]struct {
+					CredentialId         *string                                                                        `json:"credentialId,omitempty"`
+					CredentialScope      *GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentCredentialScope `json:"credentialScope,omitempty"`
+					Default              *LocalConfigEnvironmentDefault                                                 `json:"default,omitempty"`
+					Description          *string                                                                        `json:"description,omitempty"`
+					Key                  string                                                                         `json:"key"`
+					Mounted              *bool                                                                          `json:"mounted,omitempty"`
+					PromptOnInstallation bool                                                                           `json:"promptOnInstallation"`
+					Required             *bool                                                                          `json:"required,omitempty"`
+					Type                 GetInternalMcpCatalog200JSONResponseBodyLocalConfigEnvironmentType             `json:"type"`
+					Value                *string                                                                        `json:"value,omitempty"`
+				} `json:"environment,omitempty"`
+				HttpPath         *string                                                                       `json:"httpPath,omitempty"`
+				HttpPort         *float32                                                                      `json:"httpPort,omitempty"`
+				ImagePullPolicy  *GetInternalMcpCatalog200JSONResponseBodyLocalConfigImagePullPolicy           `json:"imagePullPolicy,omitempty"`
+				ImagePullSecrets *[]GetInternalMcpCatalog200JSONResponseBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
+				NodePort         *float32                                                                      `json:"nodePort,omitempty"`
+				ServiceAccount   *string                                                                       `json:"serviceAccount,omitempty"`
+				TransportType    *GetInternalMcpCatalog200JSONResponseBodyLocalConfigTransportType             `json:"transportType,omitempty"`
+			} `json:"localConfig"`
+			LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
+			Multitenant         bool                `json:"multitenant"`
+			Name                string              `json:"name"`
+			OauthConfig         *struct {
+				AccessTokenEnvVar        *string                                                       `json:"access_token_env_var,omitempty"`
+				AdditionalScopes         *[]string                                                     `json:"additional_scopes,omitempty"`
+				Audience                 *string                                                       `json:"audience,omitempty"`
+				AuthServerUrl            *string                                                       `json:"auth_server_url,omitempty"`
+				AuthorizationEndpoint    *string                                                       `json:"authorization_endpoint,omitempty"`
+				BrowserAuth              *bool                                                         `json:"browser_auth,omitempty"`
+				ClientId                 string                                                        `json:"client_id"`
+				ClientSecret             *string                                                       `json:"client_secret,omitempty"`
+				DefaultScopes            []string                                                      `json:"default_scopes"`
+				Description              *string                                                       `json:"description,omitempty"`
+				GenericOauth             *bool                                                         `json:"generic_oauth,omitempty"`
+				GrantType                *GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+				Name                     string                                                        `json:"name"`
+				ProviderName             *string                                                       `json:"provider_name,omitempty"`
+				RedirectUris             []string                                                      `json:"redirect_uris"`
+				RequiresProxy            *bool                                                         `json:"requires_proxy,omitempty"`
+				Resource                 *string                                                       `json:"resource,omitempty"`
+				ResourceMetadataUrl      *string                                                       `json:"resource_metadata_url,omitempty"`
+				Scopes                   []string                                                      `json:"scopes"`
+				ServerUrl                string                                                        `json:"server_url"`
+				StreamableHttpPort       *float32                                                      `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl        *string                                                       `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata bool                                                          `json:"supports_resource_metadata"`
+				TokenEndpoint            *string                                                       `json:"token_endpoint,omitempty"`
+				WellKnownUrl             *string                                                       `json:"well_known_url,omitempty"`
+			} `json:"oauthConfig"`
+			OrganizationId *string                                            `json:"organizationId"`
+			ProvidesSkills *bool                                              `json:"providesSkills,omitempty"`
+			ProvidesUi     *bool                                              `json:"providesUi,omitempty"`
+			Repository     *string                                            `json:"repository"`
+			RequiresAuth   bool                                               `json:"requiresAuth"`
+			Scope          GetInternalMcpCatalog200JSONResponseBodyScope      `json:"scope"`
+			ServerType     GetInternalMcpCatalog200JSONResponseBodyServerType `json:"serverType"`
+			ServerUrl      *string                                            `json:"serverUrl"`
+			SkillCount     int                                                `json:"skillCount"`
+			Teams          []struct {
+				Id    string                                             `json:"id"`
+				Level GetInternalMcpCatalog200JSONResponseBodyTeamsLevel `json:"level"`
+				Name  string                                             `json:"name"`
+			} `json:"teams"`
+			ToolCount  int                         `json:"toolCount"`
+			ToolPrefix *string                     `json:"toolPrefix"`
+			UpdatedAt  time.Time                   `json:"updatedAt"`
+			UserConfig *map[string]UserConfigField `json:"userConfig"`
+			Version    *string                     `json:"version"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetInternalMcpCatalog400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetInternalMcpCatalog401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                           `json:"details,omitempty"`
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetInternalMcpCatalog403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetInternalMcpCatalog404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetInternalMcpCatalog409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                           `json:"internal_code,omitempty"`
+				Message      string                                            `json:"message"`
+				Type         GetInternalMcpCatalog500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -116245,6 +124441,158 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 				InternalCode *string                                                  `json:"internal_code,omitempty"`
 				Message      string                                                   `json:"message"`
 				Type         UpdateInternalMcpCatalogItem500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetKnowledgeBasesResponse parses an HTTP response from a GetKnowledgeBasesWithResponse call
+func ParseGetKnowledgeBasesResponse(rsp *http.Response) (*GetKnowledgeBasesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKnowledgeBasesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				AssignedAgentCount int `json:"assignedAgentCount"`
+				AssignedAgents     []struct {
+					AgentType string `json:"agentType"`
+					Id        string `json:"id"`
+					Name      string `json:"name"`
+				} `json:"assignedAgents"`
+				Connectors []struct {
+					ConnectorType GetKnowledgeBases200JSONResponseBodyDataConnectorsConnectorType `json:"connectorType"`
+					Id            string                                                          `json:"id"`
+					Name          string                                                          `json:"name"`
+				} `json:"connectors"`
+				CreatedAt time.Time `json:"createdAt"`
+				CreatedBy *struct {
+					Email *string                                                `json:"email"`
+					Id    string                                                 `json:"id"`
+					Name  *string                                                `json:"name"`
+					Type  *GetKnowledgeBases200JSONResponseBodyDataCreatedByType `json:"type,omitempty"`
+				} `json:"createdBy"`
+				CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+				DeletedAt                 *time.Time          `json:"deletedAt"`
+				Description               *string             `json:"description"`
+				Id                        openapi_types.UUID  `json:"id"`
+				Labels                    []struct {
+					Key     string              `json:"key"`
+					KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+					Value   string              `json:"value"`
+					ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+				} `json:"labels"`
+				Name                       string                                             `json:"name"`
+				OrganizationId             string                                             `json:"organizationId"`
+				Status                     string                                             `json:"status"`
+				TeamIds                    []string                                           `json:"teamIds"`
+				TotalDocsIndexed           float32                                            `json:"totalDocsIndexed"`
+				UpdatedAt                  time.Time                                          `json:"updatedAt"`
+				UploadedFilesEnvironmentId *openapi_types.UUID                                `json:"uploadedFilesEnvironmentId,omitempty"`
+				Visibility                 GetKnowledgeBases200JSONResponseBodyDataVisibility `json:"visibility"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetKnowledgeBases400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetKnowledgeBases401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                       `json:"details,omitempty"`
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetKnowledgeBases403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetKnowledgeBases404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetKnowledgeBases409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetKnowledgeBases500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -126145,6 +134493,147 @@ func ParseUpdatePluginResponse(rsp *http.Response) (*UpdatePluginResponse, error
 	return response, nil
 }
 
+// ParseGetProjectsResponse parses an HTTP response from a GetProjectsWithResponse call
+func ParseGetProjectsResponse(rsp *http.Response) (*GetProjectsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetProjectsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				ConversationCount int       `json:"conversationCount"`
+				CreatedAt         time.Time `json:"createdAt"`
+				CreatedBy         *struct {
+					Email *string                                          `json:"email"`
+					Id    string                                           `json:"id"`
+					Name  *string                                          `json:"name"`
+					Type  *GetProjects200JSONResponseBodyDataCreatedByType `json:"type,omitempty"`
+				} `json:"createdBy"`
+				DeletedAt   *time.Time         `json:"deletedAt"`
+				Description *string            `json:"description"`
+				Icon        *string            `json:"icon"`
+				Id          openapi_types.UUID `json:"id"`
+				Labels      []struct {
+					Key     string              `json:"key"`
+					KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+					Value   string              `json:"value"`
+					ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+				} `json:"labels"`
+				Name           string                                        `json:"name"`
+				OwnerName      *string                                       `json:"ownerName"`
+				PinnedAt       *time.Time                                    `json:"pinnedAt"`
+				ShareTeamNames *[]string                                     `json:"shareTeamNames"`
+				ShareUserNames *[]string                                     `json:"shareUserNames"`
+				ViewerRole     GetProjects200JSONResponseBodyDataViewerRole  `json:"viewerRole"`
+				Visibility     *GetProjects200JSONResponseBodyDataVisibility `json:"visibility"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                 `json:"internal_code,omitempty"`
+				Message      string                                  `json:"message"`
+				Type         GetProjects400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                 `json:"internal_code,omitempty"`
+				Message      string                                  `json:"message"`
+				Type         GetProjects401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                 `json:"details,omitempty"`
+				InternalCode *string                                 `json:"internal_code,omitempty"`
+				Message      string                                  `json:"message"`
+				Type         GetProjects403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                 `json:"internal_code,omitempty"`
+				Message      string                                  `json:"message"`
+				Type         GetProjects404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                 `json:"internal_code,omitempty"`
+				Message      string                                  `json:"message"`
+				Type         GetProjects409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                 `json:"internal_code,omitempty"`
+				Message      string                                  `json:"message"`
+				Type         GetProjects500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseCreateProjectResponse parses an HTTP response from a CreateProjectWithResponse call
 func ParseCreateProjectResponse(rsp *http.Response) (*CreateProjectResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -127628,6 +136117,131 @@ func ParseUpdateResourcePermissionsResponse(rsp *http.Response) (*UpdateResource
 				InternalCode *string                                               `json:"internal_code,omitempty"`
 				Message      string                                                `json:"message"`
 				Type         UpdateResourcePermissions500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetRolesResponse parses an HTTP response from a GetRolesWithResponse call
+func ParseGetRolesResponse(rsp *http.Response) (*GetRolesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetRolesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				CreatedAt      time.Time                                              `json:"createdAt"`
+				Description    *string                                                `json:"description"`
+				Id             string                                                 `json:"id"`
+				Name           string                                                 `json:"name"`
+				OrganizationId string                                                 `json:"organizationId"`
+				Permission     map[string][]GetRoles200JSONResponseBodyDataPermission `json:"permission"`
+				Predefined     bool                                                   `json:"predefined"`
+				Role           string                                                 `json:"role"`
+				UpdatedAt      *time.Time                                             `json:"updatedAt"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetRoles400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetRoles401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}              `json:"details,omitempty"`
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetRoles403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetRoles404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetRoles409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         GetRoles500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -130026,6 +138640,559 @@ func ParseUpdateServiceAccountTokenResponse(rsp *http.Response) (*UpdateServiceA
 				InternalCode *string                                               `json:"internal_code,omitempty"`
 				Message      string                                                `json:"message"`
 				Type         UpdateServiceAccountToken500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetSiteNotificationResponse parses an HTTP response from a GetSiteNotificationWithResponse call
+func ParseGetSiteNotificationResponse(rsp *http.Response) (*GetSiteNotificationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSiteNotificationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Content     string  `json:"content"`
+			CreatedAt   string  `json:"createdAt"`
+			Dismissible bool    `json:"dismissible"`
+			ExpiresAt   *string `json:"expiresAt"`
+			Id          string  `json:"id"`
+			IsActive    bool    `json:"isActive"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetSiteNotification400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetSiteNotification401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                         `json:"details,omitempty"`
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetSiteNotification403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetSiteNotification404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetSiteNotification409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                         `json:"internal_code,omitempty"`
+				Message      string                                          `json:"message"`
+				Type         GetSiteNotification500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateSiteNotificationResponse parses an HTTP response from a CreateSiteNotificationWithResponse call
+func ParseCreateSiteNotificationResponse(rsp *http.Response) (*CreateSiteNotificationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateSiteNotificationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Content     string  `json:"content"`
+			CreatedAt   string  `json:"createdAt"`
+			Dismissible bool    `json:"dismissible"`
+			ExpiresAt   *string `json:"expiresAt"`
+			Id          string  `json:"id"`
+			IsActive    bool    `json:"isActive"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         CreateSiteNotification400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         CreateSiteNotification401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                            `json:"details,omitempty"`
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         CreateSiteNotification403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         CreateSiteNotification404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         CreateSiteNotification409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         CreateSiteNotification500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetSiteNotificationSettingsResponse parses an HTTP response from a GetSiteNotificationSettingsWithResponse call
+func ParseGetSiteNotificationSettingsResponse(rsp *http.Response) (*GetSiteNotificationSettingsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSiteNotificationSettingsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Content     string  `json:"content"`
+			CreatedAt   string  `json:"createdAt"`
+			Dismissible bool    `json:"dismissible"`
+			ExpiresAt   *string `json:"expiresAt"`
+			Id          string  `json:"id"`
+			IsActive    bool    `json:"isActive"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         GetSiteNotificationSettings400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         GetSiteNotificationSettings401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                                 `json:"details,omitempty"`
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         GetSiteNotificationSettings403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         GetSiteNotificationSettings404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         GetSiteNotificationSettings409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                                 `json:"internal_code,omitempty"`
+				Message      string                                                  `json:"message"`
+				Type         GetSiteNotificationSettings500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteSiteNotificationResponse parses an HTTP response from a DeleteSiteNotificationWithResponse call
+func ParseDeleteSiteNotificationResponse(rsp *http.Response) (*DeleteSiteNotificationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteSiteNotificationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest map[string]interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         DeleteSiteNotification400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         DeleteSiteNotification401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                            `json:"details,omitempty"`
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         DeleteSiteNotification403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         DeleteSiteNotification404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         DeleteSiteNotification409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         DeleteSiteNotification500JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateSiteNotificationResponse parses an HTTP response from a UpdateSiteNotificationWithResponse call
+func ParseUpdateSiteNotificationResponse(rsp *http.Response) (*UpdateSiteNotificationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateSiteNotificationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Content     string  `json:"content"`
+			CreatedAt   string  `json:"createdAt"`
+			Dismissible bool    `json:"dismissible"`
+			ExpiresAt   *string `json:"expiresAt"`
+			Id          string  `json:"id"`
+			IsActive    bool    `json:"isActive"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateSiteNotification400JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateSiteNotification401JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                            `json:"details,omitempty"`
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateSiteNotification403JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateSiteNotification404JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateSiteNotification409JSONResponseBodyErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                            `json:"internal_code,omitempty"`
+				Message      string                                             `json:"message"`
+				Type         UpdateSiteNotification500JSONResponseBodyErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

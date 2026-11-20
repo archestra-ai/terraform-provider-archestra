@@ -1,0 +1,1 @@
+terraform import archestra_chatops_slack.this slack

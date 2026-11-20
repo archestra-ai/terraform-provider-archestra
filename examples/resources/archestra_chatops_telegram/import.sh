@@ -1,0 +1,1 @@
+terraform import archestra_chatops_telegram.this telegram
