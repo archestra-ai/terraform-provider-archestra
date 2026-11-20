@@ -16,4 +16,8 @@ provider "archestra" {
   # don't commit secrets to source.
   #   export ARCHESTRA_BASE_URL="https://archestra.your-company.example"
   #   export ARCHESTRA_API_KEY="arch_..."   # mint via Settings → API Keys
+  #
+  # Or sign in with workload identity instead of an API key:
+  #   export ARCHESTRA_SERVICE_ACCOUNT_ID="<service account ID>"
+  #   export ARCHESTRA_OIDC_TOKEN_FILE="/var/run/secrets/archestra/serviceaccount/token"
 }

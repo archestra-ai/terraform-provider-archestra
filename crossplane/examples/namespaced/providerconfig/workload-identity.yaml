@@ -1,0 +1,12 @@
+# Sign in with the provider pod's projected service account token instead of an
+# API key. See "Sign in with workload identity" in the README for the
+# DeploymentRuntimeConfig that projects the token and sets ARCHESTRA_BASE_URL.
+apiVersion: archestra.m.crossplane.io/v1beta1
+kind: ClusterProviderConfig
+metadata:
+  name: workload-identity
+spec:
+  credentials:
+    source: InjectedIdentity
+  workloadIdentity:
+    serviceAccountId: 00000000-0000-0000-0000-000000000000

@@ -9,6 +9,7 @@ import (
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
@@ -38,6 +39,9 @@ type ArchestraProviderModel struct {
 	BaseURL              types.String `tfsdk:"base_url"`
 	APIKey               types.String `tfsdk:"api_key"`
 	APIVersionConstraint types.String `tfsdk:"api_version_constraint"`
+	ServiceAccountID     types.String `tfsdk:"service_account_id"`
+	OIDCToken            types.String `tfsdk:"oidc_token"`
+	OIDCTokenFile        types.String `tfsdk:"oidc_token_file"`
 }
 
 func (p *ArchestraProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -49,9 +53,11 @@ func (p *ArchestraProvider) Schema(ctx context.Context, req provider.SchemaReque
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "The Archestra provider lets you manage Archestra resources " +
 			"(agents, MCP servers, identity providers, teams, LLM keys, security " +
-			"policies, organization settings) as code. Both configuration values " +
-			"can — and should — be supplied via environment variables so secrets " +
-			"never enter HCL.",
+			"policies, organization settings) as code. Authenticate with an API key, " +
+			"or with workload identity: the provider exchanges an OIDC token from the " +
+			"workload's own identity provider for a short-lived service account token. " +
+			"Every configuration value can — and should — be supplied via environment " +
+			"variables so secrets never enter HCL.",
 		Attributes: map[string]schema.Attribute{
 			"base_url": schema.StringAttribute{
 				MarkdownDescription: "Base URL of the Archestra API (for example, `https://archestra.your-company.example`). " +
@@ -65,9 +71,23 @@ func (p *ArchestraProvider) Schema(ctx context.Context, req provider.SchemaReque
 			},
 			"api_key": schema.StringAttribute{
 				MarkdownDescription: "**Required for any operation that talks to the Archestra API.** Marked Optional in the schema only so the value can be supplied via the `ARCHESTRA_API_KEY` environment variable instead of inline HCL — prefer the env var to keep secrets out of source control. " +
-					"Mint a key in the Archestra UI under Settings → API Keys (the value starts with `arch_`).",
+					"Mint a key in the Archestra UI under Settings → API Keys (the value starts with `arch_`). " +
+					"Not needed when `service_account_id` is set.",
 				Optional:  true,
 				Sensitive: true,
+			},
+			"service_account_id": schema.StringAttribute{
+				MarkdownDescription: "ID of the service account to act as with workload identity, instead of an API key. The account needs a federated credential that trusts the OIDC token. Requires an Enterprise license. Also reads from the `ARCHESTRA_SERVICE_ACCOUNT_ID` environment variable.",
+				Optional:            true,
+			},
+			"oidc_token": schema.StringAttribute{
+				MarkdownDescription: "OIDC token to exchange for a service account token. Also reads from the `ARCHESTRA_OIDC_TOKEN` environment variable. Set this or `oidc_token_file` with `service_account_id`.",
+				Optional:            true,
+				Sensitive:           true,
+			},
+			"oidc_token_file": schema.StringAttribute{
+				MarkdownDescription: "Path to a file holding the OIDC token, such as a projected Kubernetes service account token. Read again on every exchange, so a rotated token is picked up. Also reads from the `ARCHESTRA_OIDC_TOKEN_FILE` environment variable.",
+				Optional:            true,
 			},
 		},
 	}
@@ -103,6 +123,16 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 		)
 	}
 
+	for attr, value := range map[string]types.String{"service_account_id": config.ServiceAccountID, "oidc_token": config.OIDCToken, "oidc_token_file": config.OIDCTokenFile} {
+		if value.IsUnknown() {
+			resp.Diagnostics.AddAttributeError(
+				path.Root(attr),
+				"Unknown Archestra workload identity setting",
+				"The provider cannot authenticate while "+attr+" is unknown. Set it statically, target apply its source first, or use the matching environment variable.",
+			)
+		}
+	}
+
 	if config.APIKey.IsUnknown() {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("api_key"),
@@ -128,18 +158,10 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 	}
 
 	if apiKey == "" {
-		if envAPIKey := os.Getenv("ARCHESTRA_API_KEY"); envAPIKey != "" {
-			apiKey = envAPIKey
-		} else {
-			resp.Diagnostics.AddAttributeError(
-				path.Root("api_key"),
-				"Missing Archestra API Key",
-				"The provider cannot create the Archestra API client as there is a missing or empty value for the Archestra API key. "+
-					"Set the api_key value in the configuration or use the ARCHESTRA_API_KEY environment variable. "+
-					"If either is already set, ensure the value is not empty.",
-			)
-		}
+		apiKey = os.Getenv("ARCHESTRA_API_KEY")
 	}
+	workload := resolveWorkloadIdentityConfig(config)
+	resp.Diagnostics.Append(validateProviderAuth(apiKey, workload)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -156,12 +178,35 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 		return
 	}
 
+	authorization := func(context.Context) (string, error) { return apiKey, nil }
+	if workload.serviceAccountID != "" {
+		source := &workloadIdentityTokenSource{
+			httpClient:       httpClient,
+			baseURL:          baseURL,
+			serviceAccountID: workload.serviceAccountID,
+			oidcToken:        workload.oidcToken,
+			oidcTokenFile:    workload.oidcTokenFile,
+			now:              time.Now,
+		}
+		// Exchange now so a rejected token fails at configure time with a
+		// clear diagnostic instead of on the first resource operation.
+		if _, err := source.Token(ctx); err != nil {
+			resp.Diagnostics.AddAttributeError(path.Root("service_account_id"), "Workload identity sign-in failed", err.Error())
+			return
+		}
+		authorization = source.Token
+	}
+
 	// Create a new Archestra client using the configuration values
 	apiClient, err := client.NewClientWithResponses(
 		baseURL,
 		client.WithHTTPClient(httpClient),
 		client.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-			req.Header.Set("Authorization", apiKey)
+			value, err := authorization(ctx)
+			if err != nil {
+				return err
+			}
+			req.Header.Set("Authorization", value)
 			return nil
 		}),
 	)
@@ -248,6 +293,53 @@ func New(version string) func() provider.Provider {
 			version: version,
 		}
 	}
+}
+
+type workloadIdentityConfig struct {
+	serviceAccountID string
+	oidcToken        string
+	oidcTokenFile    string
+}
+
+// Attribute values win over environment variables, field by field.
+func resolveWorkloadIdentityConfig(config ArchestraProviderModel) workloadIdentityConfig {
+	pick := func(value types.String, env string) string {
+		if v := value.ValueString(); v != "" {
+			return v
+		}
+		return os.Getenv(env)
+	}
+	return workloadIdentityConfig{
+		serviceAccountID: pick(config.ServiceAccountID, "ARCHESTRA_SERVICE_ACCOUNT_ID"),
+		oidcToken:        pick(config.OIDCToken, "ARCHESTRA_OIDC_TOKEN"),
+		oidcTokenFile:    pick(config.OIDCTokenFile, "ARCHESTRA_OIDC_TOKEN_FILE"),
+	}
+}
+
+func validateProviderAuth(apiKey string, workload workloadIdentityConfig) diag.Diagnostics {
+	var diags diag.Diagnostics
+	hasToken := workload.oidcToken != "" || workload.oidcTokenFile != ""
+	switch {
+	case workload.serviceAccountID == "" && hasToken:
+		diags.AddAttributeError(path.Root("service_account_id"), "Missing Archestra service account ID",
+			"An OIDC token is set, but no service account to act as. Set service_account_id or the ARCHESTRA_SERVICE_ACCOUNT_ID environment variable.")
+	case workload.serviceAccountID != "" && apiKey != "":
+		diags.AddAttributeError(path.Root("service_account_id"), "Conflicting Archestra credentials",
+			"Both an API key and a workload identity service account are set. Use one: unset api_key and ARCHESTRA_API_KEY, or unset service_account_id and ARCHESTRA_SERVICE_ACCOUNT_ID.")
+	case workload.serviceAccountID != "" && !hasToken:
+		diags.AddAttributeError(path.Root("oidc_token_file"), "Missing OIDC token",
+			"Workload identity needs the OIDC token to exchange. Set oidc_token_file (or ARCHESTRA_OIDC_TOKEN_FILE), or oidc_token (or ARCHESTRA_OIDC_TOKEN).")
+	case workload.oidcToken != "" && workload.oidcTokenFile != "":
+		diags.AddAttributeError(path.Root("oidc_token"), "Conflicting OIDC token settings",
+			"Set either oidc_token or oidc_token_file, not both (including their environment variables).")
+	case workload.serviceAccountID == "" && apiKey == "":
+		diags.AddAttributeError(path.Root("api_key"), "Missing Archestra API Key",
+			"The provider cannot create the Archestra API client as there is a missing or empty value for the Archestra API key. "+
+				"Set the api_key value in the configuration or use the ARCHESTRA_API_KEY environment variable, "+
+				"or sign in with workload identity by setting service_account_id and oidc_token_file. "+
+				"If either is already set, ensure the value is not empty.")
+	}
+	return diags
 }
 
 func buildHTTPClient() (*http.Client, error) {
