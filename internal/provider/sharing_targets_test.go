@@ -53,11 +53,13 @@ resource "archestra_limit" "team" {
   limit_value = 100
 }
 
-# A key's cost budget is its spend_cap; a limit adds a request quota.
+# A key's cost budget is its spend_cap; a limit adds a quota on calls to
+# one MCP server.
 resource "archestra_limit" "key" {
-  virtual_key_id = archestra_virtual_key.test.id
-  limit_type     = "requests"
-  limit_value    = 50
+  virtual_key_id  = archestra_virtual_key.test.id
+  limit_type      = "mcp_server_calls"
+  limit_value     = 50
+  mcp_server_name = "tf-acc-server"
 }
 `, name, teamLimit, poolIDs, testAccLLMKeyMaterial(), os.Getenv("ARCHESTRA_TEST_LLM_BASE_URL"), poolResource)
 	}
