@@ -3,7 +3,197 @@
   "@id": "https://github.com/archestra-ai/terraform-provider-archestra/blob/main/vex/openvex.json",
   "author": "Archestra (https://archestra.ai)",
   "role": "Document Creator",
-  "timestamp": "2026-11-19T00:00:00Z",
-  "version": 1,
-  "statements": []
+  "timestamp": "2026-11-20T01:10:04Z",
+  "version": 10,
+  "statements": [
+    {
+      "vulnerability": {
+        "name": "CVE-2026-107891"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/musl@1.2.5-r23?arch=x86_64&distro=alpine-3.23.4"
+            },
+            {
+              "@id": "pkg:apk/alpine/musl-utils@1.2.5-r23?arch=x86_64&distro=alpine-3.23.4&upstream=musl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T01:10:04Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet, fork mode) only executes /usr/local/bin/terraform, which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (CGO_ENABLED=0, no PT_INTERP or dynamic section) and do not use musl, so musl's regcomp() is never called by any process the image runs. musl is used only by the busybox, bash, apk and musl-utils programs, which nothing in the image invokes."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-34182"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T01:10:04Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet, fork mode) only executes /usr/local/bin/terraform, which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (CGO_ENABLED=0, no PT_INTERP or dynamic section), so no process the image runs loads libssl.so.3 or libcrypto.so.3 and OpenSSL's CMS AuthEnvelopedData processing is never reached. Only apk, ssl_client and c_rehash link OpenSSL, and nothing in the image invokes them."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-45447"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T01:10:04Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet, fork mode) only executes /usr/local/bin/terraform, which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (CGO_ENABLED=0, no PT_INTERP or dynamic section), so no process the image runs loads libssl.so.3 or libcrypto.so.3 and OpenSSL's PKCS7_verify() is never reached. Only apk, ssl_client and c_rehash link OpenSSL, and nothing in the image invokes them."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-4738"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/zlib@1.3.2-r0?arch=x86_64&distro=alpine-3.23.4"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T01:10:04Z",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "The flaw is in zlib's contrib/infback9 module (inftree9.c) as bundled by GDAL; Alpine's zlib package ships only /usr/lib/libz.so.1.3.2, which exports no inflateBack9* symbols, and no file in the image contains infback9 code."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-63073"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T01:10:04Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet, fork mode) only executes /usr/local/bin/terraform, which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (CGO_ENABLED=0, no PT_INTERP or dynamic section), so no process the image runs loads libssl.so.3 or libcrypto.so.3 and OpenSSL's CMP client response validation is never reached. Only apk, ssl_client and c_rehash link OpenSSL, and nothing in the image invokes them."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-75803"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T01:10:04Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet, fork mode) only executes /usr/local/bin/terraform, which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (CGO_ENABLED=0, no PT_INTERP or dynamic section), so no process the image runs loads libssl.so.3 or libcrypto.so.3 and OpenSSL's AEAD decryption via EVP_Cipher() is never reached. Only apk, ssl_client and c_rehash link OpenSSL, and nothing in the image invokes them."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-84782"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T01:10:04Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet, fork mode) only executes /usr/local/bin/terraform, which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (CGO_ENABLED=0, no PT_INTERP or dynamic section), so no process the image runs loads libssl.so.3 or libcrypto.so.3 and OpenSSL's DTLS retransmission code is never reached. Only apk, ssl_client and c_rehash link OpenSSL, and nothing in the image invokes them."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-85091"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/zlib@1.3.2-r0?arch=x86_64&distro=alpine-3.23.4"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T01:10:04Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet, fork mode) only executes /usr/local/bin/terraform, which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (CGO_ENABLED=0, no PT_INTERP or dynamic section), so no process the image runs loads libz.so.1 and zlib's gzwrite()/gz_write() is never called. Only apk (via libapk) links zlib, and nothing in the image invokes it."
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-wpfp-cm49-9m9q"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/github.com/hashicorp/go-slug@v0.11.1"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T01:10:04Z",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "The Zip Slip flaw is in go-slug's extraction path (Unpack / Packer.Unpack, fixed in internal/unpackinfo); the /usr/local/bin/terraform 1.5.7 binary links only go-slug's packing functions (Pack, Packer.Pack, ignore-rule parsing), and its Go function table contains no go-slug Unpack function."
+    }
+  ]
 }
