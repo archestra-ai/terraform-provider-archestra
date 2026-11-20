@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.9.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.8.0...v3.9.0) (2026-11-20)
+
+
+### Features
+
+* MCP runtime tiers, OAuth client federated credentials and pool routing strategy; sync platform API to 1.5.0-rc.41 ([#278](https://github.com/archestra-ai/terraform-provider-archestra/issues/278)) ([af3631c](https://github.com/archestra-ai/terraform-provider-archestra/commit/af3631ca54de536037397f170e6eb42cf9b7bcff))
+
+
+### Bug Fixes
+
+* **crossplane:** run OpenTofu 1.13.9 instead of Terraform 1.5.7 ([#277](https://github.com/archestra-ai/terraform-provider-archestra/issues/277)) ([50f6110](https://github.com/archestra-ai/terraform-provider-archestra/commit/50f61100b4c79654e48d22a53486824f456357ff))
+
 ## [3.8.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.7.0...v3.8.0) (2026-11-20)
 
 
