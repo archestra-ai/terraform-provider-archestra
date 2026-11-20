@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -36,6 +37,7 @@ type ModelPoolResource struct{ client *client.ModelPoolClient }
 type ModelPoolResourceModel struct {
 	ID               types.String `tfsdk:"id"`
 	Name             types.String `tfsdk:"name"`
+	RoutingStrategy  types.String `tfsdk:"routing_strategy"`
 	Members          types.Set    `tfsdk:"members"`
 	VirtualAPIKeyIDs types.Set    `tfsdk:"virtual_api_key_ids"`
 }
@@ -53,6 +55,7 @@ var modelPoolMemberType = types.ObjectType{AttrTypes: map[string]attr.Type{
 }}
 var modelPoolAttrSpec = []AttrSpec{
 	{TFName: "name", JSONName: "name", Kind: Scalar},
+	{TFName: "routing_strategy", JSONName: "routingStrategy", Kind: Scalar},
 	{TFName: "members", JSONName: "members", Kind: Set, Children: []AttrSpec{
 		{TFName: "provider_api_key_id", JSONName: "providerApiKeyId", Kind: Scalar},
 		{TFName: "model_id", JSONName: "modelId", Kind: Scalar},
@@ -73,8 +76,9 @@ func (r *ModelPoolResource) Metadata(_ context.Context, req resource.MetadataReq
 }
 func (r *ModelPoolResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{MarkdownDescription: "Model name balanced across shared provider keys with priority, weights and server-managed failover. Members are authoritative; grants are managed on credentials, and virtual_api_key_ids is read-only; import an existing pool by UUID before managing it.", Attributes: map[string]schema.Attribute{
-		"id":   schema.StringAttribute{Computed: true, MarkdownDescription: "Model pool UUID.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
-		"name": schema.StringAttribute{Required: true, MarkdownDescription: "Model name callers request.", Validators: modelPoolStringValidators()},
+		"id":               schema.StringAttribute{Computed: true, MarkdownDescription: "Model pool UUID.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
+		"name":             schema.StringAttribute{Required: true, MarkdownDescription: "Model name callers request.", Validators: modelPoolStringValidators()},
+		"routing_strategy": schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString("weighted"), Validators: []validator.String{stringvalidator.OneOf("weighted", "least-tokens")}, MarkdownDescription: "How requests are spread across members of the same priority: `weighted` by member weight, or `least-tokens` to the member that has used the fewest tokens in the current minute. Defaults to `weighted`."},
 		"members": schema.SetNestedAttribute{Required: true, MarkdownDescription: "Shared provider keys and their upstream model identifiers.", Validators: []validator.Set{setvalidator.SizeBetween(1, 50)}, NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
 			"provider_api_key_id": schema.StringAttribute{Required: true, MarkdownDescription: "Shared ModelProvider UUID in this organization.", Validators: []validator.String{stringvalidator.RegexMatches(canonicalUUIDRegexp, "Use a lowercase canonical provider key UUID.")}},
 			"model_id":            schema.StringAttribute{Required: true, MarkdownDescription: "Upstream model or deployment identifier for this provider key.", Validators: modelPoolStringValidators()},
@@ -248,6 +252,11 @@ func (r *ModelPoolResource) flatten(ctx context.Context, data *ModelPoolResource
 	}
 	data.ID = types.StringValue(pool.ID)
 	data.Name = types.StringValue(pool.Name)
+	// Releases without the setting route every pool by weight.
+	data.RoutingStrategy = types.StringValue("weighted")
+	if pool.RoutingStrategy != "" {
+		data.RoutingStrategy = types.StringValue(pool.RoutingStrategy)
+	}
 	members := make([]modelPoolMemberModel, 0, len(pool.Members))
 	for _, m := range pool.Members {
 		members = append(members, modelPoolMemberModel{ProviderAPIKeyID: types.StringValue(m.ProviderAPIKeyID), ModelID: types.StringValue(m.ModelID), Priority: types.Int64Value(m.Priority), Weight: types.Int64Value(m.Weight), Enabled: types.BoolValue(m.Enabled)})

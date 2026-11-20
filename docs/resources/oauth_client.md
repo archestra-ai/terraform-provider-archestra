@@ -40,6 +40,7 @@ resource "archestra_oauth_client" "example" {
 - `auto_router_ids` (Set of String) ALPHA. `archestra_auto_router` IDs a client-credentials client may call by name; an empty set clears grants. Requires auto routing to be enabled.
 - `billing_team_id` (String) Team billed for client-credentials usage; removing the value clears billing.
 - `grant_type` (String) Immutable OAuth grant type.
+- `icon` (String) Emoji, logo ID or image data URL shown beside the name.
 - `include_future_providers` (Boolean) Use current and future shared primary provider keys with explicit mappings as overrides.
 - `labels` (Attributes Set) Credential labels; an empty set clears them. (see [below for nested schema](#nestedatt--labels))
 - `model_pool_ids` (Set of String) Model pools allowed for a client-credentials client; an empty set clears grants.

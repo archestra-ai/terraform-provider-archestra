@@ -76,7 +76,7 @@ output "gpt4o_price_source" {
 - `long_context_price_per_million_cache_write` (String) Price per million cache-write tokens above the long-context threshold.
 - `long_context_price_per_million_input` (String) Price per million input tokens above the long-context threshold.
 - `long_context_price_per_million_output` (String) Price per million output tokens above the long-context threshold.
-- `long_context_threshold` (Number) Input token threshold for long-context pricing.
+- `long_context_threshold` (Number) Input token threshold for long-context pricing; unset uses the tier synced from the model provider's catalog.
 - `output_modalities` (List of String) Output modality overrides. Valid values: `text`, `image`, `audio`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.
 - `permissions` (Attributes Set) Additional direct sharing grants. Applied after the parent identity exists, then reconciled in place. Omit to preserve grants; [] clears additional grants while retaining the owner's existing access. (see [below for nested schema](#nestedatt--permissions))
 

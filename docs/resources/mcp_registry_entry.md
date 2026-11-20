@@ -24,6 +24,8 @@ resource "archestra_mcp_registry_entry" "filesystem" {
   local_config = {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/home/user"]
+    # CPU and memory come from one of the organization's MCP runtime tiers.
+    runtime_tier = "M"
 
     environment = [
       { key = "NODE_ENV", type = "plain_text", value = "production" },
@@ -367,6 +369,7 @@ Optional:
 - `http_port` (Number) HTTP port for streamable-http transport. Range 0..65535.
 - `image_pull_secrets` (Attributes List) Kubernetes image pull secrets for the MCP server pod. Supports two variants: `source = "existing"` references a pre-existing secret by `name`; `source = "credentials"` creates a new secret from explicit registry credentials (`server`, `username`, `password`, optional `email`). (see [below for nested schema](#nestedatt--local_config--image_pull_secrets))
 - `node_port` (Number) Node port for the MCP server service. Kubernetes NodePort range 30000..32767.
+- `runtime_tier` (String) Name of the organization's MCP runtime tier (see `archestra_mcp_runtime_tiers`) that sets the server's CPU and memory, matched without regard to case.
 - `service_account` (String) Kubernetes service account for the MCP server pod
 - `transport_type` (String) Transport type: 'stdio' or 'streamable-http'. Defaults to 'stdio'
 
