@@ -11,6 +11,28 @@ import (
 type ProviderConfigSpec struct {
 	// Credentials required to authenticate to this provider.
 	Credentials ProviderCredentials `json:"credentials"`
+
+	// WorkloadIdentity signs in as an Archestra service account with the
+	// provider pod's own OIDC token instead of an API key. Used when
+	// credentials.source is InjectedIdentity.
+	// +optional
+	WorkloadIdentity *WorkloadIdentity `json:"workloadIdentity,omitempty"`
+}
+
+// WorkloadIdentity exchanges a projected service account token from the
+// provider pod for a short-lived Archestra service account token. The
+// Archestra base URL comes from the ARCHESTRA_BASE_URL environment variable
+// of the provider pod.
+type WorkloadIdentity struct {
+	// ServiceAccountID is the Archestra service account to act as. It needs a
+	// federated credential that trusts the provider pod's token.
+	// +kubebuilder:validation:MinLength=1
+	ServiceAccountID string `json:"serviceAccountId"`
+
+	// TokenPath is the file that holds the provider pod's OIDC token.
+	// +kubebuilder:default="/var/run/secrets/archestra/serviceaccount/token"
+	// +optional
+	TokenPath string `json:"tokenPath,omitempty"`
 }
 
 // ProviderCredentials required to authenticate.
