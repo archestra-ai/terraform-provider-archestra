@@ -64,6 +64,21 @@ Terraform resource exposed by Crossplane. The added links are:
 | BatteryInstall | Governed catalog → RegistryEntry |
 | OAuthClient | Model pool grants → ModelPool |
 | Organization Settings | Default agent → Agent; primary/embedding/OCR/reranker provider keys → ModelProvider; default/fast/smart models → Model; default connection gateway → Gateway |
+| Every resource with `permissions` | Grant `teamId` → Team; grant `serviceAccountId` → ServiceAccount |
+| Limit | `teamId` → Team; `virtualKeyId` → VirtualKey; `agentId` → Agent; `environmentId` → Environment; `llmOauthClientId` → OAuthClient |
+| VirtualKey | Model pool grants → ModelPool |
+
+A grant or limit can still name its target with the generic pair
+(`subjectType`/`subjectId`, `entityType`/`entityId`). The typed fields exist
+because one generic ID field cannot carry a reference to one kind of object:
+
+```yaml
+spec:
+  forProvider:
+    teamIdRef: { name: platform }
+    limitType: token_cost
+    limitValue: 100
+```
 
 Already configured relationships include service-account/team ownership, OAuth
 service-account/billing/provider bindings, project agents/apps, schedules,
@@ -74,7 +89,7 @@ The remaining raw inputs are intentional or deferred:
 
 | Inputs | Reason |
 | --- | --- |
-| `permissions.subject_id`, default-permission subjects, Limit `entity_id`, VirtualKey `owner_id`, OAuthClient `allowed_gateway_ids` | Polymorphic targets or special principals such as `*`; a single-kind reference would change their meaning. |
+| Generic `permissions.subject_id` (users, roles, the organization), default-permission subjects, generic Limit `entity_id` (organization, user), VirtualKey `owner_id`, OAuthClient `allowed_gateway_ids` | Polymorphic targets or special principals such as `*`; a single-kind reference would change their meaning. |
 | Team members' `user_id`, server `user_id`, SSO `external_group_ids`, GitHub app/installation IDs, OIDC/SAML IDs | External or human identities without a corresponding managed resource. Team member `role` is a member/admin enum, not a custom Role link. |
 | Connector IDs/exclusions, tool IDs/exclusions, stored-secret IDs | No corresponding independent managed-resource identity. Tool UUIDs are discovered from server outputs. |
 | ModelPool member `model_id`, model `model_id`, identity-provider `provider_id`, OAuth upstream client IDs | Provider-facing identifiers, distinct from Archestra database object IDs. |

@@ -14,19 +14,17 @@ func initialGrantsAttribute() schema.SetNestedAttribute {
 	return schema.SetNestedAttribute{
 		Optional: true, Computed: true,
 		MarkdownDescription: "Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra.",
-		PlanModifiers:       []planmodifier.Set{setplanmodifier.UseStateForUnknown()},
+		PlanModifiers:       []planmodifier.Set{setplanmodifier.UseStateForUnknown(), completePermissionGrants{}},
 		Validators:          []validator.Set{setvalidator.SizeAtMost(200)},
-		NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
-			"subject_type": schema.StringAttribute{Required: true, MarkdownDescription: "Principal type.", Validators: []validator.String{stringvalidator.OneOf("user", "team", "serviceAccount", "role", "organization")}},
-			"subject_id":   schema.StringAttribute{Required: true, MarkdownDescription: "Principal ID; use * for the organization principal.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
-			"actions":      schema.SetAttribute{Required: true, ElementType: types.StringType, MarkdownDescription: "Actions granted to the principal.", Validators: []validator.Set{setvalidator.SizeBetween(1, 6), setvalidator.ValueStringsAre(stringvalidator.OneOf(permissionActions...))}},
-		}},
+		NestedObject:        permissionGrantNestedObject("Actions granted to the principal."),
 	}
 }
 
 var initialGrantsAttrSpec = AttrSpec{TFName: "permissions", JSONName: "initialGrants", Kind: Set, OmitOnNull: true, CreateOnly: true, Children: []AttrSpec{
 	{TFName: "subject_type", JSONName: "subject_type", Kind: Scalar},
 	{TFName: "subject_id", JSONName: "subject_id", Kind: Scalar},
+	{TFName: "team_id", JSONName: "team_id", Kind: Scalar},
+	{TFName: "service_account_id", JSONName: "service_account_id", Kind: Scalar},
 	{TFName: "actions", JSONName: "actions", Kind: Set},
 }, Encoder: encodeInitialGrants}
 

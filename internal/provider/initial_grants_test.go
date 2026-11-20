@@ -138,6 +138,8 @@ resource "archestra_model_provider" "test" {
 		{Config: config(granted, "initial"), PlanOnly: true},
 		{Config: config(granted, "updated metadata"), Check: verify},
 		{Config: config(granted, "updated metadata"), PlanOnly: true},
+		// The same grant written with team_id plans no change.
+		{Config: config(`[{team_id=archestra_team.test.id,actions=["read"]}]`, "updated metadata"), PlanOnly: true},
 		{PreConfig: func() { expectEmpty = true }, Config: config(`[]`, "updated metadata"), Check: verify},
 	}})
 }

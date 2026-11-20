@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -16,6 +17,12 @@ var limitAttrSpec = []AttrSpec{
 	{TFName: "labels", JSONName: "labels", Kind: Set, OmitOnNull: true, Children: []AttrSpec{{TFName: "key", JSONName: "key", Kind: Scalar}, {TFName: "value", JSONName: "value", Kind: Scalar}}},
 	{TFName: "entity_id", JSONName: "entityId", Kind: Scalar},
 	{TFName: "entity_type", JSONName: "entityType", Kind: Scalar},
+	// Target attributes are another way to set entity_type and entity_id.
+	{TFName: "team_id", Kind: Synthetic},
+	{TFName: "virtual_key_id", Kind: Synthetic},
+	{TFName: "agent_id", Kind: Synthetic},
+	{TFName: "environment_id", Kind: Synthetic},
+	{TFName: "llm_oauth_client_id", Kind: Synthetic},
 	{TFName: "limit_type", JSONName: "limitType", Kind: Scalar},
 	{TFName: "limit_value", JSONName: "limitValue", Kind: Scalar},
 	{TFName: "model", JSONName: "model", Kind: List},

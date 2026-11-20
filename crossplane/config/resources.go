@@ -237,6 +237,7 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.References["roles"] = ujconfig.Reference{TerraformName: "archestra_role", Extractor: roleSlugExtractor}
 	})
 	configureAdditionalRelationships(p)
+	configureSharingReferences(p)
 }
 
 const roleSlugExtractor = `github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("role", true)`
@@ -258,7 +259,7 @@ func configureAdditionalRelationships(p *ujconfig.Provider) {
 		},
 		"archestra_mcp_server":   {"team_id": "archestra_team"},
 		"archestra_oauth_client": {"model_pool_ids": "archestra_model_pool", "auto_router_ids": "archestra_auto_router"},
-		"archestra_virtual_key":  {"auto_router_ids": "archestra_auto_router"},
+		"archestra_virtual_key":  {"auto_router_ids": "archestra_auto_router", "model_pool_ids": "archestra_model_pool"},
 		"archestra_organization_settings": {
 			"default_agent_id": "archestra_agent", "default_llm_api_key_id": "archestra_model_provider",
 			"default_model_id": "archestra_model", "default_fast_model_id": "archestra_model", "default_smart_model_id": "archestra_model",

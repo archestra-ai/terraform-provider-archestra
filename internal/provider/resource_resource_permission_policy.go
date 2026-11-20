@@ -42,9 +42,11 @@ type ResourcePermissionPolicyResourceModel struct {
 	EffectiveActions types.Set    `tfsdk:"effective_actions"`
 }
 type permissionGrantModel struct {
-	SubjectType types.String `tfsdk:"subject_type"`
-	SubjectID   types.String `tfsdk:"subject_id"`
-	Actions     types.Set    `tfsdk:"actions"`
+	SubjectType      types.String `tfsdk:"subject_type"`
+	SubjectID        types.String `tfsdk:"subject_id"`
+	TeamID           types.String `tfsdk:"team_id"`
+	ServiceAccountID types.String `tfsdk:"service_account_id"`
+	Actions          types.Set    `tfsdk:"actions"`
 }
 type permissionGrantWire struct {
 	Subject struct {
@@ -63,7 +65,7 @@ type permissionPolicyWire struct {
 }
 
 var permissionGrantObjectType = types.ObjectType{AttrTypes: map[string]attr.Type{
-	"subject_type": types.StringType, "subject_id": types.StringType, "actions": types.SetType{ElemType: types.StringType},
+	"subject_type": types.StringType, "subject_id": types.StringType, "team_id": types.StringType, "service_account_id": types.StringType, "actions": types.SetType{ElemType: types.StringType},
 }}
 var permissionResourceTypes = []string{"agent", "mcpGateway", "mcpRegistry", "skill", "app", "llmModel", "project", "conversation", "agentRun", "plugin", "knowledgeBase", "knowledgeConnector", "knowledgeFile", "llmVirtualKey", "llmProviderApiKey", "externalAgent", "oauthClient", "environment", "serviceAccount", "credential"}
 var permissionActions = []string{"read", "use", "update", "delete", "manage-permissions", "configure-deployment-spec"}
@@ -75,14 +77,10 @@ func (r *ResourcePermissionPolicyResource) Schema(_ context.Context, _ resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Authoritative direct grants for one object or all objects of one resource type. Declare one policy per target; inherited grants are unaffected. Destroy revokes every direct grant on the target. Updates use the last observed revision and reject concurrent changes.",
 		Attributes: map[string]schema.Attribute{
-			"id":            schema.StringAttribute{Computed: true, MarkdownDescription: "Composite resource_type/resource_id identifier."},
-			"resource_type": schema.StringAttribute{Required: true, MarkdownDescription: "API resource type whose direct grants are managed.", Validators: []validator.String{stringvalidator.OneOf(permissionResourceTypes...)}, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}},
-			"resource_id":   schema.StringAttribute{Required: true, MarkdownDescription: "Object UUID, or * to manage the policy for all objects of this resource type.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}},
-			"grants": schema.SetNestedAttribute{Required: true, MarkdownDescription: "Complete set of direct principal grants; an empty set revokes all direct grants.", Validators: []validator.Set{setvalidator.SizeAtMost(200)}, NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
-				"subject_type": schema.StringAttribute{Required: true, MarkdownDescription: "Principal type.", Validators: []validator.String{stringvalidator.OneOf("user", "team", "serviceAccount", "role", "organization")}},
-				"subject_id":   schema.StringAttribute{Required: true, MarkdownDescription: "Principal ID; use * for the organization principal.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
-				"actions":      schema.SetAttribute{Required: true, ElementType: types.StringType, MarkdownDescription: "Actions granted to this principal.", Validators: []validator.Set{setvalidator.SizeBetween(1, 6), setvalidator.ValueStringsAre(stringvalidator.OneOf(permissionActions...))}},
-			}}},
+			"id":                schema.StringAttribute{Computed: true, MarkdownDescription: "Composite resource_type/resource_id identifier."},
+			"resource_type":     schema.StringAttribute{Required: true, MarkdownDescription: "API resource type whose direct grants are managed.", Validators: []validator.String{stringvalidator.OneOf(permissionResourceTypes...)}, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}},
+			"resource_id":       schema.StringAttribute{Required: true, MarkdownDescription: "Object UUID, or * to manage the policy for all objects of this resource type.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}},
+			"grants":            schema.SetNestedAttribute{Required: true, MarkdownDescription: "Complete set of direct principal grants; an empty set revokes all direct grants.", Validators: []validator.Set{setvalidator.SizeAtMost(200)}, PlanModifiers: []planmodifier.Set{completePermissionGrants{}}, NestedObject: permissionGrantNestedObject("Actions granted to this principal.")},
 			"revision":          schema.Int64Attribute{Computed: true, MarkdownDescription: "Last observed policy revision used for optimistic concurrency."},
 			"owner_id":          schema.StringAttribute{Computed: true, MarkdownDescription: "Object owner, when present."},
 			"effective_actions": schema.SetAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Current caller's effective actions, including inherited grants."},
@@ -305,8 +303,10 @@ func setPermissionPolicyState(ctx context.Context, state *ResourcePermissionPoli
 	for _, grant := range policy.Grants {
 		actions, d := types.SetValueFrom(ctx, types.StringType, grant.Actions)
 		diags.Append(d...)
-		value, d := types.ObjectValue(permissionGrantObjectType.AttrTypes, map[string]attr.Value{"subject_type": types.StringValue(grant.Subject.Type), "subject_id": types.StringValue(grant.Subject.ID), "actions": actions})
-		diags.Append(d...)
+		value, err := permissionGrantValue(grant.Subject.Type, grant.Subject.ID, actions)
+		if err != nil {
+			diags.AddError("Invalid Permission Grant", err.Error())
+		}
 		grants = append(grants, value)
 	}
 	state.Grants, actionsDiags = types.SetValue(permissionGrantObjectType, grants)

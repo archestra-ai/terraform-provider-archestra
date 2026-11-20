@@ -46,22 +46,27 @@ type LimitModelUsageModel struct {
 }
 
 type LimitResourceModel struct {
-	Behavior        types.String      `tfsdk:"behavior"`
-	EstimatedUsage  types.Bool        `tfsdk:"estimated_usage"`
-	TeamManaged     types.Bool        `tfsdk:"team_managed"`
-	Reason          types.String      `tfsdk:"reason"`
-	ThroughputUsage types.Object      `tfsdk:"throughput_usage"`
-	CleanupInterval types.String      `tfsdk:"cleanup_interval"`
-	Labels          []AgentLabelModel `tfsdk:"labels"`
-	ModelUsage      types.List        `tfsdk:"model_usage"`
-	ID              types.String      `tfsdk:"id"`
-	EntityID        types.String      `tfsdk:"entity_id"`
-	EntityType      types.String      `tfsdk:"entity_type"`
-	LimitType       types.String      `tfsdk:"limit_type"`
-	LimitValue      types.Int64       `tfsdk:"limit_value"`
-	Model           types.List        `tfsdk:"model"`
-	ToolName        types.String      `tfsdk:"tool_name"`
-	MCPServerName   types.String      `tfsdk:"mcp_server_name"`
+	Behavior         types.String      `tfsdk:"behavior"`
+	EstimatedUsage   types.Bool        `tfsdk:"estimated_usage"`
+	TeamManaged      types.Bool        `tfsdk:"team_managed"`
+	Reason           types.String      `tfsdk:"reason"`
+	ThroughputUsage  types.Object      `tfsdk:"throughput_usage"`
+	CleanupInterval  types.String      `tfsdk:"cleanup_interval"`
+	Labels           []AgentLabelModel `tfsdk:"labels"`
+	ModelUsage       types.List        `tfsdk:"model_usage"`
+	ID               types.String      `tfsdk:"id"`
+	EntityID         types.String      `tfsdk:"entity_id"`
+	EntityType       types.String      `tfsdk:"entity_type"`
+	TeamID           types.String      `tfsdk:"team_id"`
+	VirtualKeyID     types.String      `tfsdk:"virtual_key_id"`
+	AgentID          types.String      `tfsdk:"agent_id"`
+	EnvironmentID    types.String      `tfsdk:"environment_id"`
+	LLMOAuthClientID types.String      `tfsdk:"llm_oauth_client_id"`
+	LimitType        types.String      `tfsdk:"limit_type"`
+	LimitValue       types.Int64       `tfsdk:"limit_value"`
+	Model            types.List        `tfsdk:"model"`
+	ToolName         types.String      `tfsdk:"tool_name"`
+	MCPServerName    types.String      `tfsdk:"mcp_server_name"`
 }
 
 func (r *LimitResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -89,14 +94,15 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				},
 			},
 			"entity_id": schema.StringAttribute{
-				MarkdownDescription: "The entity ID this limit applies to",
-				PlanModifiers:       []planmodifier.String{stringplanmodifier.RequiresReplace()},
-				Required:            true,
+				MarkdownDescription: "ID of the entity this limit applies to. Set with `entity_type`, or leave both out and set a target attribute such as `team_id`. Changing it replaces the limit.",
+				Optional:            true,
+				Computed:            true,
+				Validators:          []validator.String{stringvalidator.LengthAtLeast(1)},
 			},
 			"entity_type": schema.StringAttribute{
-				MarkdownDescription: "Entity type: organization, team, agent, user, virtual_key, environment or llm_oauth_client",
-				PlanModifiers:       []planmodifier.String{stringplanmodifier.RequiresReplace()},
-				Required:            true,
+				MarkdownDescription: "Entity type: organization, team, agent, user, virtual_key, environment or llm_oauth_client. Set with `entity_id`, or leave both out and set a target attribute such as `team_id`. Changing it replaces the limit.",
+				Optional:            true,
+				Computed:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("organization", "team", "agent", "user", "virtual_key", "environment", "llm_oauth_client"),
 				},
@@ -131,6 +137,13 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 			},
 		},
 	}
+	r.limitSchemaWithTargets(resp)
+}
+
+func (r *LimitResource) limitSchemaWithTargets(resp *resource.SchemaResponse) {
+	for name, attribute := range limitTargetAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
 }
 
 func (r *LimitResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
@@ -141,6 +154,8 @@ func (r *LimitResource) ValidateConfig(ctx context.Context, req resource.Validat
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	entityType := validateLimitTarget(&data, &resp.Diagnostics)
 
 	if data.LimitType.IsUnknown() {
 		return
@@ -153,8 +168,8 @@ func (r *LimitResource) ValidateConfig(ctx context.Context, req resource.Validat
 	throughput := limitType == "requests" || limitType == "tokens" || limitType == "requests_per_minute" || limitType == "tokens_per_minute"
 	minute := data.CleanupInterval.ValueString() == "minute"
 	if throughput || minute {
-		if !data.EntityType.IsUnknown() {
-			switch data.EntityType.ValueString() {
+		if !entityType.IsUnknown() && !entityType.IsNull() {
+			switch entityType.ValueString() {
 			case "organization", "team", "virtual_key":
 			default:
 				resp.Diagnostics.AddAttributeError(path.Root("entity_type"), "Invalid Throughput Scope", "Throughput and minute limits require organization, team or virtual_key scope.")
@@ -291,6 +306,7 @@ func (r *LimitResource) Create(ctx context.Context, req resource.CreateRequest, 
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.EntityID = types.StringValue(apiResp.JSON200.EntityId)
 	data.EntityType = types.StringValue(string(apiResp.JSON200.EntityType))
+	data.setLimitTargets()
 	data.LimitType = types.StringValue(string(apiResp.JSON200.LimitType))
 	data.LimitValue = types.Int64Value(int64(apiResp.JSON200.LimitValue))
 
@@ -356,6 +372,7 @@ func (r *LimitResource) Read(ctx context.Context, req resource.ReadRequest, resp
 
 	data.EntityID = types.StringValue(apiResp.JSON200.EntityId)
 	data.EntityType = types.StringValue(string(apiResp.JSON200.EntityType))
+	data.setLimitTargets()
 	data.LimitType = types.StringValue(string(apiResp.JSON200.LimitType))
 	data.LimitValue = types.Int64Value(int64(apiResp.JSON200.LimitValue))
 
@@ -429,6 +446,7 @@ func (r *LimitResource) Update(ctx context.Context, req resource.UpdateRequest, 
 
 	data.EntityID = types.StringValue(apiResp.JSON200.EntityId)
 	data.EntityType = types.StringValue(string(apiResp.JSON200.EntityType))
+	data.setLimitTargets()
 	data.LimitType = types.StringValue(string(apiResp.JSON200.LimitType))
 	data.LimitValue = types.Int64Value(int64(apiResp.JSON200.LimitValue))
 

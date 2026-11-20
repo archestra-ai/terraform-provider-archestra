@@ -29,9 +29,11 @@ resource "archestra_limit" "org_token_cost" {
 
 # Per-team MCP-server-call ceiling — every team gets 5k GitHub MCP calls before
 # requests start getting rate-limited. Requires `mcp_server_name`.
+# A team, agent, virtual key, environment or OAuth client can be named
+# directly with team_id, agent_id, virtual_key_id, environment_id or
+# llm_oauth_client_id instead of entity_type with entity_id.
 resource "archestra_limit" "engineering_github_calls" {
-  entity_id       = archestra_team.engineering.id
-  entity_type     = "team"
+  team_id         = archestra_team.engineering.id
   limit_type      = "mcp_server_calls"
   limit_value     = 5000
   mcp_server_name = archestra_mcp_server.github.name
@@ -40,8 +42,7 @@ resource "archestra_limit" "engineering_github_calls" {
 # Per-agent tool-call quota — caps how many times the support agent can call
 # `list_repos` on the github MCP. Requires both `mcp_server_name` and `tool_name`.
 resource "archestra_limit" "support_list_repos" {
-  entity_id       = archestra_agent.support.id
-  entity_type     = "agent"
+  agent_id        = archestra_agent.support.id
   limit_type      = "tool_calls"
   limit_value     = 200
   mcp_server_name = archestra_mcp_server.github.name
@@ -68,20 +69,25 @@ resource "archestra_limit" "claude_family_budget" {
 
 ### Required
 
-- `entity_id` (String) The entity ID this limit applies to
-- `entity_type` (String) Entity type: organization, team, agent, user, virtual_key, environment or llm_oauth_client
 - `limit_type` (String) Limit type: token_cost, requests, tokens, requests_per_minute, tokens_per_minute, tool_calls or mcp_server_calls.
 - `limit_value` (Number) Limit threshold value; zero is allowed for non-minute cost budgets.
 
 ### Optional
 
+- `agent_id` (String) Agent the limit applies to, such as `archestra_agent.example.id`. Replaces `entity_type` and `entity_id`. Changing it replaces the limit.
 - `behavior` (String) Whether exceeding the limit blocks requests (hard) or only reports usage (soft).
 - `cleanup_interval` (String) Interval used to reset limit usage.
+- `entity_id` (String) ID of the entity this limit applies to. Set with `entity_type`, or leave both out and set a target attribute such as `team_id`. Changing it replaces the limit.
+- `entity_type` (String) Entity type: organization, team, agent, user, virtual_key, environment or llm_oauth_client. Set with `entity_id`, or leave both out and set a target attribute such as `team_id`. Changing it replaces the limit.
+- `environment_id` (String) Environment the limit applies to, such as `archestra_environment.example.id`. Replaces `entity_type` and `entity_id`. Changing it replaces the limit.
 - `labels` (Attributes Set) Resource labels. (see [below for nested schema](#nestedatt--labels))
+- `llm_oauth_client_id` (String) OAuth client the limit applies to, such as `archestra_oauth_client.example.id`. Replaces `entity_type` and `entity_id`. Changing it replaces the limit.
 - `mcp_server_name` (String) Required when limit_type is 'mcp_server_calls' or 'tool_calls'. Name of the MCP server.
 - `model` (List of String) Model names to restrict; omitted applies to all models for cost and throughput limits.
 - `reason` (String) Administrator explanation for this limit (up to 500 characters).
+- `team_id` (String) Team the limit applies to, such as `archestra_team.example.id`. Replaces `entity_type` and `entity_id`. Changing it replaces the limit.
 - `tool_name` (String) Required when limit_type is 'tool_calls'. Name of the tool this limit applies to.
+- `virtual_key_id` (String) Virtual key the limit applies to, such as `archestra_virtual_key.example.id`. A key's cost budget is its `spend_cap`; use this for request and token quotas. Replaces `entity_type` and `entity_id`. Changing it replaces the limit.
 
 ### Read-Only
 

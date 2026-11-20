@@ -13,3 +13,12 @@ resource "archestra_virtual_key" "example" {
     create_before_destroy = true
   }
 }
+
+# A key for one team: it calls a model pool by name, and the team can use it.
+resource "archestra_virtual_key" "team" {
+  name           = "platform-team"
+  model_pool_ids = [archestra_model_pool.example.id]
+  permissions = [
+    { team_id = archestra_team.platform.id, actions = ["read", "use"] },
+  ]
+}
