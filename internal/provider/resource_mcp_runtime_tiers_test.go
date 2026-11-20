@@ -10,7 +10,8 @@ import (
 )
 
 // The tiers are organization-wide; the test keeps the default names, so other
-// tests on the same stack see S, M and L throughout.
+// tests on the same stack see S, M and L throughout. Destroy leaves XL behind:
+// the deleted registry entry still names it.
 func TestAccMcpRuntimeTiersResource(t *testing.T) {
 	if os.Getenv("TF_ACC") != "" && !testAccAPIVersionAtLeast(t, "1.5.0-rc.41") {
 		t.Skip("MCP runtime tiers need API 1.5.0-rc.41 or later")

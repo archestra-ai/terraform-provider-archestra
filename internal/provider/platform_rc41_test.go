@@ -101,8 +101,8 @@ func TestMcpRuntimeTiersLifecycle(t *testing.T) {
 	}
 	var deleted resource.DeleteResponse
 	r.Delete(t.Context(), resource.DeleteRequest{State: read.State}, &deleted)
-	if deleted.Diagnostics.HasError() || len(bodies) != 2 || bodies[1] != "null" {
-		t.Fatalf("destroy did not restore the defaults: %v %v", bodies, deleted.Diagnostics)
+	if deleted.Diagnostics.HasError() || deleted.Diagnostics.WarningsCount() != 1 || len(bodies) != 1 {
+		t.Fatalf("destroy changed the tiers: %v %v", bodies, deleted.Diagnostics)
 	}
 }
 

@@ -1,10 +1,10 @@
 # The CPU and memory tiers that locally hosted MCP servers choose from with
 # `local_config.runtime_tier`. This resource owns the whole list: tiers left
-# out are removed, which fails while an MCP server still uses one. Move such
-# servers to another tier first; renaming a used tier fails the same way.
+# out are removed, which fails while an MCP registry entry, even a deleted
+# one, still names it. Renaming a used tier fails the same way.
 #
 # Memory left unset is derived from the CPU request. Destroying the resource
-# restores the default tiers S, M and L.
+# leaves the tiers as they are.
 resource "archestra_mcp_runtime_tiers" "this" {
   tiers = [
     { name = "S", cpu_request = 0.1 },

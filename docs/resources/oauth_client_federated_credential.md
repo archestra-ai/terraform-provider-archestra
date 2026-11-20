@@ -22,9 +22,10 @@ Workload identity federation trust for an `archestra_oauth_client` with `grant_t
 # holds up to 20). Only a client with grant_type "client_credentials" can
 # have federated credentials.
 resource "archestra_oauth_client" "deployer" {
-  name       = "Deployment automation"
-  scopes     = ["mcp"]
-  grant_type = "client_credentials"
+  name                     = "Deployment automation"
+  scopes                   = ["llm:proxy"]
+  grant_type               = "client_credentials"
+  include_future_providers = true
 }
 
 resource "archestra_oauth_client_federated_credential" "example" {

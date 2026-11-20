@@ -30,7 +30,8 @@ func NewMcpRuntimeTiersResource() resource.Resource { return &McpRuntimeTiersRes
 
 // McpRuntimeTiersResource owns the organization's MCP CPU/RAM tiers. The
 // organization always has tiers (built-in defaults until changed), so creating
-// the resource replaces them and destroying it restores the defaults.
+// the resource replaces them and destroying it leaves them in place: the API
+// refuses to drop a tier that any registry entry, even a deleted one, names.
 type McpRuntimeTiersResource struct{ client *client.ClientWithResponses }
 type McpRuntimeTiersResourceModel struct {
 	ID    types.String `tfsdk:"id"`
@@ -72,7 +73,7 @@ func (r *McpRuntimeTiersResource) Metadata(_ context.Context, req resource.Metad
 }
 func (r *McpRuntimeTiersResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The organization's CPU and memory tiers for locally hosted MCP servers, which `archestra_mcp_registry_entry` selects with `local_config.runtime_tier`. The organization always has tiers: creating this resource replaces them, and destroying it restores the defaults (`S`, `M` and `L`). A tier that MCP servers still use cannot be removed or renamed. Requires an administrator.",
+		MarkdownDescription: "The organization's CPU and memory tiers for locally hosted MCP servers, which `archestra_mcp_registry_entry` selects with `local_config.runtime_tier`. The organization always has tiers (`S`, `M` and `L` until changed): creating this resource replaces them, and destroying it leaves them as they are. A tier that an MCP registry entry uses, including a deleted one, cannot be removed or renamed. Requires an administrator.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Organization ID."},
 			"tiers": schema.ListNestedAttribute{
@@ -139,15 +140,8 @@ func (r *McpRuntimeTiersResource) Update(ctx context.Context, req resource.Updat
 	r.save(ctx, &data, &resp.Diagnostics)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
-func (r *McpRuntimeTiersResource) Delete(ctx context.Context, _ resource.DeleteRequest, resp *resource.DeleteResponse) {
-	result, err := r.client.UpdateMcpRuntimeTiersWithBodyWithResponse(ctx, "application/json", strings.NewReader("null"))
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", err.Error())
-		return
-	}
-	if result.StatusCode() != 200 {
-		mcpRuntimeTiersStatusError(result.StatusCode(), result.Body, &resp.Diagnostics)
-	}
+func (r *McpRuntimeTiersResource) Delete(_ context.Context, _ resource.DeleteRequest, resp *resource.DeleteResponse) {
+	resp.Diagnostics.AddWarning("MCP runtime tiers left in place", "The organization always has MCP runtime tiers. Terraform stopped managing them; they are unchanged.")
 }
 func (r *McpRuntimeTiersResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)

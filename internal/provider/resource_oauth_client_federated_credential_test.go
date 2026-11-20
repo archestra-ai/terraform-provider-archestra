@@ -18,7 +18,9 @@ func TestAccOauthClientFederatedCredentialResource(t *testing.T) {
 	config := func(icon, credentialName, subject, conditions string) string {
 		return fmt.Sprintf(`resource "archestra_oauth_client" "federated_parent" {
  name="tf-federated-oauth-parent"
- scopes=["mcp"]
+ scopes=["llm:proxy"]
+ include_future_providers=true
+ provider_api_keys=[]
  %s
 }
 resource "archestra_oauth_client_federated_credential" "test" {
