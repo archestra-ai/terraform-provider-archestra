@@ -67,6 +67,75 @@ metadata:
             key: credentials
       ```
 
+      ### Sign in with workload identity
+
+      Instead of an API key, the provider can sign in as an Archestra service account
+      with its own Kubernetes service account token. No Secret holds a credential, and
+      each exchanged token expires after one hour. Requires an Enterprise license.
+
+      1. In Archestra, create a service account with the roles the provider needs, and
+         add a federated credential to it: the Kubernetes issuer URL of your cluster,
+         an audience such as your Archestra URL, and the subject
+         `system:serviceaccount:crossplane-system:provider-archestra`. The issuer must
+         be a public HTTPS URL that serves an OIDC discovery document.
+      2. Give the provider pod that service account name, a projected token with the
+         same audience, and your Archestra URL. Reference the runtime config from the
+         `Provider` with `spec.runtimeConfigRef.name: archestra-workload-identity`:
+
+      ```yaml
+      apiVersion: pkg.crossplane.io/v1beta1
+      kind: DeploymentRuntimeConfig
+      metadata:
+        name: archestra-workload-identity
+      spec:
+        serviceAccountTemplate:
+          metadata:
+            name: provider-archestra
+        deploymentTemplate:
+          spec:
+            selector: {}
+            template:
+              spec:
+                containers:
+                  - name: package-runtime
+                    env:
+                      - name: ARCHESTRA_BASE_URL
+                        value: https://archestra.example.com
+                    volumeMounts:
+                      - name: archestra-token
+                        mountPath: /var/run/secrets/archestra/serviceaccount
+                        readOnly: true
+                volumes:
+                  - name: archestra-token
+                    projected:
+                      sources:
+                        - serviceAccountToken:
+                            path: token
+                            audience: https://archestra.example.com
+                            expirationSeconds: 3600
+      ```
+
+      3. Use `InjectedIdentity` with the service account ID:
+
+      ```yaml
+      apiVersion: archestra.m.crossplane.io/v1beta1
+      kind: ClusterProviderConfig
+      metadata:
+        name: default
+      spec:
+        credentials:
+          source: InjectedIdentity
+        workloadIdentity:
+          serviceAccountId: 00000000-0000-0000-0000-000000000000
+      ```
+
+      The provider exchanges the token once and shares the result across reconciles
+      until it nears expiry or Kubernetes rotates the projected token.
+      `workloadIdentity.tokenPath` defaults to
+      `/var/run/secrets/archestra/serviceaccount/token`. Any namespace allowed to
+      create a namespaced `ProviderConfig` can use this identity, so prefer a
+      `ClusterProviderConfig` and restrict who can create `ProviderConfig` objects.
+
       ## Create a team
 
       Save this as `team.yaml` and run `kubectl apply -f team.yaml`:

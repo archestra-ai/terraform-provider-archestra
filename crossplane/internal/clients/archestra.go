@@ -3,7 +3,9 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"os"
 
+	xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/types"
@@ -22,6 +24,7 @@ const (
 	errTrackUsage           = "cannot track ProviderConfig usage"
 	errExtractCredentials   = "cannot extract credentials"
 	errUnmarshalCredentials = "cannot unmarshal template credentials as JSON"
+	errWorkloadIdentity     = "cannot sign in with workload identity"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -39,6 +42,15 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		pcSpec, err := resolveProviderConfig(ctx, client, mg)
 		if err != nil {
 			return terraform.Setup{}, errors.Wrap(err, "cannot resolve provider config")
+		}
+
+		if pcSpec.Credentials.Source == xpv1.CredentialsSourceInjectedIdentity {
+			cfg, err := sharedWorkloadIdentityTokens.workloadIdentityConfiguration(ctx, pcSpec.WorkloadIdentity, os.Getenv("ARCHESTRA_BASE_URL"))
+			if err != nil {
+				return ps, errors.Wrap(err, errWorkloadIdentity)
+			}
+			ps.Configuration = cfg
+			return ps, nil
 		}
 
 		data, err := resource.CommonCredentialExtractor(ctx, pcSpec.Credentials.Source, client, pcSpec.Credentials.CommonCredentialSelectors)
