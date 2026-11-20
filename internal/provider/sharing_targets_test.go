@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 // A team, its service account, a model pool, a virtual key shared with both
@@ -16,6 +17,7 @@ import (
 // the others by reference instead of by subject type and ID.
 func TestAccSharingAndLimitTargets(t *testing.T) {
 	name := acctest.RandomWithPrefix("tf-acc-targets")
+	poolResource := ""
 	config := func(teamLimit, poolIDs string) string {
 		return fmt.Sprintf(`
 resource "archestra_team" "a" { name = "%[1]s-a" }
@@ -34,10 +36,7 @@ resource "archestra_model_provider" "test" {
   shared       = true
 }
 
-resource "archestra_model_pool" "test" {
-  name    = "%[1]s-pool"
-  members = [{ provider_api_key_id = archestra_model_provider.test.id, model_id = "tf-acc-model" }]
-}
+%[6]s
 
 resource "archestra_virtual_key" "test" {
   name           = "%[1]s-key"
@@ -60,10 +59,22 @@ resource "archestra_limit" "key" {
   limit_type     = "requests"
   limit_value    = 50
 }
-`, name, teamLimit, poolIDs, testAccLLMKeyMaterial(), os.Getenv("ARCHESTRA_TEST_LLM_BASE_URL"))
+`, name, teamLimit, poolIDs, testAccLLMKeyMaterial(), os.Getenv("ARCHESTRA_TEST_LLM_BASE_URL"), poolResource)
 	}
+	// Virtual keys take model pools from 1.5.0-rc.12.
+	withPools := os.Getenv("TF_ACC") != "" && testAccAPIVersionAtLeast(t, "1.5.0-rc.12")
 	pools := `model_pool_ids = [archestra_model_pool.test.id]`
 	noPools := "model_pool_ids = []\n  include_future_providers = true"
+	poolChecks := resource.TestCheckTypeSetElemAttrPair("archestra_virtual_key.test", "model_pool_ids.*", "archestra_model_pool.test", "id")
+	if withPools {
+		poolResource = fmt.Sprintf(`resource "archestra_model_pool" "test" {
+  name    = "%s-pool"
+  members = [{ provider_api_key_id = archestra_model_provider.test.id, model_id = "tf-acc-model" }]
+}`, name)
+	} else {
+		pools, noPools = "include_future_providers = true", "include_future_providers = true"
+		poolChecks = resource.TestCheckNoResourceAttr("archestra_virtual_key.test", "model_pool_ids")
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
@@ -81,7 +92,7 @@ resource "archestra_limit" "key" {
 					resource.TestCheckResourceAttr("archestra_limit.key", "entity_type", "virtual_key"),
 					resource.TestCheckResourceAttrPair("archestra_limit.key", "entity_id", "archestra_virtual_key.test", "id"),
 					resource.TestCheckNoResourceAttr("archestra_limit.key", "team_id"),
-					resource.TestCheckTypeSetElemAttrPair("archestra_virtual_key.test", "model_pool_ids.*", "archestra_model_pool.test", "id"),
+					poolChecks,
 					resource.TestCheckTypeSetElemNestedAttrs("archestra_virtual_key.test", "permissions.*", map[string]string{"subject_type": "team", "actions.#": "1"}),
 					resource.TestCheckTypeSetElemNestedAttrs("archestra_virtual_key.test", "permissions.*", map[string]string{"subject_type": "serviceAccount", "actions.#": "2"}),
 				),
@@ -100,7 +111,12 @@ resource "archestra_limit" "key" {
 			{ResourceName: "archestra_limit.team", ImportState: true, ImportStateVerify: true},
 			{
 				Config: config(`team_id = archestra_team.b.id`, noPools),
-				Check:  resource.TestCheckResourceAttr("archestra_virtual_key.test", "model_pool_ids.#", "0"),
+				Check: func(s *terraform.State) error {
+					if !withPools {
+						return nil
+					}
+					return resource.TestCheckResourceAttr("archestra_virtual_key.test", "model_pool_ids.#", "0")(s)
+				},
 			},
 			{
 				Config:      config(`team_id = archestra_team.b.id`+"\n"+`  entity_type = "team"`, noPools),
