@@ -3,7 +3,273 @@
   "@id": "https://github.com/archestra-ai/terraform-provider-archestra/blob/main/vex/openvex.json",
   "author": "Archestra (https://archestra.ai)",
   "role": "Document Creator",
-  "timestamp": "2026-11-19T00:00:00Z",
-  "version": 1,
-  "statements": []
+  "timestamp": "2026-11-20T00:02:43Z",
+  "version": 14,
+  "statements": [
+    {
+      "vulnerability": {
+        "name": "CVE-2024-3817"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/github.com/hashicorp/go-getter@v1.7.0"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:43Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "Terraform 1.5.7 in this image uses go-getter's Git getter only to fetch module sources; the provider writes a main.tf.json holding only required_providers, provider and one resource block, so terraform init never fetches a module, and it installs the plugin from the unpacked filesystem mirror with direct downloads excluded (/terraform/.terraformrc). The image also ships no git binary, which the vulnerable Git getter runs."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2024-6257"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/github.com/hashicorp/go-getter@v1.7.0"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:43Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "Terraform 1.5.7 in this image uses go-getter's Git getter only to fetch module sources; the provider writes a main.tf.json holding only required_providers, provider and one resource block, so terraform init never fetches a module, and it installs the plugin from the unpacked filesystem mirror with direct downloads excluded (/terraform/.terraformrc). The image also ships no git binary, which the vulnerable Git getter runs."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-107891"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/musl@1.2.5-r23?arch=x86_64&distro=alpine-3.23.4"
+            },
+            {
+              "@id": "pkg:apk/alpine/musl-utils@1.2.5-r23?arch=x86_64&distro=alpine-3.23.4&upstream=musl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:42Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider runs only /usr/local/bin/terraform, which runs only the mirrored terraform-provider-archestra plugin; all three are statically linked Go binaries (CGO_ENABLED=0, no ELF interpreter or NEEDED entries), so none of them loads musl's libc or its regcomp. Only the Alpine base tools (busybox, bash, apk, getconf, getent, iconv) use musl, and nothing the image runs starts them."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-34182"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:42Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider runs only /usr/local/bin/terraform, which runs only the mirrored terraform-provider-archestra plugin; all three are statically linked Go binaries (CGO_ENABLED=0, no ELF interpreter or NEEDED entries), so none of them loads libcrypto.so.3 or libssl.so.3. Only apk (via libapk), ssl_client and c_rehash link OpenSSL in this image, and nothing the image runs starts them."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-45447"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:42Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider runs only /usr/local/bin/terraform, which runs only the mirrored terraform-provider-archestra plugin; all three are statically linked Go binaries (CGO_ENABLED=0, no ELF interpreter or NEEDED entries), so none of them loads libcrypto.so.3 or libssl.so.3. Only apk (via libapk), ssl_client and c_rehash link OpenSSL in this image, and nothing the image runs starts them."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-4738"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/zlib@1.3.2-r0?arch=x86_64&distro=alpine-3.23.4"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:42Z",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "The flaw is in the infback9 contrib module (inftree9.c) that GDAL bundles with zlib. The image's /usr/lib/libz.so.1.3.2 exports inflateBack but no inflateBack9 symbol and contains no infback9 or inftree9 code."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-63073"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:42Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider runs only /usr/local/bin/terraform, which runs only the mirrored terraform-provider-archestra plugin; all three are statically linked Go binaries (CGO_ENABLED=0, no ELF interpreter or NEEDED entries), so none of them loads libcrypto.so.3 or libssl.so.3. Only apk (via libapk), ssl_client and c_rehash link OpenSSL in this image, and nothing the image runs starts them."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-75803"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:42Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider runs only /usr/local/bin/terraform, which runs only the mirrored terraform-provider-archestra plugin; all three are statically linked Go binaries (CGO_ENABLED=0, no ELF interpreter or NEEDED entries), so none of them loads libcrypto.so.3 or libssl.so.3. Only apk (via libapk), ssl_client and c_rehash link OpenSSL in this image, and nothing the image runs starts them."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-84782"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.6-r0?arch=x86_64&distro=alpine-3.23.4&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:42Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider runs only /usr/local/bin/terraform, which runs only the mirrored terraform-provider-archestra plugin; all three are statically linked Go binaries (CGO_ENABLED=0, no ELF interpreter or NEEDED entries), so none of them loads libcrypto.so.3 or libssl.so.3. Only apk (via libapk), ssl_client and c_rehash link OpenSSL in this image, and nothing the image runs starts them."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-85091"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/zlib@1.3.2-r0?arch=x86_64&distro=alpine-3.23.4"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:42Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider runs only /usr/local/bin/terraform, which runs only the mirrored terraform-provider-archestra plugin; all three are statically linked Go binaries (CGO_ENABLED=0, no ELF interpreter or NEEDED entries), so none of them loads libz.so.1 or calls its gz* write functions. Only apk (via libapk) links zlib in this image, and nothing the image runs starts it."
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-q64h-39hv-4cf7"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/github.com/hashicorp/go-getter@v1.7.0"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:43Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "Terraform 1.5.7 in this image uses go-getter's Git getter only to fetch module sources; the provider writes a main.tf.json holding only required_providers, provider and one resource block, so terraform init never fetches a module, and it installs the plugin from the unpacked filesystem mirror with direct downloads excluded (/terraform/.terraformrc). The image also ships no git binary, which the vulnerable Git getter runs."
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-wpfp-cm49-9m9q"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/github.com/hashicorp/go-slug@v0.11.1"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:43Z",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "The flaw is in go-slug's unpacking (extraction) path. The /usr/local/bin/terraform binary links only go-slug's packing code (Pack, (*Packer).Pack and helpers); no Unpack function is in its Go function table."
+    },
+    {
+      "vulnerability": {
+        "name": "GHSA-xfhp-jf8p-mh5w"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/github.com/hashicorp/go-getter@v1.7.0"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-20T00:02:43Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "Terraform 1.5.7 in this image uses go-getter's Git getter only to fetch module sources; the provider writes a main.tf.json holding only required_providers, provider and one resource block, so terraform init never fetches a module, and it installs the plugin from the unpacked filesystem mirror with direct downloads excluded (/terraform/.terraformrc). The image also ships no git binary, which the vulnerable Git getter runs."
+    }
+  ]
 }
