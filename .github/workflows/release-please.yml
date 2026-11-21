@@ -45,11 +45,9 @@ jobs:
       APP_ID: ${{ secrets.APP_ID }}
       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
 
-  # Builds the release without any secret: the goreleaser zips, registry
-  # manifest and SHA256SUMS (unsigned), and the Crossplane package made from
-  # those same zips, staged in ghcr.io/archestra-ai/ci. Only the publisher
-  # (archestra-ai/release-publisher) holds the signing key and the Upbound
-  # token.
+  # Builds the unsigned release artifacts and stages the Crossplane package
+  # in ghcr.io/archestra-ai/ci. This job only needs registry credentials;
+  # the publisher holds the signing key and Upbound token.
   build-release:
     name: Build release
     needs: release-please
@@ -166,6 +164,11 @@ jobs:
           GHCR_TOKEN: ${{ github.token }}
           GHCR_USER: ${{ github.actor }}
         run: printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username "$GHCR_USER" --password-stdin
+
+      - name: Log in to Docker Hardened Images
+        env:
+          DHI_TOKEN: ${{ secrets.DOCKERHUB_DHI_TOKEN }}
+        run: printf '%s' "$DHI_TOKEN" | docker login dhi.io --username archestra --password-stdin
 
       # The package's images unpack the zips built above (provider-zips in the
       # image build context), not a download from the GitHub release, so it

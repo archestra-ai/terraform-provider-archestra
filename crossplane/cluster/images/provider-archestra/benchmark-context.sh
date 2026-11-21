@@ -28,6 +28,7 @@ chmod 0755 "$out/bin/linux_amd64/provider" "$out/native/${name}_v${version}"
 rm -r "$out/native"
 
 cat > "$out/build-args.env" <<ARGS
+RUNTIME_BASE=public
 TERRAFORM_VERSION=$(make_var TERRAFORM_VERSION)
 OPENTOFU_SHA256_AMD64=$(make_var OPENTOFU_SHA256_AMD64)
 OPENTOFU_SHA256_ARM64=$(make_var OPENTOFU_SHA256_ARM64)
