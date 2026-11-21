@@ -9,6 +9,11 @@ PROJECT_REPO ?= github.com/archestra-ai/$(PROJECT_NAME)
 # no longer receives fixes. It is installed under the name `terraform`, the
 # binary upjet runs.
 export TERRAFORM_VERSION ?= 1.13.9
+# SHA-256 of OpenTofu's linux release zips for TERRAFORM_VERSION, from the
+# release's tofu_<version>_SHA256SUMS. The provider image checks its download
+# against them; change them with the version.
+export OPENTOFU_SHA256_AMD64 ?= bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
+export OPENTOFU_SHA256_ARM64 ?= 04f7c93828b859d420269ed30f923ffebf09157b5d7fb95bf8d88a4d208b7fa3
 
 # Codegen dumps the schema from a locally-built binary (hack/generate-schema.sh); the provider
 # image bundles the native provider from the published GitHub release.
