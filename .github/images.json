@@ -1,0 +1,14 @@
+{
+  "images": [
+    {
+      "key": "xpkg.upbound.io/archestra/provider-archestra",
+      "dockerfile": "crossplane/cluster/images/provider-archestra/Dockerfile",
+      "context": "crossplane/_output/benchmark-context",
+      "prepare": [
+        "bash",
+        "crossplane/cluster/images/provider-archestra/benchmark-context.sh"
+      ],
+      "build-args-file": "crossplane/_output/benchmark-context/build-args.env"
+    }
+  ]
+}
