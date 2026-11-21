@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.9.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.9.0...v3.9.1) (2026-11-21)
+
+
+### Bug Fixes
+
+* **crossplane:** build the provider image with COPY and a checksum-verified OpenTofu ([#283](https://github.com/archestra-ai/terraform-provider-archestra/issues/283)) ([940f321](https://github.com/archestra-ai/terraform-provider-archestra/commit/940f321f2163069886d9d1ac20a5de97c87eeb9d))
+* **release:** run the release publisher's fixed malware scan ([#281](https://github.com/archestra-ai/terraform-provider-archestra/issues/281)) ([cf4e037](https://github.com/archestra-ai/terraform-provider-archestra/commit/cf4e037717e5387a9ddf99789ea456ad02f58d1c))
+
 ## [3.9.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.8.0...v3.9.0) (2026-11-20)
 
 
