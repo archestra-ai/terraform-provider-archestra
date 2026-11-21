@@ -43,6 +43,7 @@ func currentModelAttributes() map[string]schema.Attribute {
 		"users":                                      schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Users as JSON."},
 		"effective_context_length":                   schema.Float64Attribute{Computed: true, MarkdownDescription: "Context window after applying configured limits."},
 		"supported_endpoints":                        schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Supported inference endpoints."},
+		"supported_reasoning_efforts":                schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Reasoning effort levels the model accepts."},
 		"labels":                                     schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Labels assigned to the model.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
 	}
 }
@@ -81,6 +82,7 @@ func flattenCurrentModelFields(ctx context.Context, data *LlmModelResourceModel,
 		Users                                json.RawMessage `json:"users"`
 		EffectiveContextLength               *float64        `json:"effectiveContextLength"`
 		SupportedEndpoints                   []string        `json:"supportedEndpoints"`
+		SupportedReasoningEfforts            []string        `json:"supportedReasoningEfforts"`
 		Labels                               []struct {
 			Key     string              `json:"key"`
 			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
@@ -167,6 +169,12 @@ func flattenCurrentModelFields(ctx context.Context, data *LlmModelResourceModel,
 		value, ds := types.ListValueFrom(ctx, types.StringType, wire.SupportedEndpoints)
 		diags.Append(ds...)
 		data.SupportedEndpoints = value
+	}
+	data.SupportedReasoningEfforts = types.ListNull(types.StringType)
+	if wire.SupportedReasoningEfforts != nil {
+		value, ds := types.ListValueFrom(ctx, types.StringType, wire.SupportedReasoningEfforts)
+		diags.Append(ds...)
+		data.SupportedReasoningEfforts = value
 	}
 	data.Labels = flattenAgentLabels(data.Labels, wire.Labels)
 	data.EffectiveInputModalities = types.ListNull(types.StringType)
