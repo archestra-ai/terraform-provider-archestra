@@ -22,7 +22,7 @@ workflows:
         - 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9'
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e'
-        - 'archestra-ai/.github@v1.24.0'
+        - 'archestra-ai/.github@v1.25.2'
         - 'archestra-ai/.github@v1.33.0'
         - 'golangci/golangci-lint-action@v9.3.0'
         - 'hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e'
@@ -80,9 +80,9 @@ dependencies:
         commit: 'sha1-cf430e030ddbb5b0abf93d22962f4752f3646cd9'
         owner_id: 44036562
         repo_id: 192625955
-    'archestra-ai/.github@v1.24.0':
-        ref: 'v1.24.0'
-        commit: 'sha1-dbb529ba77ba07dd8f71f16ccb1b2317f4587312'
+    'archestra-ai/.github@v1.25.2':
+        ref: 'v1.25.2'
+        commit: 'sha1-322ad980dd4f3b530a192df546bf3bb703dcb003'
         owner_id: 216022683
         repo_id: 1192166927
         uses:
@@ -125,7 +125,7 @@ dependencies:
         owner_id: 24697112
         repo_id: 209873006
     'grafana/shared-workflows@70c40e5b6522c854a55334124545261cae3d4c73':
-        ref: 'lint-pr-title/v1'
+        ref: 'main'
         commit: 'sha1-70c40e5b6522c854a55334124545261cae3d4c73'
         owner_id: 7195757
         repo_id: 682297649

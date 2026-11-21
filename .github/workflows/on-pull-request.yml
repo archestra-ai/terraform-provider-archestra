@@ -49,7 +49,7 @@ jobs:
     permissions: {}
     steps:
       - name: Lint PR title
-        uses: archestra-ai/.github/actions/lint-pr-title@v1.24.0
+        uses: archestra-ai/.github/actions/lint-pr-title@v1.25.2
 
   vex-document:
     name: VEX Document
