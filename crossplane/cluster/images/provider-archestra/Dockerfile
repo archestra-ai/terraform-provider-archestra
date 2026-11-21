@@ -1,10 +1,31 @@
+# OpenTofu (MPL-2.0), installed as `terraform`, the binary upjet runs. It is
+# downloaded and checked against the release's SHA-256 (set with the version
+# in crossplane/Makefile) in a stage of its own, so the image copies a
+# verified binary and adds nothing from a URL.
+FROM alpine:3.23.4 AS opentofu
+ARG TARGETOS
+ARG TARGETARCH
+ARG TERRAFORM_VERSION
+ARG OPENTOFU_SHA256_AMD64
+ARG OPENTOFU_SHA256_ARM64
+RUN case "${TARGETARCH}" in \
+      amd64) sum="${OPENTOFU_SHA256_AMD64}" ;; \
+      arm64) sum="${OPENTOFU_SHA256_ARM64}" ;; \
+      *) echo "unsupported architecture ${TARGETARCH}" >&2; exit 1 ;; \
+    esac \
+ && [ -n "${sum}" ] \
+ && wget -q -O /tmp/tofu.zip "https://github.com/opentofu/opentofu/releases/download/v${TERRAFORM_VERSION}/tofu_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip" \
+ && echo "${sum}  /tmp/tofu.zip" | sha256sum -c - \
+ && unzip /tmp/tofu.zip tofu -d /out \
+ && chmod 0755 /out/tofu
+
 FROM alpine:3.23.4
 RUN apk --no-cache add ca-certificates bash
 
 ARG TARGETOS
 ARG TARGETARCH
 
-ADD "bin/${TARGETOS}_${TARGETARCH}/provider" /usr/local/bin/provider
+COPY "bin/${TARGETOS}_${TARGETARCH}/provider" /usr/local/bin/provider
 
 ENV USER_ID=65532
 
@@ -16,7 +37,6 @@ ARG TERRAFORM_PROVIDER_SOURCE
 ARG TERRAFORM_PROVIDER_VERSION
 ARG TERRAFORM_PROVIDER_DOWNLOAD_NAME
 ARG TERRAFORM_NATIVE_PROVIDER_BINARY
-ARG TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX
 
 ## End of - Provider-dependent configuration
 
@@ -26,16 +46,12 @@ ENV TF_FORK=0
 
 RUN mkdir -p ${PLUGIN_DIR}
 
-# OpenTofu (MPL-2.0), installed as `terraform`, the binary upjet runs.
-ADD https://github.com/opentofu/opentofu/releases/download/v${TERRAFORM_VERSION}/tofu_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip /tmp
-ADD ${TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX}/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip /tmp
-ADD terraformrc.hcl ${TF_CLI_CONFIG_FILE}
+COPY --from=opentofu /out/tofu /usr/local/bin/terraform
+# The provider's release zip, which the image Makefile puts in provider-zips.
+COPY provider-zips/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip /tmp/
+COPY terraformrc.hcl ${TF_CLI_CONFIG_FILE}
 
-RUN unzip /tmp/tofu_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip tofu -d /tmp/tofu \
-  && mv /tmp/tofu/tofu /usr/local/bin/terraform \
-  && chmod +x /usr/local/bin/terraform \
-  && rm -r /tmp/tofu /tmp/tofu_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip \
-  && unzip /tmp/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip -d ${PLUGIN_DIR} \
+RUN unzip /tmp/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip -d ${PLUGIN_DIR} \
   && chmod +x ${PLUGIN_DIR}/* \
   && rm /tmp/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip \
   && chown -R ${USER_ID}:${USER_ID} /terraform
