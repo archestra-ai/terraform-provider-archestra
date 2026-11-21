@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.10.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.9.1...v3.10.0) (2026-11-21)
+
+
+### Features
+
+* **crossplane:** use hardened Alpine for provider image ([#286](https://github.com/archestra-ai/terraform-provider-archestra/issues/286)) ([5d3576b](https://github.com/archestra-ai/terraform-provider-archestra/commit/5d3576b9ed9cf08e4aaafc2e6a4e497ad9cd66eb))
+
+
+### Dependencies
+
+* bump archestra-ai/.github from 1.24.0 to 1.25.2 in the github-actions-dependencies group across 1 directory ([#291](https://github.com/archestra-ai/terraform-provider-archestra/issues/291)) ([653b9b9](https://github.com/archestra-ai/terraform-provider-archestra/commit/653b9b99c18664a2e76db3d075bf2d12b0e252c8))
+
 ## [3.9.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.9.0...v3.9.1) (2026-11-21)
 
 
