@@ -2,7 +2,9 @@
 # downloaded and checked against the release's SHA-256 (set with the version
 # in crossplane/Makefile) in a stage of its own, so the image copies a
 # verified binary and adds nothing from a URL.
-FROM alpine:3.23.4 AS opentofu
+FROM dhi.io/alpine-base:3.23-dev@sha256:c8b128dc993e8cdaf2972ea5b005b74363c634ba499ae6a99a41f22504899472 AS runtime-base
+
+FROM runtime-base AS opentofu
 ARG TARGETOS
 ARG TARGETARCH
 ARG TERRAFORM_VERSION
@@ -19,8 +21,8 @@ RUN case "${TARGETARCH}" in \
  && unzip /tmp/tofu.zip tofu -d /out \
  && chmod 0755 /out/tofu
 
-FROM alpine:3.23.4
-RUN apk --no-cache add ca-certificates bash
+FROM runtime-base
+RUN apk upgrade --no-cache && apk --no-cache add ca-certificates bash
 
 ARG TARGETOS
 ARG TARGETARCH
