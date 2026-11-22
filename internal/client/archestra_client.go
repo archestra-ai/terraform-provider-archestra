@@ -22833,6 +22833,39 @@ func (e GetModelsWithApiKeys200JSONResponseBodyProvider) Valid() bool {
 	}
 }
 
+// Defines values for GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts.
+const (
+	GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsHigh    GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts = "high"
+	GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsLow     GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts = "low"
+	GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsMax     GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts = "max"
+	GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsMedium  GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts = "medium"
+	GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsMinimal GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts = "minimal"
+	GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsNone    GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts = "none"
+	GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsXhigh   GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts = "xhigh"
+)
+
+// Valid indicates whether the value is a known member of the GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts enum.
+func (e GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts) Valid() bool {
+	switch e {
+	case GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsHigh:
+		return true
+	case GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsLow:
+		return true
+	case GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsMax:
+		return true
+	case GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsMedium:
+		return true
+	case GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsMinimal:
+		return true
+	case GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsNone:
+		return true
+	case GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEffortsXhigh:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetModelsWithApiKeys400JSONResponseBodyErrorType.
 const (
 	GetModelsWithApiKeys400JSONResponseBodyErrorTypeApiValidationError GetModelsWithApiKeys400JSONResponseBodyErrorType = "api_validation_error"
@@ -23148,6 +23181,39 @@ func (e UpdateModel200JSONResponseBodyProvider) Valid() bool {
 	case UpdateModel200JSONResponseBodyProviderXai:
 		return true
 	case UpdateModel200JSONResponseBodyProviderZhipuai:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateModel200JSONResponseBodySupportedReasoningEfforts.
+const (
+	UpdateModel200JSONResponseBodySupportedReasoningEffortsHigh    UpdateModel200JSONResponseBodySupportedReasoningEfforts = "high"
+	UpdateModel200JSONResponseBodySupportedReasoningEffortsLow     UpdateModel200JSONResponseBodySupportedReasoningEfforts = "low"
+	UpdateModel200JSONResponseBodySupportedReasoningEffortsMax     UpdateModel200JSONResponseBodySupportedReasoningEfforts = "max"
+	UpdateModel200JSONResponseBodySupportedReasoningEffortsMedium  UpdateModel200JSONResponseBodySupportedReasoningEfforts = "medium"
+	UpdateModel200JSONResponseBodySupportedReasoningEffortsMinimal UpdateModel200JSONResponseBodySupportedReasoningEfforts = "minimal"
+	UpdateModel200JSONResponseBodySupportedReasoningEffortsNone    UpdateModel200JSONResponseBodySupportedReasoningEfforts = "none"
+	UpdateModel200JSONResponseBodySupportedReasoningEffortsXhigh   UpdateModel200JSONResponseBodySupportedReasoningEfforts = "xhigh"
+)
+
+// Valid indicates whether the value is a known member of the UpdateModel200JSONResponseBodySupportedReasoningEfforts enum.
+func (e UpdateModel200JSONResponseBodySupportedReasoningEfforts) Valid() bool {
+	switch e {
+	case UpdateModel200JSONResponseBodySupportedReasoningEffortsHigh:
+		return true
+	case UpdateModel200JSONResponseBodySupportedReasoningEffortsLow:
+		return true
+	case UpdateModel200JSONResponseBodySupportedReasoningEffortsMax:
+		return true
+	case UpdateModel200JSONResponseBodySupportedReasoningEffortsMedium:
+		return true
+	case UpdateModel200JSONResponseBodySupportedReasoningEffortsMinimal:
+		return true
+	case UpdateModel200JSONResponseBodySupportedReasoningEffortsNone:
+		return true
+	case UpdateModel200JSONResponseBodySupportedReasoningEffortsXhigh:
 		return true
 	default:
 		return false
@@ -54847,6 +54913,9 @@ type GetModelsWithApiKeys200JSONResponseBodyPriceSource string
 // GetModelsWithApiKeys200JSONResponseBodyProvider defines parameters for GetModelsWithApiKeys.
 type GetModelsWithApiKeys200JSONResponseBodyProvider string
 
+// GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts defines parameters for GetModelsWithApiKeys.
+type GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts string
+
 // GetModelsWithApiKeys400JSONResponseBodyErrorType defines parameters for GetModelsWithApiKeys.
 type GetModelsWithApiKeys400JSONResponseBodyErrorType string
 
@@ -54922,6 +54991,9 @@ type UpdateModel200JSONResponseBodyOutputModalities string
 
 // UpdateModel200JSONResponseBodyProvider defines parameters for UpdateModel.
 type UpdateModel200JSONResponseBodyProvider string
+
+// UpdateModel200JSONResponseBodySupportedReasoningEfforts defines parameters for UpdateModel.
+type UpdateModel200JSONResponseBodySupportedReasoningEfforts string
 
 // UpdateModel400JSONResponseBodyErrorType defines parameters for UpdateModel.
 type UpdateModel400JSONResponseBodyErrorType string
@@ -97453,19 +97525,20 @@ type GetModelsWithApiKeysResponse struct {
 			} `json:"output"`
 			Per GetModelsWithApiKeys200JSONResponseBodyMediaPricingPer `json:"per"`
 		} `json:"mediaPricing"`
-		ModelId                   string                                                     `json:"modelId"`
-		OutputLength              *int                                                       `json:"outputLength"`
-		OutputModalities          *[]GetModelsWithApiKeys200JSONResponseBodyOutputModalities `json:"outputModalities"`
-		PricePerMillionCacheRead  *string                                                    `json:"pricePerMillionCacheRead"`
-		PricePerMillionCacheWrite *string                                                    `json:"pricePerMillionCacheWrite"`
-		PricePerMillionInput      *string                                                    `json:"pricePerMillionInput"`
-		PricePerMillionOutput     *string                                                    `json:"pricePerMillionOutput"`
-		PriceSource               GetModelsWithApiKeys200JSONResponseBodyPriceSource         `json:"priceSource"`
-		PromptPricePerToken       *string                                                    `json:"promptPricePerToken"`
-		Provider                  GetModelsWithApiKeys200JSONResponseBodyProvider            `json:"provider"`
-		SupportedEndpoints        interface{}                                                `json:"supportedEndpoints"`
-		SupportsReasoningEffort   *bool                                                      `json:"supportsReasoningEffort"`
-		SupportsToolCalling       *bool                                                      `json:"supportsToolCalling"`
+		ModelId                   string                                                              `json:"modelId"`
+		OutputLength              *int                                                                `json:"outputLength"`
+		OutputModalities          *[]GetModelsWithApiKeys200JSONResponseBodyOutputModalities          `json:"outputModalities"`
+		PricePerMillionCacheRead  *string                                                             `json:"pricePerMillionCacheRead"`
+		PricePerMillionCacheWrite *string                                                             `json:"pricePerMillionCacheWrite"`
+		PricePerMillionInput      *string                                                             `json:"pricePerMillionInput"`
+		PricePerMillionOutput     *string                                                             `json:"pricePerMillionOutput"`
+		PriceSource               GetModelsWithApiKeys200JSONResponseBodyPriceSource                  `json:"priceSource"`
+		PromptPricePerToken       *string                                                             `json:"promptPricePerToken"`
+		Provider                  GetModelsWithApiKeys200JSONResponseBodyProvider                     `json:"provider"`
+		SupportedEndpoints        interface{}                                                         `json:"supportedEndpoints"`
+		SupportedReasoningEfforts *[]GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts `json:"supportedReasoningEfforts"`
+		SupportsReasoningEffort   *bool                                                               `json:"supportsReasoningEffort"`
+		SupportsToolCalling       *bool                                                               `json:"supportsToolCalling"`
 		SyncedLongContextPricing  *struct {
 			PricePerMillionCacheRead  *string `json:"pricePerMillionCacheRead"`
 			PricePerMillionCacheWrite *string `json:"pricePerMillionCacheWrite"`
@@ -97571,36 +97644,37 @@ type UpdateModelResponse struct {
 			TopK            *int                                                               `json:"top_k,omitempty"`
 			TopP            *float32                                                           `json:"top_p,omitempty"`
 		} `json:"configuredParameters"`
-		ContextLength                        *int                                              `json:"contextLength"`
-		CreatedAt                            time.Time                                         `json:"createdAt"`
-		CustomContextLength                  *int                                              `json:"customContextLength"`
-		CustomOutputLength                   *int                                              `json:"customOutputLength"`
-		CustomPricePerMillionCacheRead       *string                                           `json:"customPricePerMillionCacheRead"`
-		CustomPricePerMillionCacheWrite      *string                                           `json:"customPricePerMillionCacheWrite"`
-		CustomPricePerMillionInput           *string                                           `json:"customPricePerMillionInput"`
-		CustomPricePerMillionOutput          *string                                           `json:"customPricePerMillionOutput"`
-		DefaultParameters                    *map[string]interface{}                           `json:"defaultParameters"`
-		Description                          *string                                           `json:"description"`
-		DiscoveredViaLlmProxy                bool                                              `json:"discoveredViaLlmProxy"`
-		EmbeddingDimensions                  *EmbeddingDimensions                              `json:"embeddingDimensions"`
-		ExternalId                           string                                            `json:"externalId"`
-		Id                                   openapi_types.UUID                                `json:"id"`
-		Ignored                              bool                                              `json:"ignored"`
-		InputModalities                      *[]UpdateModel200JSONResponseBodyInputModalities  `json:"inputModalities"`
-		LastSyncedAt                         time.Time                                         `json:"lastSyncedAt"`
-		LongContextPricePerMillionCacheRead  *string                                           `json:"longContextPricePerMillionCacheRead"`
-		LongContextPricePerMillionCacheWrite *string                                           `json:"longContextPricePerMillionCacheWrite"`
-		LongContextPricePerMillionInput      *string                                           `json:"longContextPricePerMillionInput"`
-		LongContextPricePerMillionOutput     *string                                           `json:"longContextPricePerMillionOutput"`
-		LongContextThreshold                 *int                                              `json:"longContextThreshold"`
-		ModelId                              string                                            `json:"modelId"`
-		OutputLength                         *int                                              `json:"outputLength"`
-		OutputModalities                     *[]UpdateModel200JSONResponseBodyOutputModalities `json:"outputModalities"`
-		PromptPricePerToken                  *string                                           `json:"promptPricePerToken"`
-		Provider                             UpdateModel200JSONResponseBodyProvider            `json:"provider"`
-		SupportedEndpoints                   interface{}                                       `json:"supportedEndpoints"`
-		SupportsReasoningEffort              *bool                                             `json:"supportsReasoningEffort"`
-		SupportsToolCalling                  *bool                                             `json:"supportsToolCalling"`
+		ContextLength                        *int                                                       `json:"contextLength"`
+		CreatedAt                            time.Time                                                  `json:"createdAt"`
+		CustomContextLength                  *int                                                       `json:"customContextLength"`
+		CustomOutputLength                   *int                                                       `json:"customOutputLength"`
+		CustomPricePerMillionCacheRead       *string                                                    `json:"customPricePerMillionCacheRead"`
+		CustomPricePerMillionCacheWrite      *string                                                    `json:"customPricePerMillionCacheWrite"`
+		CustomPricePerMillionInput           *string                                                    `json:"customPricePerMillionInput"`
+		CustomPricePerMillionOutput          *string                                                    `json:"customPricePerMillionOutput"`
+		DefaultParameters                    *map[string]interface{}                                    `json:"defaultParameters"`
+		Description                          *string                                                    `json:"description"`
+		DiscoveredViaLlmProxy                bool                                                       `json:"discoveredViaLlmProxy"`
+		EmbeddingDimensions                  *EmbeddingDimensions                                       `json:"embeddingDimensions"`
+		ExternalId                           string                                                     `json:"externalId"`
+		Id                                   openapi_types.UUID                                         `json:"id"`
+		Ignored                              bool                                                       `json:"ignored"`
+		InputModalities                      *[]UpdateModel200JSONResponseBodyInputModalities           `json:"inputModalities"`
+		LastSyncedAt                         time.Time                                                  `json:"lastSyncedAt"`
+		LongContextPricePerMillionCacheRead  *string                                                    `json:"longContextPricePerMillionCacheRead"`
+		LongContextPricePerMillionCacheWrite *string                                                    `json:"longContextPricePerMillionCacheWrite"`
+		LongContextPricePerMillionInput      *string                                                    `json:"longContextPricePerMillionInput"`
+		LongContextPricePerMillionOutput     *string                                                    `json:"longContextPricePerMillionOutput"`
+		LongContextThreshold                 *int                                                       `json:"longContextThreshold"`
+		ModelId                              string                                                     `json:"modelId"`
+		OutputLength                         *int                                                       `json:"outputLength"`
+		OutputModalities                     *[]UpdateModel200JSONResponseBodyOutputModalities          `json:"outputModalities"`
+		PromptPricePerToken                  *string                                                    `json:"promptPricePerToken"`
+		Provider                             UpdateModel200JSONResponseBodyProvider                     `json:"provider"`
+		SupportedEndpoints                   interface{}                                                `json:"supportedEndpoints"`
+		SupportedReasoningEfforts            *[]UpdateModel200JSONResponseBodySupportedReasoningEfforts `json:"supportedReasoningEfforts"`
+		SupportsReasoningEffort              *bool                                                      `json:"supportsReasoningEffort"`
+		SupportsToolCalling                  *bool                                                      `json:"supportsToolCalling"`
 		SyncedLongContextPricing             *struct {
 			PricePerMillionCacheRead  *string `json:"pricePerMillionCacheRead"`
 			PricePerMillionCacheWrite *string `json:"pricePerMillionCacheWrite"`
@@ -129722,19 +129796,20 @@ func ParseGetModelsWithApiKeysResponse(rsp *http.Response) (*GetModelsWithApiKey
 				} `json:"output"`
 				Per GetModelsWithApiKeys200JSONResponseBodyMediaPricingPer `json:"per"`
 			} `json:"mediaPricing"`
-			ModelId                   string                                                     `json:"modelId"`
-			OutputLength              *int                                                       `json:"outputLength"`
-			OutputModalities          *[]GetModelsWithApiKeys200JSONResponseBodyOutputModalities `json:"outputModalities"`
-			PricePerMillionCacheRead  *string                                                    `json:"pricePerMillionCacheRead"`
-			PricePerMillionCacheWrite *string                                                    `json:"pricePerMillionCacheWrite"`
-			PricePerMillionInput      *string                                                    `json:"pricePerMillionInput"`
-			PricePerMillionOutput     *string                                                    `json:"pricePerMillionOutput"`
-			PriceSource               GetModelsWithApiKeys200JSONResponseBodyPriceSource         `json:"priceSource"`
-			PromptPricePerToken       *string                                                    `json:"promptPricePerToken"`
-			Provider                  GetModelsWithApiKeys200JSONResponseBodyProvider            `json:"provider"`
-			SupportedEndpoints        interface{}                                                `json:"supportedEndpoints"`
-			SupportsReasoningEffort   *bool                                                      `json:"supportsReasoningEffort"`
-			SupportsToolCalling       *bool                                                      `json:"supportsToolCalling"`
+			ModelId                   string                                                              `json:"modelId"`
+			OutputLength              *int                                                                `json:"outputLength"`
+			OutputModalities          *[]GetModelsWithApiKeys200JSONResponseBodyOutputModalities          `json:"outputModalities"`
+			PricePerMillionCacheRead  *string                                                             `json:"pricePerMillionCacheRead"`
+			PricePerMillionCacheWrite *string                                                             `json:"pricePerMillionCacheWrite"`
+			PricePerMillionInput      *string                                                             `json:"pricePerMillionInput"`
+			PricePerMillionOutput     *string                                                             `json:"pricePerMillionOutput"`
+			PriceSource               GetModelsWithApiKeys200JSONResponseBodyPriceSource                  `json:"priceSource"`
+			PromptPricePerToken       *string                                                             `json:"promptPricePerToken"`
+			Provider                  GetModelsWithApiKeys200JSONResponseBodyProvider                     `json:"provider"`
+			SupportedEndpoints        interface{}                                                         `json:"supportedEndpoints"`
+			SupportedReasoningEfforts *[]GetModelsWithApiKeys200JSONResponseBodySupportedReasoningEfforts `json:"supportedReasoningEfforts"`
+			SupportsReasoningEffort   *bool                                                               `json:"supportsReasoningEffort"`
+			SupportsToolCalling       *bool                                                               `json:"supportsToolCalling"`
 			SyncedLongContextPricing  *struct {
 				PricePerMillionCacheRead  *string `json:"pricePerMillionCacheRead"`
 				PricePerMillionCacheWrite *string `json:"pricePerMillionCacheWrite"`
@@ -129872,36 +129947,37 @@ func ParseUpdateModelResponse(rsp *http.Response) (*UpdateModelResponse, error) 
 				TopK            *int                                                               `json:"top_k,omitempty"`
 				TopP            *float32                                                           `json:"top_p,omitempty"`
 			} `json:"configuredParameters"`
-			ContextLength                        *int                                              `json:"contextLength"`
-			CreatedAt                            time.Time                                         `json:"createdAt"`
-			CustomContextLength                  *int                                              `json:"customContextLength"`
-			CustomOutputLength                   *int                                              `json:"customOutputLength"`
-			CustomPricePerMillionCacheRead       *string                                           `json:"customPricePerMillionCacheRead"`
-			CustomPricePerMillionCacheWrite      *string                                           `json:"customPricePerMillionCacheWrite"`
-			CustomPricePerMillionInput           *string                                           `json:"customPricePerMillionInput"`
-			CustomPricePerMillionOutput          *string                                           `json:"customPricePerMillionOutput"`
-			DefaultParameters                    *map[string]interface{}                           `json:"defaultParameters"`
-			Description                          *string                                           `json:"description"`
-			DiscoveredViaLlmProxy                bool                                              `json:"discoveredViaLlmProxy"`
-			EmbeddingDimensions                  *EmbeddingDimensions                              `json:"embeddingDimensions"`
-			ExternalId                           string                                            `json:"externalId"`
-			Id                                   openapi_types.UUID                                `json:"id"`
-			Ignored                              bool                                              `json:"ignored"`
-			InputModalities                      *[]UpdateModel200JSONResponseBodyInputModalities  `json:"inputModalities"`
-			LastSyncedAt                         time.Time                                         `json:"lastSyncedAt"`
-			LongContextPricePerMillionCacheRead  *string                                           `json:"longContextPricePerMillionCacheRead"`
-			LongContextPricePerMillionCacheWrite *string                                           `json:"longContextPricePerMillionCacheWrite"`
-			LongContextPricePerMillionInput      *string                                           `json:"longContextPricePerMillionInput"`
-			LongContextPricePerMillionOutput     *string                                           `json:"longContextPricePerMillionOutput"`
-			LongContextThreshold                 *int                                              `json:"longContextThreshold"`
-			ModelId                              string                                            `json:"modelId"`
-			OutputLength                         *int                                              `json:"outputLength"`
-			OutputModalities                     *[]UpdateModel200JSONResponseBodyOutputModalities `json:"outputModalities"`
-			PromptPricePerToken                  *string                                           `json:"promptPricePerToken"`
-			Provider                             UpdateModel200JSONResponseBodyProvider            `json:"provider"`
-			SupportedEndpoints                   interface{}                                       `json:"supportedEndpoints"`
-			SupportsReasoningEffort              *bool                                             `json:"supportsReasoningEffort"`
-			SupportsToolCalling                  *bool                                             `json:"supportsToolCalling"`
+			ContextLength                        *int                                                       `json:"contextLength"`
+			CreatedAt                            time.Time                                                  `json:"createdAt"`
+			CustomContextLength                  *int                                                       `json:"customContextLength"`
+			CustomOutputLength                   *int                                                       `json:"customOutputLength"`
+			CustomPricePerMillionCacheRead       *string                                                    `json:"customPricePerMillionCacheRead"`
+			CustomPricePerMillionCacheWrite      *string                                                    `json:"customPricePerMillionCacheWrite"`
+			CustomPricePerMillionInput           *string                                                    `json:"customPricePerMillionInput"`
+			CustomPricePerMillionOutput          *string                                                    `json:"customPricePerMillionOutput"`
+			DefaultParameters                    *map[string]interface{}                                    `json:"defaultParameters"`
+			Description                          *string                                                    `json:"description"`
+			DiscoveredViaLlmProxy                bool                                                       `json:"discoveredViaLlmProxy"`
+			EmbeddingDimensions                  *EmbeddingDimensions                                       `json:"embeddingDimensions"`
+			ExternalId                           string                                                     `json:"externalId"`
+			Id                                   openapi_types.UUID                                         `json:"id"`
+			Ignored                              bool                                                       `json:"ignored"`
+			InputModalities                      *[]UpdateModel200JSONResponseBodyInputModalities           `json:"inputModalities"`
+			LastSyncedAt                         time.Time                                                  `json:"lastSyncedAt"`
+			LongContextPricePerMillionCacheRead  *string                                                    `json:"longContextPricePerMillionCacheRead"`
+			LongContextPricePerMillionCacheWrite *string                                                    `json:"longContextPricePerMillionCacheWrite"`
+			LongContextPricePerMillionInput      *string                                                    `json:"longContextPricePerMillionInput"`
+			LongContextPricePerMillionOutput     *string                                                    `json:"longContextPricePerMillionOutput"`
+			LongContextThreshold                 *int                                                       `json:"longContextThreshold"`
+			ModelId                              string                                                     `json:"modelId"`
+			OutputLength                         *int                                                       `json:"outputLength"`
+			OutputModalities                     *[]UpdateModel200JSONResponseBodyOutputModalities          `json:"outputModalities"`
+			PromptPricePerToken                  *string                                                    `json:"promptPricePerToken"`
+			Provider                             UpdateModel200JSONResponseBodyProvider                     `json:"provider"`
+			SupportedEndpoints                   interface{}                                                `json:"supportedEndpoints"`
+			SupportedReasoningEfforts            *[]UpdateModel200JSONResponseBodySupportedReasoningEfforts `json:"supportedReasoningEfforts"`
+			SupportsReasoningEffort              *bool                                                      `json:"supportsReasoningEffort"`
+			SupportsToolCalling                  *bool                                                      `json:"supportsToolCalling"`
 			SyncedLongContextPricing             *struct {
 				PricePerMillionCacheRead  *string `json:"pricePerMillionCacheRead"`
 				PricePerMillionCacheWrite *string `json:"pricePerMillionCacheWrite"`

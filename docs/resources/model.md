@@ -104,6 +104,7 @@ output "gpt4o_price_source" {
 - `price_per_million_output` (String) Effective price per million output tokens (computed from custom or provider pricing)
 - `price_source` (String) Source of the current pricing: `custom`, `models_dev`, or `default`
 - `supported_endpoints` (List of String) Supported inference endpoints.
+- `supported_reasoning_efforts` (List of String) Reasoning effort levels the model accepts.
 - `supports_reasoning_effort` (Boolean) Supports reasoning effort.
 - `teams` (String) Teams as JSON.
 - `users` (String) Users as JSON.

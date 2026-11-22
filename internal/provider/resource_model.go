@@ -61,6 +61,7 @@ type LlmModelResourceModel struct {
 	Users                                jsontypes.Normalized `tfsdk:"users"`
 	EffectiveContextLength               types.Float64        `tfsdk:"effective_context_length"`
 	SupportedEndpoints                   types.List           `tfsdk:"supported_endpoints"`
+	SupportedReasoningEfforts            types.List           `tfsdk:"supported_reasoning_efforts"`
 	Labels                               []AgentLabelModel    `tfsdk:"labels"`
 
 	ID                          types.String `tfsdk:"id"`
