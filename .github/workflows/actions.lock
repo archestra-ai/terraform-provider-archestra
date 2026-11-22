@@ -28,6 +28,8 @@ workflows:
         - 'hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e'
     '.github/workflows/provider-audit.yml':
         - 'actions/checkout@v7.0.1'
+    '.github/workflows/previous-release-published.yml':
+        - 'archestra-ai/.github@v1.25.2'
     '.github/workflows/release-finalize.yml':
         - 'actions/checkout@v7.0.1'
         - 'archestra-ai/.github@v1.31.1'

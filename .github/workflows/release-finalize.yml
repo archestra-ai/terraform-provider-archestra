@@ -116,6 +116,25 @@ jobs:
           TAG: ${{ needs.finalize.outputs.tag-name }}
         run: python3 -I scripts/upload-release-assets.py release-assets "$TAG" --built release-provider
 
+  recheck-release-prs:
+    name: Re-check open release PRs
+    # The next release PR waits for this release (Previous Release Published).
+    # Re-check it now instead of at that workflow's next scheduled run: the
+    # release event this run's GITHUB_TOKEN publish caused starts no workflow,
+    # a workflow_dispatch does.
+    needs: upload-release
+    if: ${{ needs.upload-release.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write # Start the Previous Release Published workflow.
+    steps:
+      - name: Start Previous Release Published
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh workflow run previous-release-published.yml --ref main
+
   verify-marketplace:
     name: Verify Marketplace listing
     needs: [finalize, upload-release]
