@@ -15,6 +15,7 @@ func TestRoleRejectsUnsupportedOrganizationPermissions(t *testing.T) {
 		wantError        bool
 	}{
 		{"agent", "update", true}, {"agent", "delete", false}, {"member", "impersonate", false}, {"chat", "full-view", false}, {"retired-resource", "read", true}, {"agent", "bogus-action", true},
+		{"guardrailsLog", "admin", false}, {"clientConnection", "read", false}, {"clientConnection", "admin", false}, {"guardrailsYell", "read", true},
 	} {
 		t.Run(tc.resource+"/"+tc.action, func(t *testing.T) {
 			r := RoleResource{}

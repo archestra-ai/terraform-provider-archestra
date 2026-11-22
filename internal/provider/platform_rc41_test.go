@@ -185,10 +185,3 @@ func TestCatalogRuntimeTierKeepsConfiguredSpelling(t *testing.T) {
 		t.Fatalf("a different tier was hidden: %v", got.Attributes()["runtime_tier"])
 	}
 }
-
-func TestRoleAcceptsGuardrailsYellPermission(t *testing.T) {
-	actions := currentRoleActions["guardrailsYell"]
-	if len(actions) != 2 || actions[0] != "read" || actions[1] != "admin" {
-		t.Fatalf("guardrailsYell actions = %v", actions)
-	}
-}
