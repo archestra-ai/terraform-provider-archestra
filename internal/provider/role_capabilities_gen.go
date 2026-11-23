@@ -1,4 +1,4 @@
-// Code generated from Archestra allAvailableActions (60a9fe4f69145d77c4aeb20fe9347471aa9aedc9). DO NOT EDIT.
+// Code generated from Archestra allAvailableActions (77d91daf5efba07d492ceccf8ba1cad716a990a5). DO NOT EDIT.
 package provider
 
 var currentRoleActions = map[string][]string{
@@ -9,11 +9,12 @@ var currentRoleActions = map[string][]string{
 	"app":                   {"read", "create"},
 	"auditLog":              {"read", "admin"},
 	"chat":                  {"read", "create", "update", "delete", "full-view"},
+	"clientConnection":      {"read", "admin"},
 	"costExport":            {"read", "create", "update", "delete"},
 	"credential":            {"read", "create"},
 	"environment":           {"read", "create", "update", "delete"},
+	"guardrailsLog":         {"read", "admin"},
 	"guardrailsPolicy":      {"read", "update"},
-	"guardrailsYell":        {"read", "admin"},
 	"identityProvider":      {"read", "create", "update", "delete"},
 	"invitation":            {"create", "cancel"},
 	"knowledgeSource":       {"read", "create", "update", "delete", "query"},
