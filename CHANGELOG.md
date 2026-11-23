@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.11.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.10.0...v3.11.0) (2026-11-23)
+
+
+### Features
+
+* accept guardrailsLog and clientConnection role permissions; sync platform API to 1.5.0-rc.44 ([#297](https://github.com/archestra-ai/terraform-provider-archestra/issues/297)) ([aa46fd1](https://github.com/archestra-ai/terraform-provider-archestra/commit/aa46fd1d13b720180391ad1fd3bfccc90cc29899))
+* expose model reasoning effort levels; sync platform API to 1.5.0-rc.42 ([#292](https://github.com/archestra-ai/terraform-provider-archestra/issues/292)) ([0655fdb](https://github.com/archestra-ai/terraform-provider-archestra/commit/0655fdb5929ea66c63db2ab89da221c2fa8a43f4))
+
+
+### Dependencies
+
+* **terraform:** bump github.com/oapi-codegen/runtime from 1.8.0 to 1.9.0 in the terraform-go-dependencies group ([#290](https://github.com/archestra-ai/terraform-provider-archestra/issues/290)) ([843812f](https://github.com/archestra-ai/terraform-provider-archestra/commit/843812f6f8c32db6d663b19602fca2cbec7588ba))
+
 ## [3.10.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.9.1...v3.10.0) (2026-11-21)
 
 
