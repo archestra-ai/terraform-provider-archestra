@@ -39,6 +39,10 @@ var gatewaySubagentLoadBalancingAttrSpec = AttrSpec{
 	},
 }
 
+// Retries and failover are fixed from API 1.5.0-rc.45; it strips both fields
+// on write and omits them on read.
+const failoverDeprecation = "Archestra API 1.5.0-rc.45 and later always retry retriable failures and fail over to other assigned subagents, and ignore this value. Remove it from configuration."
+
 func gatewaySubagentLoadBalancingAttribute() schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{
 		Optional: true,
@@ -65,26 +69,30 @@ func gatewaySubagentLoadBalancingAttribute() schema.SingleNestedAttribute {
 			"retries": schema.Int64Attribute{
 				Optional: true, Computed: true, Default: int64default.StaticInt64(1),
 				MarkdownDescription: "Retries on the same subagent after a retriable failure, 0 to 3 (default `1`).",
+				DeprecationMessage:  failoverDeprecation,
 				Validators:          []validator.Int64{int64validator.Between(0, 3)},
 			},
 			"fallback_enabled": schema.BoolAttribute{
 				Optional: true, Computed: true, Default: booldefault.StaticBool(true),
 				MarkdownDescription: "Whether a failed request falls back to another assigned subagent (default `true`).",
+				DeprecationMessage:  failoverDeprecation,
 			},
 		},
 	}
 }
 
 // subagentLoadBalancingFromResponse reads the stored setting; null when the
-// gateway has none, and on releases without it.
-func subagentLoadBalancingFromResponse(body []byte, diags *diag.Diagnostics) types.Object {
+// gateway has none, and on releases without it. Releases that hard-code
+// failover omit retries and fallbackEnabled, so those keep the prior value or
+// the schema default.
+func subagentLoadBalancingFromResponse(body []byte, prior types.Object, diags *diag.Diagnostics) types.Object {
 	var wire struct {
 		Config *struct {
 			Enabled         bool             `json:"enabled"`
 			Algorithm       string           `json:"algorithm"`
 			Weights         map[string]int64 `json:"weights"`
-			Retries         int64            `json:"retries"`
-			FallbackEnabled bool             `json:"fallbackEnabled"`
+			Retries         *int64           `json:"retries"`
+			FallbackEnabled *bool            `json:"fallbackEnabled"`
 		} `json:"subagentLoadBalancing"`
 	}
 	if err := json.Unmarshal(body, &wire); err != nil {
@@ -101,12 +109,27 @@ func subagentLoadBalancingFromResponse(body []byte, diags *diag.Diagnostics) typ
 		weights, d = types.MapValueFrom(context.Background(), types.Int64Type, c.Weights)
 		diags.Append(d...)
 	}
+	retries, fallback := types.Int64Value(1), types.BoolValue(true)
+	if !prior.IsNull() && !prior.IsUnknown() {
+		if v, ok := prior.Attributes()["retries"].(types.Int64); ok && !v.IsNull() && !v.IsUnknown() {
+			retries = v
+		}
+		if v, ok := prior.Attributes()["fallback_enabled"].(types.Bool); ok && !v.IsNull() && !v.IsUnknown() {
+			fallback = v
+		}
+	}
+	if c.Retries != nil {
+		retries = types.Int64Value(*c.Retries)
+	}
+	if c.FallbackEnabled != nil {
+		fallback = types.BoolValue(*c.FallbackEnabled)
+	}
 	out, d := types.ObjectValue(subagentLoadBalancingAttrTypes, map[string]attr.Value{
 		"enabled":          types.BoolValue(c.Enabled),
 		"algorithm":        types.StringValue(c.Algorithm),
 		"weights":          weights,
-		"retries":          types.Int64Value(c.Retries),
-		"fallback_enabled": types.BoolValue(c.FallbackEnabled),
+		"retries":          retries,
+		"fallback_enabled": fallback,
 	})
 	diags.Append(d...)
 	return out
