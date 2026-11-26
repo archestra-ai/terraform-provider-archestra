@@ -112,5 +112,7 @@ func (r *OrganizationSettingsResource) KnownIntentionallySkipped() []string {
 		"skillToolsEnabled",
 		// Written through its own endpoint; manage it with archestra_mcp_runtime_tiers.
 		"mcpRuntimeTiers",
+		// Recorded by the one-time first-run setup, not declarative configuration.
+		"firstRunSetupCompletedAt", "telemetryEnabled",
 	}
 }

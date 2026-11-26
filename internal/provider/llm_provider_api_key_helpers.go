@@ -120,4 +120,8 @@ func (r *LLMProviderApiKeyResource) flattenKey(ctx context.Context, data *LLMPro
 	if wire.SubscriptionKind != nil {
 		data.SubscriptionKind = types.StringValue(string(*wire.SubscriptionKind))
 	}
+	data.Plan = types.StringNull()
+	if wire.Plan != nil {
+		data.Plan = types.StringValue(string(*wire.Plan))
+	}
 }

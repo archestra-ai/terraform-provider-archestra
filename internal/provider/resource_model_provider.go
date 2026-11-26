@@ -47,6 +47,7 @@ type LLMProviderApiKeyResourceModel struct {
 	CreatedByServiceAccountID types.String      `tfsdk:"created_by_service_account_id"`
 	RequiresReauthentication  types.Bool        `tfsdk:"requires_reauthentication"`
 	SubscriptionKind          types.String      `tfsdk:"subscription_kind"`
+	Plan                      types.String      `tfsdk:"plan"`
 	IsAgentKey                types.Bool        `tfsdk:"is_agent_key"`
 	ID                        types.String      `tfsdk:"id"`
 	Name                      types.String      `tfsdk:"name"`
@@ -82,6 +83,7 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 			"created_by_service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Service account that created the key."},
 			"requires_reauthentication":     schema.BoolAttribute{Computed: true, MarkdownDescription: "Whether the credential requires reauthentication."},
 			"subscription_kind":             schema.StringAttribute{Computed: true, MarkdownDescription: "Subscription credential type, when applicable."},
+			"plan":                          schema.StringAttribute{Computed: true, MarkdownDescription: "Provider plan the stored credential belongs to: `apiKey`, `personal` or `enterprise`."},
 			"is_agent_key":                  schema.BoolAttribute{Computed: true, MarkdownDescription: "True for a platform-managed agent key, which rejects user edits."},
 			"id": schema.StringAttribute{
 				Computed:            true,

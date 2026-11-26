@@ -40,6 +40,10 @@ resource "archestra_agent" "support" {
   excluded_tool_ids      = []
   excluded_connector_ids = []
 
+  # Keep the manual subagents behind search_tools/run_tool instead of listing
+  # each one as its own tool.
+  progressive_subagent_loading = true
+
   skills = {
     mode     = "manual"
     allowed  = []
@@ -174,6 +178,7 @@ resource "archestra_agent" "worker" {
 - `model_pool_id` (String) Model pool used for the agent; the API resolves its model and provider key.
 - `network_policy` (Attributes) Egress override for this agent's Agent Runtime and Code Sandbox. Omit to inherit the environment's policy; removing it later returns the agent to that policy. (see [below for nested schema](#nestedatt--network_policy))
 - `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
+- `progressive_subagent_loading` (Boolean) Whether manually assigned subagents stay behind `search_tools` and `run_tool` instead of each being listed as its own tool.
 - `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `runtime` (Attributes) Dedicated runtime used for interactive, delegated, and long-running work. Requires an Agent Runtime backend on the platform (e.g. the Kubernetes orchestrator). (see [below for nested schema](#nestedatt--runtime))
 - `skills` (Attributes) Skill activation mode and complete allowed/excluded references; omit to preserve the current policy. (see [below for nested schema](#nestedatt--skills))

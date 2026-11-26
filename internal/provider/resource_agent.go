@@ -67,6 +67,7 @@ type AgentResourceModel struct {
 	SandboxAvailable                     types.Bool   `tfsdk:"sandbox_available"`
 	AccessAllSubagents                   types.Bool   `tfsdk:"access_all_subagents"`
 	ToolExposureMode                     types.String `tfsdk:"tool_exposure_mode"`
+	ProgressiveSubagentLoading           types.Bool   `tfsdk:"progressive_subagent_loading"`
 
 	ID                         types.String           `tfsdk:"id"`
 	Name                       types.String           `tfsdk:"name"`
@@ -614,6 +615,8 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 		"identityProviderId", "slug", "scope", "teams", "users",
 		// Subagent load balancing applies only to MCP gateways.
 		"subagentLoadBalancing",
+		// Derived per caller from their own Agent Runtime account.
+		"resolvedLlmPersonalSubscription",
 	}
 }
 
@@ -638,6 +641,7 @@ var agentAttrSpec = append(append(agentRelationshipAttrSpecs(), AttrSpec{TFName:
 	agentNetworkPolicyAttrSpec,
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar, OmitOnNull: true},
+	{TFName: "progressive_subagent_loading", JSONName: "progressiveSubagentLoading", Kind: Scalar, OmitOnNull: true},
 
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},

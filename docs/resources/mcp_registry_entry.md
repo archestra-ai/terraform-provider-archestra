@@ -210,6 +210,8 @@ resource "archestra_mcp_registry_entry" "remote_oauth_advanced" {
       provider_name          = "Example OAuth"
       browser_auth           = true
       generic_oauth          = false
+
+      requires_client_credentials = true
     }
   }
 }
@@ -464,6 +466,7 @@ Optional:
 - `generic_oauth` (Boolean) Treat the server as a generic OAuth provider (skip vendor-specific probes).
 - `grant_type` (String) OAuth grant type. One of `authorization_code`, `client_credentials`.
 - `provider_name` (String) Human-readable name of the OAuth provider for display.
+- `requires_client_credentials` (Boolean) Whether installers must supply this OAuth app's client ID and secret before connecting (authorization-code flow only).
 - `requires_proxy` (Boolean) Route OAuth redirects through the Archestra proxy.
 - `resource_metadata_url` (String) URL of the protected-resource metadata document.
 - `scopes` (List of String) List of OAuth scopes to request (e.g., ['read', 'write'])

@@ -195,6 +195,8 @@ resource "archestra_mcp_registry_entry" "remote_oauth_advanced" {
       provider_name          = "Example OAuth"
       browser_auth           = true
       generic_oauth          = false
+
+      requires_client_credentials = true
     }
   }
 }

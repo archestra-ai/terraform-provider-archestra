@@ -112,3 +112,29 @@ func TestAccRegistryEntryDesktopConfig(t *testing.T) {
 			)},
 	}})
 }
+
+func TestAccProgressiveSubagentLoading(t *testing.T) {
+	if os.Getenv("TF_ACC") != "" && !testAccAPIVersionAtLeast(t, "1.5.0-rc.45") {
+		t.Skip("Progressive subagent loading requires API 1.5.0-rc.45")
+	}
+	for _, kind := range []string{"archestra_agent", "archestra_mcp_gateway"} {
+		t.Run(kind, func(t *testing.T) {
+			name := acctest.RandomWithPrefix("tf-progressive")
+			config := func(setting string) string {
+				return fmt.Sprintf(`resource %q "test" {
+  name = %q
+  %s
+}`, kind, name, setting)
+			}
+			address := kind + ".test"
+			noChanges := resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}
+			resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+				{Config: config(""), Check: resource.TestCheckResourceAttr(address, "progressive_subagent_loading", "false")},
+				{Config: config("progressive_subagent_loading = true"), Check: resource.TestCheckResourceAttr(address, "progressive_subagent_loading", "true")},
+				{Config: config("progressive_subagent_loading = true"), ConfigPlanChecks: noChanges},
+				{ResourceName: address, ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"permissions"}},
+				{Config: config("progressive_subagent_loading = false"), Check: resource.TestCheckResourceAttr(address, "progressive_subagent_loading", "false")},
+			}})
+		})
+	}
+}

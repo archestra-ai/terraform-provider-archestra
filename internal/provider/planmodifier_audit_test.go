@@ -96,6 +96,7 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 		"default_smart_model_id",
 		"default_auto_router_id",
 		"default_member_role",
+		"departing_member_owner_id",
 		"onboarding_wizard",
 		"icon_logo_dark",
 		"require_two_factor",

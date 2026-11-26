@@ -84,6 +84,7 @@ resource "archestra_mcp_gateway" "engineering" {
 - `missing_credential_behavior` (String) Behavior when a caller has no usable tool credential.
 - `passthrough_headers` (List of String) Allowlist of HTTP header names to forward from gateway requests to downstream MCP servers
 - `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
+- `progressive_subagent_loading` (Boolean) Whether manually assigned subagents stay behind `search_tools` and `run_tool` instead of each being listed as its own tool.
 - `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `skills` (Attributes) Skills published through this gateway; omit to preserve existing publication settings. (see [below for nested schema](#nestedatt--skills))
 - `subagent_ids` (Set of String) Local agents available as subagents; omit to preserve assignments or set an empty set to clear them.
@@ -168,8 +169,8 @@ Optional:
 
 - `algorithm` (String) `round_robin` (default), `weighted` or `random`.
 - `enabled` (Boolean) Whether requests are distributed across the assigned subagents (default `false`).
-- `fallback_enabled` (Boolean) Whether a failed request falls back to another assigned subagent (default `true`).
-- `retries` (Number) Retries on the same subagent after a retriable failure, 0 to 3 (default `1`).
+- `fallback_enabled` (Boolean, Deprecated) Whether a failed request falls back to another assigned subagent (default `true`).
+- `retries` (Number, Deprecated) Retries on the same subagent after a retriable failure, 0 to 3 (default `1`).
 - `weights` (Map of Number) Weights from 1 to 1000 keyed by subagent UUID, used by `weighted`; unlisted subagents weigh 1.
 
 
