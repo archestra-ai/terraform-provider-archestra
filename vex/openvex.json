@@ -3,9 +3,75 @@
   "@id": "https://github.com/archestra-ai/terraform-provider-archestra/blob/main/vex/openvex.json",
   "author": "Archestra (https://archestra.ai)",
   "role": "Document Creator",
-  "timestamp": "2026-11-20T01:10:04Z",
-  "version": 10,
+  "timestamp": "2026-11-23T07:39:00Z",
+  "version": 19,
   "statements": [
+    {
+      "vulnerability": {
+        "name": "CVE-2026-107493"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-23T07:39:00Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet CLI mode) only executes /usr/local/bin/terraform (OpenTofu), which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (no PT_INTERP, no DT_NEEDED) that use Go's crypto/tls, so they never load libssl.so.3 or libcrypto.so.3. OpenSSL is linked only by apk (libapk), c_rehash and busybox's ssl_client, which no process in the image invokes."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-107494"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-23T07:39:00Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet CLI mode) only executes /usr/local/bin/terraform (OpenTofu), which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (no PT_INTERP, no DT_NEEDED) that use Go's crypto/tls, so they never load libssl.so.3 or libcrypto.so.3. OpenSSL is linked only by apk (libapk), c_rehash and busybox's ssl_client, which no process in the image invokes."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-107496"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-23T07:39:00Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet CLI mode) only executes /usr/local/bin/terraform (OpenTofu), which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (no PT_INTERP, no DT_NEEDED) that use Go's crypto/tls, so they never load libssl.so.3 or libcrypto.so.3. OpenSSL is linked only by apk (libapk), c_rehash and busybox's ssl_client, which no process in the image invokes."
+    },
     {
       "vulnerability": {
         "name": "CVE-2026-107891"
@@ -27,6 +93,50 @@
       "timestamp": "2026-11-20T01:10:04Z",
       "justification": "vulnerable_code_not_in_execute_path",
       "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet, fork mode) only executes /usr/local/bin/terraform, which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (CGO_ENABLED=0, no PT_INTERP or dynamic section) and do not use musl, so musl's regcomp() is never called by any process the image runs. musl is used only by the busybox, bash, apk and musl-utils programs, which nothing in the image invokes."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-121482"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-23T07:39:00Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet CLI mode) only executes /usr/local/bin/terraform (OpenTofu), which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (no PT_INTERP, no DT_NEEDED) that use Go's crypto/tls, so they never load libssl.so.3 or libcrypto.so.3. OpenSSL is linked only by apk (libapk), c_rehash and busybox's ssl_client, which no process in the image invokes."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-124709"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-23T07:39:00Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet CLI mode) only executes /usr/local/bin/terraform (OpenTofu), which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (no PT_INTERP, no DT_NEEDED) that use Go's crypto/tls, so they never load libssl.so.3 or libcrypto.so.3. OpenSSL is linked only by apk (libapk), c_rehash and busybox's ssl_client, which no process in the image invokes."
     },
     {
       "vulnerability": {
@@ -159,6 +269,28 @@
     },
     {
       "vulnerability": {
+        "name": "CVE-2026-84786"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-23T07:39:00Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet CLI mode) only executes /usr/local/bin/terraform (OpenTofu), which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (no PT_INTERP, no DT_NEEDED) that use Go's crypto/tls, so they never load libssl.so.3 or libcrypto.so.3. OpenSSL is linked only by apk (libapk), c_rehash and busybox's ssl_client, which no process in the image invokes."
+    },
+    {
+      "vulnerability": {
         "name": "CVE-2026-85091"
       },
       "products": [
@@ -175,6 +307,72 @@
       "timestamp": "2026-11-20T01:10:04Z",
       "justification": "vulnerable_code_not_in_execute_path",
       "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet, fork mode) only executes /usr/local/bin/terraform, which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (CGO_ENABLED=0, no PT_INTERP or dynamic section), so no process the image runs loads libz.so.1 and zlib's gzwrite()/gz_write() is never called. Only apk (via libapk) links zlib, and nothing in the image invokes it."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-88823"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-23T07:39:00Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet CLI mode) only executes /usr/local/bin/terraform (OpenTofu), which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (no PT_INTERP, no DT_NEEDED) that use Go's crypto/tls, so they never load libssl.so.3 or libcrypto.so.3. OpenSSL is linked only by apk (libapk), c_rehash and busybox's ssl_client, which no process in the image invokes."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-95691"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-23T07:39:00Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet CLI mode) only executes /usr/local/bin/terraform (OpenTofu), which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (no PT_INTERP, no DT_NEEDED) that use Go's crypto/tls, so they never load libssl.so.3 or libcrypto.so.3. OpenSSL is linked only by apk (libapk), c_rehash and busybox's ssl_client, which no process in the image invokes."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-95692"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/provider-archestra",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/libcrypto3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            },
+            {
+              "@id": "pkg:apk/alpine/libssl3@3.5.9-r2?arch=x86_64&distro=alpine-3.23&upstream=openssl"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "timestamp": "2026-11-23T07:39:00Z",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The image's entrypoint /usr/local/bin/provider (upjet CLI mode) only executes /usr/local/bin/terraform (OpenTofu), which only executes the mirrored terraform-provider-archestra plugin; all three are static Go binaries (no PT_INTERP, no DT_NEEDED) that use Go's crypto/tls, so they never load libssl.so.3 or libcrypto.so.3. OpenSSL is linked only by apk (libapk), c_rehash and busybox's ssl_client, which no process in the image invokes."
     },
     {
       "vulnerability": {
