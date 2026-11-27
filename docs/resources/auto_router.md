@@ -49,6 +49,23 @@ resource "archestra_auto_router" "engineering" {
   }
 }
 
+# A router on the default decision model can warm start from the
+# organization's scored past sessions (learn_from_past_sessions, default
+# true). Until its own traffic spans a week, its plans are sized at
+# expected_traffic_factor times the organization's past daily traffic.
+resource "archestra_auto_router" "support" {
+  name                     = "auto:support"
+  budget_preset            = "cost_efficient"
+  learn_from_past_sessions = true
+  expected_traffic_factor  = 1.5
+
+  tiers = {
+    fast   = { model_id = archestra_model.fast.id, provider_api_key_id = var.openai_provider_key_id }
+    normal = { model_id = archestra_model.normal.id, provider_api_key_id = var.openai_provider_key_id }
+    smart  = { model_id = archestra_model.smart.id, provider_api_key_id = var.openai_provider_key_id }
+  }
+}
+
 # Run an agent on the router instead of a fixed model, key or pool.
 resource "archestra_agent" "support" {
   name           = "Support"
@@ -75,6 +92,8 @@ resource "archestra_virtual_key" "ci" {
 - `budget_preset` (String) Budget preset that derives the daily budget from current usage: `cost_efficient`, `balanced` or `intelligence`. Overrides `budget_usd_per_day` while set.
 - `budget_usd_per_day` (Number) Custom daily budget in USD. The API cannot clear it: removing it keeps the stored value, which applies again when `budget_preset` is unset.
 - `decision_model` (Attributes) Model that scores sessions. Omit it for the platform default model on the organization's primary key of the default decisions provider. (see [below for nested schema](#nestedatt--decision_model))
+- `expected_traffic_factor` (Number) Multiplier on the organization's past daily traffic that plans are sized for until the router's own traffic spans a week. Greater than 0 and at most 100; defaults to `1`.
+- `learn_from_past_sessions` (Boolean) Whether the router also learns from the organization's scored past sessions. Only a router on the default decision model reads them. Defaults to `true` for a new router.
 
 ### Read-Only
 

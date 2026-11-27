@@ -34,6 +34,23 @@ resource "archestra_auto_router" "engineering" {
   }
 }
 
+# A router on the default decision model can warm start from the
+# organization's scored past sessions (learn_from_past_sessions, default
+# true). Until its own traffic spans a week, its plans are sized at
+# expected_traffic_factor times the organization's past daily traffic.
+resource "archestra_auto_router" "support" {
+  name                     = "auto:support"
+  budget_preset            = "cost_efficient"
+  learn_from_past_sessions = true
+  expected_traffic_factor  = 1.5
+
+  tiers = {
+    fast   = { model_id = archestra_model.fast.id, provider_api_key_id = var.openai_provider_key_id }
+    normal = { model_id = archestra_model.normal.id, provider_api_key_id = var.openai_provider_key_id }
+    smart  = { model_id = archestra_model.smart.id, provider_api_key_id = var.openai_provider_key_id }
+  }
+}
+
 # Run an agent on the router instead of a fixed model, key or pool.
 resource "archestra_agent" "support" {
   name           = "Support"

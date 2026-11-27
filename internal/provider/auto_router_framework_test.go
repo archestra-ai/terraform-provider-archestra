@@ -26,11 +26,13 @@ const (
 // fakeAutoRouterAPI mirrors the router API's write semantics at the HTTP
 // boundary: request tiers carry modelId/providerApiKeyId while responses
 // carry id/apiKey.id, a missing decision model gets the server default, and
-// a custom budget sent without a preset clears the preset.
+// a custom budget sent without a preset clears the preset. A legacy API
+// neither returns nor accepts the past-session settings.
 type fakeAutoRouterAPI struct {
 	t       *testing.T
 	mu      sync.Mutex
 	enabled bool
+	legacy  bool
 	router  map[string]any
 	bodies  []map[string]any
 }
@@ -63,6 +65,12 @@ func (f *fakeAutoRouterAPI) ServeHTTP(w http.ResponseWriter, req *http.Request) 
 		f.router = map[string]any{"name": body["name"], "budgetUsdPerDay": body["budgetUsdPerDay"], "budgetPreset": body["budgetPreset"], "tiers": body["tiers"], "decisionModel": body["decisionModel"]}
 		if f.router["decisionModel"] == nil {
 			f.router["decisionModel"] = map[string]any{"apiKeyId": nil, "model": "server-default-scorer"}
+		}
+		f.router["learnFromPastSessions"], f.router["expectedTrafficFactor"] = true, 1
+		for _, key := range []string{"learnFromPastSessions", "expectedTrafficFactor"} {
+			if value, ok := body[key]; ok {
+				f.router[key] = value
+			}
 		}
 		_ = json.NewEncoder(w).Encode(f.response())
 	case f.router != nil && req.URL.Path == item && req.Method == http.MethodGet:
@@ -97,6 +105,13 @@ func (f *fakeAutoRouterAPI) decode(req *http.Request) map[string]any {
 			f.t.Error("decisionModel was sent without the apiKeyId the API requires")
 		}
 	}
+	if f.legacy {
+		for _, key := range []string{"learnFromPastSessions", "expectedTrafficFactor"} {
+			if _, sent := body[key]; sent {
+				f.t.Errorf("%s was sent to an API that does not accept it", key)
+			}
+		}
+	}
 	f.bodies = append(f.bodies, body)
 	return body
 }
@@ -107,14 +122,21 @@ func (f *fakeAutoRouterAPI) response() map[string]any {
 		tier := mustAs[map[string]any](raw)
 		tiers[name] = map[string]any{"id": tier["modelId"], "provider": "openai", "modelId": "provider-" + name, "apiKey": map[string]any{"id": tier["providerApiKeyId"], "name": "Key"}}
 	}
-	return map[string]any{
+	response := map[string]any{
 		"id": autoRouterTestID, "name": f.router["name"], "enabled": true,
 		"budgetUsdPerDay": f.router["budgetUsdPerDay"], "budgetPreset": f.router["budgetPreset"],
 		"tiers": tiers, "decisionModel": f.router["decisionModel"],
-		"usesPastSessions": false, "virtualApiKeyIds": []string{},
-		"usage":      map[string]any{"agentCount": 0, "organizationDefault": false},
-		"generation": 1, "plannedGeneration": 1, "status": map[string]any{},
+		"virtualApiKeyIds": []string{},
+		"usage":            map[string]any{"agentCount": 0, "organizationDefault": false},
+		"generation":       1, "plannedGeneration": 1, "status": map[string]any{},
 	}
+	if !f.legacy {
+		response["learnFromPastSessions"] = f.router["learnFromPastSessions"]
+		response["expectedTrafficFactor"] = f.router["expectedTrafficFactor"]
+		response["readsPastSessions"] = f.router["learnFromPastSessions"]
+		response["traffic"] = map[string]any{"volumeSource": "history", "pastBaseline": nil}
+	}
+	return response
 }
 
 func autoRouterTestConfig(url, extra string) string {
@@ -152,9 +174,26 @@ func TestAutoRouterTerraformFramework(t *testing.T) {
 					tfresource.TestCheckResourceAttr("archestra_auto_router.test", "decision_model.model", "server-default-scorer"),
 					tfresource.TestCheckNoResourceAttr("archestra_auto_router.test", "decision_model.api_key_id"),
 					tfresource.TestCheckNoResourceAttr("archestra_auto_router.test", "budget_usd_per_day"),
+					tfresource.TestCheckResourceAttr("archestra_auto_router.test", "learn_from_past_sessions", "true"),
+					tfresource.TestCheckResourceAttr("archestra_auto_router.test", "expected_traffic_factor", "1"),
 				),
 			},
 			{Config: autoRouterTestConfig(server.URL, `budget_preset = "balanced"`), PlanOnly: true},
+			{
+				Config: autoRouterTestConfig(server.URL, "budget_preset = \"balanced\"\n  learn_from_past_sessions = false\n  expected_traffic_factor = 2.5"),
+				Check: tfresource.ComposeAggregateTestCheckFunc(
+					tfresource.TestCheckResourceAttr("archestra_auto_router.test", "learn_from_past_sessions", "false"),
+					tfresource.TestCheckResourceAttr("archestra_auto_router.test", "expected_traffic_factor", "2.5"),
+				),
+			},
+			{
+				// Removing the settings from the configuration keeps the stored values.
+				Config: autoRouterTestConfig(server.URL, `budget_preset = "balanced"`),
+				Check: tfresource.ComposeAggregateTestCheckFunc(
+					tfresource.TestCheckResourceAttr("archestra_auto_router.test", "learn_from_past_sessions", "false"),
+					tfresource.TestCheckResourceAttr("archestra_auto_router.test", "expected_traffic_factor", "2.5"),
+				),
+			},
 			{
 				// Adding a custom budget while keeping the preset must not clear the preset.
 				Config: autoRouterTestConfig(server.URL, "budget_preset = \"balanced\"\n  budget_usd_per_day = 25"),
@@ -199,6 +238,25 @@ func TestAutoRouterTerraformFramework(t *testing.T) {
 	if budgetUpdate == nil || budgetUpdate["budgetPreset"] != "balanced" {
 		t.Errorf("budget update did not restate the configured preset: %v", budgetUpdate)
 	}
+}
+
+// An API without the past-session settings must read them as null without drift.
+func TestAutoRouterTerraformWithoutPastSessionSettings(t *testing.T) {
+	server := httptest.NewServer(&fakeAutoRouterAPI{t: t, enabled: true, legacy: true})
+	defer server.Close()
+	tfresource.UnitTest(t, tfresource.TestCase{
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []tfresource.TestStep{
+			{
+				Config: autoRouterTestConfig(server.URL, `budget_preset = "balanced"`),
+				Check: tfresource.ComposeAggregateTestCheckFunc(
+					tfresource.TestCheckNoResourceAttr("archestra_auto_router.test", "learn_from_past_sessions"),
+					tfresource.TestCheckNoResourceAttr("archestra_auto_router.test", "expected_traffic_factor"),
+				),
+			},
+			{Config: autoRouterTestConfig(server.URL, `budget_preset = "balanced"`), PlanOnly: true},
+		},
+	})
 }
 
 func TestAutoRouterTerraformDisabledFeature(t *testing.T) {

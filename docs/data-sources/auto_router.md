@@ -41,7 +41,9 @@ output "auto_router_tiers" {
 - `budget_usd_per_day` (Number) Custom daily budget in USD, if any.
 - `decision_model` (Attributes) Model that scores sessions. (see [below for nested schema](#nestedatt--decision_model))
 - `enabled` (Boolean) Whether the router currently routes sessions.
+- `expected_traffic_factor` (Number) Multiplier on the organization's past daily traffic that plans are sized for.
 - `id` (String) Auto router UUID.
+- `learn_from_past_sessions` (Boolean) Whether the router also learns from the organization's scored past sessions.
 - `tiers` (Attributes) The router's fast, normal and smart tiers. (see [below for nested schema](#nestedatt--tiers))
 - `virtual_api_key_ids` (Set of String) Virtual keys granted this router.
 
