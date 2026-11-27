@@ -11,7 +11,10 @@ import (
 
 func TestAccLLMProviderApiKeyResource(t *testing.T) {
 	planCheck := resource.TestCheckNoResourceAttr("archestra_model_provider.test", "plan")
-	if os.Getenv("TF_ACC") != "" && testAccAPIVersionAtLeast(t, "1.5.0-rc.45") {
+	// The API returns `plan` from 1.5.0-rc.45, and 1.4.40 backported it to the
+	// 1.4 stable line.
+	if os.Getenv("TF_ACC") != "" && (testAccAPIVersionAtLeast(t, "1.5.0-rc.45") ||
+		(testAccAPIVersionAtLeast(t, "1.4.40") && !testAccAPIVersionAtLeast(t, "1.5.0-rc.0"))) {
 		planCheck = resource.TestCheckResourceAttr("archestra_model_provider.test", "plan", "apiKey")
 	}
 	resource.Test(t, resource.TestCase{
