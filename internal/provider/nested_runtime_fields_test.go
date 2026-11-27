@@ -148,7 +148,14 @@ func TestGatewaySubagentLoadBalancingPartialConfigHasNoDrift(t *testing.T) {
 				t.Fatalf("sent %v, want %v", sent, tc.want)
 			}
 			body, _ := json.Marshal(map[string]any{"subagentLoadBalancing": fillLoadBalancingDefaultsLikeAPI(mustAs[map[string]any](sent))})
-			read := subagentLoadBalancingFromResponse(body, &diags)
+			read := subagentLoadBalancingFromResponse(body, types.ObjectNull(subagentLoadBalancingAttrTypes), &diags)
+			assertReadsBackAsPlanned(t, read, planned, "subagent_load_balancing", diags)
+			prior := plannedObject(t, planned, "subagent_load_balancing")
+			stripped := fillLoadBalancingDefaultsLikeAPI(mustAs[map[string]any](sent))
+			delete(stripped, "retries")
+			delete(stripped, "fallbackEnabled")
+			body, _ = json.Marshal(map[string]any{"subagentLoadBalancing": stripped})
+			read = subagentLoadBalancingFromResponse(body, prior, &diags)
 			assertReadsBackAsPlanned(t, read, planned, "subagent_load_balancing", diags)
 		})
 	}
@@ -162,7 +169,7 @@ func TestGatewaySubagentLoadBalancingOmittedOrInvalid(t *testing.T) {
 	if _, sent := patch["subagentLoadBalancing"]; sent {
 		t.Fatal("an omitted setting must not be sent, so older releases accept the create")
 	}
-	if read := subagentLoadBalancingFromResponse([]byte(`{"subagentLoadBalancing":null}`), &diags); !read.IsNull() {
+	if read := subagentLoadBalancingFromResponse([]byte(`{"subagentLoadBalancing":null}`), types.ObjectNull(subagentLoadBalancingAttrTypes), &diags); !read.IsNull() {
 		t.Fatal("a gateway without the setting must read as null")
 	}
 	for name, tc := range map[string]struct {
@@ -408,4 +415,21 @@ func diagnosticsContain(diags []*tfprotov6.Diagnostic, text string) bool {
 		}
 	}
 	return false
+}
+
+func plannedObject(t *testing.T, planned tftypes.Value, attribute string) types.Object {
+	t.Helper()
+	var fields map[string]tftypes.Value
+	if err := planned.As(&fields); err != nil {
+		t.Fatal(err)
+	}
+	v, err := types.ObjectType{AttrTypes: subagentLoadBalancingAttrTypes}.ValueFromTerraform(context.Background(), fields[attribute])
+	if err != nil {
+		t.Fatal(err)
+	}
+	obj, ok := v.(types.Object)
+	if !ok {
+		t.Fatalf("%s is %T, not an object", attribute, v)
+	}
+	return obj
 }

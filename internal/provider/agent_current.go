@@ -31,6 +31,7 @@ func currentAgentAttributes() map[string]schema.Attribute {
 		"sandbox_available":                         schema.BoolAttribute{Computed: true, MarkdownDescription: "Server-reported sandbox available."},
 		"access_all_subagents":                      schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether all accessible subagents can be delegated to."},
 		"tool_exposure_mode":                        schema.StringAttribute{Optional: true, Computed: true, Validators: []validator.String{stringvalidator.OneOf("full", "search_and_run_only")}, MarkdownDescription: "Tool exposure mode: full or search_and_run_only."},
+		"progressive_subagent_loading":              schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether manually assigned subagents stay behind `search_tools` and `run_tool` instead of each being listed as its own tool."},
 	}
 }
 func flattenCurrentAgentFields(data *AgentResourceModel, body []byte, diags *diag.Diagnostics) {
@@ -215,6 +216,19 @@ func flattenCurrentAgentFields(data *AgentResourceModel, body []byte, diags *dia
 		}
 		data.ToolExposureMode = types.StringPointerValue(value)
 	}
+	data.ProgressiveSubagentLoading = progressiveSubagentLoadingFromResponse(body, diags)
+}
+
+// progressiveSubagentLoadingFromResponse is null on releases without the setting.
+func progressiveSubagentLoadingFromResponse(body []byte, diags *diag.Diagnostics) types.Bool {
+	var wire struct {
+		Value *bool `json:"progressiveSubagentLoading"`
+	}
+	if err := json.Unmarshal(body, &wire); err != nil {
+		diags.AddError("Invalid Agent Response", "Unexpected progressiveSubagentLoading value.")
+		return types.BoolNull()
+	}
+	return types.BoolPointerValue(wire.Value)
 }
 func currentGatewayAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
@@ -230,6 +244,7 @@ func currentGatewayAttributes() map[string]schema.Attribute {
 		"access_all_tools":              schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether all accessible tools are exposed automatically."},
 		"missing_credential_behavior":   schema.StringAttribute{Optional: true, Computed: true, Validators: []validator.String{stringvalidator.OneOf("allow", "warn", "block")}, MarkdownDescription: "Behavior when a caller has no usable tool credential."},
 		"environment_id":                schema.StringAttribute{Optional: true, MarkdownDescription: "Deployment environment used to resolve MCP servers and credentials."},
+		"progressive_subagent_loading":  schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether manually assigned subagents stay behind `search_tools` and `run_tool` instead of each being listed as its own tool."},
 	}
 }
 func flattenCurrentGatewayFields(data *McpGatewayResourceModel, body []byte, diags *diag.Diagnostics) {
@@ -244,6 +259,7 @@ func flattenCurrentGatewayFields(data *McpGatewayResourceModel, body []byte, dia
 	data.ModelPoolID = types.StringPointerValue(pool.ID)
 	data.AutoRouterID = types.StringPointerValue(pool.AutoRouterID)
 	data.GithubActionsAccess = githubActionsAccessFromResponse(body, diags)
+	data.ProgressiveSubagentLoading = progressiveSubagentLoadingFromResponse(body, diags)
 	var values map[string]json.RawMessage
 	if err := json.Unmarshal(body, &values); err != nil {
 		diags.AddError("Invalid Agent Response", "Unable to decode agent metadata.")

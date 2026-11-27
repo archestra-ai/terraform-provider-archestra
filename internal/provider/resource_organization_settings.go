@@ -60,6 +60,7 @@ type OrganizationSettingsResourceModel struct {
 	DefaultSmartModelId                      types.String         `tfsdk:"default_smart_model_id"`
 	DefaultAutoRouterId                      types.String         `tfsdk:"default_auto_router_id"`
 	DefaultMemberRole                        types.String         `tfsdk:"default_member_role"`
+	DepartingMemberOwnerId                   types.String         `tfsdk:"departing_member_owner_id"`
 	OnboardingWizard                         jsontypes.Normalized `tfsdk:"onboarding_wizard"`
 	IconLogoDark                             types.String         `tfsdk:"icon_logo_dark"`
 	RequireTwoFactor                         types.Bool           `tfsdk:"require_two_factor"`

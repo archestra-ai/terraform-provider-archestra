@@ -46,18 +46,19 @@ type McpGatewayResourceModel struct {
 	ExcludedToolIDs       types.Set    `tfsdk:"excluded_tool_ids"`
 	Skills                types.Object `tfsdk:"skills"`
 
-	InitialGrants             types.Set    `tfsdk:"permissions"`
-	AuthorEmail               types.String `tfsdk:"author_email"`
-	CreatedBy                 types.String `tfsdk:"created_by"`
-	CreatedByServiceAccountId types.String `tfsdk:"created_by_service_account_id"`
-	DeletedAt                 types.String `tfsdk:"deleted_at"`
-	LastUsedAt                types.String `tfsdk:"last_used_at"`
-	IdentityBindings          types.Set    `tfsdk:"identity_bindings"`
-	LatestVersion             types.Int64  `tfsdk:"latest_version"`
-	AccessAllSubagents        types.Bool   `tfsdk:"access_all_subagents"`
-	AccessAllTools            types.Bool   `tfsdk:"access_all_tools"`
-	MissingCredentialBehavior types.String `tfsdk:"missing_credential_behavior"`
-	EnvironmentId             types.String `tfsdk:"environment_id"`
+	InitialGrants              types.Set    `tfsdk:"permissions"`
+	AuthorEmail                types.String `tfsdk:"author_email"`
+	CreatedBy                  types.String `tfsdk:"created_by"`
+	CreatedByServiceAccountId  types.String `tfsdk:"created_by_service_account_id"`
+	DeletedAt                  types.String `tfsdk:"deleted_at"`
+	LastUsedAt                 types.String `tfsdk:"last_used_at"`
+	IdentityBindings           types.Set    `tfsdk:"identity_bindings"`
+	LatestVersion              types.Int64  `tfsdk:"latest_version"`
+	AccessAllSubagents         types.Bool   `tfsdk:"access_all_subagents"`
+	AccessAllTools             types.Bool   `tfsdk:"access_all_tools"`
+	ProgressiveSubagentLoading types.Bool   `tfsdk:"progressive_subagent_loading"`
+	MissingCredentialBehavior  types.String `tfsdk:"missing_credential_behavior"`
+	EnvironmentId              types.String `tfsdk:"environment_id"`
 
 	ID                 types.String      `tfsdk:"id"`
 	Name               types.String      `tfsdk:"name"`
@@ -392,7 +393,7 @@ func (r *McpGatewayResource) flatten(ctx context.Context, data *McpGatewayResour
 	if diags.HasError() {
 		return
 	}
-	data.SubagentLoadBalancing = subagentLoadBalancingFromResponse(body, diags)
+	data.SubagentLoadBalancing = subagentLoadBalancingFromResponse(body, data.SubagentLoadBalancing, diags)
 	if resp.AgentType != "" && resp.AgentType != r.apiAgentType() {
 		diags.AddError("Incorrect Agent Type", "The remote object is not the subtype managed by this resource.")
 		return
@@ -437,7 +438,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 	// Legacy visibility/skill projections and secret-storage pointers are not managed.
 	// Gateway records share an agent response, but do not run agent runtimes or inference.
 	return []string{
-		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId", "activationSkillMode", "activationSkillPolicyRevision", "activationSkillsCount", "llmProviderRequiresPerUserCredential", "modelId", "fastModelId", "smartModelId", "resolvedLlmModelName", "resolvedLlmProvider", "resolvedLlmProviderKeyName", "runtime", "sandboxAvailable",
+		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId", "activationSkillMode", "activationSkillPolicyRevision", "activationSkillsCount", "llmProviderRequiresPerUserCredential", "modelId", "fastModelId", "smartModelId", "resolvedLlmModelName", "resolvedLlmProvider", "resolvedLlmProviderKeyName", "resolvedLlmPersonalSubscription", "runtime", "sandboxAvailable",
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "builtInAgentConfig", "suggestedPrompts",
 		"systemPrompt", "llmModel", "llmApiKeyId", "isDefault", "scope",
@@ -460,6 +461,7 @@ var mcpGatewayAttrSpec = append(gatewayRelationshipAttrSpecs(), []AttrSpec{
 	initialGrantsAttrSpec,
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},
+	{TFName: "progressive_subagent_loading", JSONName: "progressiveSubagentLoading", Kind: Scalar, OmitOnNull: true},
 	{TFName: "missing_credential_behavior", JSONName: "missingCredentialBehavior", Kind: Scalar, OmitOnNull: true},
 	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar, OmitOnNull: false},
 

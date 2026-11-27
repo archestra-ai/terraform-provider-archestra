@@ -1887,6 +1887,27 @@ func (e GetAgents200JSONResponseBodyDataResolvedLlmProvider) Valid() bool {
 	}
 }
 
+// Defines values for GetAgents200JSONResponseBodyDataRuntimeAccountLock.
+const (
+	GetAgents200JSONResponseBodyDataRuntimeAccountLockKey          GetAgents200JSONResponseBodyDataRuntimeAccountLock = "key"
+	GetAgents200JSONResponseBodyDataRuntimeAccountLockLessThannil  GetAgents200JSONResponseBodyDataRuntimeAccountLock = "<nil>"
+	GetAgents200JSONResponseBodyDataRuntimeAccountLockSubscription GetAgents200JSONResponseBodyDataRuntimeAccountLock = "subscription"
+)
+
+// Valid indicates whether the value is a known member of the GetAgents200JSONResponseBodyDataRuntimeAccountLock enum.
+func (e GetAgents200JSONResponseBodyDataRuntimeAccountLock) Valid() bool {
+	switch e {
+	case GetAgents200JSONResponseBodyDataRuntimeAccountLockKey:
+		return true
+	case GetAgents200JSONResponseBodyDataRuntimeAccountLockLessThannil:
+		return true
+	case GetAgents200JSONResponseBodyDataRuntimeAccountLockSubscription:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetAgents200JSONResponseBodyDataRuntimeBackend.
 const (
 	GetAgents200JSONResponseBodyDataRuntimeBackendKubernetes GetAgents200JSONResponseBodyDataRuntimeBackend = "kubernetes"
@@ -2574,6 +2595,27 @@ func (e CreateAgentJSONBodyNetworkPolicyEgressMode) Valid() bool {
 	}
 }
 
+// Defines values for CreateAgentJSONBodyRuntimeAccountLock.
+const (
+	CreateAgentJSONBodyRuntimeAccountLockKey          CreateAgentJSONBodyRuntimeAccountLock = "key"
+	CreateAgentJSONBodyRuntimeAccountLockLessThannil  CreateAgentJSONBodyRuntimeAccountLock = "<nil>"
+	CreateAgentJSONBodyRuntimeAccountLockSubscription CreateAgentJSONBodyRuntimeAccountLock = "subscription"
+)
+
+// Valid indicates whether the value is a known member of the CreateAgentJSONBodyRuntimeAccountLock enum.
+func (e CreateAgentJSONBodyRuntimeAccountLock) Valid() bool {
+	switch e {
+	case CreateAgentJSONBodyRuntimeAccountLockKey:
+		return true
+	case CreateAgentJSONBodyRuntimeAccountLockLessThannil:
+		return true
+	case CreateAgentJSONBodyRuntimeAccountLockSubscription:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateAgentJSONBodyRuntimeBackend.
 const (
 	CreateAgentJSONBodyRuntimeBackendKubernetes CreateAgentJSONBodyRuntimeBackend = "kubernetes"
@@ -3021,6 +3063,27 @@ func (e CreateAgent200JSONResponseBodyResolvedLlmProvider) Valid() bool {
 	case CreateAgent200JSONResponseBodyResolvedLlmProviderXai:
 		return true
 	case CreateAgent200JSONResponseBodyResolvedLlmProviderZhipuai:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateAgent200JSONResponseBodyRuntimeAccountLock.
+const (
+	CreateAgent200JSONResponseBodyRuntimeAccountLockKey          CreateAgent200JSONResponseBodyRuntimeAccountLock = "key"
+	CreateAgent200JSONResponseBodyRuntimeAccountLockLessThannil  CreateAgent200JSONResponseBodyRuntimeAccountLock = "<nil>"
+	CreateAgent200JSONResponseBodyRuntimeAccountLockSubscription CreateAgent200JSONResponseBodyRuntimeAccountLock = "subscription"
+)
+
+// Valid indicates whether the value is a known member of the CreateAgent200JSONResponseBodyRuntimeAccountLock enum.
+func (e CreateAgent200JSONResponseBodyRuntimeAccountLock) Valid() bool {
+	switch e {
+	case CreateAgent200JSONResponseBodyRuntimeAccountLockKey:
+		return true
+	case CreateAgent200JSONResponseBodyRuntimeAccountLockLessThannil:
+		return true
+	case CreateAgent200JSONResponseBodyRuntimeAccountLockSubscription:
 		return true
 	default:
 		return false
@@ -4533,6 +4596,27 @@ func (e GetAgent200JSONResponseBodyResolvedLlmProvider) Valid() bool {
 	}
 }
 
+// Defines values for GetAgent200JSONResponseBodyRuntimeAccountLock.
+const (
+	GetAgent200JSONResponseBodyRuntimeAccountLockKey          GetAgent200JSONResponseBodyRuntimeAccountLock = "key"
+	GetAgent200JSONResponseBodyRuntimeAccountLockLessThannil  GetAgent200JSONResponseBodyRuntimeAccountLock = "<nil>"
+	GetAgent200JSONResponseBodyRuntimeAccountLockSubscription GetAgent200JSONResponseBodyRuntimeAccountLock = "subscription"
+)
+
+// Valid indicates whether the value is a known member of the GetAgent200JSONResponseBodyRuntimeAccountLock enum.
+func (e GetAgent200JSONResponseBodyRuntimeAccountLock) Valid() bool {
+	switch e {
+	case GetAgent200JSONResponseBodyRuntimeAccountLockKey:
+		return true
+	case GetAgent200JSONResponseBodyRuntimeAccountLockLessThannil:
+		return true
+	case GetAgent200JSONResponseBodyRuntimeAccountLockSubscription:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetAgent200JSONResponseBodyRuntimeBackend.
 const (
 	GetAgent200JSONResponseBodyRuntimeBackendKubernetes GetAgent200JSONResponseBodyRuntimeBackend = "kubernetes"
@@ -4968,6 +5052,27 @@ func (e UpdateAgentJSONBodyNetworkPolicyEgressMode) Valid() bool {
 	case UpdateAgentJSONBodyNetworkPolicyEgressModeRestricted:
 		return true
 	case UpdateAgentJSONBodyNetworkPolicyEgressModeUnrestricted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateAgentJSONBodyRuntimeAccountLock.
+const (
+	UpdateAgentJSONBodyRuntimeAccountLockKey          UpdateAgentJSONBodyRuntimeAccountLock = "key"
+	UpdateAgentJSONBodyRuntimeAccountLockLessThannil  UpdateAgentJSONBodyRuntimeAccountLock = "<nil>"
+	UpdateAgentJSONBodyRuntimeAccountLockSubscription UpdateAgentJSONBodyRuntimeAccountLock = "subscription"
+)
+
+// Valid indicates whether the value is a known member of the UpdateAgentJSONBodyRuntimeAccountLock enum.
+func (e UpdateAgentJSONBodyRuntimeAccountLock) Valid() bool {
+	switch e {
+	case UpdateAgentJSONBodyRuntimeAccountLockKey:
+		return true
+	case UpdateAgentJSONBodyRuntimeAccountLockLessThannil:
+		return true
+	case UpdateAgentJSONBodyRuntimeAccountLockSubscription:
 		return true
 	default:
 		return false
@@ -5421,6 +5526,27 @@ func (e UpdateAgent200JSONResponseBodyResolvedLlmProvider) Valid() bool {
 	case UpdateAgent200JSONResponseBodyResolvedLlmProviderXai:
 		return true
 	case UpdateAgent200JSONResponseBodyResolvedLlmProviderZhipuai:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateAgent200JSONResponseBodyRuntimeAccountLock.
+const (
+	UpdateAgent200JSONResponseBodyRuntimeAccountLockKey          UpdateAgent200JSONResponseBodyRuntimeAccountLock = "key"
+	UpdateAgent200JSONResponseBodyRuntimeAccountLockLessThannil  UpdateAgent200JSONResponseBodyRuntimeAccountLock = "<nil>"
+	UpdateAgent200JSONResponseBodyRuntimeAccountLockSubscription UpdateAgent200JSONResponseBodyRuntimeAccountLock = "subscription"
+)
+
+// Valid indicates whether the value is a known member of the UpdateAgent200JSONResponseBodyRuntimeAccountLock enum.
+func (e UpdateAgent200JSONResponseBodyRuntimeAccountLock) Valid() bool {
+	switch e {
+	case UpdateAgent200JSONResponseBodyRuntimeAccountLockKey:
+		return true
+	case UpdateAgent200JSONResponseBodyRuntimeAccountLockLessThannil:
+		return true
+	case UpdateAgent200JSONResponseBodyRuntimeAccountLockSubscription:
 		return true
 	default:
 		return false
@@ -23439,6 +23565,27 @@ func (e GetLlmProviderApiKeys200JSONResponseBodyCreatedByType) Valid() bool {
 	}
 }
 
+// Defines values for GetLlmProviderApiKeys200JSONResponseBodyPlan.
+const (
+	GetLlmProviderApiKeys200JSONResponseBodyPlanApiKey     GetLlmProviderApiKeys200JSONResponseBodyPlan = "apiKey"
+	GetLlmProviderApiKeys200JSONResponseBodyPlanEnterprise GetLlmProviderApiKeys200JSONResponseBodyPlan = "enterprise"
+	GetLlmProviderApiKeys200JSONResponseBodyPlanPersonal   GetLlmProviderApiKeys200JSONResponseBodyPlan = "personal"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKeys200JSONResponseBodyPlan enum.
+func (e GetLlmProviderApiKeys200JSONResponseBodyPlan) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKeys200JSONResponseBodyPlanApiKey:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyPlanEnterprise:
+		return true
+	case GetLlmProviderApiKeys200JSONResponseBodyPlanPersonal:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetLlmProviderApiKeys200JSONResponseBodyProvider.
 const (
 	GetLlmProviderApiKeys200JSONResponseBodyProviderAnthropic           GetLlmProviderApiKeys200JSONResponseBodyProvider = "anthropic"
@@ -23943,6 +24090,27 @@ func (e CreateLlmProviderApiKey200JSONResponseBodyCreatedByType) Valid() bool {
 	}
 }
 
+// Defines values for CreateLlmProviderApiKey200JSONResponseBodyPlan.
+const (
+	CreateLlmProviderApiKey200JSONResponseBodyPlanApiKey     CreateLlmProviderApiKey200JSONResponseBodyPlan = "apiKey"
+	CreateLlmProviderApiKey200JSONResponseBodyPlanEnterprise CreateLlmProviderApiKey200JSONResponseBodyPlan = "enterprise"
+	CreateLlmProviderApiKey200JSONResponseBodyPlanPersonal   CreateLlmProviderApiKey200JSONResponseBodyPlan = "personal"
+)
+
+// Valid indicates whether the value is a known member of the CreateLlmProviderApiKey200JSONResponseBodyPlan enum.
+func (e CreateLlmProviderApiKey200JSONResponseBodyPlan) Valid() bool {
+	switch e {
+	case CreateLlmProviderApiKey200JSONResponseBodyPlanApiKey:
+		return true
+	case CreateLlmProviderApiKey200JSONResponseBodyPlanEnterprise:
+		return true
+	case CreateLlmProviderApiKey200JSONResponseBodyPlanPersonal:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateLlmProviderApiKey200JSONResponseBodyProvider.
 const (
 	CreateLlmProviderApiKey200JSONResponseBodyProviderAnthropic           CreateLlmProviderApiKey200JSONResponseBodyProvider = "anthropic"
@@ -24294,6 +24462,27 @@ func (e GetLlmProviderApiKey200JSONResponseBodyCreatedByType) Valid() bool {
 	}
 }
 
+// Defines values for GetLlmProviderApiKey200JSONResponseBodyPlan.
+const (
+	GetLlmProviderApiKey200JSONResponseBodyPlanApiKey     GetLlmProviderApiKey200JSONResponseBodyPlan = "apiKey"
+	GetLlmProviderApiKey200JSONResponseBodyPlanEnterprise GetLlmProviderApiKey200JSONResponseBodyPlan = "enterprise"
+	GetLlmProviderApiKey200JSONResponseBodyPlanPersonal   GetLlmProviderApiKey200JSONResponseBodyPlan = "personal"
+)
+
+// Valid indicates whether the value is a known member of the GetLlmProviderApiKey200JSONResponseBodyPlan enum.
+func (e GetLlmProviderApiKey200JSONResponseBodyPlan) Valid() bool {
+	switch e {
+	case GetLlmProviderApiKey200JSONResponseBodyPlanApiKey:
+		return true
+	case GetLlmProviderApiKey200JSONResponseBodyPlanEnterprise:
+		return true
+	case GetLlmProviderApiKey200JSONResponseBodyPlanPersonal:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetLlmProviderApiKey200JSONResponseBodyProvider.
 const (
 	GetLlmProviderApiKey200JSONResponseBodyProviderAnthropic           GetLlmProviderApiKey200JSONResponseBodyProvider = "anthropic"
@@ -24549,6 +24738,27 @@ func (e UpdateLlmProviderApiKey200JSONResponseBodyCreatedByType) Valid() bool {
 	case UpdateLlmProviderApiKey200JSONResponseBodyCreatedByTypeServiceAccount:
 		return true
 	case UpdateLlmProviderApiKey200JSONResponseBodyCreatedByTypeUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateLlmProviderApiKey200JSONResponseBodyPlan.
+const (
+	UpdateLlmProviderApiKey200JSONResponseBodyPlanApiKey     UpdateLlmProviderApiKey200JSONResponseBodyPlan = "apiKey"
+	UpdateLlmProviderApiKey200JSONResponseBodyPlanEnterprise UpdateLlmProviderApiKey200JSONResponseBodyPlan = "enterprise"
+	UpdateLlmProviderApiKey200JSONResponseBodyPlanPersonal   UpdateLlmProviderApiKey200JSONResponseBodyPlan = "personal"
+)
+
+// Valid indicates whether the value is a known member of the UpdateLlmProviderApiKey200JSONResponseBodyPlan enum.
+func (e UpdateLlmProviderApiKey200JSONResponseBodyPlan) Valid() bool {
+	switch e {
+	case UpdateLlmProviderApiKey200JSONResponseBodyPlanApiKey:
+		return true
+	case UpdateLlmProviderApiKey200JSONResponseBodyPlanEnterprise:
+		return true
+	case UpdateLlmProviderApiKey200JSONResponseBodyPlanPersonal:
 		return true
 	default:
 		return false
@@ -48846,6 +49056,9 @@ type GetAgents200JSONResponseBodyDataNetworkPolicyEgressMode string
 // GetAgents200JSONResponseBodyDataResolvedLlmProvider defines parameters for GetAgents.
 type GetAgents200JSONResponseBodyDataResolvedLlmProvider string
 
+// GetAgents200JSONResponseBodyDataRuntimeAccountLock defines parameters for GetAgents.
+type GetAgents200JSONResponseBodyDataRuntimeAccountLock string
+
 // GetAgents200JSONResponseBodyDataRuntimeBackend defines parameters for GetAgents.
 type GetAgents200JSONResponseBodyDataRuntimeBackend string
 
@@ -48934,17 +49147,20 @@ type CreateAgentJSONBody struct {
 		DomainPreset   *CreateAgentJSONBodyNetworkPolicyDomainPreset `json:"domainPreset,omitempty"`
 		EgressMode     *CreateAgentJSONBodyNetworkPolicyEgressMode   `json:"egressMode,omitempty"`
 	} `json:"networkPolicy,omitempty"`
-	OrganizationId     *string   `json:"organizationId,omitempty"`
-	PassthroughHeaders *[]string `json:"passthroughHeaders,omitempty"`
-	Runtime            *struct {
-		AllowAgentSuppliedCredentialValues *bool                             `json:"allowAgentSuppliedCredentialValues,omitempty"`
-		Backend                            CreateAgentJSONBodyRuntimeBackend `json:"backend"`
+	OrganizationId             *string   `json:"organizationId,omitempty"`
+	PassthroughHeaders         *[]string `json:"passthroughHeaders,omitempty"`
+	ProgressiveSubagentLoading *bool     `json:"progressiveSubagentLoading,omitempty"`
+	Runtime                    *struct {
+		AccountLock                        *CreateAgentJSONBodyRuntimeAccountLock `json:"accountLock,omitempty"`
+		AllowAgentSuppliedCredentialValues *bool                                  `json:"allowAgentSuppliedCredentialValues,omitempty"`
+		Backend                            CreateAgentJSONBodyRuntimeBackend      `json:"backend"`
 		ClaudeCode                         *struct {
 			Authentication CreateAgentJSONBodyRuntimeClaudeCodeAuthentication `json:"authentication"`
 			Model          *string                                            `json:"model,omitempty"`
 		} `json:"claudeCode,omitempty"`
-		Command     *[]string `json:"command"`
-		Credentials *[]struct {
+		Command          *[]string                      `json:"command"`
+		ConnectionModels *map[string]openapi_types.UUID `json:"connectionModels,omitempty"`
+		Credentials      *[]struct {
 			CredentialId *string                                    `json:"credentialId,omitempty"`
 			Description  *string                                    `json:"description,omitempty"`
 			Key          string                                     `json:"key"`
@@ -48969,11 +49185,9 @@ type CreateAgentJSONBody struct {
 	} `json:"runtime,omitempty"`
 	Scope                 interface{} `json:"scope,omitempty"`
 	SubagentLoadBalancing *struct {
-		Algorithm       *CreateAgentJSONBodySubagentLoadBalancingAlgorithm `json:"algorithm,omitempty"`
-		Enabled         *bool                                              `json:"enabled,omitempty"`
-		FallbackEnabled *bool                                              `json:"fallbackEnabled,omitempty"`
-		Retries         *int                                               `json:"retries,omitempty"`
-		Weights         *map[string]int                                    `json:"weights,omitempty"`
+		Algorithm *CreateAgentJSONBodySubagentLoadBalancingAlgorithm `json:"algorithm,omitempty"`
+		Enabled   *bool                                              `json:"enabled,omitempty"`
+		Weights   *map[string]int                                    `json:"weights,omitempty"`
 	} `json:"subagentLoadBalancing,omitempty"`
 	SuggestedPrompts *[]struct {
 		Prompt       string `json:"prompt"`
@@ -49207,6 +49421,9 @@ type CreateAgentJSONBodyNetworkPolicyDomainPreset string
 // CreateAgentJSONBodyNetworkPolicyEgressMode defines parameters for CreateAgent.
 type CreateAgentJSONBodyNetworkPolicyEgressMode string
 
+// CreateAgentJSONBodyRuntimeAccountLock defines parameters for CreateAgent.
+type CreateAgentJSONBodyRuntimeAccountLock string
+
 // CreateAgentJSONBodyRuntimeBackend defines parameters for CreateAgent.
 type CreateAgentJSONBodyRuntimeBackend string
 
@@ -49299,6 +49516,9 @@ type CreateAgent200JSONResponseBodyNetworkPolicyEgressMode string
 
 // CreateAgent200JSONResponseBodyResolvedLlmProvider defines parameters for CreateAgent.
 type CreateAgent200JSONResponseBodyResolvedLlmProvider string
+
+// CreateAgent200JSONResponseBodyRuntimeAccountLock defines parameters for CreateAgent.
+type CreateAgent200JSONResponseBodyRuntimeAccountLock string
 
 // CreateAgent200JSONResponseBodyRuntimeBackend defines parameters for CreateAgent.
 type CreateAgent200JSONResponseBodyRuntimeBackend string
@@ -49628,6 +49848,9 @@ type GetAgent200JSONResponseBodyNetworkPolicyEgressMode string
 // GetAgent200JSONResponseBodyResolvedLlmProvider defines parameters for GetAgent.
 type GetAgent200JSONResponseBodyResolvedLlmProvider string
 
+// GetAgent200JSONResponseBodyRuntimeAccountLock defines parameters for GetAgent.
+type GetAgent200JSONResponseBodyRuntimeAccountLock string
+
 // GetAgent200JSONResponseBodyRuntimeBackend defines parameters for GetAgent.
 type GetAgent200JSONResponseBodyRuntimeBackend string
 
@@ -49714,17 +49937,20 @@ type UpdateAgentJSONBody struct {
 		DomainPreset   *UpdateAgentJSONBodyNetworkPolicyDomainPreset `json:"domainPreset,omitempty"`
 		EgressMode     *UpdateAgentJSONBodyNetworkPolicyEgressMode   `json:"egressMode,omitempty"`
 	} `json:"networkPolicy,omitempty"`
-	OrganizationId     *string   `json:"organizationId,omitempty"`
-	PassthroughHeaders *[]string `json:"passthroughHeaders,omitempty"`
-	Runtime            *struct {
-		AllowAgentSuppliedCredentialValues *bool                             `json:"allowAgentSuppliedCredentialValues,omitempty"`
-		Backend                            UpdateAgentJSONBodyRuntimeBackend `json:"backend"`
+	OrganizationId             *string   `json:"organizationId,omitempty"`
+	PassthroughHeaders         *[]string `json:"passthroughHeaders,omitempty"`
+	ProgressiveSubagentLoading *bool     `json:"progressiveSubagentLoading,omitempty"`
+	Runtime                    *struct {
+		AccountLock                        *UpdateAgentJSONBodyRuntimeAccountLock `json:"accountLock,omitempty"`
+		AllowAgentSuppliedCredentialValues *bool                                  `json:"allowAgentSuppliedCredentialValues,omitempty"`
+		Backend                            UpdateAgentJSONBodyRuntimeBackend      `json:"backend"`
 		ClaudeCode                         *struct {
 			Authentication UpdateAgentJSONBodyRuntimeClaudeCodeAuthentication `json:"authentication"`
 			Model          *string                                            `json:"model,omitempty"`
 		} `json:"claudeCode,omitempty"`
-		Command     *[]string `json:"command"`
-		Credentials *[]struct {
+		Command          *[]string                      `json:"command"`
+		ConnectionModels *map[string]openapi_types.UUID `json:"connectionModels,omitempty"`
+		Credentials      *[]struct {
 			CredentialId *string                                    `json:"credentialId,omitempty"`
 			Description  *string                                    `json:"description,omitempty"`
 			Key          string                                     `json:"key"`
@@ -49749,11 +49975,9 @@ type UpdateAgentJSONBody struct {
 	} `json:"runtime,omitempty"`
 	Scope                 interface{} `json:"scope,omitempty"`
 	SubagentLoadBalancing *struct {
-		Algorithm       *UpdateAgentJSONBodySubagentLoadBalancingAlgorithm `json:"algorithm,omitempty"`
-		Enabled         *bool                                              `json:"enabled,omitempty"`
-		FallbackEnabled *bool                                              `json:"fallbackEnabled,omitempty"`
-		Retries         *int                                               `json:"retries,omitempty"`
-		Weights         *map[string]int                                    `json:"weights,omitempty"`
+		Algorithm *UpdateAgentJSONBodySubagentLoadBalancingAlgorithm `json:"algorithm,omitempty"`
+		Enabled   *bool                                              `json:"enabled,omitempty"`
+		Weights   *map[string]int                                    `json:"weights,omitempty"`
 	} `json:"subagentLoadBalancing,omitempty"`
 	SuggestedPrompts *[]struct {
 		Prompt       string `json:"prompt"`
@@ -49827,6 +50051,9 @@ type UpdateAgentJSONBodyNetworkPolicyDomainPreset string
 
 // UpdateAgentJSONBodyNetworkPolicyEgressMode defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyNetworkPolicyEgressMode string
+
+// UpdateAgentJSONBodyRuntimeAccountLock defines parameters for UpdateAgent.
+type UpdateAgentJSONBodyRuntimeAccountLock string
 
 // UpdateAgentJSONBodyRuntimeBackend defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyRuntimeBackend string
@@ -49920,6 +50147,9 @@ type UpdateAgent200JSONResponseBodyNetworkPolicyEgressMode string
 
 // UpdateAgent200JSONResponseBodyResolvedLlmProvider defines parameters for UpdateAgent.
 type UpdateAgent200JSONResponseBodyResolvedLlmProvider string
+
+// UpdateAgent200JSONResponseBodyRuntimeAccountLock defines parameters for UpdateAgent.
+type UpdateAgent200JSONResponseBodyRuntimeAccountLock string
 
 // UpdateAgent200JSONResponseBodyRuntimeBackend defines parameters for UpdateAgent.
 type UpdateAgent200JSONResponseBodyRuntimeBackend string
@@ -53496,31 +53726,32 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 	Multitenant         *bool               `json:"multitenant,omitempty"`
 	Name                string              `json:"name"`
 	OauthConfig         *struct {
-		AccessTokenEnvVar        *string                                                   `json:"access_token_env_var,omitempty"`
-		AdditionalScopes         *[]string                                                 `json:"additional_scopes,omitempty"`
-		Audience                 *string                                                   `json:"audience,omitempty"`
-		AuthServerUrl            *string                                                   `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string                                                   `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool                                                     `json:"browser_auth,omitempty"`
-		ClientId                 string                                                    `json:"client_id"`
-		ClientSecret             *string                                                   `json:"client_secret,omitempty"`
-		DefaultScopes            []string                                                  `json:"default_scopes"`
-		Description              *string                                                   `json:"description,omitempty"`
-		GenericOauth             *bool                                                     `json:"generic_oauth,omitempty"`
-		GrantType                *CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-		Name                     string                                                    `json:"name"`
-		ProviderName             *string                                                   `json:"provider_name,omitempty"`
-		RedirectUris             []string                                                  `json:"redirect_uris"`
-		RequiresProxy            *bool                                                     `json:"requires_proxy,omitempty"`
-		Resource                 *string                                                   `json:"resource,omitempty"`
-		ResourceMetadataUrl      *string                                                   `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string                                                  `json:"scopes"`
-		ServerUrl                string                                                    `json:"server_url"`
-		StreamableHttpPort       *float32                                                  `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string                                                   `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool                                                      `json:"supports_resource_metadata"`
-		TokenEndpoint            *string                                                   `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string                                                   `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar         *string                                                   `json:"access_token_env_var,omitempty"`
+		AdditionalScopes          *[]string                                                 `json:"additional_scopes,omitempty"`
+		Audience                  *string                                                   `json:"audience,omitempty"`
+		AuthServerUrl             *string                                                   `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint     *string                                                   `json:"authorization_endpoint,omitempty"`
+		BrowserAuth               *bool                                                     `json:"browser_auth,omitempty"`
+		ClientId                  string                                                    `json:"client_id"`
+		ClientSecret              *string                                                   `json:"client_secret,omitempty"`
+		DefaultScopes             []string                                                  `json:"default_scopes"`
+		Description               *string                                                   `json:"description,omitempty"`
+		GenericOauth              *bool                                                     `json:"generic_oauth,omitempty"`
+		GrantType                 *CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                      string                                                    `json:"name"`
+		ProviderName              *string                                                   `json:"provider_name,omitempty"`
+		RedirectUris              []string                                                  `json:"redirect_uris"`
+		RequiresClientCredentials *bool                                                     `json:"requires_client_credentials,omitempty"`
+		RequiresProxy             *bool                                                     `json:"requires_proxy,omitempty"`
+		Resource                  *string                                                   `json:"resource,omitempty"`
+		ResourceMetadataUrl       *string                                                   `json:"resource_metadata_url,omitempty"`
+		Scopes                    []string                                                  `json:"scopes"`
+		ServerUrl                 string                                                    `json:"server_url"`
+		StreamableHttpPort        *float32                                                  `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl         *string                                                   `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata  bool                                                      `json:"supports_resource_metadata"`
+		TokenEndpoint             *string                                                   `json:"token_endpoint,omitempty"`
+		WellKnownUrl              *string                                                   `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig,omitempty"`
 	Repository   *string                                        `json:"repository,omitempty"`
 	RequiresAuth *bool                                          `json:"requiresAuth,omitempty"`
@@ -53954,31 +54185,32 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 	Multitenant         *bool               `json:"multitenant,omitempty"`
 	Name                *string             `json:"name,omitempty"`
 	OauthConfig         *struct {
-		AccessTokenEnvVar        *string                                                   `json:"access_token_env_var,omitempty"`
-		AdditionalScopes         *[]string                                                 `json:"additional_scopes,omitempty"`
-		Audience                 *string                                                   `json:"audience,omitempty"`
-		AuthServerUrl            *string                                                   `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string                                                   `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool                                                     `json:"browser_auth,omitempty"`
-		ClientId                 string                                                    `json:"client_id"`
-		ClientSecret             *string                                                   `json:"client_secret,omitempty"`
-		DefaultScopes            []string                                                  `json:"default_scopes"`
-		Description              *string                                                   `json:"description,omitempty"`
-		GenericOauth             *bool                                                     `json:"generic_oauth,omitempty"`
-		GrantType                *UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-		Name                     string                                                    `json:"name"`
-		ProviderName             *string                                                   `json:"provider_name,omitempty"`
-		RedirectUris             []string                                                  `json:"redirect_uris"`
-		RequiresProxy            *bool                                                     `json:"requires_proxy,omitempty"`
-		Resource                 *string                                                   `json:"resource,omitempty"`
-		ResourceMetadataUrl      *string                                                   `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string                                                  `json:"scopes"`
-		ServerUrl                string                                                    `json:"server_url"`
-		StreamableHttpPort       *float32                                                  `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string                                                   `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool                                                      `json:"supports_resource_metadata"`
-		TokenEndpoint            *string                                                   `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string                                                   `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar         *string                                                   `json:"access_token_env_var,omitempty"`
+		AdditionalScopes          *[]string                                                 `json:"additional_scopes,omitempty"`
+		Audience                  *string                                                   `json:"audience,omitempty"`
+		AuthServerUrl             *string                                                   `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint     *string                                                   `json:"authorization_endpoint,omitempty"`
+		BrowserAuth               *bool                                                     `json:"browser_auth,omitempty"`
+		ClientId                  string                                                    `json:"client_id"`
+		ClientSecret              *string                                                   `json:"client_secret,omitempty"`
+		DefaultScopes             []string                                                  `json:"default_scopes"`
+		Description               *string                                                   `json:"description,omitempty"`
+		GenericOauth              *bool                                                     `json:"generic_oauth,omitempty"`
+		GrantType                 *UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                      string                                                    `json:"name"`
+		ProviderName              *string                                                   `json:"provider_name,omitempty"`
+		RedirectUris              []string                                                  `json:"redirect_uris"`
+		RequiresClientCredentials *bool                                                     `json:"requires_client_credentials,omitempty"`
+		RequiresProxy             *bool                                                     `json:"requires_proxy,omitempty"`
+		Resource                  *string                                                   `json:"resource,omitempty"`
+		ResourceMetadataUrl       *string                                                   `json:"resource_metadata_url,omitempty"`
+		Scopes                    []string                                                  `json:"scopes"`
+		ServerUrl                 string                                                    `json:"server_url"`
+		StreamableHttpPort        *float32                                                  `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl         *string                                                   `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata  bool                                                      `json:"supports_resource_metadata"`
+		TokenEndpoint             *string                                                   `json:"token_endpoint,omitempty"`
+		WellKnownUrl              *string                                                   `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig,omitempty"`
 	Repository   *string                                         `json:"repository,omitempty"`
 	RequiresAuth *bool                                           `json:"requiresAuth,omitempty"`
@@ -55040,6 +55272,9 @@ type GetLlmProviderApiKeysParamsAccess string
 // GetLlmProviderApiKeys200JSONResponseBodyCreatedByType defines parameters for GetLlmProviderApiKeys.
 type GetLlmProviderApiKeys200JSONResponseBodyCreatedByType string
 
+// GetLlmProviderApiKeys200JSONResponseBodyPlan defines parameters for GetLlmProviderApiKeys.
+type GetLlmProviderApiKeys200JSONResponseBodyPlan string
+
 // GetLlmProviderApiKeys200JSONResponseBodyProvider defines parameters for GetLlmProviderApiKeys.
 type GetLlmProviderApiKeys200JSONResponseBodyProvider string
 
@@ -55170,6 +55405,9 @@ type CreateLlmProviderApiKeyJSONBodyProvider string
 // CreateLlmProviderApiKey200JSONResponseBodyCreatedByType defines parameters for CreateLlmProviderApiKey.
 type CreateLlmProviderApiKey200JSONResponseBodyCreatedByType string
 
+// CreateLlmProviderApiKey200JSONResponseBodyPlan defines parameters for CreateLlmProviderApiKey.
+type CreateLlmProviderApiKey200JSONResponseBodyPlan string
+
 // CreateLlmProviderApiKey200JSONResponseBodyProvider defines parameters for CreateLlmProviderApiKey.
 type CreateLlmProviderApiKey200JSONResponseBodyProvider string
 
@@ -55220,6 +55458,9 @@ type DeleteLlmProviderApiKey500JSONResponseBodyErrorType string
 
 // GetLlmProviderApiKey200JSONResponseBodyCreatedByType defines parameters for GetLlmProviderApiKey.
 type GetLlmProviderApiKey200JSONResponseBodyCreatedByType string
+
+// GetLlmProviderApiKey200JSONResponseBodyPlan defines parameters for GetLlmProviderApiKey.
+type GetLlmProviderApiKey200JSONResponseBodyPlan string
 
 // GetLlmProviderApiKey200JSONResponseBodyProvider defines parameters for GetLlmProviderApiKey.
 type GetLlmProviderApiKey200JSONResponseBodyProvider string
@@ -55274,6 +55515,9 @@ type UpdateLlmProviderApiKeyJSONBody struct {
 
 // UpdateLlmProviderApiKey200JSONResponseBodyCreatedByType defines parameters for UpdateLlmProviderApiKey.
 type UpdateLlmProviderApiKey200JSONResponseBodyCreatedByType string
+
+// UpdateLlmProviderApiKey200JSONResponseBodyPlan defines parameters for UpdateLlmProviderApiKey.
+type UpdateLlmProviderApiKey200JSONResponseBodyPlan string
 
 // UpdateLlmProviderApiKey200JSONResponseBodyProvider defines parameters for UpdateLlmProviderApiKey.
 type UpdateLlmProviderApiKey200JSONResponseBodyProvider string
@@ -56712,6 +56956,7 @@ type UpdateAppearanceSettings500JSONResponseBodyErrorType string
 type UpdateAuthSettingsJSONBody struct {
 	// DefaultMemberRole One or more organization role identifiers, separated by commas
 	DefaultMemberRole               *string `json:"defaultMemberRole,omitempty"`
+	DepartingMemberOwnerId          *string `json:"departingMemberOwnerId,omitempty"`
 	OauthAccessTokenLifetimeSeconds *int    `json:"oauthAccessTokenLifetimeSeconds,omitempty"`
 	RequireTwoFactor                *bool   `json:"requireTwoFactor,omitempty"`
 	SessionMaxAgeSeconds            *int    `json:"sessionMaxAgeSeconds,omitempty"`
@@ -56944,12 +57189,16 @@ type UpdateIntegrationSettingsJSONBody struct {
 		DisplayName *string `json:"displayName,omitempty"`
 		Hidden      *bool   `json:"hidden,omitempty"`
 		Plans       *struct {
+			ApiKey *struct {
+				Hidden *bool `json:"hidden,omitempty"`
+			} `json:"apiKey,omitempty"`
 			Enterprise *struct {
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 			} `json:"enterprise,omitempty"`
 			Personal *struct {
-				Hidden *bool `json:"hidden,omitempty"`
+				DisplayName *string `json:"displayName,omitempty"`
+				Hidden      *bool   `json:"hidden,omitempty"`
 			} `json:"personal,omitempty"`
 		} `json:"plans,omitempty"`
 	} `json:"modelProviderOverrides,omitempty"`
@@ -85700,21 +85949,25 @@ type GetAgentsResponse struct {
 				DomainPreset   GetAgents200JSONResponseBodyDataNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     GetAgents200JSONResponseBodyDataNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"networkPolicy,omitempty"`
-			OrganizationId             string                                               `json:"organizationId"`
-			PassthroughHeaders         *[]string                                            `json:"passthroughHeaders"`
-			PinnedAt                   *time.Time                                           `json:"pinnedAt"`
-			ResolvedLlmModelName       *string                                              `json:"resolvedLlmModelName,omitempty"`
-			ResolvedLlmProvider        *GetAgents200JSONResponseBodyDataResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
-			ResolvedLlmProviderKeyName *string                                              `json:"resolvedLlmProviderKeyName,omitempty"`
-			Runtime                    *struct {
-				AllowAgentSuppliedCredentialValues *bool                                          `json:"allowAgentSuppliedCredentialValues,omitempty"`
-				Backend                            GetAgents200JSONResponseBodyDataRuntimeBackend `json:"backend"`
+			OrganizationId                  string                                               `json:"organizationId"`
+			PassthroughHeaders              *[]string                                            `json:"passthroughHeaders"`
+			PinnedAt                        *time.Time                                           `json:"pinnedAt"`
+			ProgressiveSubagentLoading      bool                                                 `json:"progressiveSubagentLoading"`
+			ResolvedLlmModelName            *string                                              `json:"resolvedLlmModelName,omitempty"`
+			ResolvedLlmPersonalSubscription *bool                                                `json:"resolvedLlmPersonalSubscription,omitempty"`
+			ResolvedLlmProvider             *GetAgents200JSONResponseBodyDataResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
+			ResolvedLlmProviderKeyName      *string                                              `json:"resolvedLlmProviderKeyName,omitempty"`
+			Runtime                         *struct {
+				AccountLock                        *GetAgents200JSONResponseBodyDataRuntimeAccountLock `json:"accountLock,omitempty"`
+				AllowAgentSuppliedCredentialValues *bool                                               `json:"allowAgentSuppliedCredentialValues,omitempty"`
+				Backend                            GetAgents200JSONResponseBodyDataRuntimeBackend      `json:"backend"`
 				ClaudeCode                         *struct {
 					Authentication GetAgents200JSONResponseBodyDataRuntimeClaudeCodeAuthentication `json:"authentication"`
 					Model          *string                                                         `json:"model,omitempty"`
 				} `json:"claudeCode,omitempty"`
-				Command     *[]string `json:"command"`
-				Credentials *[]struct {
+				Command          *[]string                      `json:"command"`
+				ConnectionModels *map[string]openapi_types.UUID `json:"connectionModels,omitempty"`
+				Credentials      *[]struct {
 					CredentialId *string                                                 `json:"credentialId,omitempty"`
 					Description  *string                                                 `json:"description,omitempty"`
 					Key          string                                                  `json:"key"`
@@ -85742,11 +85995,9 @@ type GetAgentsResponse struct {
 			Scope                 GetAgents200JSONResponseBodyDataScope `json:"scope"`
 			Slug                  *string                               `json:"slug"`
 			SubagentLoadBalancing *struct {
-				Algorithm       GetAgents200JSONResponseBodyDataSubagentLoadBalancingAlgorithm `json:"algorithm"`
-				Enabled         bool                                                           `json:"enabled"`
-				FallbackEnabled bool                                                           `json:"fallbackEnabled"`
-				Retries         int                                                            `json:"retries"`
-				Weights         *map[string]int                                                `json:"weights,omitempty"`
+				Algorithm GetAgents200JSONResponseBodyDataSubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled   bool                                                           `json:"enabled"`
+				Weights   *map[string]int                                                `json:"weights,omitempty"`
 			} `json:"subagentLoadBalancing,omitempty"`
 
 			// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
@@ -85926,20 +86177,24 @@ type CreateAgentResponse struct {
 			DomainPreset   CreateAgent200JSONResponseBodyNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     CreateAgent200JSONResponseBodyNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"networkPolicy,omitempty"`
-		OrganizationId             string                                             `json:"organizationId"`
-		PassthroughHeaders         *[]string                                          `json:"passthroughHeaders"`
-		ResolvedLlmModelName       *string                                            `json:"resolvedLlmModelName,omitempty"`
-		ResolvedLlmProvider        *CreateAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
-		ResolvedLlmProviderKeyName *string                                            `json:"resolvedLlmProviderKeyName,omitempty"`
-		Runtime                    *struct {
-			AllowAgentSuppliedCredentialValues *bool                                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
-			Backend                            CreateAgent200JSONResponseBodyRuntimeBackend `json:"backend"`
+		OrganizationId                  string                                             `json:"organizationId"`
+		PassthroughHeaders              *[]string                                          `json:"passthroughHeaders"`
+		ProgressiveSubagentLoading      bool                                               `json:"progressiveSubagentLoading"`
+		ResolvedLlmModelName            *string                                            `json:"resolvedLlmModelName,omitempty"`
+		ResolvedLlmPersonalSubscription *bool                                              `json:"resolvedLlmPersonalSubscription,omitempty"`
+		ResolvedLlmProvider             *CreateAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
+		ResolvedLlmProviderKeyName      *string                                            `json:"resolvedLlmProviderKeyName,omitempty"`
+		Runtime                         *struct {
+			AccountLock                        *CreateAgent200JSONResponseBodyRuntimeAccountLock `json:"accountLock,omitempty"`
+			AllowAgentSuppliedCredentialValues *bool                                             `json:"allowAgentSuppliedCredentialValues,omitempty"`
+			Backend                            CreateAgent200JSONResponseBodyRuntimeBackend      `json:"backend"`
 			ClaudeCode                         *struct {
 				Authentication CreateAgent200JSONResponseBodyRuntimeClaudeCodeAuthentication `json:"authentication"`
 				Model          *string                                                       `json:"model,omitempty"`
 			} `json:"claudeCode,omitempty"`
-			Command     *[]string `json:"command"`
-			Credentials *[]struct {
+			Command          *[]string                      `json:"command"`
+			ConnectionModels *map[string]openapi_types.UUID `json:"connectionModels,omitempty"`
+			Credentials      *[]struct {
 				CredentialId *string                                               `json:"credentialId,omitempty"`
 				Description  *string                                               `json:"description,omitempty"`
 				Key          string                                                `json:"key"`
@@ -85967,11 +86222,9 @@ type CreateAgentResponse struct {
 		Scope                 CreateAgent200JSONResponseBodyScope `json:"scope"`
 		Slug                  *string                             `json:"slug"`
 		SubagentLoadBalancing *struct {
-			Algorithm       CreateAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
-			Enabled         bool                                                         `json:"enabled"`
-			FallbackEnabled bool                                                         `json:"fallbackEnabled"`
-			Retries         int                                                          `json:"retries"`
-			Weights         *map[string]int                                              `json:"weights,omitempty"`
+			Algorithm CreateAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
+			Enabled   bool                                                         `json:"enabled"`
+			Weights   *map[string]int                                              `json:"weights,omitempty"`
 		} `json:"subagentLoadBalancing,omitempty"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
@@ -86908,20 +87161,24 @@ type GetAgentResponse struct {
 			DomainPreset   GetAgent200JSONResponseBodyNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     GetAgent200JSONResponseBodyNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"networkPolicy,omitempty"`
-		OrganizationId             string                                          `json:"organizationId"`
-		PassthroughHeaders         *[]string                                       `json:"passthroughHeaders"`
-		ResolvedLlmModelName       *string                                         `json:"resolvedLlmModelName,omitempty"`
-		ResolvedLlmProvider        *GetAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
-		ResolvedLlmProviderKeyName *string                                         `json:"resolvedLlmProviderKeyName,omitempty"`
-		Runtime                    *struct {
-			AllowAgentSuppliedCredentialValues *bool                                     `json:"allowAgentSuppliedCredentialValues,omitempty"`
-			Backend                            GetAgent200JSONResponseBodyRuntimeBackend `json:"backend"`
+		OrganizationId                  string                                          `json:"organizationId"`
+		PassthroughHeaders              *[]string                                       `json:"passthroughHeaders"`
+		ProgressiveSubagentLoading      bool                                            `json:"progressiveSubagentLoading"`
+		ResolvedLlmModelName            *string                                         `json:"resolvedLlmModelName,omitempty"`
+		ResolvedLlmPersonalSubscription *bool                                           `json:"resolvedLlmPersonalSubscription,omitempty"`
+		ResolvedLlmProvider             *GetAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
+		ResolvedLlmProviderKeyName      *string                                         `json:"resolvedLlmProviderKeyName,omitempty"`
+		Runtime                         *struct {
+			AccountLock                        *GetAgent200JSONResponseBodyRuntimeAccountLock `json:"accountLock,omitempty"`
+			AllowAgentSuppliedCredentialValues *bool                                          `json:"allowAgentSuppliedCredentialValues,omitempty"`
+			Backend                            GetAgent200JSONResponseBodyRuntimeBackend      `json:"backend"`
 			ClaudeCode                         *struct {
 				Authentication GetAgent200JSONResponseBodyRuntimeClaudeCodeAuthentication `json:"authentication"`
 				Model          *string                                                    `json:"model,omitempty"`
 			} `json:"claudeCode,omitempty"`
-			Command     *[]string `json:"command"`
-			Credentials *[]struct {
+			Command          *[]string                      `json:"command"`
+			ConnectionModels *map[string]openapi_types.UUID `json:"connectionModels,omitempty"`
+			Credentials      *[]struct {
 				CredentialId *string                                            `json:"credentialId,omitempty"`
 				Description  *string                                            `json:"description,omitempty"`
 				Key          string                                             `json:"key"`
@@ -86949,11 +87206,9 @@ type GetAgentResponse struct {
 		Scope                 GetAgent200JSONResponseBodyScope `json:"scope"`
 		Slug                  *string                          `json:"slug"`
 		SubagentLoadBalancing *struct {
-			Algorithm       GetAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
-			Enabled         bool                                                      `json:"enabled"`
-			FallbackEnabled bool                                                      `json:"fallbackEnabled"`
-			Retries         int                                                       `json:"retries"`
-			Weights         *map[string]int                                           `json:"weights,omitempty"`
+			Algorithm GetAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
+			Enabled   bool                                                      `json:"enabled"`
+			Weights   *map[string]int                                           `json:"weights,omitempty"`
 		} `json:"subagentLoadBalancing,omitempty"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
@@ -87118,20 +87373,24 @@ type UpdateAgentResponse struct {
 			DomainPreset   UpdateAgent200JSONResponseBodyNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     UpdateAgent200JSONResponseBodyNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"networkPolicy,omitempty"`
-		OrganizationId             string                                             `json:"organizationId"`
-		PassthroughHeaders         *[]string                                          `json:"passthroughHeaders"`
-		ResolvedLlmModelName       *string                                            `json:"resolvedLlmModelName,omitempty"`
-		ResolvedLlmProvider        *UpdateAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
-		ResolvedLlmProviderKeyName *string                                            `json:"resolvedLlmProviderKeyName,omitempty"`
-		Runtime                    *struct {
-			AllowAgentSuppliedCredentialValues *bool                                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
-			Backend                            UpdateAgent200JSONResponseBodyRuntimeBackend `json:"backend"`
+		OrganizationId                  string                                             `json:"organizationId"`
+		PassthroughHeaders              *[]string                                          `json:"passthroughHeaders"`
+		ProgressiveSubagentLoading      bool                                               `json:"progressiveSubagentLoading"`
+		ResolvedLlmModelName            *string                                            `json:"resolvedLlmModelName,omitempty"`
+		ResolvedLlmPersonalSubscription *bool                                              `json:"resolvedLlmPersonalSubscription,omitempty"`
+		ResolvedLlmProvider             *UpdateAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
+		ResolvedLlmProviderKeyName      *string                                            `json:"resolvedLlmProviderKeyName,omitempty"`
+		Runtime                         *struct {
+			AccountLock                        *UpdateAgent200JSONResponseBodyRuntimeAccountLock `json:"accountLock,omitempty"`
+			AllowAgentSuppliedCredentialValues *bool                                             `json:"allowAgentSuppliedCredentialValues,omitempty"`
+			Backend                            UpdateAgent200JSONResponseBodyRuntimeBackend      `json:"backend"`
 			ClaudeCode                         *struct {
 				Authentication UpdateAgent200JSONResponseBodyRuntimeClaudeCodeAuthentication `json:"authentication"`
 				Model          *string                                                       `json:"model,omitempty"`
 			} `json:"claudeCode,omitempty"`
-			Command     *[]string `json:"command"`
-			Credentials *[]struct {
+			Command          *[]string                      `json:"command"`
+			ConnectionModels *map[string]openapi_types.UUID `json:"connectionModels,omitempty"`
+			Credentials      *[]struct {
 				CredentialId *string                                               `json:"credentialId,omitempty"`
 				Description  *string                                               `json:"description,omitempty"`
 				Key          string                                                `json:"key"`
@@ -87159,11 +87418,9 @@ type UpdateAgentResponse struct {
 		Scope                 UpdateAgent200JSONResponseBodyScope `json:"scope"`
 		Slug                  *string                             `json:"slug"`
 		SubagentLoadBalancing *struct {
-			Algorithm       UpdateAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
-			Enabled         bool                                                         `json:"enabled"`
-			FallbackEnabled bool                                                         `json:"fallbackEnabled"`
-			Retries         int                                                          `json:"retries"`
-			Weights         *map[string]int                                              `json:"weights,omitempty"`
+			Algorithm UpdateAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
+			Enabled   bool                                                         `json:"enabled"`
+			Weights   *map[string]int                                              `json:"weights,omitempty"`
 		} `json:"subagentLoadBalancing,omitempty"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
@@ -94987,31 +95244,32 @@ type GetInternalMcpCatalogResponse struct {
 		Multitenant         bool                `json:"multitenant"`
 		Name                string              `json:"name"`
 		OauthConfig         *struct {
-			AccessTokenEnvVar        *string                                                       `json:"access_token_env_var,omitempty"`
-			AdditionalScopes         *[]string                                                     `json:"additional_scopes,omitempty"`
-			Audience                 *string                                                       `json:"audience,omitempty"`
-			AuthServerUrl            *string                                                       `json:"auth_server_url,omitempty"`
-			AuthorizationEndpoint    *string                                                       `json:"authorization_endpoint,omitempty"`
-			BrowserAuth              *bool                                                         `json:"browser_auth,omitempty"`
-			ClientId                 string                                                        `json:"client_id"`
-			ClientSecret             *string                                                       `json:"client_secret,omitempty"`
-			DefaultScopes            []string                                                      `json:"default_scopes"`
-			Description              *string                                                       `json:"description,omitempty"`
-			GenericOauth             *bool                                                         `json:"generic_oauth,omitempty"`
-			GrantType                *GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-			Name                     string                                                        `json:"name"`
-			ProviderName             *string                                                       `json:"provider_name,omitempty"`
-			RedirectUris             []string                                                      `json:"redirect_uris"`
-			RequiresProxy            *bool                                                         `json:"requires_proxy,omitempty"`
-			Resource                 *string                                                       `json:"resource,omitempty"`
-			ResourceMetadataUrl      *string                                                       `json:"resource_metadata_url,omitempty"`
-			Scopes                   []string                                                      `json:"scopes"`
-			ServerUrl                string                                                        `json:"server_url"`
-			StreamableHttpPort       *float32                                                      `json:"streamable_http_port,omitempty"`
-			StreamableHttpUrl        *string                                                       `json:"streamable_http_url,omitempty"`
-			SupportsResourceMetadata bool                                                          `json:"supports_resource_metadata"`
-			TokenEndpoint            *string                                                       `json:"token_endpoint,omitempty"`
-			WellKnownUrl             *string                                                       `json:"well_known_url,omitempty"`
+			AccessTokenEnvVar         *string                                                       `json:"access_token_env_var,omitempty"`
+			AdditionalScopes          *[]string                                                     `json:"additional_scopes,omitempty"`
+			Audience                  *string                                                       `json:"audience,omitempty"`
+			AuthServerUrl             *string                                                       `json:"auth_server_url,omitempty"`
+			AuthorizationEndpoint     *string                                                       `json:"authorization_endpoint,omitempty"`
+			BrowserAuth               *bool                                                         `json:"browser_auth,omitempty"`
+			ClientId                  string                                                        `json:"client_id"`
+			ClientSecret              *string                                                       `json:"client_secret,omitempty"`
+			DefaultScopes             []string                                                      `json:"default_scopes"`
+			Description               *string                                                       `json:"description,omitempty"`
+			GenericOauth              *bool                                                         `json:"generic_oauth,omitempty"`
+			GrantType                 *GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+			Name                      string                                                        `json:"name"`
+			ProviderName              *string                                                       `json:"provider_name,omitempty"`
+			RedirectUris              []string                                                      `json:"redirect_uris"`
+			RequiresClientCredentials *bool                                                         `json:"requires_client_credentials,omitempty"`
+			RequiresProxy             *bool                                                         `json:"requires_proxy,omitempty"`
+			Resource                  *string                                                       `json:"resource,omitempty"`
+			ResourceMetadataUrl       *string                                                       `json:"resource_metadata_url,omitempty"`
+			Scopes                    []string                                                      `json:"scopes"`
+			ServerUrl                 string                                                        `json:"server_url"`
+			StreamableHttpPort        *float32                                                      `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl         *string                                                       `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata  bool                                                          `json:"supports_resource_metadata"`
+			TokenEndpoint             *string                                                       `json:"token_endpoint,omitempty"`
+			WellKnownUrl              *string                                                       `json:"well_known_url,omitempty"`
 		} `json:"oauthConfig"`
 		OrganizationId *string                                            `json:"organizationId"`
 		ProvidesSkills *bool                                              `json:"providesSkills,omitempty"`
@@ -95209,31 +95467,32 @@ type CreateInternalMcpCatalogItemResponse struct {
 		Multitenant         bool                `json:"multitenant"`
 		Name                string              `json:"name"`
 		OauthConfig         *struct {
-			AccessTokenEnvVar        *string                                                              `json:"access_token_env_var,omitempty"`
-			AdditionalScopes         *[]string                                                            `json:"additional_scopes,omitempty"`
-			Audience                 *string                                                              `json:"audience,omitempty"`
-			AuthServerUrl            *string                                                              `json:"auth_server_url,omitempty"`
-			AuthorizationEndpoint    *string                                                              `json:"authorization_endpoint,omitempty"`
-			BrowserAuth              *bool                                                                `json:"browser_auth,omitempty"`
-			ClientId                 string                                                               `json:"client_id"`
-			ClientSecret             *string                                                              `json:"client_secret,omitempty"`
-			DefaultScopes            []string                                                             `json:"default_scopes"`
-			Description              *string                                                              `json:"description,omitempty"`
-			GenericOauth             *bool                                                                `json:"generic_oauth,omitempty"`
-			GrantType                *CreateInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-			Name                     string                                                               `json:"name"`
-			ProviderName             *string                                                              `json:"provider_name,omitempty"`
-			RedirectUris             []string                                                             `json:"redirect_uris"`
-			RequiresProxy            *bool                                                                `json:"requires_proxy,omitempty"`
-			Resource                 *string                                                              `json:"resource,omitempty"`
-			ResourceMetadataUrl      *string                                                              `json:"resource_metadata_url,omitempty"`
-			Scopes                   []string                                                             `json:"scopes"`
-			ServerUrl                string                                                               `json:"server_url"`
-			StreamableHttpPort       *float32                                                             `json:"streamable_http_port,omitempty"`
-			StreamableHttpUrl        *string                                                              `json:"streamable_http_url,omitempty"`
-			SupportsResourceMetadata bool                                                                 `json:"supports_resource_metadata"`
-			TokenEndpoint            *string                                                              `json:"token_endpoint,omitempty"`
-			WellKnownUrl             *string                                                              `json:"well_known_url,omitempty"`
+			AccessTokenEnvVar         *string                                                              `json:"access_token_env_var,omitempty"`
+			AdditionalScopes          *[]string                                                            `json:"additional_scopes,omitempty"`
+			Audience                  *string                                                              `json:"audience,omitempty"`
+			AuthServerUrl             *string                                                              `json:"auth_server_url,omitempty"`
+			AuthorizationEndpoint     *string                                                              `json:"authorization_endpoint,omitempty"`
+			BrowserAuth               *bool                                                                `json:"browser_auth,omitempty"`
+			ClientId                  string                                                               `json:"client_id"`
+			ClientSecret              *string                                                              `json:"client_secret,omitempty"`
+			DefaultScopes             []string                                                             `json:"default_scopes"`
+			Description               *string                                                              `json:"description,omitempty"`
+			GenericOauth              *bool                                                                `json:"generic_oauth,omitempty"`
+			GrantType                 *CreateInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+			Name                      string                                                               `json:"name"`
+			ProviderName              *string                                                              `json:"provider_name,omitempty"`
+			RedirectUris              []string                                                             `json:"redirect_uris"`
+			RequiresClientCredentials *bool                                                                `json:"requires_client_credentials,omitempty"`
+			RequiresProxy             *bool                                                                `json:"requires_proxy,omitempty"`
+			Resource                  *string                                                              `json:"resource,omitempty"`
+			ResourceMetadataUrl       *string                                                              `json:"resource_metadata_url,omitempty"`
+			Scopes                    []string                                                             `json:"scopes"`
+			ServerUrl                 string                                                               `json:"server_url"`
+			StreamableHttpPort        *float32                                                             `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl         *string                                                              `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata  bool                                                                 `json:"supports_resource_metadata"`
+			TokenEndpoint             *string                                                              `json:"token_endpoint,omitempty"`
+			WellKnownUrl              *string                                                              `json:"well_known_url,omitempty"`
 		} `json:"oauthConfig"`
 		OrganizationId *string                                                   `json:"organizationId"`
 		Repository     *string                                                   `json:"repository"`
@@ -95504,31 +95763,32 @@ type GetInternalMcpCatalogItemResponse struct {
 		Multitenant         bool                `json:"multitenant"`
 		Name                string              `json:"name"`
 		OauthConfig         *struct {
-			AccessTokenEnvVar        *string                                                           `json:"access_token_env_var,omitempty"`
-			AdditionalScopes         *[]string                                                         `json:"additional_scopes,omitempty"`
-			Audience                 *string                                                           `json:"audience,omitempty"`
-			AuthServerUrl            *string                                                           `json:"auth_server_url,omitempty"`
-			AuthorizationEndpoint    *string                                                           `json:"authorization_endpoint,omitempty"`
-			BrowserAuth              *bool                                                             `json:"browser_auth,omitempty"`
-			ClientId                 string                                                            `json:"client_id"`
-			ClientSecret             *string                                                           `json:"client_secret,omitempty"`
-			DefaultScopes            []string                                                          `json:"default_scopes"`
-			Description              *string                                                           `json:"description,omitempty"`
-			GenericOauth             *bool                                                             `json:"generic_oauth,omitempty"`
-			GrantType                *GetInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-			Name                     string                                                            `json:"name"`
-			ProviderName             *string                                                           `json:"provider_name,omitempty"`
-			RedirectUris             []string                                                          `json:"redirect_uris"`
-			RequiresProxy            *bool                                                             `json:"requires_proxy,omitempty"`
-			Resource                 *string                                                           `json:"resource,omitempty"`
-			ResourceMetadataUrl      *string                                                           `json:"resource_metadata_url,omitempty"`
-			Scopes                   []string                                                          `json:"scopes"`
-			ServerUrl                string                                                            `json:"server_url"`
-			StreamableHttpPort       *float32                                                          `json:"streamable_http_port,omitempty"`
-			StreamableHttpUrl        *string                                                           `json:"streamable_http_url,omitempty"`
-			SupportsResourceMetadata bool                                                              `json:"supports_resource_metadata"`
-			TokenEndpoint            *string                                                           `json:"token_endpoint,omitempty"`
-			WellKnownUrl             *string                                                           `json:"well_known_url,omitempty"`
+			AccessTokenEnvVar         *string                                                           `json:"access_token_env_var,omitempty"`
+			AdditionalScopes          *[]string                                                         `json:"additional_scopes,omitempty"`
+			Audience                  *string                                                           `json:"audience,omitempty"`
+			AuthServerUrl             *string                                                           `json:"auth_server_url,omitempty"`
+			AuthorizationEndpoint     *string                                                           `json:"authorization_endpoint,omitempty"`
+			BrowserAuth               *bool                                                             `json:"browser_auth,omitempty"`
+			ClientId                  string                                                            `json:"client_id"`
+			ClientSecret              *string                                                           `json:"client_secret,omitempty"`
+			DefaultScopes             []string                                                          `json:"default_scopes"`
+			Description               *string                                                           `json:"description,omitempty"`
+			GenericOauth              *bool                                                             `json:"generic_oauth,omitempty"`
+			GrantType                 *GetInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+			Name                      string                                                            `json:"name"`
+			ProviderName              *string                                                           `json:"provider_name,omitempty"`
+			RedirectUris              []string                                                          `json:"redirect_uris"`
+			RequiresClientCredentials *bool                                                             `json:"requires_client_credentials,omitempty"`
+			RequiresProxy             *bool                                                             `json:"requires_proxy,omitempty"`
+			Resource                  *string                                                           `json:"resource,omitempty"`
+			ResourceMetadataUrl       *string                                                           `json:"resource_metadata_url,omitempty"`
+			Scopes                    []string                                                          `json:"scopes"`
+			ServerUrl                 string                                                            `json:"server_url"`
+			StreamableHttpPort        *float32                                                          `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl         *string                                                           `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata  bool                                                              `json:"supports_resource_metadata"`
+			TokenEndpoint             *string                                                           `json:"token_endpoint,omitempty"`
+			WellKnownUrl              *string                                                           `json:"well_known_url,omitempty"`
 		} `json:"oauthConfig"`
 		OrganizationId *string                                                `json:"organizationId"`
 		ProvidesSkills *bool                                                  `json:"providesSkills,omitempty"`
@@ -95726,31 +95986,32 @@ type UpdateInternalMcpCatalogItemResponse struct {
 		Multitenant         bool                `json:"multitenant"`
 		Name                string              `json:"name"`
 		OauthConfig         *struct {
-			AccessTokenEnvVar        *string                                                              `json:"access_token_env_var,omitempty"`
-			AdditionalScopes         *[]string                                                            `json:"additional_scopes,omitempty"`
-			Audience                 *string                                                              `json:"audience,omitempty"`
-			AuthServerUrl            *string                                                              `json:"auth_server_url,omitempty"`
-			AuthorizationEndpoint    *string                                                              `json:"authorization_endpoint,omitempty"`
-			BrowserAuth              *bool                                                                `json:"browser_auth,omitempty"`
-			ClientId                 string                                                               `json:"client_id"`
-			ClientSecret             *string                                                              `json:"client_secret,omitempty"`
-			DefaultScopes            []string                                                             `json:"default_scopes"`
-			Description              *string                                                              `json:"description,omitempty"`
-			GenericOauth             *bool                                                                `json:"generic_oauth,omitempty"`
-			GrantType                *UpdateInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-			Name                     string                                                               `json:"name"`
-			ProviderName             *string                                                              `json:"provider_name,omitempty"`
-			RedirectUris             []string                                                             `json:"redirect_uris"`
-			RequiresProxy            *bool                                                                `json:"requires_proxy,omitempty"`
-			Resource                 *string                                                              `json:"resource,omitempty"`
-			ResourceMetadataUrl      *string                                                              `json:"resource_metadata_url,omitempty"`
-			Scopes                   []string                                                             `json:"scopes"`
-			ServerUrl                string                                                               `json:"server_url"`
-			StreamableHttpPort       *float32                                                             `json:"streamable_http_port,omitempty"`
-			StreamableHttpUrl        *string                                                              `json:"streamable_http_url,omitempty"`
-			SupportsResourceMetadata bool                                                                 `json:"supports_resource_metadata"`
-			TokenEndpoint            *string                                                              `json:"token_endpoint,omitempty"`
-			WellKnownUrl             *string                                                              `json:"well_known_url,omitempty"`
+			AccessTokenEnvVar         *string                                                              `json:"access_token_env_var,omitempty"`
+			AdditionalScopes          *[]string                                                            `json:"additional_scopes,omitempty"`
+			Audience                  *string                                                              `json:"audience,omitempty"`
+			AuthServerUrl             *string                                                              `json:"auth_server_url,omitempty"`
+			AuthorizationEndpoint     *string                                                              `json:"authorization_endpoint,omitempty"`
+			BrowserAuth               *bool                                                                `json:"browser_auth,omitempty"`
+			ClientId                  string                                                               `json:"client_id"`
+			ClientSecret              *string                                                              `json:"client_secret,omitempty"`
+			DefaultScopes             []string                                                             `json:"default_scopes"`
+			Description               *string                                                              `json:"description,omitempty"`
+			GenericOauth              *bool                                                                `json:"generic_oauth,omitempty"`
+			GrantType                 *UpdateInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+			Name                      string                                                               `json:"name"`
+			ProviderName              *string                                                              `json:"provider_name,omitempty"`
+			RedirectUris              []string                                                             `json:"redirect_uris"`
+			RequiresClientCredentials *bool                                                                `json:"requires_client_credentials,omitempty"`
+			RequiresProxy             *bool                                                                `json:"requires_proxy,omitempty"`
+			Resource                  *string                                                              `json:"resource,omitempty"`
+			ResourceMetadataUrl       *string                                                              `json:"resource_metadata_url,omitempty"`
+			Scopes                    []string                                                             `json:"scopes"`
+			ServerUrl                 string                                                               `json:"server_url"`
+			StreamableHttpPort        *float32                                                             `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl         *string                                                              `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata  bool                                                                 `json:"supports_resource_metadata"`
+			TokenEndpoint             *string                                                              `json:"token_endpoint,omitempty"`
+			WellKnownUrl              *string                                                              `json:"well_known_url,omitempty"`
 		} `json:"oauthConfig"`
 		OrganizationId *string                                                   `json:"organizationId"`
 		Repository     *string                                                   `json:"repository"`
@@ -97784,6 +98045,7 @@ type GetLlmProviderApiKeysResponse struct {
 		} `json:"labels,omitempty"`
 		Name                     string                                                     `json:"name"`
 		OrganizationId           string                                                     `json:"organizationId"`
+		Plan                     *GetLlmProviderApiKeys200JSONResponseBodyPlan              `json:"plan,omitempty"`
 		Provider                 GetLlmProviderApiKeys200JSONResponseBodyProvider           `json:"provider"`
 		RequiresReauthentication *bool                                                      `json:"requiresReauthentication,omitempty"`
 		Scope                    GetLlmProviderApiKeys200JSONResponseBodyScope              `json:"scope"`
@@ -97896,6 +98158,7 @@ type CreateLlmProviderApiKeyResponse struct {
 		} `json:"labels,omitempty"`
 		Name                     string                                                       `json:"name"`
 		OrganizationId           string                                                       `json:"organizationId"`
+		Plan                     *CreateLlmProviderApiKey200JSONResponseBodyPlan              `json:"plan,omitempty"`
 		Provider                 CreateLlmProviderApiKey200JSONResponseBodyProvider           `json:"provider"`
 		RequiresReauthentication *bool                                                        `json:"requiresReauthentication,omitempty"`
 		Scope                    CreateLlmProviderApiKey200JSONResponseBodyScope              `json:"scope"`
@@ -98083,6 +98346,7 @@ type GetLlmProviderApiKeyResponse struct {
 		} `json:"labels,omitempty"`
 		Name                     string                                                    `json:"name"`
 		OrganizationId           string                                                    `json:"organizationId"`
+		Plan                     *GetLlmProviderApiKey200JSONResponseBodyPlan              `json:"plan,omitempty"`
 		Provider                 GetLlmProviderApiKey200JSONResponseBodyProvider           `json:"provider"`
 		RequiresReauthentication *bool                                                     `json:"requiresReauthentication,omitempty"`
 		Scope                    GetLlmProviderApiKey200JSONResponseBodyScope              `json:"scope"`
@@ -98195,6 +98459,7 @@ type UpdateLlmProviderApiKeyResponse struct {
 		} `json:"labels,omitempty"`
 		Name                     string                                                       `json:"name"`
 		OrganizationId           string                                                       `json:"organizationId"`
+		Plan                     *UpdateLlmProviderApiKey200JSONResponseBodyPlan              `json:"plan,omitempty"`
 		Provider                 UpdateLlmProviderApiKey200JSONResponseBodyProvider           `json:"provider"`
 		RequiresReauthentication *bool                                                        `json:"requiresReauthentication,omitempty"`
 		Scope                    UpdateLlmProviderApiKey200JSONResponseBodyScope              `json:"scope"`
@@ -101043,10 +101308,12 @@ type GetOrganizationResponse struct {
 		DefaultUserLimitCleanupInterval    *GetOrganization200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                          `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                               `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                            `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                               `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                            `json:"embeddingModel"`
 		Favicon                            *string                                                            `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                         `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                            `json:"footerText"`
 		IconLogo                           *string                                                            `json:"iconLogo"`
 		IconLogoDark                       *string                                                            `json:"iconLogoDark"`
@@ -101078,12 +101345,16 @@ type GetOrganizationResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -101118,6 +101389,7 @@ type GetOrganizationResponse struct {
 		SkillToolsEnabled               bool                                    `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                    `json:"slimChatErrorUi"`
 		Slug                            string                                  `json:"slug"`
+		TelemetryEnabled                bool                                    `json:"telemetryEnabled"`
 		Theme                           GetOrganization200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -101256,10 +101528,12 @@ type UpdateAgentSettingsResponse struct {
 		DefaultUserLimitCleanupInterval    *UpdateAgentSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                              `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                                   `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                                `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                    `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                                   `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                                `json:"embeddingModel"`
 		Favicon                            *string                                                                `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                             `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                                `json:"footerText"`
 		IconLogo                           *string                                                                `json:"iconLogo"`
 		IconLogoDark                       *string                                                                `json:"iconLogoDark"`
@@ -101291,12 +101565,16 @@ type UpdateAgentSettingsResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -101331,6 +101609,7 @@ type UpdateAgentSettingsResponse struct {
 		SkillToolsEnabled               bool                                        `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                        `json:"slimChatErrorUi"`
 		Slug                            string                                      `json:"slug"`
+		TelemetryEnabled                bool                                        `json:"telemetryEnabled"`
 		Theme                           UpdateAgentSettings200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -101469,10 +101748,12 @@ type UpdateAppearanceSettingsResponse struct {
 		DefaultUserLimitCleanupInterval    *UpdateAppearanceSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                                   `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                                        `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                                     `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                         `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                                        `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                                     `json:"embeddingModel"`
 		Favicon                            *string                                                                     `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                                  `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                                     `json:"footerText"`
 		IconLogo                           *string                                                                     `json:"iconLogo"`
 		IconLogoDark                       *string                                                                     `json:"iconLogoDark"`
@@ -101504,12 +101785,16 @@ type UpdateAppearanceSettingsResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -101544,6 +101829,7 @@ type UpdateAppearanceSettingsResponse struct {
 		SkillToolsEnabled               bool                                             `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                             `json:"slimChatErrorUi"`
 		Slug                            string                                           `json:"slug"`
+		TelemetryEnabled                bool                                             `json:"telemetryEnabled"`
 		Theme                           UpdateAppearanceSettings200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -101682,10 +101968,12 @@ type UpdateAuthSettingsResponse struct {
 		DefaultUserLimitCleanupInterval    *UpdateAuthSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                             `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                                  `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                               `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                   `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                                  `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                               `json:"embeddingModel"`
 		Favicon                            *string                                                               `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                            `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                               `json:"footerText"`
 		IconLogo                           *string                                                               `json:"iconLogo"`
 		IconLogoDark                       *string                                                               `json:"iconLogoDark"`
@@ -101717,12 +102005,16 @@ type UpdateAuthSettingsResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -101757,6 +102049,7 @@ type UpdateAuthSettingsResponse struct {
 		SkillToolsEnabled               bool                                       `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                       `json:"slimChatErrorUi"`
 		Slug                            string                                     `json:"slug"`
+		TelemetryEnabled                bool                                       `json:"telemetryEnabled"`
 		Theme                           UpdateAuthSettings200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -101895,10 +102188,12 @@ type CompleteOnboardingResponse struct {
 		DefaultUserLimitCleanupInterval    *CompleteOnboarding200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                             `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                                  `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                               `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                   `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                                  `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                               `json:"embeddingModel"`
 		Favicon                            *string                                                               `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                            `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                               `json:"footerText"`
 		IconLogo                           *string                                                               `json:"iconLogo"`
 		IconLogoDark                       *string                                                               `json:"iconLogoDark"`
@@ -101930,12 +102225,16 @@ type CompleteOnboardingResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -101970,6 +102269,7 @@ type CompleteOnboardingResponse struct {
 		SkillToolsEnabled               bool                                       `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                       `json:"slimChatErrorUi"`
 		Slug                            string                                     `json:"slug"`
+		TelemetryEnabled                bool                                       `json:"telemetryEnabled"`
 		Theme                           CompleteOnboarding200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -102108,10 +102408,12 @@ type UpdateConnectionSettingsResponse struct {
 		DefaultUserLimitCleanupInterval    *UpdateConnectionSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                                   `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                                        `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                                     `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                         `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                                        `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                                     `json:"embeddingModel"`
 		Favicon                            *string                                                                     `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                                  `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                                     `json:"footerText"`
 		IconLogo                           *string                                                                     `json:"iconLogo"`
 		IconLogoDark                       *string                                                                     `json:"iconLogoDark"`
@@ -102143,12 +102445,16 @@ type UpdateConnectionSettingsResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -102183,6 +102489,7 @@ type UpdateConnectionSettingsResponse struct {
 		SkillToolsEnabled               bool                                             `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                             `json:"slimChatErrorUi"`
 		Slug                            string                                           `json:"slug"`
+		TelemetryEnabled                bool                                             `json:"telemetryEnabled"`
 		Theme                           UpdateConnectionSettings200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -102321,10 +102628,12 @@ type UpdateDefaultEnvironmentResponse struct {
 		DefaultUserLimitCleanupInterval    *UpdateDefaultEnvironment200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                                   `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                                        `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                                     `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                         `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                                        `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                                     `json:"embeddingModel"`
 		Favicon                            *string                                                                     `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                                  `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                                     `json:"footerText"`
 		IconLogo                           *string                                                                     `json:"iconLogo"`
 		IconLogoDark                       *string                                                                     `json:"iconLogoDark"`
@@ -102356,12 +102665,16 @@ type UpdateDefaultEnvironmentResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -102396,6 +102709,7 @@ type UpdateDefaultEnvironmentResponse struct {
 		SkillToolsEnabled               bool                                             `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                             `json:"slimChatErrorUi"`
 		Slug                            string                                           `json:"slug"`
+		TelemetryEnabled                bool                                             `json:"telemetryEnabled"`
 		Theme                           UpdateDefaultEnvironment200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -102534,10 +102848,12 @@ type UpdateIntegrationSettingsResponse struct {
 		DefaultUserLimitCleanupInterval    *UpdateIntegrationSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                                    `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                                         `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                                      `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                          `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                                         `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                                      `json:"embeddingModel"`
 		Favicon                            *string                                                                      `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                                   `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                                      `json:"footerText"`
 		IconLogo                           *string                                                                      `json:"iconLogo"`
 		IconLogoDark                       *string                                                                      `json:"iconLogoDark"`
@@ -102569,12 +102885,16 @@ type UpdateIntegrationSettingsResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -102609,6 +102929,7 @@ type UpdateIntegrationSettingsResponse struct {
 		SkillToolsEnabled               bool                                              `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                              `json:"slimChatErrorUi"`
 		Slug                            string                                            `json:"slug"`
+		TelemetryEnabled                bool                                              `json:"telemetryEnabled"`
 		Theme                           UpdateIntegrationSettings200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -102747,10 +103068,12 @@ type UpdateKnowledgeSettingsResponse struct {
 		DefaultUserLimitCleanupInterval    *UpdateKnowledgeSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                                  `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                                       `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                                    `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                        `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                                       `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                                    `json:"embeddingModel"`
 		Favicon                            *string                                                                    `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                                 `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                                    `json:"footerText"`
 		IconLogo                           *string                                                                    `json:"iconLogo"`
 		IconLogoDark                       *string                                                                    `json:"iconLogoDark"`
@@ -102782,12 +103105,16 @@ type UpdateKnowledgeSettingsResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -102822,6 +103149,7 @@ type UpdateKnowledgeSettingsResponse struct {
 		SkillToolsEnabled               bool                                            `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                            `json:"slimChatErrorUi"`
 		Slug                            string                                          `json:"slug"`
+		TelemetryEnabled                bool                                            `json:"telemetryEnabled"`
 		Theme                           UpdateKnowledgeSettings200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -103126,10 +103454,12 @@ type UpdateMcpSettingsResponse struct {
 		DefaultUserLimitCleanupInterval    *UpdateMcpSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                            `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                                 `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                              `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                  `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                                 `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                              `json:"embeddingModel"`
 		Favicon                            *string                                                              `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                           `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                              `json:"footerText"`
 		IconLogo                           *string                                                              `json:"iconLogo"`
 		IconLogoDark                       *string                                                              `json:"iconLogoDark"`
@@ -103161,12 +103491,16 @@ type UpdateMcpSettingsResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -103201,6 +103535,7 @@ type UpdateMcpSettingsResponse struct {
 		SkillToolsEnabled               bool                                      `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                      `json:"slimChatErrorUi"`
 		Slug                            string                                    `json:"slug"`
+		TelemetryEnabled                bool                                      `json:"telemetryEnabled"`
 		Theme                           UpdateMcpSettings200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -103417,10 +103752,12 @@ type UpdateSecuritySettingsResponse struct {
 		DefaultUserLimitCleanupInterval    *UpdateSecuritySettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                                 `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                                      `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                                   `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                       `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                                      `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                                   `json:"embeddingModel"`
 		Favicon                            *string                                                                   `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                                `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                                   `json:"footerText"`
 		IconLogo                           *string                                                                   `json:"iconLogo"`
 		IconLogoDark                       *string                                                                   `json:"iconLogoDark"`
@@ -103452,12 +103789,16 @@ type UpdateSecuritySettingsResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -103492,6 +103833,7 @@ type UpdateSecuritySettingsResponse struct {
 		SkillToolsEnabled               bool                                           `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                           `json:"slimChatErrorUi"`
 		Slug                            string                                         `json:"slug"`
+		TelemetryEnabled                bool                                           `json:"telemetryEnabled"`
 		Theme                           UpdateSecuritySettings200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -103630,10 +103972,12 @@ type UpdateSkillsSettingsResponse struct {
 		DefaultUserLimitCleanupInterval    *UpdateSkillsSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                               `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                                    `json:"defaultUserLimitValue"`
+		DepartingMemberOwnerId             *string                                                                 `json:"departingMemberOwnerId"`
 		EmbeddingChatApiKeyId              *openapi_types.UUID                                                     `json:"embeddingChatApiKeyId"`
 		EmbeddingDimensions                *EmbeddingDimensions                                                    `json:"embeddingDimensions"`
 		EmbeddingModel                     *string                                                                 `json:"embeddingModel"`
 		Favicon                            *string                                                                 `json:"favicon"`
+		FirstRunSetupCompletedAt           *time.Time                                                              `json:"firstRunSetupCompletedAt"`
 		FooterText                         *string                                                                 `json:"footerText"`
 		IconLogo                           *string                                                                 `json:"iconLogo"`
 		IconLogoDark                       *string                                                                 `json:"iconLogoDark"`
@@ -103665,12 +104009,16 @@ type UpdateSkillsSettingsResponse struct {
 			DisplayName *string `json:"displayName,omitempty"`
 			Hidden      *bool   `json:"hidden,omitempty"`
 			Plans       *struct {
+				ApiKey *struct {
+					Hidden *bool `json:"hidden,omitempty"`
+				} `json:"apiKey,omitempty"`
 				Enterprise *struct {
 					DisplayName *string `json:"displayName,omitempty"`
 					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"enterprise,omitempty"`
 				Personal *struct {
-					Hidden *bool `json:"hidden,omitempty"`
+					DisplayName *string `json:"displayName,omitempty"`
+					Hidden      *bool   `json:"hidden,omitempty"`
 				} `json:"personal,omitempty"`
 			} `json:"plans,omitempty"`
 		} `json:"modelProviderOverrides"`
@@ -103705,6 +104053,7 @@ type UpdateSkillsSettingsResponse struct {
 		SkillToolsEnabled               bool                                         `json:"skillToolsEnabled"`
 		SlimChatErrorUi                 bool                                         `json:"slimChatErrorUi"`
 		Slug                            string                                       `json:"slug"`
+		TelemetryEnabled                bool                                         `json:"telemetryEnabled"`
 		Theme                           UpdateSkillsSettings200JSONResponseBodyTheme `json:"theme"`
 	}
 	JSON400 *struct {
@@ -114240,21 +114589,25 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 					DomainPreset   GetAgents200JSONResponseBodyDataNetworkPolicyDomainPreset `json:"domainPreset"`
 					EgressMode     GetAgents200JSONResponseBodyDataNetworkPolicyEgressMode   `json:"egressMode"`
 				} `json:"networkPolicy,omitempty"`
-				OrganizationId             string                                               `json:"organizationId"`
-				PassthroughHeaders         *[]string                                            `json:"passthroughHeaders"`
-				PinnedAt                   *time.Time                                           `json:"pinnedAt"`
-				ResolvedLlmModelName       *string                                              `json:"resolvedLlmModelName,omitempty"`
-				ResolvedLlmProvider        *GetAgents200JSONResponseBodyDataResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
-				ResolvedLlmProviderKeyName *string                                              `json:"resolvedLlmProviderKeyName,omitempty"`
-				Runtime                    *struct {
-					AllowAgentSuppliedCredentialValues *bool                                          `json:"allowAgentSuppliedCredentialValues,omitempty"`
-					Backend                            GetAgents200JSONResponseBodyDataRuntimeBackend `json:"backend"`
+				OrganizationId                  string                                               `json:"organizationId"`
+				PassthroughHeaders              *[]string                                            `json:"passthroughHeaders"`
+				PinnedAt                        *time.Time                                           `json:"pinnedAt"`
+				ProgressiveSubagentLoading      bool                                                 `json:"progressiveSubagentLoading"`
+				ResolvedLlmModelName            *string                                              `json:"resolvedLlmModelName,omitempty"`
+				ResolvedLlmPersonalSubscription *bool                                                `json:"resolvedLlmPersonalSubscription,omitempty"`
+				ResolvedLlmProvider             *GetAgents200JSONResponseBodyDataResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
+				ResolvedLlmProviderKeyName      *string                                              `json:"resolvedLlmProviderKeyName,omitempty"`
+				Runtime                         *struct {
+					AccountLock                        *GetAgents200JSONResponseBodyDataRuntimeAccountLock `json:"accountLock,omitempty"`
+					AllowAgentSuppliedCredentialValues *bool                                               `json:"allowAgentSuppliedCredentialValues,omitempty"`
+					Backend                            GetAgents200JSONResponseBodyDataRuntimeBackend      `json:"backend"`
 					ClaudeCode                         *struct {
 						Authentication GetAgents200JSONResponseBodyDataRuntimeClaudeCodeAuthentication `json:"authentication"`
 						Model          *string                                                         `json:"model,omitempty"`
 					} `json:"claudeCode,omitempty"`
-					Command     *[]string `json:"command"`
-					Credentials *[]struct {
+					Command          *[]string                      `json:"command"`
+					ConnectionModels *map[string]openapi_types.UUID `json:"connectionModels,omitempty"`
+					Credentials      *[]struct {
 						CredentialId *string                                                 `json:"credentialId,omitempty"`
 						Description  *string                                                 `json:"description,omitempty"`
 						Key          string                                                  `json:"key"`
@@ -114282,11 +114635,9 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 				Scope                 GetAgents200JSONResponseBodyDataScope `json:"scope"`
 				Slug                  *string                               `json:"slug"`
 				SubagentLoadBalancing *struct {
-					Algorithm       GetAgents200JSONResponseBodyDataSubagentLoadBalancingAlgorithm `json:"algorithm"`
-					Enabled         bool                                                           `json:"enabled"`
-					FallbackEnabled bool                                                           `json:"fallbackEnabled"`
-					Retries         int                                                            `json:"retries"`
-					Weights         *map[string]int                                                `json:"weights,omitempty"`
+					Algorithm GetAgents200JSONResponseBodyDataSubagentLoadBalancingAlgorithm `json:"algorithm"`
+					Enabled   bool                                                           `json:"enabled"`
+					Weights   *map[string]int                                                `json:"weights,omitempty"`
 				} `json:"subagentLoadBalancing,omitempty"`
 
 				// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
@@ -114498,20 +114849,24 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 				DomainPreset   CreateAgent200JSONResponseBodyNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     CreateAgent200JSONResponseBodyNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"networkPolicy,omitempty"`
-			OrganizationId             string                                             `json:"organizationId"`
-			PassthroughHeaders         *[]string                                          `json:"passthroughHeaders"`
-			ResolvedLlmModelName       *string                                            `json:"resolvedLlmModelName,omitempty"`
-			ResolvedLlmProvider        *CreateAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
-			ResolvedLlmProviderKeyName *string                                            `json:"resolvedLlmProviderKeyName,omitempty"`
-			Runtime                    *struct {
-				AllowAgentSuppliedCredentialValues *bool                                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
-				Backend                            CreateAgent200JSONResponseBodyRuntimeBackend `json:"backend"`
+			OrganizationId                  string                                             `json:"organizationId"`
+			PassthroughHeaders              *[]string                                          `json:"passthroughHeaders"`
+			ProgressiveSubagentLoading      bool                                               `json:"progressiveSubagentLoading"`
+			ResolvedLlmModelName            *string                                            `json:"resolvedLlmModelName,omitempty"`
+			ResolvedLlmPersonalSubscription *bool                                              `json:"resolvedLlmPersonalSubscription,omitempty"`
+			ResolvedLlmProvider             *CreateAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
+			ResolvedLlmProviderKeyName      *string                                            `json:"resolvedLlmProviderKeyName,omitempty"`
+			Runtime                         *struct {
+				AccountLock                        *CreateAgent200JSONResponseBodyRuntimeAccountLock `json:"accountLock,omitempty"`
+				AllowAgentSuppliedCredentialValues *bool                                             `json:"allowAgentSuppliedCredentialValues,omitempty"`
+				Backend                            CreateAgent200JSONResponseBodyRuntimeBackend      `json:"backend"`
 				ClaudeCode                         *struct {
 					Authentication CreateAgent200JSONResponseBodyRuntimeClaudeCodeAuthentication `json:"authentication"`
 					Model          *string                                                       `json:"model,omitempty"`
 				} `json:"claudeCode,omitempty"`
-				Command     *[]string `json:"command"`
-				Credentials *[]struct {
+				Command          *[]string                      `json:"command"`
+				ConnectionModels *map[string]openapi_types.UUID `json:"connectionModels,omitempty"`
+				Credentials      *[]struct {
 					CredentialId *string                                               `json:"credentialId,omitempty"`
 					Description  *string                                               `json:"description,omitempty"`
 					Key          string                                                `json:"key"`
@@ -114539,11 +114894,9 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 			Scope                 CreateAgent200JSONResponseBodyScope `json:"scope"`
 			Slug                  *string                             `json:"slug"`
 			SubagentLoadBalancing *struct {
-				Algorithm       CreateAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
-				Enabled         bool                                                         `json:"enabled"`
-				FallbackEnabled bool                                                         `json:"fallbackEnabled"`
-				Retries         int                                                          `json:"retries"`
-				Weights         *map[string]int                                              `json:"weights,omitempty"`
+				Algorithm CreateAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled   bool                                                         `json:"enabled"`
+				Weights   *map[string]int                                              `json:"weights,omitempty"`
 			} `json:"subagentLoadBalancing,omitempty"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
@@ -115832,20 +116185,24 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 				DomainPreset   GetAgent200JSONResponseBodyNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     GetAgent200JSONResponseBodyNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"networkPolicy,omitempty"`
-			OrganizationId             string                                          `json:"organizationId"`
-			PassthroughHeaders         *[]string                                       `json:"passthroughHeaders"`
-			ResolvedLlmModelName       *string                                         `json:"resolvedLlmModelName,omitempty"`
-			ResolvedLlmProvider        *GetAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
-			ResolvedLlmProviderKeyName *string                                         `json:"resolvedLlmProviderKeyName,omitempty"`
-			Runtime                    *struct {
-				AllowAgentSuppliedCredentialValues *bool                                     `json:"allowAgentSuppliedCredentialValues,omitempty"`
-				Backend                            GetAgent200JSONResponseBodyRuntimeBackend `json:"backend"`
+			OrganizationId                  string                                          `json:"organizationId"`
+			PassthroughHeaders              *[]string                                       `json:"passthroughHeaders"`
+			ProgressiveSubagentLoading      bool                                            `json:"progressiveSubagentLoading"`
+			ResolvedLlmModelName            *string                                         `json:"resolvedLlmModelName,omitempty"`
+			ResolvedLlmPersonalSubscription *bool                                           `json:"resolvedLlmPersonalSubscription,omitempty"`
+			ResolvedLlmProvider             *GetAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
+			ResolvedLlmProviderKeyName      *string                                         `json:"resolvedLlmProviderKeyName,omitempty"`
+			Runtime                         *struct {
+				AccountLock                        *GetAgent200JSONResponseBodyRuntimeAccountLock `json:"accountLock,omitempty"`
+				AllowAgentSuppliedCredentialValues *bool                                          `json:"allowAgentSuppliedCredentialValues,omitempty"`
+				Backend                            GetAgent200JSONResponseBodyRuntimeBackend      `json:"backend"`
 				ClaudeCode                         *struct {
 					Authentication GetAgent200JSONResponseBodyRuntimeClaudeCodeAuthentication `json:"authentication"`
 					Model          *string                                                    `json:"model,omitempty"`
 				} `json:"claudeCode,omitempty"`
-				Command     *[]string `json:"command"`
-				Credentials *[]struct {
+				Command          *[]string                      `json:"command"`
+				ConnectionModels *map[string]openapi_types.UUID `json:"connectionModels,omitempty"`
+				Credentials      *[]struct {
 					CredentialId *string                                            `json:"credentialId,omitempty"`
 					Description  *string                                            `json:"description,omitempty"`
 					Key          string                                             `json:"key"`
@@ -115873,11 +116230,9 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 			Scope                 GetAgent200JSONResponseBodyScope `json:"scope"`
 			Slug                  *string                          `json:"slug"`
 			SubagentLoadBalancing *struct {
-				Algorithm       GetAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
-				Enabled         bool                                                      `json:"enabled"`
-				FallbackEnabled bool                                                      `json:"fallbackEnabled"`
-				Retries         int                                                       `json:"retries"`
-				Weights         *map[string]int                                           `json:"weights,omitempty"`
+				Algorithm GetAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled   bool                                                      `json:"enabled"`
+				Weights   *map[string]int                                           `json:"weights,omitempty"`
 			} `json:"subagentLoadBalancing,omitempty"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
@@ -116074,20 +116429,24 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 				DomainPreset   UpdateAgent200JSONResponseBodyNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     UpdateAgent200JSONResponseBodyNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"networkPolicy,omitempty"`
-			OrganizationId             string                                             `json:"organizationId"`
-			PassthroughHeaders         *[]string                                          `json:"passthroughHeaders"`
-			ResolvedLlmModelName       *string                                            `json:"resolvedLlmModelName,omitempty"`
-			ResolvedLlmProvider        *UpdateAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
-			ResolvedLlmProviderKeyName *string                                            `json:"resolvedLlmProviderKeyName,omitempty"`
-			Runtime                    *struct {
-				AllowAgentSuppliedCredentialValues *bool                                        `json:"allowAgentSuppliedCredentialValues,omitempty"`
-				Backend                            UpdateAgent200JSONResponseBodyRuntimeBackend `json:"backend"`
+			OrganizationId                  string                                             `json:"organizationId"`
+			PassthroughHeaders              *[]string                                          `json:"passthroughHeaders"`
+			ProgressiveSubagentLoading      bool                                               `json:"progressiveSubagentLoading"`
+			ResolvedLlmModelName            *string                                            `json:"resolvedLlmModelName,omitempty"`
+			ResolvedLlmPersonalSubscription *bool                                              `json:"resolvedLlmPersonalSubscription,omitempty"`
+			ResolvedLlmProvider             *UpdateAgent200JSONResponseBodyResolvedLlmProvider `json:"resolvedLlmProvider,omitempty"`
+			ResolvedLlmProviderKeyName      *string                                            `json:"resolvedLlmProviderKeyName,omitempty"`
+			Runtime                         *struct {
+				AccountLock                        *UpdateAgent200JSONResponseBodyRuntimeAccountLock `json:"accountLock,omitempty"`
+				AllowAgentSuppliedCredentialValues *bool                                             `json:"allowAgentSuppliedCredentialValues,omitempty"`
+				Backend                            UpdateAgent200JSONResponseBodyRuntimeBackend      `json:"backend"`
 				ClaudeCode                         *struct {
 					Authentication UpdateAgent200JSONResponseBodyRuntimeClaudeCodeAuthentication `json:"authentication"`
 					Model          *string                                                       `json:"model,omitempty"`
 				} `json:"claudeCode,omitempty"`
-				Command     *[]string `json:"command"`
-				Credentials *[]struct {
+				Command          *[]string                      `json:"command"`
+				ConnectionModels *map[string]openapi_types.UUID `json:"connectionModels,omitempty"`
+				Credentials      *[]struct {
 					CredentialId *string                                               `json:"credentialId,omitempty"`
 					Description  *string                                               `json:"description,omitempty"`
 					Key          string                                                `json:"key"`
@@ -116115,11 +116474,9 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 			Scope                 UpdateAgent200JSONResponseBodyScope `json:"scope"`
 			Slug                  *string                             `json:"slug"`
 			SubagentLoadBalancing *struct {
-				Algorithm       UpdateAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
-				Enabled         bool                                                         `json:"enabled"`
-				FallbackEnabled bool                                                         `json:"fallbackEnabled"`
-				Retries         int                                                          `json:"retries"`
-				Weights         *map[string]int                                              `json:"weights,omitempty"`
+				Algorithm UpdateAgent200JSONResponseBodySubagentLoadBalancingAlgorithm `json:"algorithm"`
+				Enabled   bool                                                         `json:"enabled"`
+				Weights   *map[string]int                                              `json:"weights,omitempty"`
 			} `json:"subagentLoadBalancing,omitempty"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
@@ -126567,31 +126924,32 @@ func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCata
 			Multitenant         bool                `json:"multitenant"`
 			Name                string              `json:"name"`
 			OauthConfig         *struct {
-				AccessTokenEnvVar        *string                                                       `json:"access_token_env_var,omitempty"`
-				AdditionalScopes         *[]string                                                     `json:"additional_scopes,omitempty"`
-				Audience                 *string                                                       `json:"audience,omitempty"`
-				AuthServerUrl            *string                                                       `json:"auth_server_url,omitempty"`
-				AuthorizationEndpoint    *string                                                       `json:"authorization_endpoint,omitempty"`
-				BrowserAuth              *bool                                                         `json:"browser_auth,omitempty"`
-				ClientId                 string                                                        `json:"client_id"`
-				ClientSecret             *string                                                       `json:"client_secret,omitempty"`
-				DefaultScopes            []string                                                      `json:"default_scopes"`
-				Description              *string                                                       `json:"description,omitempty"`
-				GenericOauth             *bool                                                         `json:"generic_oauth,omitempty"`
-				GrantType                *GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-				Name                     string                                                        `json:"name"`
-				ProviderName             *string                                                       `json:"provider_name,omitempty"`
-				RedirectUris             []string                                                      `json:"redirect_uris"`
-				RequiresProxy            *bool                                                         `json:"requires_proxy,omitempty"`
-				Resource                 *string                                                       `json:"resource,omitempty"`
-				ResourceMetadataUrl      *string                                                       `json:"resource_metadata_url,omitempty"`
-				Scopes                   []string                                                      `json:"scopes"`
-				ServerUrl                string                                                        `json:"server_url"`
-				StreamableHttpPort       *float32                                                      `json:"streamable_http_port,omitempty"`
-				StreamableHttpUrl        *string                                                       `json:"streamable_http_url,omitempty"`
-				SupportsResourceMetadata bool                                                          `json:"supports_resource_metadata"`
-				TokenEndpoint            *string                                                       `json:"token_endpoint,omitempty"`
-				WellKnownUrl             *string                                                       `json:"well_known_url,omitempty"`
+				AccessTokenEnvVar         *string                                                       `json:"access_token_env_var,omitempty"`
+				AdditionalScopes          *[]string                                                     `json:"additional_scopes,omitempty"`
+				Audience                  *string                                                       `json:"audience,omitempty"`
+				AuthServerUrl             *string                                                       `json:"auth_server_url,omitempty"`
+				AuthorizationEndpoint     *string                                                       `json:"authorization_endpoint,omitempty"`
+				BrowserAuth               *bool                                                         `json:"browser_auth,omitempty"`
+				ClientId                  string                                                        `json:"client_id"`
+				ClientSecret              *string                                                       `json:"client_secret,omitempty"`
+				DefaultScopes             []string                                                      `json:"default_scopes"`
+				Description               *string                                                       `json:"description,omitempty"`
+				GenericOauth              *bool                                                         `json:"generic_oauth,omitempty"`
+				GrantType                 *GetInternalMcpCatalog200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+				Name                      string                                                        `json:"name"`
+				ProviderName              *string                                                       `json:"provider_name,omitempty"`
+				RedirectUris              []string                                                      `json:"redirect_uris"`
+				RequiresClientCredentials *bool                                                         `json:"requires_client_credentials,omitempty"`
+				RequiresProxy             *bool                                                         `json:"requires_proxy,omitempty"`
+				Resource                  *string                                                       `json:"resource,omitempty"`
+				ResourceMetadataUrl       *string                                                       `json:"resource_metadata_url,omitempty"`
+				Scopes                    []string                                                      `json:"scopes"`
+				ServerUrl                 string                                                        `json:"server_url"`
+				StreamableHttpPort        *float32                                                      `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl         *string                                                       `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata  bool                                                          `json:"supports_resource_metadata"`
+				TokenEndpoint             *string                                                       `json:"token_endpoint,omitempty"`
+				WellKnownUrl              *string                                                       `json:"well_known_url,omitempty"`
 			} `json:"oauthConfig"`
 			OrganizationId *string                                            `json:"organizationId"`
 			ProvidesSkills *bool                                              `json:"providesSkills,omitempty"`
@@ -126821,31 +127179,32 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 			Multitenant         bool                `json:"multitenant"`
 			Name                string              `json:"name"`
 			OauthConfig         *struct {
-				AccessTokenEnvVar        *string                                                              `json:"access_token_env_var,omitempty"`
-				AdditionalScopes         *[]string                                                            `json:"additional_scopes,omitempty"`
-				Audience                 *string                                                              `json:"audience,omitempty"`
-				AuthServerUrl            *string                                                              `json:"auth_server_url,omitempty"`
-				AuthorizationEndpoint    *string                                                              `json:"authorization_endpoint,omitempty"`
-				BrowserAuth              *bool                                                                `json:"browser_auth,omitempty"`
-				ClientId                 string                                                               `json:"client_id"`
-				ClientSecret             *string                                                              `json:"client_secret,omitempty"`
-				DefaultScopes            []string                                                             `json:"default_scopes"`
-				Description              *string                                                              `json:"description,omitempty"`
-				GenericOauth             *bool                                                                `json:"generic_oauth,omitempty"`
-				GrantType                *CreateInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-				Name                     string                                                               `json:"name"`
-				ProviderName             *string                                                              `json:"provider_name,omitempty"`
-				RedirectUris             []string                                                             `json:"redirect_uris"`
-				RequiresProxy            *bool                                                                `json:"requires_proxy,omitempty"`
-				Resource                 *string                                                              `json:"resource,omitempty"`
-				ResourceMetadataUrl      *string                                                              `json:"resource_metadata_url,omitempty"`
-				Scopes                   []string                                                             `json:"scopes"`
-				ServerUrl                string                                                               `json:"server_url"`
-				StreamableHttpPort       *float32                                                             `json:"streamable_http_port,omitempty"`
-				StreamableHttpUrl        *string                                                              `json:"streamable_http_url,omitempty"`
-				SupportsResourceMetadata bool                                                                 `json:"supports_resource_metadata"`
-				TokenEndpoint            *string                                                              `json:"token_endpoint,omitempty"`
-				WellKnownUrl             *string                                                              `json:"well_known_url,omitempty"`
+				AccessTokenEnvVar         *string                                                              `json:"access_token_env_var,omitempty"`
+				AdditionalScopes          *[]string                                                            `json:"additional_scopes,omitempty"`
+				Audience                  *string                                                              `json:"audience,omitempty"`
+				AuthServerUrl             *string                                                              `json:"auth_server_url,omitempty"`
+				AuthorizationEndpoint     *string                                                              `json:"authorization_endpoint,omitempty"`
+				BrowserAuth               *bool                                                                `json:"browser_auth,omitempty"`
+				ClientId                  string                                                               `json:"client_id"`
+				ClientSecret              *string                                                              `json:"client_secret,omitempty"`
+				DefaultScopes             []string                                                             `json:"default_scopes"`
+				Description               *string                                                              `json:"description,omitempty"`
+				GenericOauth              *bool                                                                `json:"generic_oauth,omitempty"`
+				GrantType                 *CreateInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+				Name                      string                                                               `json:"name"`
+				ProviderName              *string                                                              `json:"provider_name,omitempty"`
+				RedirectUris              []string                                                             `json:"redirect_uris"`
+				RequiresClientCredentials *bool                                                                `json:"requires_client_credentials,omitempty"`
+				RequiresProxy             *bool                                                                `json:"requires_proxy,omitempty"`
+				Resource                  *string                                                              `json:"resource,omitempty"`
+				ResourceMetadataUrl       *string                                                              `json:"resource_metadata_url,omitempty"`
+				Scopes                    []string                                                             `json:"scopes"`
+				ServerUrl                 string                                                               `json:"server_url"`
+				StreamableHttpPort        *float32                                                             `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl         *string                                                              `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata  bool                                                                 `json:"supports_resource_metadata"`
+				TokenEndpoint             *string                                                              `json:"token_endpoint,omitempty"`
+				WellKnownUrl              *string                                                              `json:"well_known_url,omitempty"`
 			} `json:"oauthConfig"`
 			OrganizationId *string                                                   `json:"organizationId"`
 			Repository     *string                                                   `json:"repository"`
@@ -127180,31 +127539,32 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 			Multitenant         bool                `json:"multitenant"`
 			Name                string              `json:"name"`
 			OauthConfig         *struct {
-				AccessTokenEnvVar        *string                                                           `json:"access_token_env_var,omitempty"`
-				AdditionalScopes         *[]string                                                         `json:"additional_scopes,omitempty"`
-				Audience                 *string                                                           `json:"audience,omitempty"`
-				AuthServerUrl            *string                                                           `json:"auth_server_url,omitempty"`
-				AuthorizationEndpoint    *string                                                           `json:"authorization_endpoint,omitempty"`
-				BrowserAuth              *bool                                                             `json:"browser_auth,omitempty"`
-				ClientId                 string                                                            `json:"client_id"`
-				ClientSecret             *string                                                           `json:"client_secret,omitempty"`
-				DefaultScopes            []string                                                          `json:"default_scopes"`
-				Description              *string                                                           `json:"description,omitempty"`
-				GenericOauth             *bool                                                             `json:"generic_oauth,omitempty"`
-				GrantType                *GetInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-				Name                     string                                                            `json:"name"`
-				ProviderName             *string                                                           `json:"provider_name,omitempty"`
-				RedirectUris             []string                                                          `json:"redirect_uris"`
-				RequiresProxy            *bool                                                             `json:"requires_proxy,omitempty"`
-				Resource                 *string                                                           `json:"resource,omitempty"`
-				ResourceMetadataUrl      *string                                                           `json:"resource_metadata_url,omitempty"`
-				Scopes                   []string                                                          `json:"scopes"`
-				ServerUrl                string                                                            `json:"server_url"`
-				StreamableHttpPort       *float32                                                          `json:"streamable_http_port,omitempty"`
-				StreamableHttpUrl        *string                                                           `json:"streamable_http_url,omitempty"`
-				SupportsResourceMetadata bool                                                              `json:"supports_resource_metadata"`
-				TokenEndpoint            *string                                                           `json:"token_endpoint,omitempty"`
-				WellKnownUrl             *string                                                           `json:"well_known_url,omitempty"`
+				AccessTokenEnvVar         *string                                                           `json:"access_token_env_var,omitempty"`
+				AdditionalScopes          *[]string                                                         `json:"additional_scopes,omitempty"`
+				Audience                  *string                                                           `json:"audience,omitempty"`
+				AuthServerUrl             *string                                                           `json:"auth_server_url,omitempty"`
+				AuthorizationEndpoint     *string                                                           `json:"authorization_endpoint,omitempty"`
+				BrowserAuth               *bool                                                             `json:"browser_auth,omitempty"`
+				ClientId                  string                                                            `json:"client_id"`
+				ClientSecret              *string                                                           `json:"client_secret,omitempty"`
+				DefaultScopes             []string                                                          `json:"default_scopes"`
+				Description               *string                                                           `json:"description,omitempty"`
+				GenericOauth              *bool                                                             `json:"generic_oauth,omitempty"`
+				GrantType                 *GetInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+				Name                      string                                                            `json:"name"`
+				ProviderName              *string                                                           `json:"provider_name,omitempty"`
+				RedirectUris              []string                                                          `json:"redirect_uris"`
+				RequiresClientCredentials *bool                                                             `json:"requires_client_credentials,omitempty"`
+				RequiresProxy             *bool                                                             `json:"requires_proxy,omitempty"`
+				Resource                  *string                                                           `json:"resource,omitempty"`
+				ResourceMetadataUrl       *string                                                           `json:"resource_metadata_url,omitempty"`
+				Scopes                    []string                                                          `json:"scopes"`
+				ServerUrl                 string                                                            `json:"server_url"`
+				StreamableHttpPort        *float32                                                          `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl         *string                                                           `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata  bool                                                              `json:"supports_resource_metadata"`
+				TokenEndpoint             *string                                                           `json:"token_endpoint,omitempty"`
+				WellKnownUrl              *string                                                           `json:"well_known_url,omitempty"`
 			} `json:"oauthConfig"`
 			OrganizationId *string                                                `json:"organizationId"`
 			ProvidesSkills *bool                                                  `json:"providesSkills,omitempty"`
@@ -127434,31 +127794,32 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 			Multitenant         bool                `json:"multitenant"`
 			Name                string              `json:"name"`
 			OauthConfig         *struct {
-				AccessTokenEnvVar        *string                                                              `json:"access_token_env_var,omitempty"`
-				AdditionalScopes         *[]string                                                            `json:"additional_scopes,omitempty"`
-				Audience                 *string                                                              `json:"audience,omitempty"`
-				AuthServerUrl            *string                                                              `json:"auth_server_url,omitempty"`
-				AuthorizationEndpoint    *string                                                              `json:"authorization_endpoint,omitempty"`
-				BrowserAuth              *bool                                                                `json:"browser_auth,omitempty"`
-				ClientId                 string                                                               `json:"client_id"`
-				ClientSecret             *string                                                              `json:"client_secret,omitempty"`
-				DefaultScopes            []string                                                             `json:"default_scopes"`
-				Description              *string                                                              `json:"description,omitempty"`
-				GenericOauth             *bool                                                                `json:"generic_oauth,omitempty"`
-				GrantType                *UpdateInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-				Name                     string                                                               `json:"name"`
-				ProviderName             *string                                                              `json:"provider_name,omitempty"`
-				RedirectUris             []string                                                             `json:"redirect_uris"`
-				RequiresProxy            *bool                                                                `json:"requires_proxy,omitempty"`
-				Resource                 *string                                                              `json:"resource,omitempty"`
-				ResourceMetadataUrl      *string                                                              `json:"resource_metadata_url,omitempty"`
-				Scopes                   []string                                                             `json:"scopes"`
-				ServerUrl                string                                                               `json:"server_url"`
-				StreamableHttpPort       *float32                                                             `json:"streamable_http_port,omitempty"`
-				StreamableHttpUrl        *string                                                              `json:"streamable_http_url,omitempty"`
-				SupportsResourceMetadata bool                                                                 `json:"supports_resource_metadata"`
-				TokenEndpoint            *string                                                              `json:"token_endpoint,omitempty"`
-				WellKnownUrl             *string                                                              `json:"well_known_url,omitempty"`
+				AccessTokenEnvVar         *string                                                              `json:"access_token_env_var,omitempty"`
+				AdditionalScopes          *[]string                                                            `json:"additional_scopes,omitempty"`
+				Audience                  *string                                                              `json:"audience,omitempty"`
+				AuthServerUrl             *string                                                              `json:"auth_server_url,omitempty"`
+				AuthorizationEndpoint     *string                                                              `json:"authorization_endpoint,omitempty"`
+				BrowserAuth               *bool                                                                `json:"browser_auth,omitempty"`
+				ClientId                  string                                                               `json:"client_id"`
+				ClientSecret              *string                                                              `json:"client_secret,omitempty"`
+				DefaultScopes             []string                                                             `json:"default_scopes"`
+				Description               *string                                                              `json:"description,omitempty"`
+				GenericOauth              *bool                                                                `json:"generic_oauth,omitempty"`
+				GrantType                 *UpdateInternalMcpCatalogItem200JSONResponseBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+				Name                      string                                                               `json:"name"`
+				ProviderName              *string                                                              `json:"provider_name,omitempty"`
+				RedirectUris              []string                                                             `json:"redirect_uris"`
+				RequiresClientCredentials *bool                                                                `json:"requires_client_credentials,omitempty"`
+				RequiresProxy             *bool                                                                `json:"requires_proxy,omitempty"`
+				Resource                  *string                                                              `json:"resource,omitempty"`
+				ResourceMetadataUrl       *string                                                              `json:"resource_metadata_url,omitempty"`
+				Scopes                    []string                                                             `json:"scopes"`
+				ServerUrl                 string                                                               `json:"server_url"`
+				StreamableHttpPort        *float32                                                             `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl         *string                                                              `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata  bool                                                                 `json:"supports_resource_metadata"`
+				TokenEndpoint             *string                                                              `json:"token_endpoint,omitempty"`
+				WellKnownUrl              *string                                                              `json:"well_known_url,omitempty"`
 			} `json:"oauthConfig"`
 			OrganizationId *string                                                   `json:"organizationId"`
 			Repository     *string                                                   `json:"repository"`
@@ -130119,6 +130480,7 @@ func ParseGetLlmProviderApiKeysResponse(rsp *http.Response) (*GetLlmProviderApiK
 			} `json:"labels,omitempty"`
 			Name                     string                                                     `json:"name"`
 			OrganizationId           string                                                     `json:"organizationId"`
+			Plan                     *GetLlmProviderApiKeys200JSONResponseBodyPlan              `json:"plan,omitempty"`
 			Provider                 GetLlmProviderApiKeys200JSONResponseBodyProvider           `json:"provider"`
 			RequiresReauthentication *bool                                                      `json:"requiresReauthentication,omitempty"`
 			Scope                    GetLlmProviderApiKeys200JSONResponseBodyScope              `json:"scope"`
@@ -130263,6 +130625,7 @@ func ParseCreateLlmProviderApiKeyResponse(rsp *http.Response) (*CreateLlmProvide
 			} `json:"labels,omitempty"`
 			Name                     string                                                       `json:"name"`
 			OrganizationId           string                                                       `json:"organizationId"`
+			Plan                     *CreateLlmProviderApiKey200JSONResponseBodyPlan              `json:"plan,omitempty"`
 			Provider                 CreateLlmProviderApiKey200JSONResponseBodyProvider           `json:"provider"`
 			RequiresReauthentication *bool                                                        `json:"requiresReauthentication,omitempty"`
 			Scope                    CreateLlmProviderApiKey200JSONResponseBodyScope              `json:"scope"`
@@ -130514,6 +130877,7 @@ func ParseGetLlmProviderApiKeyResponse(rsp *http.Response) (*GetLlmProviderApiKe
 			} `json:"labels,omitempty"`
 			Name                     string                                                    `json:"name"`
 			OrganizationId           string                                                    `json:"organizationId"`
+			Plan                     *GetLlmProviderApiKey200JSONResponseBodyPlan              `json:"plan,omitempty"`
 			Provider                 GetLlmProviderApiKey200JSONResponseBodyProvider           `json:"provider"`
 			RequiresReauthentication *bool                                                     `json:"requiresReauthentication,omitempty"`
 			Scope                    GetLlmProviderApiKey200JSONResponseBodyScope              `json:"scope"`
@@ -130658,6 +131022,7 @@ func ParseUpdateLlmProviderApiKeyResponse(rsp *http.Response) (*UpdateLlmProvide
 			} `json:"labels,omitempty"`
 			Name                     string                                                       `json:"name"`
 			OrganizationId           string                                                       `json:"organizationId"`
+			Plan                     *UpdateLlmProviderApiKey200JSONResponseBodyPlan              `json:"plan,omitempty"`
 			Provider                 UpdateLlmProviderApiKey200JSONResponseBodyProvider           `json:"provider"`
 			RequiresReauthentication *bool                                                        `json:"requiresReauthentication,omitempty"`
 			Scope                    UpdateLlmProviderApiKey200JSONResponseBodyScope              `json:"scope"`
@@ -134402,10 +134767,12 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 			DefaultUserLimitCleanupInterval    *GetOrganization200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                          `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                               `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                            `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                               `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                            `json:"embeddingModel"`
 			Favicon                            *string                                                            `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                         `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                            `json:"footerText"`
 			IconLogo                           *string                                                            `json:"iconLogo"`
 			IconLogoDark                       *string                                                            `json:"iconLogoDark"`
@@ -134437,12 +134804,16 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -134477,6 +134848,7 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 			SkillToolsEnabled               bool                                    `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                    `json:"slimChatErrorUi"`
 			Slug                            string                                  `json:"slug"`
+			TelemetryEnabled                bool                                    `json:"telemetryEnabled"`
 			Theme                           GetOrganization200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -134647,10 +135019,12 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 			DefaultUserLimitCleanupInterval    *UpdateAgentSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                              `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                                   `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                                `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                    `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                                   `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                                `json:"embeddingModel"`
 			Favicon                            *string                                                                `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                             `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                                `json:"footerText"`
 			IconLogo                           *string                                                                `json:"iconLogo"`
 			IconLogoDark                       *string                                                                `json:"iconLogoDark"`
@@ -134682,12 +135056,16 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -134722,6 +135100,7 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 			SkillToolsEnabled               bool                                        `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                        `json:"slimChatErrorUi"`
 			Slug                            string                                      `json:"slug"`
+			TelemetryEnabled                bool                                        `json:"telemetryEnabled"`
 			Theme                           UpdateAgentSettings200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -134892,10 +135271,12 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 			DefaultUserLimitCleanupInterval    *UpdateAppearanceSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                                   `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                                        `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                                     `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                         `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                                        `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                                     `json:"embeddingModel"`
 			Favicon                            *string                                                                     `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                                  `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                                     `json:"footerText"`
 			IconLogo                           *string                                                                     `json:"iconLogo"`
 			IconLogoDark                       *string                                                                     `json:"iconLogoDark"`
@@ -134927,12 +135308,16 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -134967,6 +135352,7 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 			SkillToolsEnabled               bool                                             `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                             `json:"slimChatErrorUi"`
 			Slug                            string                                           `json:"slug"`
+			TelemetryEnabled                bool                                             `json:"telemetryEnabled"`
 			Theme                           UpdateAppearanceSettings200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -135137,10 +135523,12 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 			DefaultUserLimitCleanupInterval    *UpdateAuthSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                             `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                                  `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                               `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                   `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                                  `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                               `json:"embeddingModel"`
 			Favicon                            *string                                                               `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                            `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                               `json:"footerText"`
 			IconLogo                           *string                                                               `json:"iconLogo"`
 			IconLogoDark                       *string                                                               `json:"iconLogoDark"`
@@ -135172,12 +135560,16 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -135212,6 +135604,7 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 			SkillToolsEnabled               bool                                       `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                       `json:"slimChatErrorUi"`
 			Slug                            string                                     `json:"slug"`
+			TelemetryEnabled                bool                                       `json:"telemetryEnabled"`
 			Theme                           UpdateAuthSettings200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -135382,10 +135775,12 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 			DefaultUserLimitCleanupInterval    *CompleteOnboarding200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                             `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                                  `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                               `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                   `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                                  `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                               `json:"embeddingModel"`
 			Favicon                            *string                                                               `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                            `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                               `json:"footerText"`
 			IconLogo                           *string                                                               `json:"iconLogo"`
 			IconLogoDark                       *string                                                               `json:"iconLogoDark"`
@@ -135417,12 +135812,16 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -135457,6 +135856,7 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 			SkillToolsEnabled               bool                                       `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                       `json:"slimChatErrorUi"`
 			Slug                            string                                     `json:"slug"`
+			TelemetryEnabled                bool                                       `json:"telemetryEnabled"`
 			Theme                           CompleteOnboarding200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -135627,10 +136027,12 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 			DefaultUserLimitCleanupInterval    *UpdateConnectionSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                                   `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                                        `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                                     `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                         `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                                        `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                                     `json:"embeddingModel"`
 			Favicon                            *string                                                                     `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                                  `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                                     `json:"footerText"`
 			IconLogo                           *string                                                                     `json:"iconLogo"`
 			IconLogoDark                       *string                                                                     `json:"iconLogoDark"`
@@ -135662,12 +136064,16 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -135702,6 +136108,7 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 			SkillToolsEnabled               bool                                             `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                             `json:"slimChatErrorUi"`
 			Slug                            string                                           `json:"slug"`
+			TelemetryEnabled                bool                                             `json:"telemetryEnabled"`
 			Theme                           UpdateConnectionSettings200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -135872,10 +136279,12 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 			DefaultUserLimitCleanupInterval    *UpdateDefaultEnvironment200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                                   `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                                        `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                                     `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                         `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                                        `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                                     `json:"embeddingModel"`
 			Favicon                            *string                                                                     `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                                  `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                                     `json:"footerText"`
 			IconLogo                           *string                                                                     `json:"iconLogo"`
 			IconLogoDark                       *string                                                                     `json:"iconLogoDark"`
@@ -135907,12 +136316,16 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -135947,6 +136360,7 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 			SkillToolsEnabled               bool                                             `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                             `json:"slimChatErrorUi"`
 			Slug                            string                                           `json:"slug"`
+			TelemetryEnabled                bool                                             `json:"telemetryEnabled"`
 			Theme                           UpdateDefaultEnvironment200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -136117,10 +136531,12 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 			DefaultUserLimitCleanupInterval    *UpdateIntegrationSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                                    `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                                         `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                                      `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                          `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                                         `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                                      `json:"embeddingModel"`
 			Favicon                            *string                                                                      `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                                   `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                                      `json:"footerText"`
 			IconLogo                           *string                                                                      `json:"iconLogo"`
 			IconLogoDark                       *string                                                                      `json:"iconLogoDark"`
@@ -136152,12 +136568,16 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -136192,6 +136612,7 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 			SkillToolsEnabled               bool                                              `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                              `json:"slimChatErrorUi"`
 			Slug                            string                                            `json:"slug"`
+			TelemetryEnabled                bool                                              `json:"telemetryEnabled"`
 			Theme                           UpdateIntegrationSettings200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -136362,10 +136783,12 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 			DefaultUserLimitCleanupInterval    *UpdateKnowledgeSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                                  `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                                       `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                                    `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                        `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                                       `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                                    `json:"embeddingModel"`
 			Favicon                            *string                                                                    `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                                 `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                                    `json:"footerText"`
 			IconLogo                           *string                                                                    `json:"iconLogo"`
 			IconLogoDark                       *string                                                                    `json:"iconLogoDark"`
@@ -136397,12 +136820,16 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -136437,6 +136864,7 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 			SkillToolsEnabled               bool                                            `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                            `json:"slimChatErrorUi"`
 			Slug                            string                                          `json:"slug"`
+			TelemetryEnabled                bool                                            `json:"telemetryEnabled"`
 			Theme                           UpdateKnowledgeSettings200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -136837,10 +137265,12 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 			DefaultUserLimitCleanupInterval    *UpdateMcpSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                            `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                                 `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                              `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                  `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                                 `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                              `json:"embeddingModel"`
 			Favicon                            *string                                                              `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                           `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                              `json:"footerText"`
 			IconLogo                           *string                                                              `json:"iconLogo"`
 			IconLogoDark                       *string                                                              `json:"iconLogoDark"`
@@ -136872,12 +137302,16 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -136912,6 +137346,7 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 			SkillToolsEnabled               bool                                      `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                      `json:"slimChatErrorUi"`
 			Slug                            string                                    `json:"slug"`
+			TelemetryEnabled                bool                                      `json:"telemetryEnabled"`
 			Theme                           UpdateMcpSettings200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -137192,10 +137627,12 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 			DefaultUserLimitCleanupInterval    *UpdateSecuritySettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                                 `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                                      `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                                   `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                       `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                                      `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                                   `json:"embeddingModel"`
 			Favicon                            *string                                                                   `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                                `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                                   `json:"footerText"`
 			IconLogo                           *string                                                                   `json:"iconLogo"`
 			IconLogoDark                       *string                                                                   `json:"iconLogoDark"`
@@ -137227,12 +137664,16 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -137267,6 +137708,7 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 			SkillToolsEnabled               bool                                           `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                           `json:"slimChatErrorUi"`
 			Slug                            string                                         `json:"slug"`
+			TelemetryEnabled                bool                                           `json:"telemetryEnabled"`
 			Theme                           UpdateSecuritySettings200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -137437,10 +137879,12 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 			DefaultUserLimitCleanupInterval    *UpdateSkillsSettings200JSONResponseBodyDefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                               `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                                    `json:"defaultUserLimitValue"`
+			DepartingMemberOwnerId             *string                                                                 `json:"departingMemberOwnerId"`
 			EmbeddingChatApiKeyId              *openapi_types.UUID                                                     `json:"embeddingChatApiKeyId"`
 			EmbeddingDimensions                *EmbeddingDimensions                                                    `json:"embeddingDimensions"`
 			EmbeddingModel                     *string                                                                 `json:"embeddingModel"`
 			Favicon                            *string                                                                 `json:"favicon"`
+			FirstRunSetupCompletedAt           *time.Time                                                              `json:"firstRunSetupCompletedAt"`
 			FooterText                         *string                                                                 `json:"footerText"`
 			IconLogo                           *string                                                                 `json:"iconLogo"`
 			IconLogoDark                       *string                                                                 `json:"iconLogoDark"`
@@ -137472,12 +137916,16 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 				DisplayName *string `json:"displayName,omitempty"`
 				Hidden      *bool   `json:"hidden,omitempty"`
 				Plans       *struct {
+					ApiKey *struct {
+						Hidden *bool `json:"hidden,omitempty"`
+					} `json:"apiKey,omitempty"`
 					Enterprise *struct {
 						DisplayName *string `json:"displayName,omitempty"`
 						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"enterprise,omitempty"`
 					Personal *struct {
-						Hidden *bool `json:"hidden,omitempty"`
+						DisplayName *string `json:"displayName,omitempty"`
+						Hidden      *bool   `json:"hidden,omitempty"`
 					} `json:"personal,omitempty"`
 				} `json:"plans,omitempty"`
 			} `json:"modelProviderOverrides"`
@@ -137512,6 +137960,7 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 			SkillToolsEnabled               bool                                         `json:"skillToolsEnabled"`
 			SlimChatErrorUi                 bool                                         `json:"slimChatErrorUi"`
 			Slug                            string                                       `json:"slug"`
+			TelemetryEnabled                bool                                         `json:"telemetryEnabled"`
 			Theme                           UpdateSkillsSettings200JSONResponseBodyTheme `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

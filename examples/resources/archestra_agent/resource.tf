@@ -25,6 +25,10 @@ resource "archestra_agent" "support" {
   excluded_tool_ids      = []
   excluded_connector_ids = []
 
+  # Keep the manual subagents behind search_tools/run_tool instead of listing
+  # each one as its own tool.
+  progressive_subagent_loading = true
+
   skills = {
     mode     = "manual"
     allowed  = []

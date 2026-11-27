@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"os"
 	"regexp"
 	"testing"
 
@@ -9,6 +10,10 @@ import (
 )
 
 func TestAccLLMProviderApiKeyResource(t *testing.T) {
+	planCheck := resource.TestCheckNoResourceAttr("archestra_model_provider.test", "plan")
+	if os.Getenv("TF_ACC") != "" && testAccAPIVersionAtLeast(t, "1.5.0-rc.45") {
+		planCheck = resource.TestCheckResourceAttr("archestra_model_provider.test", "plan", "apiKey")
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -20,6 +25,7 @@ func TestAccLLMProviderApiKeyResource(t *testing.T) {
 					resource.TestCheckResourceAttr("archestra_model_provider.test", "llm_provider", "ollama"),
 					resource.TestCheckResourceAttr("archestra_model_provider.test", "is_primary", "false"),
 					resource.TestCheckResourceAttrSet("archestra_model_provider.test", "id"),
+					planCheck,
 				),
 			},
 			{

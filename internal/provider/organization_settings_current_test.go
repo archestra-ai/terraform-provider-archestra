@@ -101,3 +101,28 @@ func TestFlattenCurrentOrganizationSettingsModelTiers(t *testing.T) {
 		})
 	}
 }
+
+func TestAccOrganizationSettingsDepartingMemberOwner(t *testing.T) {
+	if os.Getenv("TF_ACC") != "" {
+		testAccPreCheck(t)
+		if !testAccAPIVersionAtLeast(t, "1.5.0-rc.45") {
+			t.Skip("Choosing who receives a departing member's resources requires API 1.5.0-rc.45")
+		}
+	}
+	email := os.Getenv("ARCHESTRA_ADMIN_EMAIL")
+	if email == "" {
+		email = "admin@example.com"
+	}
+	config := fmt.Sprintf(`data "archestra_user" "owner" {
+ email = %q
+}
+
+resource "archestra_organization_settings" "test" {
+ departing_member_owner_id = data.archestra_user.owner.id
+}`, email)
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+		{Config: config, Check: resource.TestCheckResourceAttrPair("archestra_organization_settings.test", "departing_member_owner_id", "data.archestra_user.owner", "id")},
+		{ResourceName: "archestra_organization_settings.test", ImportState: true, ImportStateVerify: true},
+		{Config: config, PlanOnly: true},
+	}})
+}

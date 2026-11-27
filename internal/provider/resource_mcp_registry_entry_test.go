@@ -709,13 +709,23 @@ resource "archestra_mcp_registry_entry" "test_remote_pat" {
 // added in Archestra v1.2.20: grant_type, audience, endpoint overrides,
 // default_scopes, discovery URL, provider metadata, and assorted flags.
 func TestAccMcpRegistryCatalogItemResourceAdvancedOAuth(t *testing.T) {
+	extra := ""
+	var extraChecks []statecheck.StateCheck
+	if os.Getenv("TF_ACC") != "" && testAccAPIVersionAtLeast(t, "1.5.0-rc.45") {
+		extra = "requires_client_credentials = true"
+		extraChecks = append(extraChecks, statecheck.ExpectKnownValue(
+			"archestra_mcp_registry_entry.oauth_advanced",
+			tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("requires_client_credentials"),
+			knownvalue.Bool(true),
+		))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccMcpRegistryCatalogItemResourceConfigAdvancedOAuth("oauth-advanced-" + acctest.RandString(6)),
-				ConfigStateChecks: []statecheck.StateCheck{
+				Config: testAccMcpRegistryCatalogItemResourceConfigAdvancedOAuth("oauth-advanced-"+acctest.RandString(6), extra),
+				ConfigStateChecks: append([]statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_mcp_registry_entry.oauth_advanced",
 						tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("grant_type"),
@@ -761,13 +771,13 @@ func TestAccMcpRegistryCatalogItemResourceAdvancedOAuth(t *testing.T) {
 						tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("generic_oauth"),
 						knownvalue.Bool(false),
 					),
-				},
+				}, extraChecks...),
 			},
 		},
 	})
 }
 
-func testAccMcpRegistryCatalogItemResourceConfigAdvancedOAuth(name string) string {
+func testAccMcpRegistryCatalogItemResourceConfigAdvancedOAuth(name, extra string) string {
 	return fmt.Sprintf(`
 resource "archestra_mcp_registry_entry" "oauth_advanced" {
   name        = %[1]q
@@ -789,10 +799,11 @@ resource "archestra_mcp_registry_entry" "oauth_advanced" {
       provider_name          = "Example OAuth"
       browser_auth           = true
       generic_oauth          = false
+      %[2]s
     }
   }
 }
-`, name)
+`, name, extra)
 }
 
 // TestAccMcpRegistryCatalogItemResourceImagePullCredentials exercises the

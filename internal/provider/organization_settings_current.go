@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
@@ -12,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -35,6 +37,7 @@ func currentOrganizationAttributes() map[string]schema.Attribute {
 		"default_smart_model_id":                       schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Database ID of the stronger model on `default_llm_api_key_id` used when an agent without its own `smart_model_id` forks a subagent on the `smart` tier."},
 		"default_auto_router_id":                       schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "ALPHA. `archestra_auto_router` ID that agents without their own model, key, pool or router run on; set null to clear. Requires auto routing to be enabled."},
 		"default_member_role":                          schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Role assigned to new organization members."},
+		"departing_member_owner_id":                    schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, Validators: []validator.String{stringvalidator.LengthAtLeast(1)}, MarkdownDescription: "User ID of the member who receives a removed member's shared resources when the admin removing them picks no one; when unset or ineligible, the longest-standing admin receives them."},
 		"onboarding_wizard":                            schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "JSON configuration for onboarding wizard."},
 		"icon_logo_dark":                               schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Icon logo displayed in dark mode."},
 		"require_two_factor":                           schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether organization members must use two-factor authentication."},
@@ -113,6 +116,7 @@ func currentOrganizationSpecs(domain string) []AttrSpec {
 	case "auth-settings":
 		return []AttrSpec{
 			{TFName: "default_member_role", JSONName: "defaultMemberRole", Kind: Scalar},
+			{TFName: "departing_member_owner_id", JSONName: "departingMemberOwnerId", Kind: Scalar},
 			{TFName: "require_two_factor", JSONName: "requireTwoFactor", Kind: Scalar},
 			{TFName: "session_max_age_seconds", JSONName: "sessionMaxAgeSeconds", Kind: Scalar},
 			{TFName: "oauth_access_token_lifetime_seconds", JSONName: "oauthAccessTokenLifetimeSeconds", Kind: Scalar},
@@ -345,6 +349,16 @@ func flattenCurrentOrganizationSettings(data *OrganizationSettingsResourceModel,
 			}
 		}
 		data.DefaultMemberRole = types.StringPointerValue(value)
+	}
+	{
+		var value *string
+		if raw := values["departingMemberOwnerId"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Organization Response", "Unexpected type for departingMemberOwnerId.")
+				return
+			}
+		}
+		data.DepartingMemberOwnerId = types.StringPointerValue(value)
 	}
 	if raw := values["onboardingWizard"]; len(raw) > 0 && string(raw) != "null" {
 		value, err := normalizedOrganizationJSON(raw)

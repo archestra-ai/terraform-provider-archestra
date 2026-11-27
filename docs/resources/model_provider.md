@@ -89,6 +89,7 @@ resource "archestra_model_provider" "azure_openai" {
 - `id` (String) LLM Provider API key identifier
 - `is_agent_key` (Boolean) True for a platform-managed agent key, which rejects user edits.
 - `is_github_app_key` (Boolean) Whether this credential is backed by a GitHub App.
+- `plan` (String) Provider plan the stored credential belongs to: `apiKey`, `personal` or `enterprise`.
 - `requires_reauthentication` (Boolean) Whether the credential requires reauthentication.
 - `scope` (String) Backend credential scope.
 - `subscription_kind` (String) Subscription credential type, when applicable.

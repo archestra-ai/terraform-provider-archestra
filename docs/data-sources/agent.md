@@ -77,6 +77,7 @@ output "support_tools" {
 - `model_pool_id` (String) Model pool used for the agent; the API resolves its model and provider key.
 - `network_policy` (Attributes) Current egress override; null when the agent inherits its environment's policy. (see [below for nested schema](#nestedatt--network_policy))
 - `permissions` (Attributes Set) Current additional direct sharing grants; owner and inherited access are excluded. (see [below for nested schema](#nestedatt--permissions))
+- `progressive_subagent_loading` (Boolean) Whether manually assigned subagents stay behind `search_tools` and `run_tool` instead of each being listed as its own tool.
 - `remote_agent_ids` (Set of String) UUIDs of assigned remote-agent registrations.
 - `resolved_llm_model_name` (String) Server-reported resolved llm model name.
 - `resolved_llm_provider` (String) Server-reported resolved llm provider.

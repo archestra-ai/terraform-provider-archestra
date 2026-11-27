@@ -148,26 +148,27 @@ var ipSecretAttrTypes = map[string]attr.Type{
 }
 
 var oauthConfigAttrTypes = map[string]attr.Type{
-	"client_id":                  types.StringType,
-	"client_secret":              types.StringType,
-	"redirect_uris":              types.ListType{ElemType: types.StringType},
-	"scopes":                     types.ListType{ElemType: types.StringType},
-	"default_scopes":             types.ListType{ElemType: types.StringType},
-	"supports_resource_metadata": types.BoolType,
-	"authorization_endpoint":     types.StringType,
-	"token_endpoint":             types.StringType,
-	"auth_server_url":            types.StringType,
-	"resource_metadata_url":      types.StringType,
-	"well_known_url":             types.StringType,
-	"grant_type":                 types.StringType,
-	"audience":                   types.StringType,
-	"access_token_env_var":       types.StringType,
-	"browser_auth":               types.BoolType,
-	"generic_oauth":              types.BoolType,
-	"requires_proxy":             types.BoolType,
-	"provider_name":              types.StringType,
-	"streamable_http_url":        types.StringType,
-	"streamable_http_port":       types.Int64Type,
+	"client_id":                   types.StringType,
+	"client_secret":               types.StringType,
+	"redirect_uris":               types.ListType{ElemType: types.StringType},
+	"scopes":                      types.ListType{ElemType: types.StringType},
+	"default_scopes":              types.ListType{ElemType: types.StringType},
+	"supports_resource_metadata":  types.BoolType,
+	"authorization_endpoint":      types.StringType,
+	"token_endpoint":              types.StringType,
+	"auth_server_url":             types.StringType,
+	"resource_metadata_url":       types.StringType,
+	"well_known_url":              types.StringType,
+	"grant_type":                  types.StringType,
+	"audience":                    types.StringType,
+	"access_token_env_var":        types.StringType,
+	"browser_auth":                types.BoolType,
+	"generic_oauth":               types.BoolType,
+	"requires_proxy":              types.BoolType,
+	"requires_client_credentials": types.BoolType,
+	"provider_name":               types.StringType,
+	"streamable_http_url":         types.StringType,
+	"streamable_http_port":        types.Int64Type,
 }
 
 var remoteConfigAttrTypes = map[string]attr.Type{
@@ -272,26 +273,27 @@ type RemoteConfigModel struct {
 }
 
 type OAuthConfigModel struct {
-	ClientID                 types.String `tfsdk:"client_id"`
-	ClientSecret             types.String `tfsdk:"client_secret"`
-	RedirectURIs             types.List   `tfsdk:"redirect_uris"`
-	Scopes                   types.List   `tfsdk:"scopes"`
-	DefaultScopes            types.List   `tfsdk:"default_scopes"`
-	SupportsResourceMetadata types.Bool   `tfsdk:"supports_resource_metadata"`
-	AuthorizationEndpoint    types.String `tfsdk:"authorization_endpoint"`
-	TokenEndpoint            types.String `tfsdk:"token_endpoint"`
-	AuthServerURL            types.String `tfsdk:"auth_server_url"`
-	ResourceMetadataURL      types.String `tfsdk:"resource_metadata_url"`
-	WellKnownURL             types.String `tfsdk:"well_known_url"`
-	GrantType                types.String `tfsdk:"grant_type"`
-	Audience                 types.String `tfsdk:"audience"`
-	AccessTokenEnvVar        types.String `tfsdk:"access_token_env_var"`
-	BrowserAuth              types.Bool   `tfsdk:"browser_auth"`
-	GenericOauth             types.Bool   `tfsdk:"generic_oauth"`
-	RequiresProxy            types.Bool   `tfsdk:"requires_proxy"`
-	ProviderName             types.String `tfsdk:"provider_name"`
-	StreamableHTTPURL        types.String `tfsdk:"streamable_http_url"`
-	StreamableHTTPPort       types.Int64  `tfsdk:"streamable_http_port"`
+	ClientID                  types.String `tfsdk:"client_id"`
+	ClientSecret              types.String `tfsdk:"client_secret"`
+	RedirectURIs              types.List   `tfsdk:"redirect_uris"`
+	Scopes                    types.List   `tfsdk:"scopes"`
+	DefaultScopes             types.List   `tfsdk:"default_scopes"`
+	SupportsResourceMetadata  types.Bool   `tfsdk:"supports_resource_metadata"`
+	AuthorizationEndpoint     types.String `tfsdk:"authorization_endpoint"`
+	TokenEndpoint             types.String `tfsdk:"token_endpoint"`
+	AuthServerURL             types.String `tfsdk:"auth_server_url"`
+	ResourceMetadataURL       types.String `tfsdk:"resource_metadata_url"`
+	WellKnownURL              types.String `tfsdk:"well_known_url"`
+	GrantType                 types.String `tfsdk:"grant_type"`
+	Audience                  types.String `tfsdk:"audience"`
+	AccessTokenEnvVar         types.String `tfsdk:"access_token_env_var"`
+	BrowserAuth               types.Bool   `tfsdk:"browser_auth"`
+	GenericOauth              types.Bool   `tfsdk:"generic_oauth"`
+	RequiresProxy             types.Bool   `tfsdk:"requires_proxy"`
+	RequiresClientCredentials types.Bool   `tfsdk:"requires_client_credentials"`
+	ProviderName              types.String `tfsdk:"provider_name"`
+	StreamableHTTPURL         types.String `tfsdk:"streamable_http_url"`
+	StreamableHTTPPort        types.Int64  `tfsdk:"streamable_http_port"`
 }
 
 type AuthFieldModel struct {
@@ -588,6 +590,10 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 							},
 							"requires_proxy": schema.BoolAttribute{
 								MarkdownDescription: "Route OAuth redirects through the Archestra proxy.",
+								Optional:            true,
+							},
+							"requires_client_credentials": schema.BoolAttribute{
+								MarkdownDescription: "Whether installers must supply this OAuth app's client ID and secret before connecting (authorization-code flow only).",
 								Optional:            true,
 							},
 							"provider_name": schema.StringAttribute{
@@ -1250,26 +1256,27 @@ func mapCatalogOauthConfig(apiResp *client.GetInternalMcpCatalogItemResponse) ty
 		return types.ObjectNull(oauthConfigAttrTypes)
 	}
 	obj := map[string]attr.Value{
-		"client_id":                  types.StringValue(oc.ClientId),
-		"client_secret":              stringValueOrNull(oc.ClientSecret),
-		"redirect_uris":              types.ListNull(types.StringType),
-		"scopes":                     types.ListNull(types.StringType),
-		"default_scopes":             types.ListNull(types.StringType),
-		"supports_resource_metadata": types.BoolValue(oc.SupportsResourceMetadata),
-		"authorization_endpoint":     stringValueOrNull(oc.AuthorizationEndpoint),
-		"token_endpoint":             stringValueOrNull(oc.TokenEndpoint),
-		"auth_server_url":            stringValueOrNull(oc.AuthServerUrl),
-		"resource_metadata_url":      stringValueOrNull(oc.ResourceMetadataUrl),
-		"well_known_url":             stringValueOrNull(oc.WellKnownUrl),
-		"audience":                   stringValueOrNull(oc.Audience),
-		"access_token_env_var":       stringValueOrNull(oc.AccessTokenEnvVar),
-		"browser_auth":               boolValueOrNull(oc.BrowserAuth),
-		"generic_oauth":              boolValueOrNull(oc.GenericOauth),
-		"requires_proxy":             boolValueOrNull(oc.RequiresProxy),
-		"provider_name":              stringValueOrNull(oc.ProviderName),
-		"streamable_http_url":        stringValueOrNull(oc.StreamableHttpUrl),
-		"streamable_http_port":       types.Int64Null(),
-		"grant_type":                 types.StringNull(),
+		"client_id":                   types.StringValue(oc.ClientId),
+		"client_secret":               stringValueOrNull(oc.ClientSecret),
+		"redirect_uris":               types.ListNull(types.StringType),
+		"scopes":                      types.ListNull(types.StringType),
+		"default_scopes":              types.ListNull(types.StringType),
+		"supports_resource_metadata":  types.BoolValue(oc.SupportsResourceMetadata),
+		"authorization_endpoint":      stringValueOrNull(oc.AuthorizationEndpoint),
+		"token_endpoint":              stringValueOrNull(oc.TokenEndpoint),
+		"auth_server_url":             stringValueOrNull(oc.AuthServerUrl),
+		"resource_metadata_url":       stringValueOrNull(oc.ResourceMetadataUrl),
+		"well_known_url":              stringValueOrNull(oc.WellKnownUrl),
+		"audience":                    stringValueOrNull(oc.Audience),
+		"access_token_env_var":        stringValueOrNull(oc.AccessTokenEnvVar),
+		"browser_auth":                boolValueOrNull(oc.BrowserAuth),
+		"generic_oauth":               boolValueOrNull(oc.GenericOauth),
+		"requires_proxy":              boolValueOrNull(oc.RequiresProxy),
+		"requires_client_credentials": boolValueOrNull(oc.RequiresClientCredentials),
+		"provider_name":               stringValueOrNull(oc.ProviderName),
+		"streamable_http_url":         stringValueOrNull(oc.StreamableHttpUrl),
+		"streamable_http_port":        types.Int64Null(),
+		"grant_type":                  types.StringNull(),
 	}
 	if oc.GrantType != nil {
 		obj["grant_type"] = types.StringValue(string(*oc.GrantType))

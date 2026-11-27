@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"io"
 	"net/http"
 	"strings"
@@ -404,7 +405,8 @@ func TestMapCatalogOauthConfig(t *testing.T) {
 			"scopes":["read","write"],
 			"default_scopes":["read"],
 			"streamable_http_port":8443,
-			"generic_oauth":true
+			"generic_oauth":true,
+			"requires_client_credentials":true
 		}}`
 		got := mapCatalogOauthConfig(parseCatalogResp(t, body))
 		if got.IsNull() {
@@ -429,6 +431,9 @@ func TestMapCatalogOauthConfig(t *testing.T) {
 		if !asBool(t, attrs["generic_oauth"]).ValueBool() {
 			t.Error("generic_oauth should be true")
 		}
+		if !asBool(t, attrs["requires_client_credentials"]).ValueBool() {
+			t.Error("requires_client_credentials should be true")
+		}
 		// Fields absent from JSON should be null, not zero.
 		if !asBool(t, attrs["browser_auth"]).IsNull() {
 			t.Errorf("browser_auth = %v, want null", attrs["browser_auth"])
@@ -437,6 +442,35 @@ func TestMapCatalogOauthConfig(t *testing.T) {
 			t.Errorf("grant_type = %v, want null", attrs["grant_type"])
 		}
 	})
+}
+
+func TestEncodeOAuthConfigSendsRequiresClientCredentials(t *testing.T) {
+	t.Parallel()
+	objType := tftypes.Object{AttributeTypes: map[string]tftypes.Type{
+		"client_id":                   tftypes.String,
+		"requires_client_credentials": tftypes.Bool,
+	}}
+	for name, tc := range map[string]struct {
+		value tftypes.Value
+		want  any
+	}{
+		"set":   {tftypes.NewValue(tftypes.Bool, true), true},
+		"unset": {tftypes.NewValue(tftypes.Bool, nil), nil},
+	} {
+		t.Run(name, func(t *testing.T) {
+			oc := tftypes.NewValue(objType, map[string]tftypes.Value{
+				"client_id":                   tftypes.NewValue(tftypes.String, "cid"),
+				"requires_client_credentials": tc.value,
+			})
+			out, err := encodeOAuthConfig(oc, tftypes.NewValue(tftypes.String, "https://a/mcp"), "srv")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got := out["requires_client_credentials"]; got != tc.want {
+				t.Fatalf("requires_client_credentials = %v, want %v", got, tc.want)
+			}
+		})
+	}
 }
 
 // End-to-end through mapGetResponseToState — proves the helpers compose correctly.

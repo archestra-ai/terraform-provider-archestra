@@ -459,6 +459,7 @@ func encodeOAuthConfig(oc, url tftypes.Value, serverName string) (map[string]any
 		{"browser_auth", "browser_auth"},
 		{"generic_oauth", "generic_oauth"},
 		{"requires_proxy", "requires_proxy"},
+		{"requires_client_credentials", "requires_client_credentials"},
 		{"provider_name", "provider_name"},
 		{"streamable_http_url", "streamable_http_url"},
 		{"streamable_http_port", "streamable_http_port"},
