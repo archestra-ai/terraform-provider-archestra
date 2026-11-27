@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.12.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.11.0...v3.12.0) (2026-11-27)
+
+
+### Features
+
+* sync platform API to 1.5.0-rc.45; add progressive subagent loading and new settings, fix gateway failover drift ([#299](https://github.com/archestra-ai/terraform-provider-archestra/issues/299)) ([7b193c9](https://github.com/archestra-ai/terraform-provider-archestra/commit/7b193c9f51c2a25020a625ec37d162589ba85bc1))
+
 ## [3.11.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.10.0...v3.11.0) (2026-11-23)
 
 
