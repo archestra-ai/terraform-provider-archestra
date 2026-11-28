@@ -41,8 +41,10 @@ func (d *AutoRouterDataSource) Schema(_ context.Context, _ datasource.SchemaRequ
 				"api_key_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Provider key for the decision model; null uses the organization's primary decisions key."},
 				"model":      schema.StringAttribute{Computed: true, MarkdownDescription: "Provider-facing model name of the decision model."},
 			}},
-			"enabled":             schema.BoolAttribute{Computed: true, MarkdownDescription: "Whether the router currently routes sessions."},
-			"virtual_api_key_ids": schema.SetAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Virtual keys granted this router."},
+			"learn_from_past_sessions": schema.BoolAttribute{Computed: true, MarkdownDescription: "Whether the router also learns from the organization's scored past sessions."},
+			"expected_traffic_factor":  schema.Float64Attribute{Computed: true, MarkdownDescription: "Multiplier on the organization's past daily traffic that plans are sized for."},
+			"enabled":                  schema.BoolAttribute{Computed: true, MarkdownDescription: "Whether the router currently routes sessions."},
+			"virtual_api_key_ids":      schema.SetAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Virtual keys granted this router."},
 		},
 	}
 }

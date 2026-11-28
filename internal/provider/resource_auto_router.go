@@ -33,14 +33,16 @@ func NewAutoRouterResource() resource.Resource { return &AutoRouterResource{} }
 type AutoRouterResource struct{ client *client.AutoRouterClient }
 
 type AutoRouterResourceModel struct {
-	ID               types.String  `tfsdk:"id"`
-	Name             types.String  `tfsdk:"name"`
-	BudgetUsdPerDay  types.Float64 `tfsdk:"budget_usd_per_day"`
-	BudgetPreset     types.String  `tfsdk:"budget_preset"`
-	Tiers            types.Object  `tfsdk:"tiers"`
-	DecisionModel    types.Object  `tfsdk:"decision_model"`
-	Enabled          types.Bool    `tfsdk:"enabled"`
-	VirtualAPIKeyIDs types.Set     `tfsdk:"virtual_api_key_ids"`
+	ID                    types.String  `tfsdk:"id"`
+	Name                  types.String  `tfsdk:"name"`
+	BudgetUsdPerDay       types.Float64 `tfsdk:"budget_usd_per_day"`
+	BudgetPreset          types.String  `tfsdk:"budget_preset"`
+	Tiers                 types.Object  `tfsdk:"tiers"`
+	DecisionModel         types.Object  `tfsdk:"decision_model"`
+	LearnFromPastSessions types.Bool    `tfsdk:"learn_from_past_sessions"`
+	ExpectedTrafficFactor types.Float64 `tfsdk:"expected_traffic_factor"`
+	Enabled               types.Bool    `tfsdk:"enabled"`
+	VirtualAPIKeyIDs      types.Set     `tfsdk:"virtual_api_key_ids"`
 }
 
 var autoRouterTierType = types.ObjectType{AttrTypes: map[string]attr.Type{
@@ -72,6 +74,8 @@ var autoRouterAttrSpec = []AttrSpec{
 		{TFName: "api_key_id", JSONName: "apiKeyId", Kind: Scalar},
 		{TFName: "model", JSONName: "model", Kind: Scalar},
 	}},
+	{TFName: "learn_from_past_sessions", JSONName: "learnFromPastSessions", Kind: Scalar, OmitOnNull: true},
+	{TFName: "expected_traffic_factor", JSONName: "expectedTrafficFactor", Kind: Scalar, OmitOnNull: true},
 }
 
 func (r *AutoRouterResource) AttrSpecs() []AttrSpec { return autoRouterAttrSpec }
@@ -79,9 +83,10 @@ func (r *AutoRouterResource) APIShape() any         { return client.GetAutoRoute
 
 // Planning bookkeeping and usage are runtime state, not configuration:
 // generations and status track fits, usage counts the agents that use the
-// router, and usesPastSessions is set only on an organization's migrated router.
+// router, readsPastSessions derives from learnFromPastSessions and the decision
+// model, and traffic reports the volume the next fit plans for.
 func (r *AutoRouterResource) KnownIntentionallySkipped() []string {
-	return []string{"usesPastSessions", "usage", "generation", "plannedGeneration", "status"}
+	return []string{"readsPastSessions", "traffic", "usage", "generation", "plannedGeneration", "status"}
 }
 
 func (r *AutoRouterResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -111,8 +116,10 @@ func (r *AutoRouterResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				"api_key_id": schema.StringAttribute{Optional: true, MarkdownDescription: "Organization-wide key of the decisions provider (`jev`) for the decision model; null uses the organization's primary key of that provider."},
 				"model":      schema.StringAttribute{Required: true, MarkdownDescription: "Decision model ID the decisions provider offers, such as `jev-1.13.0`."},
 			}},
-			"enabled":             schema.BoolAttribute{Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the router currently routes sessions (auto routing is on for the organization)."},
-			"virtual_api_key_ids": schema.SetAttribute{Computed: true, PlanModifiers: []planmodifier.Set{setplanmodifier.UseStateForUnknown()}, ElementType: types.StringType, MarkdownDescription: "Virtual keys granted this router through their own `auto_router_ids`."},
+			"learn_from_past_sessions": schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the router also learns from the organization's scored past sessions. Only a router on the default decision model reads them. Defaults to `true` for a new router."},
+			"expected_traffic_factor":  schema.Float64Attribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Float64{float64planmodifier.UseStateForUnknown()}, MarkdownDescription: "Multiplier on the organization's past daily traffic that plans are sized for until the router's own traffic spans a week. Greater than 0 and at most 100; defaults to `1`.", Validators: []validator.Float64{float64validator.AtMost(100)}},
+			"enabled":                  schema.BoolAttribute{Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the router currently routes sessions (auto routing is on for the organization)."},
+			"virtual_api_key_ids":      schema.SetAttribute{Computed: true, PlanModifiers: []planmodifier.Set{setplanmodifier.UseStateForUnknown()}, ElementType: types.StringType, MarkdownDescription: "Virtual keys granted this router through their own `auto_router_ids`."},
 		},
 	}
 }
@@ -163,6 +170,12 @@ func (r *AutoRouterResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 	if data.DecisionModel.IsUnknown() {
 		data.DecisionModel = types.ObjectNull(autoRouterDecisionModelType.AttrTypes)
+	}
+	if data.LearnFromPastSessions.IsUnknown() {
+		data.LearnFromPastSessions = types.BoolNull()
+	}
+	if data.ExpectedTrafficFactor.IsUnknown() {
+		data.ExpectedTrafficFactor = types.Float64Null()
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -275,6 +288,8 @@ func flattenAutoRouter(ctx context.Context, data *AutoRouterResourceModel, route
 	data.Enabled = types.BoolValue(router.Enabled)
 	data.BudgetUsdPerDay = types.Float64PointerValue(router.BudgetUsdPerDay)
 	data.BudgetPreset = types.StringPointerValue(router.BudgetPreset)
+	data.LearnFromPastSessions = types.BoolPointerValue(router.LearnFromPastSessions)
+	data.ExpectedTrafficFactor = types.Float64PointerValue(router.ExpectedTrafficFactor)
 	tier := func(t *client.AutoRouterTier) attr.Value {
 		if t == nil {
 			return types.ObjectNull(autoRouterTierType.AttrTypes)

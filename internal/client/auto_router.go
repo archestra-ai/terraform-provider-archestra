@@ -40,19 +40,23 @@ type AutoRouterDecisionModel struct {
 }
 
 type AutoRouter struct {
-	ID                string                  `json:"id"`
-	Name              string                  `json:"name"`
-	Enabled           bool                    `json:"enabled"`
-	BudgetUsdPerDay   *float64                `json:"budgetUsdPerDay"`
-	BudgetPreset      *string                 `json:"budgetPreset"`
-	Tiers             AutoRouterTiers         `json:"tiers"`
-	DecisionModel     AutoRouterDecisionModel `json:"decisionModel"`
-	UsesPastSessions  bool                    `json:"usesPastSessions"`
-	VirtualAPIKeyIDs  []string                `json:"virtualApiKeyIds"`
-	Usage             json.RawMessage         `json:"usage"`
-	Generation        int64                   `json:"generation"`
-	PlannedGeneration int64                   `json:"plannedGeneration"`
-	Status            json.RawMessage         `json:"status"`
+	ID              string                  `json:"id"`
+	Name            string                  `json:"name"`
+	Enabled         bool                    `json:"enabled"`
+	BudgetUsdPerDay *float64                `json:"budgetUsdPerDay"`
+	BudgetPreset    *string                 `json:"budgetPreset"`
+	Tiers           AutoRouterTiers         `json:"tiers"`
+	DecisionModel   AutoRouterDecisionModel `json:"decisionModel"`
+	// Pointers stay nil on releases before 1.5.0-rc.46, which do not return them.
+	LearnFromPastSessions *bool           `json:"learnFromPastSessions"`
+	ExpectedTrafficFactor *float64        `json:"expectedTrafficFactor"`
+	ReadsPastSessions     *bool           `json:"readsPastSessions"`
+	Traffic               json.RawMessage `json:"traffic"`
+	VirtualAPIKeyIDs      []string        `json:"virtualApiKeyIds"`
+	Usage                 json.RawMessage `json:"usage"`
+	Generation            int64           `json:"generation"`
+	PlannedGeneration     int64           `json:"plannedGeneration"`
+	Status                json.RawMessage `json:"status"`
 }
 
 // GetAutoRouterResponse is the API shape the provider's coverage test walks.

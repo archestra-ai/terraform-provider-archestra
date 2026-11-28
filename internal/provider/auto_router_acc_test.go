@@ -149,7 +149,22 @@ resource "archestra_virtual_key" "routed" {
   auto_router_ids = [archestra_auto_router.test.id]
 }`, keyID)
 	initial := config(`budget_preset = "balanced"`, references)
-	updated := config("budget_usd_per_day = 12.5", references)
+	pastSessionSettings := os.Getenv("TF_ACC") != "" && testAccAPIVersionAtLeast(t, "1.5.0-rc.46")
+	updatedSettings := "budget_usd_per_day = 12.5"
+	if pastSessionSettings {
+		updatedSettings += "\n  learn_from_past_sessions = false\n  expected_traffic_factor = 2.5"
+	}
+	updated := config(updatedSettings, references)
+	updatedChecks := []resource.TestCheckFunc{
+		resource.TestCheckNoResourceAttr("archestra_auto_router.test", "budget_preset"),
+		resource.TestCheckResourceAttr("archestra_auto_router.test", "budget_usd_per_day", "12.5"),
+	}
+	if pastSessionSettings {
+		updatedChecks = append(updatedChecks,
+			resource.TestCheckResourceAttr("archestra_auto_router.test", "learn_from_past_sessions", "false"),
+			resource.TestCheckResourceAttr("archestra_auto_router.test", "expected_traffic_factor", "2.5"),
+		)
+	}
 	cleared := config("budget_usd_per_day = 12.5", fmt.Sprintf(`resource "archestra_agent" "routed" {
   name = "tf-auto-router-agent"
 }
@@ -174,10 +189,7 @@ resource "archestra_virtual_key" "routed" {
 		{RefreshState: true, Check: resource.TestCheckResourceAttr("archestra_auto_router.test", "virtual_api_key_ids.#", "1")},
 		{ResourceName: "archestra_auto_router.test", ImportState: true, ImportStateVerify: true},
 		{Config: initial, PlanOnly: true},
-		{Config: updated, Check: resource.ComposeAggregateTestCheckFunc(
-			resource.TestCheckNoResourceAttr("archestra_auto_router.test", "budget_preset"),
-			resource.TestCheckResourceAttr("archestra_auto_router.test", "budget_usd_per_day", "12.5"),
-		)},
+		{Config: updated, Check: resource.ComposeAggregateTestCheckFunc(updatedChecks...)},
 		{Config: updated, PlanOnly: true},
 		{Config: cleared, Check: resource.ComposeAggregateTestCheckFunc(
 			resource.TestCheckNoResourceAttr("archestra_agent.routed", "auto_router_id"),
