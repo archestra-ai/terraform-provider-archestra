@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.13.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.12.0...v3.13.0) (2026-11-28)
+
+
+### Features
+
+* agent load balancing, runtime ports, and tool ID maps from one call ([#305](https://github.com/archestra-ai/terraform-provider-archestra/issues/305)) ([f452d4f](https://github.com/archestra-ai/terraform-provider-archestra/commit/f452d4f53ae9069d83e9455d4e7c69fe5c43d472))
+* auto router past-session settings; sync platform API to 1.5.0-rc.46 ([#303](https://github.com/archestra-ai/terraform-provider-archestra/issues/303)) ([39ffbde](https://github.com/archestra-ai/terraform-provider-archestra/commit/39ffbdeb3185a02d1ca6ae4df36a89ca9bebab4e))
+
 ## [3.12.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.11.0...v3.12.0) (2026-11-27)
 
 
