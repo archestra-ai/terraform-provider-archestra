@@ -36,7 +36,7 @@ jobs:
     name: Release Please
     # Single-package manifest mode -> release outputs are flat (no `<path>--` prefix).
     permissions: {} # The shared workflow writes with the archestra-releaser App token only.
-    uses: archestra-ai/.github/.github/workflows/release-please.yml@f25ce262a4bbb0a43ee907bcd2b0769829972057 # v1.32.1
+    uses: archestra-ai/.github/.github/workflows/release-please.yml@f3851e4eb3eb0e0dae63742a8784fded04f0aa4a # v1.44.0
     with:
       # The archestra-releaser App's key lives only in this environment, which
       # only main can deploy to.
