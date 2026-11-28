@@ -28,7 +28,7 @@ var subagentLoadBalancingAttrTypes = map[string]attr.Type{
 	"fallback_enabled": types.BoolType,
 }
 
-var gatewaySubagentLoadBalancingAttrSpec = AttrSpec{
+var subagentLoadBalancingAttrSpec = AttrSpec{
 	TFName: "subagent_load_balancing", JSONName: "subagentLoadBalancing", Kind: AtomicObject,
 	Children: []AttrSpec{
 		{TFName: "enabled", JSONName: "enabled", Kind: Scalar},
@@ -43,10 +43,12 @@ var gatewaySubagentLoadBalancingAttrSpec = AttrSpec{
 // on write and omits them on read.
 const failoverDeprecation = "Archestra API 1.5.0-rc.45 and later always retry retriable failures and fail over to other assigned subagents, and ignore this value. Remove it from configuration."
 
-func gatewaySubagentLoadBalancingAttribute() schema.SingleNestedAttribute {
+// subagentLoadBalancingAttribute is shared by archestra_mcp_gateway and
+// archestra_agent; subject names the resource in the description.
+func subagentLoadBalancingAttribute(subject string) schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{
 		Optional: true,
-		MarkdownDescription: "How the gateway spreads delegated requests across its assigned subagents and retries failures. " +
+		MarkdownDescription: "How the " + subject + " spreads delegated requests across its assigned subagents and retries failures. " +
 			"Omit for the default (no load balancing); removing it later clears the setting.",
 		Attributes: map[string]schema.Attribute{
 			"enabled": schema.BoolAttribute{
@@ -82,7 +84,7 @@ func gatewaySubagentLoadBalancingAttribute() schema.SingleNestedAttribute {
 }
 
 // subagentLoadBalancingFromResponse reads the stored setting; null when the
-// gateway has none, and on releases without it. Releases that hard-code
+// gateway or agent has none, and on releases without it. Releases that hard-code
 // failover omit retries and fallbackEnabled, so those keep the prior value or
 // the schema default.
 func subagentLoadBalancingFromResponse(body []byte, prior types.Object, diags *diag.Diagnostics) types.Object {
@@ -96,7 +98,7 @@ func subagentLoadBalancingFromResponse(body []byte, prior types.Object, diags *d
 		} `json:"subagentLoadBalancing"`
 	}
 	if err := json.Unmarshal(body, &wire); err != nil {
-		diags.AddError("Invalid Gateway Response", "Unexpected subagentLoadBalancing value: "+err.Error())
+		diags.AddError("Invalid Response", "Unexpected subagentLoadBalancing value: "+err.Error())
 		return types.ObjectNull(subagentLoadBalancingAttrTypes)
 	}
 	if wire.Config == nil {

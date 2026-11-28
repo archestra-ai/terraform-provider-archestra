@@ -21,17 +21,13 @@ data "archestra_mcp_server" "slack" {
   owner_email  = "release-manager@example.com"
 }
 
-data "archestra_tool" "slack_send_message" {
-  name = "slack__slack_send_message"
-}
-
 # Give an agent that one tool, always run through that installation.
 resource "archestra_agent" "announcer" {
   name          = "Release announcer"
   system_prompt = "Post a short note about each release."
 
   tools = [{
-    tool_id                    = data.archestra_tool.slack_send_message.id
+    tool_id                    = data.archestra_mcp_server.slack.tool_id_by_name["slack__slack_send_message"]
     mcp_server_id              = data.archestra_mcp_server.slack.id
     credential_resolution_mode = "static"
   }]
@@ -53,3 +49,4 @@ resource "archestra_agent" "announcer" {
 - `id` (String) ID of the installation.
 - `scope` (String) Who the installation is shared with.
 - `team_id` (String) Team the installation belongs to, for a team installation.
+- `tool_id_by_name` (Map of String) Tool UUID by full tool name (`<server>__<short>`), for tool assignments.

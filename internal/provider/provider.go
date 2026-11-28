@@ -287,6 +287,7 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewBlobProviderDataSource,
 		NewAgentDataSource,
 		NewToolDataSource,
+		NewToolsDataSource,
 		NewMcpToolCallsDataSource,
 		NewAutoRouterDataSource,
 		NewLlmModelDataSource,

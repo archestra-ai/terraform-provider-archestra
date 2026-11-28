@@ -89,6 +89,7 @@ output "support_tools" {
 - `skills` (Attributes) Current skill activation mode and allowed/excluded references. (see [below for nested schema](#nestedatt--skills))
 - `smart_model_id` (String) Database UUID of a stronger tool-capable chat model on the agent's `llm_api_key_id`, used when the agent forks a subagent on the `smart` tier; null falls back to the organization's `default_smart_model_id`, then the provider default
 - `subagent_ids` (Set of String) UUIDs of assigned local subagents.
+- `subagent_load_balancing` (Attributes) How the agent spreads delegated requests across its assigned subagents and retries failures. Omit for the default (no load balancing); removing it later clears the setting. (see [below for nested schema](#nestedatt--subagent_load_balancing))
 - `suggested_prompts` (Attributes List) Suggested prompts surfaced to users in the chat UI (see [below for nested schema](#nestedatt--suggested_prompts))
 - `system_prompt` (String) System prompt that frames the agent's behavior
 - `tool_exposure_mode` (String) Tool exposure mode: full or search_and_run_only.
@@ -162,6 +163,7 @@ Read-Only:
 - `inference_protocol` (String) Wire protocol the image uses to reach Archestra's model router: `openai_responses`, `openai_chat`, or `anthropic`
 - `max_cost_usd` (Number) Hard LLM spend ceiling in USD for the short-lived virtual key backing one run; omit for no ceiling
 - `max_tier` (String) Largest organization-defined tier a run may request.
+- `ports` (List of Number) Container ports users can forward from an active workspace, 1 to 65535 (at most 20).
 - `privileged` (Boolean) Whether the container runs privileged (default `false`)
 - `resources` (Attributes) Kubernetes-style resource requests/limits for the run (see [below for nested schema](#nestedatt--runtime--resources))
 - `steer_mode` (String) How a steer message reaches the running process: `pipe` (runtime-agent FIFO) or `tmux_keys` (typed into the tmux session, for CLIs that own their input loop)
@@ -245,6 +247,18 @@ Read-Only:
 - `source` (String) Skill source kind.
 - `uri` (String) External MCP skill URI.
 
+
+
+<a id="nestedatt--subagent_load_balancing"></a>
+### Nested Schema for `subagent_load_balancing`
+
+Read-Only:
+
+- `algorithm` (String) `round_robin` (default), `weighted` or `random`.
+- `enabled` (Boolean) Whether requests are distributed across the assigned subagents (default `false`).
+- `fallback_enabled` (Boolean) Whether a failed request falls back to another assigned subagent (default `true`).
+- `retries` (Number) Retries on the same subagent after a retriable failure, 0 to 3 (default `1`).
+- `weights` (Map of Number) Weights from 1 to 1000 keyed by subagent UUID, used by `weighted`; unlisted subagents weigh 1.
 
 
 <a id="nestedatt--suggested_prompts"></a>

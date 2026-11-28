@@ -68,6 +68,7 @@ type AgentResourceModel struct {
 	AccessAllSubagents                   types.Bool   `tfsdk:"access_all_subagents"`
 	ToolExposureMode                     types.String `tfsdk:"tool_exposure_mode"`
 	ProgressiveSubagentLoading           types.Bool   `tfsdk:"progressive_subagent_loading"`
+	SubagentLoadBalancing                types.Object `tfsdk:"subagent_load_balancing"`
 
 	ID                         types.String           `tfsdk:"id"`
 	Name                       types.String           `tfsdk:"name"`
@@ -229,6 +230,7 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 		resp.Schema.Attributes[name] = attribute
 	}
 	resp.Schema.Attributes["network_policy"] = agentNetworkPolicyAttribute()
+	resp.Schema.Attributes["subagent_load_balancing"] = subagentLoadBalancingAttribute("agent")
 }
 
 func (r *AgentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -581,6 +583,7 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 	optionalUUIDFromAPI(&data.SmartModelId, resp.SmartModelId)
 	optionalStringFromAPI(&data.EnvironmentId, resp.EnvironmentId)
 	data.Runtime = runtimeFromResponse(ctx, body, diags)
+	data.SubagentLoadBalancing = subagentLoadBalancingFromResponse(body, data.SubagentLoadBalancing, diags)
 }
 
 // AttrSpecs implements the resourceWithAttrSpec interface (see specdrift_test.go).
@@ -613,8 +616,6 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "suggestedPrompts", "passthroughHeaders",
 		"identityProviderId", "slug", "scope", "teams", "users",
-		// Subagent load balancing applies only to MCP gateways.
-		"subagentLoadBalancing",
 		// Derived per caller from their own Agent Runtime account.
 		"resolvedLlmPersonalSubscription",
 	}
@@ -642,6 +643,7 @@ var agentAttrSpec = append(append(agentRelationshipAttrSpecs(), AttrSpec{TFName:
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar, OmitOnNull: true},
 	{TFName: "progressive_subagent_loading", JSONName: "progressiveSubagentLoading", Kind: Scalar, OmitOnNull: true},
+	subagentLoadBalancingAttrSpec,
 
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},

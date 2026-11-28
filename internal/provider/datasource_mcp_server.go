@@ -22,13 +22,14 @@ type McpServerDataSource struct {
 }
 
 type McpServerDataSourceModel struct {
-	ID          types.String `tfsdk:"id"`
-	Name        types.String `tfsdk:"name"`
-	CatalogID   types.String `tfsdk:"catalog_id"`
-	CatalogName types.String `tfsdk:"catalog_name"`
-	OwnerEmail  types.String `tfsdk:"owner_email"`
-	Scope       types.String `tfsdk:"scope"`
-	TeamID      types.String `tfsdk:"team_id"`
+	ID           types.String `tfsdk:"id"`
+	Name         types.String `tfsdk:"name"`
+	CatalogID    types.String `tfsdk:"catalog_id"`
+	CatalogName  types.String `tfsdk:"catalog_name"`
+	OwnerEmail   types.String `tfsdk:"owner_email"`
+	Scope        types.String `tfsdk:"scope"`
+	TeamID       types.String `tfsdk:"team_id"`
+	ToolIDByName types.Map    `tfsdk:"tool_id_by_name"`
 }
 
 func (d *McpServerDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -39,8 +40,12 @@ func (d *McpServerDataSource) Schema(ctx context.Context, req datasource.SchemaR
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Finds an installed MCP server that exists already. Set at least one of `name`, `catalog_id`, `catalog_name` and `owner_email`; every one that is set must match, and exactly one installation must remain. Use `id` as the `mcp_server_id` of a tool assignment. People's own installations of one registry entry share a name, so select one with `owner_email`.",
 		Attributes: map[string]schema.Attribute{
-			"id":           schema.StringAttribute{Computed: true, MarkdownDescription: "ID of the installation."},
-			"name":         schema.StringAttribute{Optional: true, Computed: true, MarkdownDescription: "Exact name of the installation."},
+			"id":   schema.StringAttribute{Computed: true, MarkdownDescription: "ID of the installation."},
+			"name": schema.StringAttribute{Optional: true, Computed: true, MarkdownDescription: "Exact name of the installation."},
+			"tool_id_by_name": schema.MapAttribute{
+				Computed: true, ElementType: types.StringType,
+				MarkdownDescription: "Tool UUID by full tool name (`<server>__<short>`), for tool assignments.",
+			},
 			"catalog_id":   schema.StringAttribute{Optional: true, Computed: true, MarkdownDescription: "ID of the MCP registry entry the server was installed from."},
 			"catalog_name": schema.StringAttribute{Optional: true, Computed: true, MarkdownDescription: "Exact name of the MCP registry entry the server was installed from."},
 			"owner_email":  schema.StringAttribute{Optional: true, Computed: true, MarkdownDescription: "Email address of the person who owns the installation."},
@@ -108,5 +113,20 @@ func (d *McpServerDataSource) Read(ctx context.Context, req datasource.ReadReque
 	data.OwnerEmail = types.StringPointerValue(server.OwnerEmail)
 	data.Scope = types.StringValue(string(server.Scope))
 	data.TeamID = types.StringPointerValue(server.TeamId)
+
+	// One call returns every tool of the installation, so a configuration
+	// maps names to IDs without a lookup per tool.
+	tools, err := d.client.GetMcpServerToolsWithResponse(ctx, server.Id)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list the MCP server's tools: %s", err))
+		return
+	}
+	if tools.JSON200 == nil {
+		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Listing the MCP server's tools: expected 200 OK, got status %d", tools.StatusCode()))
+		return
+	}
+	_, toolIDs, diags := projectMcpServerTools(*tools.JSON200)
+	resp.Diagnostics.Append(diags...)
+	data.ToolIDByName = toolIDs
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
