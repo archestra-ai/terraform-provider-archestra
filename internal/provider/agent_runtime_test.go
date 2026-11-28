@@ -191,3 +191,79 @@ func TestRuntimeTierContractRoundTrip(t *testing.T) {
 		t.Fatal("tier selection did not refresh", got, ds)
 	}
 }
+
+func TestRuntimePortsRoundTrip(t *testing.T) {
+	var schema resource.SchemaResponse
+	(&AgentResource{}).Schema(t.Context(), resource.SchemaRequest{}, &schema)
+	kind := schema.Schema.Type().TerraformType(t.Context())
+	plan := func(runtime string) tftypes.Value {
+		body, err := projectStateJSON([]byte(`{"name":"worker","runtime":{"image":"image:latest","inference_protocol":"anthropic","steer_mode":"tmux_keys","backend":"kubernetes","privileged":false`+runtime+`}}`), kind)
+		if err != nil {
+			t.Fatal(err)
+		}
+		planned, err := (tfprotov6.RawState{JSON: body}).Unmarshal(kind)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return planned
+	}
+	var ds diag.Diagnostics
+
+	patch := MergePatch(t.Context(), plan(`,"ports":[3000,9000,10350]`), tftypes.NewValue(kind, nil), agentAttrSpec, &ds)
+	runtime, _ := patch["runtime"].(map[string]any)
+	sent, _ := json.Marshal(runtime["ports"])
+	if ds.HasError() || string(sent) != "[3000,9000,10350]" {
+		t.Fatal("ports were not sent", string(sent), ds)
+	}
+	got := runtimeFromResponse(t.Context(), []byte(`{"runtime":{"image":"image:latest","ports":[3000,9000,10350]}}`), &ds)
+	var ports []int64
+	ds.Append(got.Ports.ElementsAs(t.Context(), &ports, false)...)
+	if ds.HasError() || len(ports) != 3 || ports[0] != 3000 || ports[2] != 10350 {
+		t.Fatal("ports did not refresh", ports, ds)
+	}
+
+	// The API field is optional, not nullable: an unset value is omitted.
+	patch = MergePatch(t.Context(), plan(``), tftypes.NewValue(kind, nil), agentAttrSpec, &ds)
+	runtime, _ = patch["runtime"].(map[string]any)
+	if _, present := encodeRuntime(runtime).(map[string]any)["ports"]; present || ds.HasError() {
+		t.Fatal("unset ports must be omitted", runtime, ds)
+	}
+	if got := runtimeFromResponse(t.Context(), []byte(`{"runtime":{"image":"image:latest"}}`), &ds); !got.Ports.IsNull() {
+		t.Fatal("a runtime without ports must read as null", got.Ports)
+	}
+}
+
+func TestRuntimePortsValidation(t *testing.T) {
+	r := &AgentResource{}
+	ports := func(values ...int64) tftypes.Value {
+		items := make([]tftypes.Value, len(values))
+		for i, v := range values {
+			items[i] = tftypes.NewValue(tftypes.Number, v)
+		}
+		return tftypes.NewValue(tftypes.List{ElementType: tftypes.Number}, items)
+	}
+	many := make([]int64, 21)
+	for i := range many {
+		many[i] = int64(3000 + i)
+	}
+	for name, tc := range map[string]struct {
+		ports tftypes.Value
+		want  string
+	}{
+		"port zero":      {ports(0), "between 1 and 65535"},
+		"port too large": {ports(70000), "between 1 and 65535"},
+		"too many ports": {ports(many...), "at most 20"},
+	} {
+		t.Run(name, func(t *testing.T) {
+			diags := validateConfig(t, r, "archestra_agent", map[string]tftypes.Value{
+				"name": str("bad-ports"),
+				"runtime": objectOf(t, r, "runtime", map[string]tftypes.Value{
+					"image": str("image:latest"), "inference_protocol": str("anthropic"), "steer_mode": str("tmux_keys"), "ports": tc.ports,
+				}),
+			})
+			if !diagnosticsContain(diags, tc.want) {
+				t.Fatalf("diagnostics %v do not mention %q", diags, tc.want)
+			}
+		})
+	}
+}

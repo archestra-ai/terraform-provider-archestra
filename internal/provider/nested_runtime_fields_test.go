@@ -115,62 +115,81 @@ func TestAgentNetworkPolicyRejectsValuesTheAPIWouldDrop(t *testing.T) {
 	}
 }
 
-func TestGatewaySubagentLoadBalancingPartialConfigHasNoDrift(t *testing.T) {
+// Agents and MCP gateways share the subagent load-balancing setting.
+var subagentLoadBalancingResources = map[string]struct {
+	resource func() resource.Resource
+	typeName string
+	spec     []AttrSpec
+}{
+	"gateway": {func() resource.Resource { return &McpGatewayResource{} }, "archestra_mcp_gateway", mcpGatewayAttrSpec},
+	"agent":   {func() resource.Resource { return &AgentResource{} }, "archestra_agent", agentAttrSpec},
+}
+
+func TestSubagentLoadBalancingPartialConfigHasNoDrift(t *testing.T) {
 	subagent := "88888888-8888-4888-8888-888888888888"
-	for name, tc := range map[string]struct {
-		config map[string]tftypes.Value
-		want   map[string]any
-	}{
-		"empty block": {map[string]tftypes.Value{}, map[string]any{"enabled": false, "algorithm": "round_robin", "retries": float64(1), "fallbackEnabled": true}},
-		"weighted": {
-			map[string]tftypes.Value{"enabled": tftypes.NewValue(tftypes.Bool, true), "algorithm": str("weighted"),
-				"weights": tftypes.NewValue(tftypes.Map{ElementType: tftypes.Number}, map[string]tftypes.Value{subagent: tftypes.NewValue(tftypes.Number, big.NewFloat(3))})},
-			map[string]any{"enabled": true, "algorithm": "weighted", "weights": map[string]any{subagent: float64(3)}, "retries": float64(1), "fallbackEnabled": true},
-		},
-		"no retries or fallback": {
-			map[string]tftypes.Value{"retries": tftypes.NewValue(tftypes.Number, big.NewFloat(0)), "fallback_enabled": tftypes.NewValue(tftypes.Bool, false)},
-			map[string]any{"enabled": false, "algorithm": "round_robin", "retries": float64(0), "fallbackEnabled": false},
-		},
-	} {
-		t.Run(name, func(t *testing.T) {
-			r := &McpGatewayResource{}
-			planned := planCreate(t, r, "archestra_mcp_gateway", map[string]tftypes.Value{
-				"name":                    str("balanced-gateway"),
-				"subagent_load_balancing": objectOf(t, r, "subagent_load_balancing", tc.config),
+	for kind, res := range subagentLoadBalancingResources {
+		for name, tc := range map[string]struct {
+			config map[string]tftypes.Value
+			want   map[string]any
+		}{
+			"empty block": {map[string]tftypes.Value{}, map[string]any{"enabled": false, "algorithm": "round_robin", "retries": float64(1), "fallbackEnabled": true}},
+			"weighted": {
+				map[string]tftypes.Value{"enabled": tftypes.NewValue(tftypes.Bool, true), "algorithm": str("weighted"),
+					"weights": tftypes.NewValue(tftypes.Map{ElementType: tftypes.Number}, map[string]tftypes.Value{subagent: tftypes.NewValue(tftypes.Number, big.NewFloat(3))})},
+				map[string]any{"enabled": true, "algorithm": "weighted", "weights": map[string]any{subagent: float64(3)}, "retries": float64(1), "fallbackEnabled": true},
+			},
+			"no retries or fallback": {
+				map[string]tftypes.Value{"retries": tftypes.NewValue(tftypes.Number, big.NewFloat(0)), "fallback_enabled": tftypes.NewValue(tftypes.Bool, false)},
+				map[string]any{"enabled": false, "algorithm": "round_robin", "retries": float64(0), "fallbackEnabled": false},
+			},
+		} {
+			t.Run(kind+"/"+name, func(t *testing.T) {
+				r := res.resource()
+				planned := planCreate(t, r, res.typeName, map[string]tftypes.Value{
+					"name":                    str("balanced-" + kind),
+					"subagent_load_balancing": objectOf(t, r, "subagent_load_balancing", tc.config),
+				})
+				var diags diag.Diagnostics
+				patch := MergePatch(t.Context(), planned, tftypes.NewValue(planned.Type(), nil), res.spec, &diags)
+				if diags.HasError() {
+					t.Fatal(diags)
+				}
+				sent := jsonRoundTrip(t, patch["subagentLoadBalancing"])
+				if !reflect.DeepEqual(sent, tc.want) {
+					t.Fatalf("sent %v, want %v", sent, tc.want)
+				}
+				body, _ := json.Marshal(map[string]any{"subagentLoadBalancing": fillLoadBalancingDefaultsLikeAPI(mustAs[map[string]any](sent))})
+				read := subagentLoadBalancingFromResponse(body, types.ObjectNull(subagentLoadBalancingAttrTypes), &diags)
+				assertReadsBackAsPlanned(t, read, planned, "subagent_load_balancing", diags)
+				prior := plannedObject(t, planned, "subagent_load_balancing")
+				stripped := fillLoadBalancingDefaultsLikeAPI(mustAs[map[string]any](sent))
+				delete(stripped, "retries")
+				delete(stripped, "fallbackEnabled")
+				body, _ = json.Marshal(map[string]any{"subagentLoadBalancing": stripped})
+				read = subagentLoadBalancingFromResponse(body, prior, &diags)
+				assertReadsBackAsPlanned(t, read, planned, "subagent_load_balancing", diags)
 			})
-			var diags diag.Diagnostics
-			patch := MergePatch(t.Context(), planned, tftypes.NewValue(planned.Type(), nil), mcpGatewayAttrSpec, &diags)
-			if diags.HasError() {
-				t.Fatal(diags)
-			}
-			sent := jsonRoundTrip(t, patch["subagentLoadBalancing"])
-			if !reflect.DeepEqual(sent, tc.want) {
-				t.Fatalf("sent %v, want %v", sent, tc.want)
-			}
-			body, _ := json.Marshal(map[string]any{"subagentLoadBalancing": fillLoadBalancingDefaultsLikeAPI(mustAs[map[string]any](sent))})
-			read := subagentLoadBalancingFromResponse(body, types.ObjectNull(subagentLoadBalancingAttrTypes), &diags)
-			assertReadsBackAsPlanned(t, read, planned, "subagent_load_balancing", diags)
-			prior := plannedObject(t, planned, "subagent_load_balancing")
-			stripped := fillLoadBalancingDefaultsLikeAPI(mustAs[map[string]any](sent))
-			delete(stripped, "retries")
-			delete(stripped, "fallbackEnabled")
-			body, _ = json.Marshal(map[string]any{"subagentLoadBalancing": stripped})
-			read = subagentLoadBalancingFromResponse(body, prior, &diags)
-			assertReadsBackAsPlanned(t, read, planned, "subagent_load_balancing", diags)
+		}
+	}
+}
+
+func TestSubagentLoadBalancingOmittedOrInvalid(t *testing.T) {
+	for kind, res := range subagentLoadBalancingResources {
+		t.Run(kind, func(t *testing.T) {
+			testSubagentLoadBalancingOmittedOrInvalid(t, res.resource(), res.typeName, res.spec)
 		})
 	}
 }
 
-func TestGatewaySubagentLoadBalancingOmittedOrInvalid(t *testing.T) {
-	r := &McpGatewayResource{}
-	planned := planCreate(t, r, "archestra_mcp_gateway", map[string]tftypes.Value{"name": str("plain-gateway")})
+func testSubagentLoadBalancingOmittedOrInvalid(t *testing.T, r resource.Resource, typeName string, spec []AttrSpec) {
+	planned := planCreate(t, r, typeName, map[string]tftypes.Value{"name": str("plain")})
 	var diags diag.Diagnostics
-	patch := MergePatch(t.Context(), planned, tftypes.NewValue(planned.Type(), nil), mcpGatewayAttrSpec, &diags)
+	patch := MergePatch(t.Context(), planned, tftypes.NewValue(planned.Type(), nil), spec, &diags)
 	if _, sent := patch["subagentLoadBalancing"]; sent {
 		t.Fatal("an omitted setting must not be sent, so older releases accept the create")
 	}
 	if read := subagentLoadBalancingFromResponse([]byte(`{"subagentLoadBalancing":null}`), types.ObjectNull(subagentLoadBalancingAttrTypes), &diags); !read.IsNull() {
-		t.Fatal("a gateway without the setting must read as null")
+		t.Fatal("a resource without the setting must read as null")
 	}
 	for name, tc := range map[string]struct {
 		config map[string]tftypes.Value
@@ -183,8 +202,8 @@ func TestGatewaySubagentLoadBalancingOmittedOrInvalid(t *testing.T) {
 			map[string]tftypes.Value{"88888888-8888-4888-8888-888888888888": tftypes.NewValue(tftypes.Number, big.NewFloat(0))})}, "between 1 and 1000"},
 	} {
 		t.Run(name, func(t *testing.T) {
-			diags := validateConfig(t, r, "archestra_mcp_gateway", map[string]tftypes.Value{
-				"name": str("bad-gateway"), "subagent_load_balancing": objectOf(t, r, "subagent_load_balancing", tc.config),
+			diags := validateConfig(t, r, typeName, map[string]tftypes.Value{
+				"name": str("bad-balancing"), "subagent_load_balancing": objectOf(t, r, "subagent_load_balancing", tc.config),
 			})
 			if !diagnosticsContain(diags, tc.want) {
 				t.Fatalf("diagnostics %v do not mention %q", diags, tc.want)

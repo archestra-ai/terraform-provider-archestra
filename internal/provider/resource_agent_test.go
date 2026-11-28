@@ -173,6 +173,7 @@ func TestAccAgentResource_Runtime(t *testing.T) {
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("image"), knownvalue.StringExact("registry.example.com/tf-acc/worker:latest")),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("backend"), knownvalue.StringExact("kubernetes")),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("privileged"), knownvalue.Bool(false)),
+					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("ports"), knownvalue.ListExact([]knownvalue.Check{knownvalue.Int64Exact(3000), knownvalue.Int64Exact(9000)})),
 					sizingCheck,
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("credentials"), knownvalue.ListSizeExact(1)),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("max_cost_usd"), knownvalue.Int64Exact(25)),
@@ -222,6 +223,7 @@ resource "archestra_agent" "runtime" {
     inference_protocol = "openai_chat"
     steer_mode         = "tmux_keys"
     privileged         = false
+    ports              = [3000, 9000]
 
     resources = {
       cpu_request    = "2"

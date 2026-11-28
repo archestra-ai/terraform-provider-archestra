@@ -142,7 +142,7 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 	for name, attribute := range currentGatewayAttributes() {
 		resp.Schema.Attributes[name] = attribute
 	}
-	resp.Schema.Attributes["subagent_load_balancing"] = gatewaySubagentLoadBalancingAttribute()
+	resp.Schema.Attributes["subagent_load_balancing"] = subagentLoadBalancingAttribute("gateway")
 	if r.apiAgentType() == "profile" {
 		resp.Schema.MarkdownDescription = "External LLM API gateway profile for tool routing, policy enforcement and inbound identity; the platform-owned LLM Proxy singleton is managed by Archestra."
 	}
@@ -457,7 +457,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 // atomic on the wire (Kind: List).
 var mcpGatewayAttrSpec = append(gatewayRelationshipAttrSpecs(), []AttrSpec{
 	githubActionsAccessAttrSpec,
-	gatewaySubagentLoadBalancingAttrSpec,
+	subagentLoadBalancingAttrSpec,
 	initialGrantsAttrSpec,
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},

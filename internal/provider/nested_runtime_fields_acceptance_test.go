@@ -45,15 +45,23 @@ func TestAccAgentNetworkPolicy(t *testing.T) {
 }
 
 func TestAccGatewaySubagentLoadBalancing(t *testing.T) {
+	testAccSubagentLoadBalancing(t, "archestra_mcp_gateway")
+}
+
+func TestAccAgentSubagentLoadBalancing(t *testing.T) {
+	testAccSubagentLoadBalancing(t, "archestra_agent")
+}
+
+func testAccSubagentLoadBalancing(t *testing.T, resourceType string) {
 	if os.Getenv("TF_ACC") != "" && !testAccAPIVersionAtLeast(t, "1.5.0-rc.23") {
 		t.Skip("Subagent load balancing requires API 1.5.0-rc.23")
 	}
 	name := acctest.RandomWithPrefix("tf-balance")
 	config := func(setting string) string {
-		return fmt.Sprintf(`resource "archestra_mcp_gateway" "test" {
+		return fmt.Sprintf(`resource %q "test" {
   name = %q
   %s
-}`, name, setting)
+}`, resourceType, name, setting)
 	}
 	partial := config(`subagent_load_balancing = { enabled = true }`)
 	weighted := config(`subagent_load_balancing = {
@@ -63,7 +71,7 @@ func TestAccGatewaySubagentLoadBalancing(t *testing.T) {
     retries   = 0
   }`)
 	cleared := config("")
-	address := "archestra_mcp_gateway.test"
+	address := resourceType + ".test"
 	noChanges := resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: partial, Check: resource.ComposeAggregateTestCheckFunc(

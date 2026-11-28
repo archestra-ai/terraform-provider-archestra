@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -71,6 +73,15 @@ func runtimeSchema() schema.SingleNestedAttribute {
 						MarkdownDescription: "Optional native Claude Code model alias.",
 						Validators:          []validator.String{stringvalidator.LengthBetween(1, 256)},
 					},
+				},
+			},
+			"ports": schema.ListAttribute{
+				Optional:            true,
+				ElementType:         types.Int64Type,
+				MarkdownDescription: "Container ports users can forward from an active workspace, 1 to 65535 (at most 20).",
+				Validators: []validator.List{
+					listvalidator.SizeAtMost(20),
+					listvalidator.ValueInt64sAre(int64validator.Between(1, 65535)),
 				},
 			},
 			"tier":     schema.StringAttribute{Optional: true, MarkdownDescription: "Organization-defined default runtime tier."},
@@ -156,6 +167,7 @@ type AgentRuntimeModel struct {
 	Backend           types.String                 `tfsdk:"backend"`
 	SteerMode         types.String                 `tfsdk:"steer_mode"`
 	Privileged        types.Bool                   `tfsdk:"privileged"`
+	Ports             types.List                   `tfsdk:"ports"`
 	Resources         *AgentRuntimeResourcesModel  `tfsdk:"resources"`
 	// Environment and Credentials are types.List (of the entry object types
 	// below) rather than Go slices: the framework must be able to hand the
@@ -226,6 +238,8 @@ var runtimeAttrSpec = []AttrSpec{
 	{TFName: "backend", JSONName: "backend", Kind: Scalar},
 	{TFName: "steer_mode", JSONName: "steerMode", Kind: Scalar},
 	{TFName: "privileged", JSONName: "privileged", Kind: Scalar},
+	// Optional, not nullable, on the API: omit rather than send null.
+	{TFName: "ports", JSONName: "ports", Kind: List, OmitOnNull: true},
 	{
 		TFName: "resources", JSONName: "resources", Kind: AtomicObject,
 		Children: []AttrSpec{
@@ -292,6 +306,7 @@ type runtimeAPI struct {
 	Backend           string    `json:"backend"`
 	SteerMode         string    `json:"steerMode"`
 	Privileged        bool      `json:"privileged"`
+	Ports             *[]int64  `json:"ports"`
 	Resources         *struct {
 		CpuRequest    *string `json:"cpuRequest"`
 		MemoryRequest *string `json:"memoryRequest"`
@@ -332,6 +347,7 @@ func runtimeFromResponse(ctx context.Context, responseBody []byte, diags *diag.D
 		MaxTier:            types.StringPointerValue(api.MaxTier),
 		Image:              types.StringValue(api.Image),
 		Command:            types.ListNull(types.StringType),
+		Ports:              types.ListNull(types.Int64Type),
 		Environment:        types.ListNull(runtimeEnvEntryType),
 		Credentials:        types.ListNull(runtimeCredentialType),
 		InferenceProtocol:  types.StringValue(api.InferenceProtocol),
@@ -347,6 +363,12 @@ func runtimeFromResponse(ctx context.Context, responseBody []byte, diags *diag.D
 		list, d := types.ListValueFrom(ctx, types.StringType, *api.Command)
 		diags.Append(d...)
 		out.Command = list
+	}
+
+	if api.Ports != nil {
+		list, d := types.ListValueFrom(ctx, types.Int64Type, *api.Ports)
+		diags.Append(d...)
+		out.Ports = list
 	}
 
 	if api.ClaudeCode != nil {
