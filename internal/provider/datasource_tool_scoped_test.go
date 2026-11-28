@@ -69,8 +69,10 @@ data "archestra_tool" "test" {
   name          = "${archestra_mcp_registry_entry.test.name}__list_directory"
 }
 
+# A personal installation's stored name carries its owner, so find it by
+# its registry entry.
 data "archestra_mcp_server" "test" {
-  name = archestra_mcp_server.test.name
+  catalog_id = archestra_mcp_server.test.catalog_id
 }
 `
 }
