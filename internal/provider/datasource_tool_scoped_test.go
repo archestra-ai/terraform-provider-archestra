@@ -32,6 +32,11 @@ func TestAccToolDataSourceScoped(t *testing.T) {
 						knownvalue.StringRegexp(regexp.MustCompile(`__list_directory$`)),
 					),
 				},
+				// The installation's data source maps the same name to the same ID.
+				Check: resource.TestCheckResourceAttrPair(
+					"data.archestra_mcp_server.test", "tool_id_by_name.test-mcp-server-for-tool-datasource__list_directory",
+					"data.archestra_tool.test", "id",
+				),
 			},
 		},
 	})
@@ -62,6 +67,10 @@ resource "archestra_mcp_server" "test" {
 data "archestra_tool" "test" {
   mcp_server_id = archestra_mcp_server.test.id
   name          = "${archestra_mcp_registry_entry.test.name}__list_directory"
+}
+
+data "archestra_mcp_server" "test" {
+  name = archestra_mcp_server.test.name
 }
 `
 }
